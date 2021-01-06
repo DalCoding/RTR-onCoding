@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:id="@+id/mainPageScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:id="@+id/mainSearchLayout"
+                android:layout_width="360dp"
+                android:layout_height="40dp"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/search_radius">
+
+                <EditText
+                    android:id="@+id/mainSearchEdit"
+                    android:layout_width="300dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="10dp"
+                    android:background="@null"
+                    android:inputType="text" />
+
+                <ImageButton
+                    android:id="@+id/mainSearchBtn"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="right|center_vertical"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/search_drawable" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/mainMapLayout"
+                android:layout_width="360dp"
+                android:layout_height="230dp"
+                android:layout_below="@id/mainSearchLayout"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/fragment_lines">
+
+
+                <ImageButton
+                    android:id="@+id/mainMapExtendBtn"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="bottom|right"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="#00FFFFFF"
+                    android:scaleType="fitXY"
+                    app:srcCompat="@drawable/extendmap" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/mainRoadLayout"
+                android:layout_width="360dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/mainMapLayout"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="40dp">
+
+                <TextView
+                    android:id="@+id/mainDtrRoad"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/mainMapLayout"
+                    android:text="도토리 길"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <ImageButton
+                    android:id="@+id/mainRoadNextBtn"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="right|bottom"
+                    android:background="@drawable/ripple_custom_button"
+                    app:srcCompat="@drawable/right_button" />
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/mainRoadListLayout"
+                android:layout_width="360dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/mainRoadLayout"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/fragment_lines">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/mainRoadList"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/mainStoryListLayout"
+                android:layout_width="360dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/mainRoadListLayout"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="40dp">
+
+                <TextView
+                    android:id="@+id/mainDrgStory"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/mainMapLayout"
+                    android:text="다람쥐 이야기"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <ImageButton
+                    android:id="@+id/mainStoryNextBtn"
+                    style="@style/Widget.AppCompat.ImageButton"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="right|bottom"
+                    android:background="@drawable/ripple_custom_button"
+                    app:srcCompat="@drawable/right_button" />
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/mainStoryLayout"
+                android:layout_width="360dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/mainStoryListLayout"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="30dp"
+                android:background="@drawable/fragment_lines">
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/mainStoryList"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </FrameLayout>
+
+        </RelativeLayout>
+    </ScrollView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/mainFloatingBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="20dp"
+        android:clickable="true"
+        app:backgroundTint="#EFEBDA"
+        android:background="@drawable/ripple_custom"
+        app:srcCompat="@drawable/add_icon"/>
+
+</RelativeLayout>

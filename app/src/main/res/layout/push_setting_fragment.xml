@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="180dp"
+    android:layout_height="220dp"
+    android:background="#F6F6F6">
+
+    <TextView
+        android:id="@+id/pushText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="5dp"
+        android:text="푸쉬 알림 설정"
+        android:textSize="18sp" />
+
+    <Switch
+        android:id="@+id/pushEventSwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:track="@drawable/switch_track_selector"
+        android:thumb="@drawable/switch_thumb"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:text="이벤트"
+        android:switchPadding="30dp"
+        android:textSize="16sp"/>
+
+    <Switch
+        android:id="@+id/pushLikeSwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:track="@drawable/switch_track_selector"
+        android:thumb="@drawable/switch_thumb"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:text="좋아요"
+        android:switchPadding="30dp"
+        android:textSize="16sp"/>
+
+    <Switch
+        android:id="@+id/pushCommentSwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:track="@drawable/switch_track_selector"
+        android:thumb="@drawable/switch_thumb"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:text="코멘트"
+        android:switchPadding="30dp"
+        android:textSize="16sp"/>
+
+    <Switch
+        android:id="@+id/pushAddInfoSwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:track="@drawable/switch_track_selector"
+        android:thumb="@drawable/switch_thumb"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:text="정보추가"
+        android:switchPadding="15dp"
+        android:textSize="16sp"/>
+
+
+</LinearLayout>

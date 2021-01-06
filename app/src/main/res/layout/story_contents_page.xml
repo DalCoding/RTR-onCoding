@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginStart="10dp"
+    android:layout_marginLeft="10dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginEnd="10dp"
+    android:layout_marginRight="10dp"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="18dp"
+            android:layout_marginBottom="15dp">
+
+            <TextView
+                android:id="@+id/scontentsGroupText"
+                android:layout_width="80dp"
+                android:layout_height="25dp"
+                android:background="@drawable/box"
+                android:gravity="center"
+                android:text="말머리"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="right"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/scontentsLinkImg"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_gravity="right"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginRight="10dp"
+                        app:srcCompat="@drawable/linkshare" />
+
+                    <ImageView
+                        android:id="@+id/scontentsScrabImg"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginRight="5dp"
+                        app:srcCompat="@drawable/scrabtag" />
+
+                    <TextView
+                        android:id="@+id/scontentsScrabNum"
+                        android:layout_width="30dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginRight="10dp"
+                        android:gravity="center"
+                        android:text="100" />
+
+                    <ImageView
+                        android:id="@+id/scontentsHeartImg"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginRight="5dp"
+                        app:srcCompat="@drawable/heart" />
+
+                    <TextView
+                        android:id="@+id/scontentsHeartNum"
+                        android:layout_width="30dp"
+                        android:layout_height="25dp"
+                        android:gravity="center"
+                        android:text="100" />
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/scontentsTitleText"
+                android:layout_width="270dp"
+                android:layout_height="match_parent"
+                android:background="#F3F3F3"
+                android:gravity="center"
+                android:text="제목" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="right"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/scontentsLevelImg"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="right"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginRight="5dp"
+                    app:srcCompat="@drawable/lv1baby" />
+
+                <TextView
+                    android:id="@+id/scontentsUsernameText"
+                    android:layout_width="62dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="right"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginRight="5dp"
+                    android:text="user name"
+                    android:textSize="13sp" />
+
+                <ImageView
+                    android:id="@+id/scontentsStarImg"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="right"
+                    app:srcCompat="@drawable/star" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/scontentsLocText"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="10dp"
+            android:background="#F3F3F3"
+            android:gravity="center"
+            android:text="위치" />
+
+        <ImageView
+            android:id="@+id/scontentsBigImg"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="10dp"
+            app:srcCompat="@drawable/emptyimage" />
+
+        <TextView
+            android:id="@+id/scontentsMentText"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="10dp"
+            android:background="#F3F3F3"
+            android:gravity="center"
+            android:hint="사진별 코멘트(80자 내외)" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="10dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="373dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
+            <ImageView
+                android:id="@+id/scontentsNextImg"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_gravity="center"
+                app:srcCompat="@drawable/nextgray" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textView20"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_gravity="center"
+            android:background="#F3F3F3"
+            android:gravity="center"
+            android:text="TextView" />
+
+        <TextView
+            android:layout_width="60dp"
+            android:layout_height="25dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginLeft="15dp"
+            android:text="코멘트"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/box"
+            android:padding="5dp">
+
+            <EditText
+                android:id="@+id/scontentsCommEdit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:ems="10"
+                android:inputType="textPersonName" />
+
+            <Button
+                android:id="@+id/scontentsCommBtn"
+                android:layout_width="60dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:background="@drawable/ripple_custom"
+                android:gravity="center"
+                android:text="등록"
+                android:textColor="#442C2E"
+                android:textSize="14sp"
+                app:backgroundTint="@empty"
+                app:iconPadding="1dp" />
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/sCommRView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+    </LinearLayout>
+
+</ScrollView>

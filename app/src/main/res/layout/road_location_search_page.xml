@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="400dp"
+    android:background="#FFFFFF">
+
+    <RelativeLayout
+        android:id="@+id/writeRoadStorySearchContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="20dp"
+        android:visibility="visible"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <TextView
+            android:id="@+id/roadLocationSearchMention"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:text="지번, 도로명, 건물명을 입력하세요"
+            android:textColor="#000000"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:id="@+id/underbar1"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_below="@id/RoadLocationSearchBox"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            android:background="#acacac"
+            android:orientation="vertical" />
+
+        <LinearLayout
+            android:id="@+id/RoadLocationSearchBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/roadLocationSearchMention"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="20dp">
+
+            <EditText
+                android:id="@+id/roadStoryAddressEditText"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_weight="8"
+                android:background="@drawable/box"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:textSize="16sp" />
+
+            <ImageButton
+                android:id="@+id/writeRoadAddressSearchBtn"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_weight="1.1"
+                android:background="@drawable/beigebox"
+                android:src="@drawable/searchwhitesmall" />
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/writeRoadMapSearchRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/underbar1"
+            android:layout_marginTop="10dp" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

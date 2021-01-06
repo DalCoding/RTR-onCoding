@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:layout_margin="15dp"
+            android:orientation="vertical">
+
+            <TextView
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="닉네임"
+                android:textColor="#000000"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/profileNickEditText"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="25dp"
+                android:background="@drawable/askbackimg"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:padding="7dp"
+                android:textSize="14sp" />
+
+            <TextView
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="비밀번호"
+                android:textColor="#000000"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/profilePwdEditText"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="25dp"
+                android:background="@drawable/askbackimg"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:padding="7dp"
+                android:textSize="14sp" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <TextView
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="비밀번호 확인"
+                    android:textColor="#000000"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/profilePwdTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="7dp"
+                    android:layout_marginLeft="7dp"
+                    android:padding="5dp"
+                    android:textColor="#E74C3C"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/profilePwdEditText1"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="25dp"
+                android:background="@drawable/askbackimg"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:padding="7dp"
+                android:textSize="14sp" />
+
+            <TextView
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="이메일"
+                android:textColor="#000000"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/profileEmailEditText"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="25dp"
+                android:background="@drawable/askbackimg"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:padding="7dp"
+                android:textSize="14sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="7dp"
+                    android:text="전화번호"
+                    android:textColor="#000000"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/profilePhoneEditText"
+                    android:layout_width="150dp"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="7dp"
+                    android:layout_marginEnd="7dp"
+                    android:layout_marginRight="7dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/askbackimg"
+                    android:ems="10"
+                    android:hint="휴대전화 번호"
+                    android:inputType="number"
+                    android:padding="7dp"
+                    android:textSize="12sp" />
+
+                <Button
+                    android:id="@+id/profilePhoneBtn"
+                    android:layout_width="120dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="7dp"
+                    android:background="@drawable/ripple_custom"
+                    android:text="인증번호 받기"
+                    android:textColor="#442C2E"
+                    android:textSize="12sp"
+                    app:backgroundTint="@empty" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/profileConfirmEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_marginEnd="7dp"
+                    android:layout_marginRight="7dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/askbackimg"
+                    android:ems="10"
+                    android:hint="인증번호 입력"
+                    android:inputType="textPersonName"
+                    android:textSize="12sp" />
+
+                <Button
+                    android:id="@+id/profileConfirmBtn"
+                    android:layout_width="80dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/ripple_custom"
+                    android:text="확인"
+                    android:textColor="#442C2E"
+                    android:textSize="14sp"
+                    app:backgroundTint="@empty" />
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/profileLeaveBtn"
+                android:layout_width="80dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:layout_margin="30dp"
+                android:background="@drawable/ripple_custom"
+                android:text="탈퇴"
+                android:textColor="#442C2E"
+                android:textSize="14sp"
+                app:backgroundTint="@empty" />
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

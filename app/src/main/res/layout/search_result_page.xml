@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+
+        <EditText
+            android:id="@+id/searchResultEdit"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/fragment_lines"
+            android:inputType="textPersonName"
+            android:paddingLeft="5dp" />
+
+        <ImageButton
+            android:id="@+id/searchResultBtn"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/ripple_custom"
+            app:srcCompat="@drawable/search_icon" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/searchResultSortingLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp"
+        android:background="@drawable/fragment_lines" >
+
+        <android.widget.Button
+            android:id="@+id/searchAccuracySortingBtn"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/ripple_custom"
+            android:text="정확도순"
+            android:textColor="#442428"
+            android:textSize="18sp" />
+
+        <android.widget.Button
+            android:id="@+id/searchPopularitySortingBtn"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/ripple_custom"
+            android:text="인기순"
+            android:textColor="#442428"
+            android:textSize="18sp" />
+
+        <android.widget.Button
+            android:id="@+id/searchLatestSortingBtn"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/ripple_custom"
+            android:text="최신순"
+            android:textColor="#442428"
+            android:textSize="18sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/search2MainLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="10"
+        android:orientation="vertical">
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/searchResultList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp">
+
+        </androidx.recyclerview.widget.RecyclerView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <android.widget.Button
+            android:id="@+id/searchResultExpandBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/ripple_custom"
+            android:drawableLeft="@drawable/expand_more"
+            android:drawablePadding="10dp"
+            android:gravity="center_vertical"
+            android:paddingLeft="10dp"
+            android:paddingRight="20dp"
+            android:text="결과 더보기"
+            android:textColor="#442428"
+            android:textSize="18sp" />
+    </LinearLayout>
+</LinearLayout>

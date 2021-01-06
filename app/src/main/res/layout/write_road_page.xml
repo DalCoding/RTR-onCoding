@@ -1,0 +1,431 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF">
+
+    <RelativeLayout
+        android:id="@+id/writeMapContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="20dp">
+
+        <FrameLayout
+            android:id="@+id/writeRoadMap"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/box">
+
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/writeRoadPinAddMention"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/writeRoadMap"
+            android:layout_alignParentRight="true"
+            android:layout_marginEnd="25dp"
+            android:layout_marginRight="25dp"
+            android:layout_marginBottom="5dp"
+            android:text="지도를 눌러 핀을 추가해주세요(2개 이상 선택 필수)"
+            android:textColor="#94333333"
+            android:textSize="12sp" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/wirteRoadContentContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/writeMapContainer"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="20dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/writeRoadRequired1"
+                    android:layout_width="match_parent"
+                    android:layout_height="18dp"
+                    android:text="*"
+                    android:textColor="#94333333"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/writeRoadTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal|center_vertical"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:text="제목"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/writeRoadTitleEditText"
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/box"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/writeRoadTagTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal|center_vertical"
+                android:layout_margin="5dp"
+                android:text="태그"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/writeRoadChooseTagBtn"
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/button_drawable"
+                android:text="태그선택"
+                android:textSize="16sp"
+                app:backgroundTint="@empty" />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="5dp"
+                android:layout_marginLeft="5dp">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/writeRoadTagRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginLeft="3dp" />
+            </FrameLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:text="직접입력" />
+
+            <EditText
+                android:id="@+id/writeRoadTagEditText"
+                android:layout_width="200dp"
+                android:layout_height="35dp"
+                android:layout_gravity="right|center_vertical"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="5dp"
+                android:background="#ffffff"
+                android:ems="10"
+                android:gravity="center_horizontal|center_vertical"
+                android:hint="태그를 직접 입력해주세요"
+                android:inputType="textPersonName"
+                android:textSize="16sp" />
+
+            <Button
+                android:id="@+id/writeRoadTagTextInputBtn"
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/button_drawable"
+                android:text="등록"
+                app:backgroundTint="@empty" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginLeft="5dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/writeRoadRequired2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="18dp"
+                    android:layout_weight="1"
+                    android:text="*"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/writeRoadRequired3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="18dp"
+                    android:layout_weight="1"
+                    android:text="*"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <RelativeLayout
+                    android:layout_width="150dp"
+                    android:layout_height="35dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/box">
+
+                    <Spinner
+                        android:id="@+id/writeRoadHourSetSpinner"
+                        android:layout_width="50dp"
+                        android:layout_height="30dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:background="@drawable/spinnerbox" />
+
+                    <TextView
+                        android:id="@+id/writeStoryHourTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="false"
+                        android:layout_centerInParent="true"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_toRightOf="@id/writeRoadHourSetSpinner"
+                        android:text="시간"
+                        android:textSize="14sp" />
+
+                    <Spinner
+                        android:id="@+id/writeRoadMinSetSpinner"
+                        android:layout_width="50dp"
+                        android:layout_height="30dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_toRightOf="@id/writeStoryHourTitle"
+                        android:background="@drawable/spinnerbox" />
+
+                    <TextView
+                        android:id="@+id/writeStoryMinTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="false"
+                        android:layout_centerInParent="true"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_toRightOf="@id/writeRoadMinSetSpinner"
+                        android:text="분"
+                        android:textSize="14sp" />
+
+                    <!--
+                <Spinner
+                    android:id="@+id/hourSpinner"
+                    android:layout_width="40dp"
+                    android:layout_height="20dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/textView5"
+                    android:layout_width="30dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_margin="5dp"
+                    android:layout_toRightOf="@id/hourSpinner"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:text="시간"
+                    android:textSize="14sp" />
+
+                <Spinner
+                    android:id="@+id/timeSpinner2"
+                    android:layout_width="40dp"
+                    android:layout_height="20dp"
+                    android:layout_centerHorizontal="false"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_toLeftOf="@id/textView6"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/textView6"
+                    android:layout_width="30dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerInParent="true"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:text="분"
+                    android:textSize="14sp" /> -->
+                </RelativeLayout>
+
+                <Spinner
+                    android:id="@+id/companySpinner"
+                    android:layout_width="150dp"
+                    android:layout_height="35dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/spinnerbox"
+                    android:entries="@array/companyList"
+                    android:gravity="center_horizontal" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/setReviewScoreBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginLeft="5dp"
+                android:background="@drawable/button_drawable"
+                android:text="도토리 수"
+                android:textSize="16sp"
+                app:backgroundTint="@empty" />
+
+            <EditText
+                android:id="@+id/writeRoadReviewEditText"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="5dp"
+                android:background="@drawable/box"
+                android:ems="10"
+                android:gravity="center"
+                android:hint="한줄평을 남겨주세요!"
+                android:inputType="textPersonName"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:orientation="horizontal">
+
+            <RadioGroup
+                android:id="@+id/writeRoadOpenRadioGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:orientation="horizontal"
+                android:checkedButton="@id/publicRadioButton">
+
+                <RadioButton
+                    android:id="@+id/publicRadioButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="20sp"
+                    android:layout_marginRight="20sp"
+                    android:text="  사람들과 보기" />
+
+                <RadioButton
+                    android:id="@+id/privateRadioButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginRight="10dp"
+                    android:text="  나 혼자만 보기" />
+            </RadioGroup>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/roadRequiredMent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            android:text="@string/requiredMsg"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+</RelativeLayout>

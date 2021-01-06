@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="20dp"
+            android:lineSpacingExtra="3dp"
+            android:padding="5dp"
+            android:text="로터리팀의 운영다람쥐들은 로터리를 위해\n오늘도 열심히 쳇바퀴를 굴리고 있답니다.\n앱을 이용하면서 불편한 점이나 궁금한 사항이\n있다면 얼마든지 남겨주세요."
+            android:textColor="#646464"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginLeft="20dp"
+            android:padding="5dp"
+            android:text="* 답변에는 시간이 소요될 수 있습니다"
+            android:textColor="#000000"
+            android:textSize="12sp" />
+
+        <LinearLayout
+            android:layout_width="300dp"
+            android:layout_height="168dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/askbackimg"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <ScrollView
+                android:layout_width="275dp"
+                android:layout_height="135dp">
+
+                <EditText
+                    android:id="@+id/askEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:ems="10"
+                    android:gravity="top"
+
+                    android:hint="내용을 입력해주세요"
+                    android:inputType="textPersonName"
+                    android:textColor="#000000"
+                    android:textSize="14sp" />
+            </ScrollView>
+
+            <TextView
+                android:id="@+id/askCountTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:gravity="right"
+                android:text="(0/500자)"
+                android:textColor="#646464"
+                android:textSize="10sp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/askSendBtn"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:layout_margin="25dp"
+        android:text="로터리팀에게 보내기"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:backgroundTint="#F57F17" />
+
+
+</LinearLayout>

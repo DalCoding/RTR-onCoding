@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/alarmSortingLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.widget.Button
+            android:id="@+id/alarmBtn"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/ripple_custom_alarm"
+            android:text="전체" />
+
+        <android.widget.Button
+            android:id="@+id/alarmEventBtn"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_toRightOf="@+id/alarmBtn"
+            android:background="@drawable/ripple_custom_alarm"
+            android:text="이벤트" />
+
+        <android.widget.Button
+            android:id="@+id/alarmCommentBtn"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_toRightOf="@+id/alarmEventBtn"
+            android:background="@drawable/ripple_custom_alarm"
+            android:text="코멘트" />
+
+        <android.widget.Button
+            android:id="@+id/alarmLikeBtn"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_toRightOf="@+id/alarmCommentBtn"
+            android:background="@drawable/ripple_custom_alarm"
+            android:text="좋아요" />
+
+        <android.widget.Button
+            android:id="@+id/alarmAddInfoBtn"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_toRightOf="@+id/alarmLikeBtn"
+            android:background="@drawable/ripple_custom_alarm"
+            android:text="정보 추가" />
+
+    </RelativeLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/alarmContentsList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp" />
+</LinearLayout>

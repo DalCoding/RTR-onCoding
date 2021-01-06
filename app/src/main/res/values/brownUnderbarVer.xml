@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="brownUnderbarVer" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="android:background">@color/white</item>
+        <item name="android:textColorTertiary">@color/brown</item>
+        <item name="android:textColor">@color/brown</item>
+        <item name="android:textSize">16sp</item>
+
+    </style>
+</resources>

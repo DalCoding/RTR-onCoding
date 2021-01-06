@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Rotory5000</string>
+    <string name="home"></string>
+    <string name="theme"></string>
+    <string name="user"></string>
+    <string name="requiredMsg">*은 필수 입력 항목입니다.</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

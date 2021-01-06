@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:id="@+id/bigMapLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/bigMapBtnLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:padding="20dp">
+
+        <android.widget.Button
+            android:id="@+id/thisBigMapBtn"
+            android:layout_width="130dp"
+            android:layout_height="40dp"
+            android:background="@drawable/ripple_custom"
+            android:text="이 지도에서 찾기" />
+
+        <ImageButton
+            android:id="@+id/bigMapMyLocationBtn"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/ripple_custom"
+            app:srcCompat="@drawable/gps_icon" />
+
+    </LinearLayout>
+
+</FrameLayout>

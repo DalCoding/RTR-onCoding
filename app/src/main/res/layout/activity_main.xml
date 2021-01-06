@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/topToolBar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/brown"
+            android:elevation="1dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/pageTitleTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="HOME"
+                    android:textAppearance="@style/Base.TextAppearance.Widget.AppCompat.Toolbar.Title"
+                    android:visibility="visible" />
+
+                <RelativeLayout
+                    android:id="@+id/withBackBtnContainer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:visibility="gone">
+
+                    <ImageButton
+                        android:id="@+id/backImageButton"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/backbuttonwhite"
+                        app:srcCompat="@drawable/backbuttonwhite" />
+
+                    <TextView
+                        android:id="@+id/pageTitlewithBtnTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_toRightOf="@id/backImageButton"
+                        android:text="PageTitle"
+                        android:textAppearance="@style/Base.TextAppearance.Widget.AppCompat.Toolbar.Title" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rightIconContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <Button
+                        android:id="@+id/mainAlarmBtn"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="20dp"
+                        android:layout_marginRight="20dp"
+                        android:background="@drawable/notificationwhite"
+                        android:visibility="visible"
+                        app:backgroundTint="@empty" />
+
+                    <Button
+                        android:id="@+id/mainAlarmOnBtn"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="20dp"
+                        android:layout_marginRight="20dp"
+                        android:background="@drawable/notificationonwhite"
+                        android:visibility="gone"
+                        app:backgroundTint="@empty" />
+
+                    <Button
+                        android:id="@+id/checkmarkBtn"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="20dp"
+                        android:layout_marginRight="20dp"
+                        android:background="@drawable/checkmarkwhite"
+                        android:visibility="gone"
+                        app:backgroundTint="@empty" />
+
+                    <Button
+                        android:id="@+id/checkBtn"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="20dp"
+                        android:layout_marginRight="20dp"
+                        android:background="@drawable/checkwhite"
+                        android:visibility="gone"
+                        app:backgroundTint="@empty" />
+
+                    <Button
+                        android:id="@+id/appBarSettingBtn"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="20dp"
+                        android:layout_marginRight="20dp"
+                        android:background="@drawable/settingwhite"
+                        android:visibility="gone"
+                        app:backgroundTint="@empty" />
+
+                    <RelativeLayout
+                        android:id="@+id/userAppbarContainer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:visibility="gone">
+
+                        <Button
+                            android:id="@+id/appBarModifyBtn"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:layout_alignParentRight="false"
+                            android:layout_marginEnd="20dp"
+                            android:layout_marginRight="20dp"
+                            android:layout_toLeftOf="@id/appBarDeleteBtn"
+                            android:background="@drawable/modifystrorywhite"
+                            android:visibility="visible"
+                            app:backgroundTint="@empty" />
+
+                        <Button
+                            android:id="@+id/appBarDeleteBtn"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginEnd="20dp"
+                            android:layout_marginRight="20dp"
+                            android:background="@drawable/deletewhite"
+                            android:visibility="visible"
+                            app:backgroundTint="@empty" />
+                    </RelativeLayout>
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+        </androidx.appcompat.widget.Toolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false">
+
+        <FrameLayout
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="60dp"
+            android:background="#FFFFFF"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        </FrameLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_appBar"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_gravity="bottom"
+        android:background="@color/brown"
+        app:itemIconTint="@color/white"
+        app:labelVisibilityMode="unlabeled"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:menu="@menu/menu_bottom">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom">
+
+            <RelativeLayout
+                android:id="@+id/bottomNavUnderbarHome"
+                android:layout_width="70dp"
+                android:layout_height="5dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="35dp"
+                android:layout_marginLeft="35dp"
+                android:background="@color/white"
+                android:visibility="visible">
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/bottomNavUnderbarTheme"
+                android:layout_width="70dp"
+                android:layout_height="10dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginStart="35dp"
+                android:layout_marginLeft="35dp"
+                android:background="@color/white"
+                android:visibility="gone">
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/bottomNavUnderbarUser"
+                android:layout_width="70dp"
+                android:layout_height="10dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="35dp"
+                android:layout_marginLeft="35dp"
+                android:layout_marginEnd="35dp"
+                android:layout_marginRight="35dp"
+                android:background="@color/white"
+                android:visibility="gone">
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+    </com.google.android.material.bottomnavigation.BottomNavigationView>
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

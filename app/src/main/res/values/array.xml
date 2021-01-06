@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<string-array name="companyList">
+    <item>#혼자</item>
+    <item>#친구</item>
+    <item>#연인</item>
+    <item>#가족</item>
+    <item>#반려동물</item>
+</string-array>
+
+    <string-array name="storyTitleList">
+        <item>감성</item>
+        <item>사랑</item>
+        <item>우정</item>
+        <item>유쾌</item>
+        <item>감동</item>
+        <item>행복</item>
+        <item>슬픔</item>
+        <item>힘듦</item>
+        <item>엽기</item>
+        <item>일상</item>
+        <item>기타</item>
+
+    </string-array>
+</resources>

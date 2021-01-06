@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginStart="10dp"
+    android:layout_marginLeft="10dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginEnd="10dp"
+    android:layout_marginRight="10dp"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="right"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/rcontentsLinkImg"
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/linkshare" />
+
+            <ImageView
+                android:id="@+id/rcontentsScrabImg"
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/scrabtag" />
+
+            <TextView
+                android:id="@+id/rcontentsScrabNum"
+                android:layout_width="wrap_content"
+                android:layout_height="26dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:text="100"
+                android:textSize="16sp" />
+
+            <ImageView
+                android:id="@+id/rcontentsHeartImg"
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/heart" />
+
+            <TextView
+                android:id="@+id/rcontentsHeartNum"
+                android:layout_width="wrap_content"
+                android:layout_height="26dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_weight="1"
+                android:text="100"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/rcontentsTitleText"
+                android:layout_width="200dp"
+                android:layout_height="30dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:background="#F3F3F3"
+                android:gravity="center"
+                android:text="제목"
+                android:textSize="14sp" />
+
+            <ImageView
+                android:id="@+id/rcontentsLevelImg"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center"
+                tools:srcCompat="@drawable/lv1baby" />
+
+            <TextView
+                android:id="@+id/rcontentsUsernameText"
+                android:layout_width="62dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:layout_marginStart="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginRight="5dp"
+                android:gravity="center"
+                android:text="user name"
+                android:textIsSelectable="false"
+                android:textSize="13sp" />
+
+            <ImageView
+                android:id="@+id/rcontentsStarImg"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center"
+                app:srcCompat="@drawable/star" />
+        </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/rcontentsMap"
+            android:layout_width="match_parent"
+            android:layout_height="176dp"
+            android:layout_gravity="center"
+            android:background="#F8F8F8">
+
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/rcontentsMapText"
+            android:layout_width="match_parent"
+            android:layout_height="31dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:gravity="center"
+            android:text="1.카페-2.00길-3.00공원->4.00역"
+            android:textSize="18sp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/rcontentsTagBtn1"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:layout_marginStart="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginRight="5dp"
+                android:text="#태그1"
+                android:textSize="10sp"
+                app:backgroundTint="#DAD7D7" />
+
+            <Button
+                android:id="@+id/rcontentsTagBtn2"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:layout_marginStart="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginRight="5dp"
+                android:text="#태그2"
+                android:textSize="10sp"
+                app:backgroundTint="#DAD7D7" />
+
+            <Button
+                android:id="@+id/rcontentsTagBtn3"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:layout_marginStart="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginRight="5dp"
+                android:text="#태그3"
+                android:textSize="10sp"
+                app:backgroundTint="#DAD7D7" />
+
+            <Button
+                android:id="@+id/rcontentsTagBtn4"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:layout_marginStart="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginRight="5dp"
+                android:text="#태그4"
+                android:textSize="10sp"
+                app:backgroundTint="#DAD7D7" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/rcontentsTaketimeText"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_weight="1"
+                android:background="#F2F2F2"
+                android:gravity="center"
+                android:text="소요시간 00시간 00분"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/rcontentsTakewhoText"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_weight="1"
+                android:background="#F2F2F2"
+                android:gravity="center"
+                android:text="동반여부 : 혼자"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="70dp"
+            android:layout_height="25dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="20dp"
+            android:text="정보 추가"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/box"
+            android:padding="5dp">
+
+            <EditText
+                android:id="@+id/rcontentsCommEdit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:ems="10"
+                android:inputType="textPersonName" />
+
+            <Button
+                android:id="@+id/rcontentsCommBtn"
+                android:layout_width="60dp"
+                android:layout_height="50dp"
+                android:layout_gravity="right"
+                android:background="@drawable/ripple_custom"
+                android:gravity="center"
+                android:text="등록"
+                android:textColor="#442C2E"
+                android:textSize="14sp"
+                app:backgroundTint="@empty"
+                app:iconPadding="1dp" />
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rCommRView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+    </LinearLayout>
+
+</ScrollView>
