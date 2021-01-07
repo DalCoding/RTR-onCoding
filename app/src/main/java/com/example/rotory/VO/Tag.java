@@ -3,6 +3,15 @@ package com.example.rotory.VO;
 public class Tag {
     int	tag_id;
     String	tag;
+    String tagImage;
+
+    public String getTagImage() {
+        return tagImage;
+    }
+
+    public void setTagImage(String tagImage) {
+        this.tagImage = tagImage;
+    }
 
     public int getTag_id() {
         return tag_id;
