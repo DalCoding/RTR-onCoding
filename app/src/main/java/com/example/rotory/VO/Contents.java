@@ -3,8 +3,8 @@ package com.example.rotory.VO;
 import java.util.ArrayList;
 
 public class Contents {
-    int	road_id;
-    int	story_id;
+    int	contents_id;
+    int contentsType;
     int	user_id;
     String	roadTitle;
     ArrayList<String>	tag;
@@ -21,20 +21,20 @@ public class Contents {
     String	titleImage;
     ArrayList<String>	smallImage;
 
-    public int getRoad_id() {
-        return road_id;
+    public int getContents_id() {
+        return contents_id;
     }
 
-    public void setRoad_id(int road_id) {
-        this.road_id = road_id;
+    public void setContents_id(int contents_id) {
+        this.contents_id = contents_id;
     }
 
-    public int getStory_id() {
-        return story_id;
+    public int getContentsType() {
+        return contentsType;
     }
 
-    public void setStory_id(int story_id) {
-        this.story_id = story_id;
+    public void setContentsType(int contentsType) {
+        this.contentsType = contentsType;
     }
 
     public int getUser_id() {
