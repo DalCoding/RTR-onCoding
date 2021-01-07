@@ -33,7 +33,7 @@
                 app:srcCompat="@drawable/linkshare" />
 
             <ImageView
-                android:id="@+id/rcontentsScrabImg"
+                android:id="@+id/rcontentsScrapImg"
                 android:layout_width="26dp"
                 android:layout_height="26dp"
                 android:layout_marginEnd="5dp"
@@ -42,7 +42,7 @@
                 app:srcCompat="@drawable/scrabtag" />
 
             <TextView
-                android:id="@+id/rcontentsScrabNum"
+                android:id="@+id/rcontentsScrapNum"
                 android:layout_width="wrap_content"
                 android:layout_height="26dp"
                 android:layout_marginEnd="10dp"
