@@ -3,7 +3,7 @@ package com.example.rotory.VO;
 public class Comment {
 
     int	comment_id;
-    int	story_id;
+    int	content_id;
     int	person_id;
     String	comment;
 
@@ -16,11 +16,11 @@ public class Comment {
     }
 
     public int getStory_id() {
-        return story_id;
+        return content_id;
     }
 
     public void setStory_id(int story_id) {
-        this.story_id = story_id;
+        this.content_id = story_id;
     }
 
     public int getPerson_id() {

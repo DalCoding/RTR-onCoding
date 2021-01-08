@@ -1,11 +1,14 @@
 package com.example.rotory.VO;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Contents {
     int	contents_id;
     int contentsType;
     int	user_id;
+    int road_id;
+    int story_id;
     String	roadTitle;
     ArrayList<String>	tag;
     String	hour;
@@ -20,6 +23,7 @@ public class Contents {
     String	storyAddress;
     String	titleImage;
     ArrayList<String>	smallImage;
+    HashMap<String,ArrayList<Integer>>  dtrAddress;
 
 
     public int getContents_id() {
@@ -44,6 +48,22 @@ public class Contents {
 
     public void setUser_id(int user_id) {
         this.user_id = user_id;
+    }
+
+    public int getRoad_id() {
+        return road_id;
+    }
+
+    public void setRoad_id(int road_id) {
+        this.road_id = road_id;
+    }
+
+    public int getStory_id() {
+        return story_id;
+    }
+
+    public void setStory_id(int story_id) {
+        this.story_id = story_id;
     }
 
     public String getRoadTitle() {
@@ -204,6 +224,14 @@ public class Contents {
 
     public void setRoadAddress(String roadAddress) {
         this.roadAddress = roadAddress;
+    }
+
+    public HashMap<String, ArrayList<Integer>> getDtrAddress() {
+        return dtrAddress;
+    }
+
+    public void setDtrAddress(HashMap<String, ArrayList<Integer>> dtrAddress) {
+        this.dtrAddress = dtrAddress;
     }
 
     ArrayList<String> imageComment;

@@ -1,6 +1,7 @@
 package com.example.rotory.VO;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Road {
     int	road_id;
@@ -18,6 +19,7 @@ public class Road {
     String	writeDate;
     String	modifiedDate;
     String  roadAddress;
+    HashMap<String,ArrayList<Integer>> dtrAddress;
 
 
     public int getRoad_id() {
@@ -138,5 +140,13 @@ public class Road {
 
     public void setRoadAddress(String roadAddress) {
         this.roadAddress = roadAddress;
+    }
+
+    public HashMap<String, ArrayList<Integer>> getDtrAddress() {
+        return dtrAddress;
+    }
+
+    public void setDtrAddress(HashMap<String, ArrayList<Integer>> dtrAddress) {
+        this.dtrAddress = dtrAddress;
     }
 }
