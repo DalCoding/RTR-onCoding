@@ -21,6 +21,7 @@ public class Contents {
     String	titleImage;
     ArrayList<String>	smallImage;
 
+
     public int getContents_id() {
         return contents_id;
     }
@@ -197,9 +198,18 @@ public class Contents {
         this.modifiedDate = modifiedDate;
     }
 
+    public String getRoadAddress() {
+        return roadAddress;
+    }
+
+    public void setRoadAddress(String roadAddress) {
+        this.roadAddress = roadAddress;
+    }
+
     ArrayList<String> imageComment;
     String	storyContent;
     int	isPublic;
     String	writeDate;
     String	modifiedDate;
+    String  roadAddress;
 }

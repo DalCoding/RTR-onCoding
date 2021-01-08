@@ -17,6 +17,8 @@ public class Road {
     ArrayList<String>	dtrName;
     String	writeDate;
     String	modifiedDate;
+    String  roadAddress;
+
 
     public int getRoad_id() {
         return road_id;
@@ -128,5 +130,13 @@ public class Road {
 
     public void setModifiedDate(String modifiedDate) {
         this.modifiedDate = modifiedDate;
+    }
+
+    public String getRoadAddress() {
+        return roadAddress;
+    }
+
+    public void setRoadAddress(String roadAddress) {
+        this.roadAddress = roadAddress;
     }
 }
