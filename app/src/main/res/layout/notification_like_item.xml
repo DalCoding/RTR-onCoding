@@ -15,7 +15,7 @@
         android:paddingRight="20dp">
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/alarmCommentProfileImg"
+            android:id="@+id/notiLikeProfileImg"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginTop="10dp"
@@ -24,35 +24,33 @@
 
 
         <TextView
-            android:id="@+id/alarmCommentUserName"
+            android:id="@+id/notiLikeUserName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
-            android:layout_marginLeft="15dp"
+            android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
-            android:layout_toRightOf="@+id/alarmCommentProfileImg"
+            android:layout_toRightOf="@+id/notiLikeProfileImg"
             android:text="uername"
             android:textSize="16sp" />
 
         <ImageView
-            android:id="@+id/alarmCommentUserLevel"
+            android:id="@+id/notiLikeUserLevel"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_marginLeft="5dp"
             android:layout_marginTop="12dp"
-            android:layout_toRightOf="@+id/alarmCommentUserName"
+            android:layout_toRightOf="@+id/notiLikeUserName"
             android:scaleType="fitXY"
             app:srcCompat="@drawable/graduationhat" />
 
         <TextView
-            android:id="@+id/alarmCommentContents"
+            android:id="@+id/notiLikeContents"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/alarmCommentUserLevel"
-            android:layout_marginStart="15dp"
-            android:layout_marginLeft="15dp"
-            android:layout_toRightOf="@+id/alarmCommentProfileImg"
-            android:text="'제목(8글자)'에 코멘트를 남겼습니다."
+            android:layout_below="@+id/notiLikeUserName"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/notiLikeProfileImg"
+            android:text="'제목(8글자)'를(을) 좋아합니다."
             android:textSize="16sp" />
 
 

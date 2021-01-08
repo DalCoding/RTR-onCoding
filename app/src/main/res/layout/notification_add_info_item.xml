@@ -15,7 +15,7 @@
         android:paddingRight="20dp">
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/alarmAddInfoProfileImg"
+            android:id="@+id/notiAddInfoProfileImg"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_alignParentLeft="false"
@@ -25,34 +25,34 @@
 
 
         <TextView
-            android:id="@+id/alarmAddInfoUserName"
+            android:id="@+id/notiAddInfoUserName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
             android:layout_marginLeft="15dp"
             android:layout_marginTop="10dp"
-            android:layout_toRightOf="@+id/alarmAddInfoProfileImg"
+            android:layout_toRightOf="@+id/notiAddInfoProfileImg"
             android:text="uername"
             android:textSize="16sp" />
 
         <ImageView
-            android:id="@+id/alarmAddInfoUserLevel"
+            android:id="@+id/notiAddInfoUserLevel"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_marginLeft="5dp"
             android:layout_marginTop="12dp"
-            android:layout_toRightOf="@+id/alarmAddInfoUserName"
+            android:layout_toRightOf="@+id/notiAddInfoUserName"
             android:scaleType="fitXY"
             app:srcCompat="@drawable/graduationhat" />
 
         <TextView
-            android:id="@+id/alarmAddInfoContents"
+            android:id="@+id/notiAddInfoContents"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/alarmAddInfoUserName"
+            android:layout_below="@+id/notiAddInfoUserName"
             android:layout_marginStart="15dp"
             android:layout_marginLeft="15dp"
-            android:layout_toRightOf="@+id/alarmAddInfoProfileImg"
+            android:layout_toRightOf="@+id/notiAddInfoProfileImg"
             android:text="'제목(8글자)'에 정보추가를 남겼습니다."
             android:textSize="16sp" />
 

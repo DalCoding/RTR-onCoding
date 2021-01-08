@@ -14,8 +14,8 @@
         android:paddingLeft="20dp"
         android:paddingRight="20dp">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/alarmLikeProfileImg"
+        <ImageView
+            android:id="@+id/notiEventImg"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginTop="10dp"
@@ -24,33 +24,24 @@
 
 
         <TextView
-            android:id="@+id/alarmLikeUserName"
+            android:id="@+id/notiEventTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
-            android:layout_toRightOf="@+id/alarmLikeProfileImg"
-            android:text="uername"
+            android:layout_toRightOf="@+id/notiEventImg"
+            android:text="이벤트 정보"
             android:textSize="16sp" />
 
-        <ImageView
-            android:id="@+id/alarmLikeUserLevel"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="12dp"
-            android:layout_toRightOf="@+id/alarmLikeUserName"
-            android:scaleType="fitXY"
-            app:srcCompat="@drawable/graduationhat" />
-
         <TextView
-            android:id="@+id/alarmLikeContents"
+            android:id="@+id/notiEventContents"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/alarmLikeUserName"
-            android:layout_marginLeft="10dp"
-            android:layout_toRightOf="@+id/alarmLikeProfileImg"
-            android:text="'제목(8글자)'를(을) 좋아합니다."
+            android:layout_below="@id/notiEventTitle"
+            android:layout_marginStart="15dp"
+            android:layout_marginLeft="15dp"
+            android:layout_toRightOf="@id/notiEventImg"
+            android:text="'제목(8글자)'에 정보추가를 남겼습니다."
             android:textSize="16sp" />
 
 
