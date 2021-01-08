@@ -18,7 +18,7 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/squstory"
+                android:id="@+id/dtlroad"
                 android:layout_width="100dp"
                 android:layout_height="20dp"
                 android:layout_marginStart="10dp"
@@ -26,7 +26,7 @@
                 android:layout_marginEnd="30dp"
                 android:layout_marginRight="30dp"
                 android:layout_weight="1"
-                android:text="다람쥐 이야기"
+                android:text="도토리 길"
                 android:textColor="#442C2E"
                 android:textSize="18sp"
                 android:textStyle="bold" />
@@ -34,7 +34,7 @@
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/storylist"
+            android:id="@+id/roadlist"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp" />
