@@ -1,9 +1,14 @@
 package com.example.rotory.VO;
 
 public class Tag {
-    int	tag_id;
-    String	tag;
-    String tagImage;
+    int tag_id;
+    public String  tag;
+    String  tagImage;
+
+
+    public Tag(String tag) {
+        this.tag = tag;
+    }
 
     public String getTagImage() {
         return tagImage;
