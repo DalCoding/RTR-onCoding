@@ -18,31 +18,11 @@ import com.example.rotory.Interface.OnContentsItemClickListener;
 import java.util.ArrayList;
 
 public class SearchResultPage extends AppCompatActivity {
-    RecyclerView searchResultList;
-    ContentsAdapter contentsAdapter;
-    ArrayList<ContentsAdapter.SearchResult> searchResult;
-    EditText searchResultEdit;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search_result_page);
 
-        searchResultList = findViewById(R.id.searchResultList);
-        searchResultEdit = findViewById(R.id.searchEdit);
-
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        searchResultList.setLayoutManager(layoutManager);
-
-        contentsAdapter = new ContentsAdapter(searchResult);
-        searchResultList.setAdapter(contentsAdapter);
-
-
-        contentsAdapter.setOnItemClickListener(new OnContentsItemClickListener() {
-            @Override
-            public void onItemClick(ContentsAdapter.ViewHolder holder, View view, int position) {
-                ContentsAdapter.SearchResult items = contentsAdapter.getItem(position);
-            }
-        });
     }
 }
