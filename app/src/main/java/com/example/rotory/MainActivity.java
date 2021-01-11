@@ -37,16 +37,11 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
     RelativeLayout bottomNavUnderbarHome;
     RelativeLayout bottomNavUnderbarTheme;
     RelativeLayout bottomNavUnderbarUser;
-    RelativeLayout withBackBtnContainer;
+
     RelativeLayout userAppbarContainer;
 
 
-    TextView pageTitleTextView;
-    TextView pageTitlewithBtnTextView;
 
-    Button mainAlarmBtn;
-    Button checkBtn;
-    ImageButton backImageButton;
 
     AppBarLayout appBarLayout;
     BottomNavigationView bottomNavigation;
@@ -62,15 +57,29 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
         bottomNavUnderbarTheme = findViewById(R.id.bottomNavUnderbarTheme);
         bottomNavUnderbarUser = findViewById(R.id.bottomNavUnderbarUser);
 
-        withBackBtnContainer = findViewById(R.id.withBackBtnContainer);
-        userAppbarContainer = findViewById(R.id.userAppbarContainer);
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        pageTitleTextView = findViewById(R.id.pageTitleTextView);
-        pageTitlewithBtnTextView = findViewById(R.id.pageTitlewithBtnTextView);
 
-        mainAlarmBtn = findViewById(R.id.mainAlarmBtn);
-        checkBtn = findViewById(R.id.checkBtn);
-        backImageButton = findViewById(R.id.backImageButton);
+        Map<String, Object> user = new HashMap<>();
+        user.put("first", "Ada");
+        user.put("last", "Lovelace");
+        user.put("born", 1815);
+
+// Add a new document with a generated ID
+        db.collection("users")
+                .add(user)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Log.d("TAG", "DocumentSnapshot added with ID: " + documentReference.getId());
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("TAG", "Error adding document", e);
+                    }
+                });
 
 
         mainPage = new MainPage();
@@ -88,6 +97,7 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
                     case R.id.home:
                         getSupportFragmentManager().beginTransaction().replace(R.id.container, mainPage).commit();
                         setTabUnderBar(0);
+                        bottomNavigation.setVisibility(View.VISIBLE);
 
                         return  true;
                     case R.id.theme:

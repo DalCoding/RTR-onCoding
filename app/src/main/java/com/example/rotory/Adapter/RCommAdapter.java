@@ -1,3 +1,4 @@
+/*
 package com.example.rotory.Adapter;
 
 import android.view.LayoutInflater;
@@ -9,7 +10,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.rotory.Interface.OnUserListener;
 
-public class RCommAdapter extends RecyclerView.Adapter<RoadAdapter.ViewHolder> implements OnUserListener {
+public class RCommAdapter extends RecyclerView.Adapter<RoadAdapter.ViewHolder>
+        implements OnUserListener {
+
     ArrayList<RComment> items = new ArrayList<RComment>();
 
     OnUserListener listener;
@@ -43,4 +46,6 @@ public class RCommAdapter extends RecyclerView.Adapter<RoadAdapter.ViewHolder> i
     public void saveUserDocument() {
 
     }
+
 }
+*/

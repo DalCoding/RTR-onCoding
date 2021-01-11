@@ -8,5 +8,5 @@ import com.example.rotory.Adapter.ContentsAdapter;
 
 
 public interface OnContentsItemClickListener {
-    public void onItemClick(ContentsAdapter.ViewHolder holder, View view, int position);
+   // public void onItemClick(ContentsAdapter.ViewHolder holder, View view, int position);
 }

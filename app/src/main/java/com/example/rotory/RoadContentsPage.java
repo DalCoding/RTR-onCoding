@@ -14,12 +14,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.rotory.Adapter.RCommAdapter;
+//import com.example.rotory.Adapter.RCommAdapter;
 import com.example.rotory.Interface.OnContentsListener;
 import com.example.rotory.Interface.OnDeleteListener;
 import com.example.rotory.Interface.OnUserActItemClickListener;
 import com.example.rotory.Interface.OnUserListener;
 
+/*
 public class RoadContentsPage extends AppCompatActivity {
 
     Button rcontentsCommBtn;
@@ -72,3 +73,4 @@ public class RoadContentsPage extends AppCompatActivity {
     }
 
 }
+*/
