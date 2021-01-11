@@ -4,26 +4,32 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Contents {
-    int	contents_id;
+    int contents_id;
     int contentsType;
-    int	user_id;
+    int user_id;
     int road_id;
     int story_id;
-    String	roadTitle;
-    ArrayList<String>	tag;
-    String	hour;
-    String	min;
-    String	isPartner;
-    int	dtrRating;
-    String	ratingComment;
-    ArrayList<Integer>	dtrRoadLine;
-    ArrayList<String>	dtrName;
-    String	storyTitle;
-    int	prefix_id;
-    String	storyAddress;
-    String	titleImage;
-    ArrayList<String>	smallImage;
-    HashMap<String,ArrayList<Integer>>  dtrAddress;
+    String roadTitle;
+    ArrayList<String> tag;
+    String hour;
+    String min;
+    String isPartner;
+    int dtrRating;
+    String ratingComment;
+    ArrayList<Integer> dtrRoadLine;
+    ArrayList<String> dtrName;
+    String storyTitle;
+    int prefix_id;
+    String storyAddress;
+    String titleImage;
+    ArrayList<String> smallImage;
+    HashMap<String, ArrayList<Integer>> dtrAddress;
+    ArrayList<String> imageComment;
+    String storyContent;
+    int isPublic;
+    String writeDate;
+    String modifiedDate;
+    String roadAddress;
 
 
     public int getContents_id() {
@@ -233,11 +239,6 @@ public class Contents {
     public void setDtrAddress(HashMap<String, ArrayList<Integer>> dtrAddress) {
         this.dtrAddress = dtrAddress;
     }
-
-    ArrayList<String> imageComment;
-    String	storyContent;
-    int	isPublic;
-    String	writeDate;
-    String	modifiedDate;
-    String  roadAddress;
 }
+
+

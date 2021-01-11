@@ -7,6 +7,7 @@ public class Information {
     int	person_id;
     String	information;
 
+
     public int getInfo_id() {
         return info_id;
     }
