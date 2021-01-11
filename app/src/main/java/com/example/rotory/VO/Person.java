@@ -1,5 +1,7 @@
 package com.example.rotory.VO;
 
+import java.util.HashMap;
+
 public class Person {
     int	person_id;
     String	userId;

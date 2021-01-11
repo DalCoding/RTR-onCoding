@@ -32,6 +32,8 @@ public class Contents {
     String roadAddress;
 
 
+
+
     public int getContents_id() {
         return contents_id;
     }
