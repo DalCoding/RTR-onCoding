@@ -1,4 +1,4 @@
-/*
+package com.example.rotory.Adapter;/*
 package com.example.rotory.Adapter;
 
 import android.view.LayoutInflater;
