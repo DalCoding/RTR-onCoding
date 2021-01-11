@@ -1,13 +1,12 @@
 package com.example.rotory;
 
 import android.content.Intent;
-import android.media.Image;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -15,18 +14,25 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.rotory.Interface.OnTabItemSelectedListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
-import org.w3c.dom.Text;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements OnTabItemSelectedListener {
 
     public static final int loginCode = 1001;
 
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+
     MainPage mainPage;
     ThemePage themePage;
-    SignupPage signupPage;
+    SignUpActivity signUpActivity;
     RelativeLayout bottomNavUnderbarHome;
     RelativeLayout bottomNavUnderbarTheme;
     RelativeLayout bottomNavUnderbarUser;
@@ -68,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
 
         mainPage = new MainPage();
         themePage = new ThemePage();
-        signupPage = new SignupPage();
+        signUpActivity = new SignUpActivity();
 
         getSupportFragmentManager().beginTransaction().replace(R.id.container, mainPage).commit();
 
@@ -84,11 +90,11 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
 
                         return  true;
                     case R.id.theme:
-                        if(true) {
+                        if(isSignIn) {
                             getSupportFragmentManager().beginTransaction().replace(R.id.container, themePage).commit();
                             setTabUnderBar(1);
                         } else {
-                            Intent LogInIntent= new Intent(getApplicationContext(), LogInActivity.class);
+                            Intent LogInIntent= new Intent(getApplicationContext(), SignUpActivity.class);
                             startActivityForResult(LogInIntent, loginCode);
                             bottomNavigation.setVisibility(View.GONE);
 
@@ -96,11 +102,11 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
 
                         return true;
                     case R.id.user:
-                        if(true) {
+                        if(isSignIn) {
                             getSupportFragmentManager().beginTransaction().replace(R.id.container, themePage).commit();
                             setTabUnderBar(2);
                         } else {
-                            Intent LogInIntent= new Intent(getApplicationContext(), LogInActivity.class);
+                            Intent LogInIntent= new Intent(getApplicationContext(), SignUpActivity.class);
                             startActivityForResult(LogInIntent, loginCode);
                             bottomNavigation.setVisibility(View.GONE);
                         }
@@ -111,8 +117,6 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
                 return false;
             }
         });
-
-
     }
 
 
