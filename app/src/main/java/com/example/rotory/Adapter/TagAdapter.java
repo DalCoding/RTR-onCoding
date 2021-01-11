@@ -20,9 +20,9 @@ import java.util.List;
 import java.util.Locale;
 
 public class TagAdapter extends RecyclerView.Adapter<TagAdapter.ViewHolder> implements OnTagItemClickListener, Filterable {
-    private List<Tag> tagList;
-    private List<Tag> tagListAll;
-    private OnTagItemClickListener tagListener;
+    List<Tag> tagList;
+    List<Tag> tagListAll;
+    OnTagItemClickListener tagListener;
 
     public TagAdapter(List<Tag> items) {
         tagList = items;

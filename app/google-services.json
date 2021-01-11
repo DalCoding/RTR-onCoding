@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "71699561624",
+    "project_id": "rotory-2021-7e5c0",
+    "storage_bucket": "rotory-2021-7e5c0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:71699561624:android:3c83998ca35bcc67f7a4ed",
+        "android_client_info": {
+          "package_name": "com.example.myapplication23"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "71699561624-3u3s0miq1uvii1iopuvc6bgsr22b3ecf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAYP2EPs7Hqd6tXKLBei09L9VpdLT0eqJU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "71699561624-3u3s0miq1uvii1iopuvc6bgsr22b3ecf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:71699561624:android:fdf3fdff88ad2941f7a4ed",
+        "android_client_info": {
+          "package_name": "com.example.rotory"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "71699561624-3u3s0miq1uvii1iopuvc6bgsr22b3ecf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAYP2EPs7Hqd6tXKLBei09L9VpdLT0eqJU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "71699561624-3u3s0miq1uvii1iopuvc6bgsr22b3ecf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
