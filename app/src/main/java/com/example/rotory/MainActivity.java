@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
     MainPage mainPage;
     ThemePage themePage;
     SignUpActivity signUpActivity;
+
     RelativeLayout bottomNavUnderbarHome;
     RelativeLayout bottomNavUnderbarTheme;
     RelativeLayout bottomNavUnderbarUser;

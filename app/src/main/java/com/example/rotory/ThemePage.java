@@ -1,8 +1,9 @@
 package com.example.rotory;
 
-<<<<<<< HEAD
-public class ThemePage {
-=======
+import androidx.fragment.app.Fragment;
+
+
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,5 +24,5 @@ public class ThemePage extends Fragment {
         return rootView;
 
     }
->>>>>>> fe620317389bf22018f858fd4bcad1993a6e7156
+
 }
