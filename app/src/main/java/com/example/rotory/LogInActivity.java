@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-public class LogInPage extends Fragment {
+public class LogInActivity extends Fragment {
 
     @Nullable
     @Override

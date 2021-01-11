@@ -10,6 +10,18 @@ public class Person {
     String	userImage;
     int	userLevel;
 
+    public Person(int person_id, String userId, String password, String userName,
+                  String mobile, String email, String userImage, int userLevel) {
+        this.person_id = person_id;
+        this.userId = userId;
+        this.password = password;
+        this.userName = userName;
+        this.mobile = mobile;
+        this.email = email;
+        this.userImage = userImage;
+        this.userLevel = userLevel;
+    }
+
     public int getPerson_id() {
         return person_id;
     }
