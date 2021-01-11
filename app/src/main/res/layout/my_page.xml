@@ -1,78 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <LinearLayout
+    <RelativeLayout
+        android:id="@+id/myRelativeLayout1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
         android:layout_marginTop="20dp"
-        android:background="@color/white"
-        android:orientation="horizontal">
+        android:background="@color/white">
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="30dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="프로필"
-            android:textColor="#442C2E"
-            android:textSize="16sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="30dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="활동내역"
-            android:textColor="#442C2E"
-            android:textSize="16sp"
-            android:textStyle="bold" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:id="@+id/myUnderImg"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            app:srcCompat="@drawable/myrectimg" />
-
-        <ImageView
-            android:id="@+id/myUnderImg1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            app:srcCompat="@drawable/myrectimg" />
-    </LinearLayout>
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <FrameLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="horizontal">
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_weight="1"
+                    android:foregroundGravity="center"
+                    android:gravity="center"
+                    android:text="프로필"
+                    android:textColor="#442C2E"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="활동내역"
+                    android:textColor="#442C2E"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/myUnderImg"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/myrectimg" />
+
+                <ImageView
+                    android:id="@+id/myUnderImg1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:visibility="invisible"
+                    app:srcCompat="@drawable/myrectimg" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/myRelativeLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/myRelativeLayout1"
+        >
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginEnd="20dp"
-                    android:layout_marginRight="20dp"
                     android:orientation="vertical">
 
                     <LinearLayout
@@ -80,59 +96,247 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="20dp"
                         android:layout_marginLeft="20dp"
-                        android:layout_marginTop="30dp"
                         android:layout_marginEnd="20dp"
                         android:layout_marginRight="20dp"
-                        android:layout_marginBottom="20dp"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:id="@+id/myProfileImg"
-                            android:layout_width="90dp"
-                            android:layout_height="90dp"
-                            android:layout_weight="0"
-                            app:srcCompat="@drawable/squirrel" />
+                        android:orientation="vertical">
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginStart="15dp"
-                            android:layout_marginLeft="15dp"
-                            android:layout_weight="0"
-                            android:orientation="vertical">
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginTop="30dp"
+                            android:layout_marginEnd="20dp"
+                            android:layout_marginRight="20dp"
+                            android:layout_marginBottom="20dp"
+                            android:orientation="horizontal">
+
+                            <de.hdodenhof.circleimageview.CircleImageView
+                                android:id="@+id/myProfileImg"
+                                android:layout_width="90dp"
+                                android:layout_height="90dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginBottom="10dp"
+                                android:layout_weight="0"
+                                android:src="@drawable/squirrel" />
 
                             <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp"
-                                android:layout_marginBottom="5dp"
-                                android:orientation="horizontal">
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginStart="15dp"
+                                android:layout_marginLeft="15dp"
+                                android:layout_weight="0"
+                                android:orientation="vertical">
 
-                                <TextView
-                                    android:id="@+id/myNickTextView"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="30dp"
-                                    android:text="유저닉네임입니다"
-                                    android:textColor="#000000"
-                                    android:textSize="20sp" />
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_marginBottom="5dp"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:id="@+id/myNickTextView"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="30dp"
+                                        android:text="유저닉네임입니다"
+                                        android:textColor="#000000"
+                                        android:textSize="20sp" />
+
+                                    <ImageView
+                                        android:id="@+id/myEditImg"
+                                        android:layout_width="15dp"
+                                        android:layout_height="15dp"
+                                        android:layout_marginStart="10dp"
+                                        android:layout_marginLeft="10dp"
+                                        android:layout_weight="0"
+                                        app:srcCompat="@drawable/settinggray" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:id="@+id/myLevelLayout"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginTop="5dp"
+                                    android:baselineAligned="true"
+                                    android:orientation="horizontal">
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:orientation="vertical">
+
+                                        <TextView
+                                            android:id="@+id/myLevelTextView"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:gravity="right"
+                                            android:text="다람쥐 레벨"
+                                            android:textColor="#000000"
+                                            android:textSize="12sp" />
+
+                                        <TextView
+                                            android:id="@+id/myExpTextView"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:gravity="right"
+                                            android:text="(Exp. 10000p)"
+                                            android:textColor="#646464"
+                                            android:textSize="10sp" />
+                                    </LinearLayout>
+
+                                    <ImageView
+                                        android:id="@+id/myLevelImg"
+                                        android:layout_width="30dp"
+                                        android:layout_height="30dp"
+                                        android:layout_marginStart="10dp"
+                                        android:layout_marginLeft="10dp"
+                                        app:srcCompat="@drawable/leveladult" />
+                                </LinearLayout>
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="15dp"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginTop="-10dp"
+                            android:layout_marginEnd="15dp"
+                            android:layout_marginRight="15dp"
+                            android:layout_marginBottom="20dp"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
 
                                 <ImageView
-                                    android:id="@+id/myEditImg"
-                                    android:layout_width="15dp"
-                                    android:layout_height="15dp"
-                                    android:layout_marginStart="10dp"
-                                    android:layout_marginLeft="10dp"
-                                    android:layout_weight="0"
-                                    app:srcCompat="@drawable/settinggray" />
+                                    android:id="@+id/myFavoriteImg"
+                                    android:layout_width="25dp"
+                                    android:layout_height="25dp"
+                                    android:layout_gravity="center"
+                                    app:srcCompat="@drawable/starfilled" />
+
+                                <TextView
+                                    android:id="@+id/myFavoriteTextView"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+
+                                    android:layout_gravity="center"
+                                    android:layout_marginTop="10dp"
+                                    android:text="즐겨찾기 0"
+                                    android:textColor="#646464"
+                                    android:textSize="12sp" />
+
                             </LinearLayout>
 
                             <LinearLayout
-                                android:id="@+id/myLevelLayout"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <ImageView
+                                    android:id="@+id/myLikeImg"
+                                    android:layout_width="25dp"
+                                    android:layout_height="25dp"
+                                    android:layout_gravity="center"
+                                    app:srcCompat="@drawable/heartfilled" />
+
+                                <TextView
+                                    android:id="@+id/myLikeTextView"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_marginTop="10dp"
+                                    android:text="좋아요 0"
+                                    android:textColor="#646464"
+                                    android:textSize="12sp" />
+
+                            </LinearLayout>
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="HorizonLine"
+                        app:srcCompat="@drawable/myrectimg2" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="15dp"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="20dp"
+                            android:orientation="horizontal">
+
+                            <TextView
                                 android:layout_width="wrap_content"
+                                android:layout_height="25dp"
+                                android:layout_weight="0"
+                                android:gravity="center"
+                                android:text="스크랩 북"
+                                android:textColor="#442C2E"
+                                android:textSize="16sp"
+                                android:textStyle="bold" />
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_marginStart="7dp"
+                                android:layout_marginLeft="7dp"
+                                android:layout_marginTop="3dp"
+                                android:layout_weight="0"
+                                app:srcCompat="@drawable/scrabtagfilled" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:layout_marginTop="5dp"
-                                android:baselineAligned="true"
-                                android:orientation="horizontal">
+                                android:layout_weight="0"
+                                android:orientation="vertical">
+
+                                <Button
+                                    android:id="@+id/myScrabBtn"
+                                    android:layout_width="25dp"
+                                    android:layout_height="25dp"
+                                    android:layout_gravity="right"
+                                    android:background="@drawable/right_arrowbrown"
+                                    android:text="Button"
+                                    app:backgroundTint="@null"
+                                    app:icon="@null" />
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="15dp"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+
+                            <FrameLayout
+                                android:id="@+id/myScrabLayout"
+                                android:layout_width="160dp"
+                                android:layout_height="120dp"
+                                android:layout_weight="1">
+
+                                <ImageView
+                                    android:id="@+id/myScrabImg"
+                                    android:layout_width="160dp"
+                                    android:layout_height="120dp"
+                                    android:layout_gravity="center"
+                                    app:srcCompat="@drawable/noimage2" />
 
                                 <LinearLayout
                                     android:layout_width="match_parent"
@@ -140,846 +344,758 @@
                                     android:orientation="vertical">
 
                                     <TextView
-                                        android:id="@+id/myLevelTextView"
-                                        android:layout_width="match_parent"
+                                        android:id="@+id/myScrabTitle"
+                                        android:layout_width="90dp"
                                         android:layout_height="wrap_content"
-                                        android:gravity="right"
-                                        android:text="다람쥐 레벨"
-                                        android:textColor="#000000"
-                                        android:textSize="12sp" />
+                                        android:layout_gravity="center"
+                                        android:layout_marginTop="20dp"
+                                        android:ellipsize="end"
+                                        android:gravity="center"
+                                        android:maxLines="1"
+                                        android:text="제목"
+                                        android:textColor="#646464"
+                                        android:textSize="16sp" />
 
                                     <TextView
-                                        android:id="@+id/myExpTextView"
+                                        android:id="@+id/myScrabSave"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
+                                        android:layout_marginTop="2dp"
+                                        android:layout_marginEnd="23dp"
+                                        android:layout_marginRight="23dp"
                                         android:gravity="right"
-                                        android:text="(Exp. 10000p)"
+                                        android:text="20.12.28 저장"
                                         android:textColor="#646464"
                                         android:textSize="10sp" />
+
+                                    <TextView
+                                        android:id="@+id/myScrabPlace"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="20dp"
+                                        android:layout_marginEnd="23dp"
+                                        android:layout_marginRight="23dp"
+                                        android:gravity="right"
+                                        android:text="서울시 양천구"
+                                        android:textColor="#646464"
+                                        android:textSize="12sp" />
                                 </LinearLayout>
 
+                            </FrameLayout>
+
+                            <FrameLayout
+                                android:id="@+id/myScrabLayout1"
+                                android:layout_width="160dp"
+                                android:layout_height="120dp"
+                                android:layout_weight="1">
+
                                 <ImageView
-                                    android:id="@+id/myLevelImg"
-                                    android:layout_width="30dp"
-                                    android:layout_height="30dp"
-                                    android:layout_marginStart="10dp"
-                                    android:layout_marginLeft="10dp"
-                                    app:srcCompat="@drawable/leveladult" />
-                            </LinearLayout>
-                        </LinearLayout>
-                    </LinearLayout>
+                                    android:id="@+id/myScrabImg1"
+                                    android:layout_width="160dp"
+                                    android:layout_height="120dp"
+                                    android:layout_gravity="center"
+                                    app:srcCompat="@drawable/noimage2" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="15dp"
-                        android:layout_marginLeft="15dp"
-                        android:layout_marginEnd="15dp"
-                        android:layout_marginRight="15dp"
-                        android:layout_marginBottom="20dp"
-                        android:orientation="horizontal">
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="vertical">
 
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
+                                    <TextView
+                                        android:id="@+id/myScrabTitle1"
+                                        android:layout_width="90dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:layout_marginTop="20dp"
+                                        android:ellipsize="end"
+                                        android:gravity="center"
+                                        android:maxLines="1"
+                                        android:text="제목"
+                                        android:textColor="#646464"
+                                        android:textSize="16sp" />
 
-                            <ImageView
-                                android:id="@+id/myFavoriteImg"
-                                android:layout_width="25dp"
-                                android:layout_height="25dp"
-                                android:layout_gravity="center"
-                                app:srcCompat="@drawable/starfilled" />
+                                    <TextView
+                                        android:id="@+id/myScrabSave1"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="2dp"
+                                        android:layout_marginEnd="23dp"
+                                        android:layout_marginRight="23dp"
+                                        android:gravity="right"
+                                        android:text="20.12.28 저장"
+                                        android:textColor="#646464"
+                                        android:textSize="10sp" />
 
-                            <TextView
-                                android:id="@+id/myFavoriteTextView"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                    <TextView
+                                        android:id="@+id/myScrabPlace1"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="20dp"
+                                        android:layout_marginEnd="23dp"
+                                        android:layout_marginRight="23dp"
+                                        android:gravity="right"
+                                        android:text="서울시 양천구"
+                                        android:textColor="#646464"
+                                        android:textSize="12sp" />
+                                </LinearLayout>
 
-                                android:layout_gravity="center"
-                                android:layout_marginTop="10dp"
-                                android:text="즐겨찾기 0"
-                                android:textColor="#646464"
-                                android:textSize="12sp" />
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
-
-                            <ImageView
-                                android:id="@+id/myLikeImg"
-                                android:layout_width="25dp"
-                                android:layout_height="25dp"
-                                android:layout_gravity="center"
-                                app:srcCompat="@drawable/heartfilled" />
-
-                            <TextView
-                                android:id="@+id/myLikeTextView"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:layout_marginTop="10dp"
-                                android:text="좋아요 0"
-                                android:textColor="#646464"
-                                android:textSize="12sp" />
+                            </FrameLayout>
 
                         </LinearLayout>
-                    </LinearLayout>
-
-                </LinearLayout>
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="HorizonLine"
-                    app:srcCompat="@drawable/myrectimg2" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="15dp"
-                    android:orientation="vertical">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="20dp"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="25dp"
-                            android:layout_weight="0"
-                            android:gravity="center"
-                            android:text="스크랩 북"
-                            android:textColor="#442C2E"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
-
-                        <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:layout_marginStart="7dp"
-                            android:layout_marginLeft="7dp"
-                            android:layout_marginTop="3dp"
-                            android:layout_weight="0"
-                            app:srcCompat="@drawable/scrabtagfilled" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="0"
-                            android:orientation="vertical">
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="15dp"
+                            android:gravity="center"
+                            android:orientation="horizontal">
 
-                            <Button
-                                android:id="@+id/myScrabBtn"
-                                android:layout_width="25dp"
-                                android:layout_height="25dp"
-                                android:layout_gravity="right"
-                                android:background="@drawable/right_arrowbrown"
-                                android:text="Button"
-                                app:backgroundTint="@null"
-                                app:icon="@null" />
+                            <FrameLayout
+                                android:id="@+id/myScrabLayout2"
+                                android:layout_width="160dp"
+                                android:layout_height="120dp"
+                                android:layout_weight="1">
+
+                                <ImageView
+                                    android:id="@+id/myScrabImg2"
+                                    android:layout_width="160dp"
+                                    android:layout_height="120dp"
+                                    android:layout_gravity="center"
+                                    app:srcCompat="@drawable/noimage2" />
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="vertical">
+
+                                    <TextView
+                                        android:id="@+id/myScrabTitle2"
+                                        android:layout_width="90dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:layout_marginTop="20dp"
+                                        android:ellipsize="end"
+                                        android:gravity="center"
+                                        android:maxLines="1"
+                                        android:text="제목"
+                                        android:textColor="#646464"
+                                        android:textSize="16sp" />
+
+                                    <TextView
+                                        android:id="@+id/myScrabSave2"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="2dp"
+                                        android:layout_marginEnd="23dp"
+                                        android:layout_marginRight="23dp"
+                                        android:gravity="right"
+                                        android:text="20.12.28 저장"
+                                        android:textColor="#646464"
+                                        android:textSize="10sp" />
+
+                                    <TextView
+                                        android:id="@+id/myScrabPlace2"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="20dp"
+                                        android:layout_marginEnd="23dp"
+                                        android:layout_marginRight="23dp"
+                                        android:gravity="right"
+                                        android:text="서울시 양천구"
+                                        android:textColor="#646464"
+                                        android:textSize="12sp" />
+                                </LinearLayout>
+
+                            </FrameLayout>
+
+                            <FrameLayout
+                                android:id="@+id/myScrabLayout3"
+                                android:layout_width="160dp"
+                                android:layout_height="120dp"
+                                android:layout_weight="1">
+
+                                <ImageView
+                                    android:id="@+id/myScrabImg3"
+                                    android:layout_width="160dp"
+                                    android:layout_height="120dp"
+                                    android:layout_gravity="center"
+                                    app:srcCompat="@drawable/noimage2" />
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="vertical">
+
+                                    <TextView
+                                        android:id="@+id/myScrabTitle3"
+                                        android:layout_width="90dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:layout_marginTop="20dp"
+                                        android:ellipsize="end"
+                                        android:gravity="center"
+                                        android:maxLines="1"
+                                        android:text="제목"
+                                        android:textColor="#646464"
+                                        android:textSize="16sp" />
+
+                                    <TextView
+                                        android:id="@+id/myScrabSave3"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="2dp"
+                                        android:layout_marginEnd="23dp"
+                                        android:layout_marginRight="23dp"
+                                        android:gravity="right"
+                                        android:text="20.12.28 저장"
+                                        android:textColor="#646464"
+                                        android:textSize="10sp" />
+
+                                    <TextView
+                                        android:id="@+id/myScrabPlace3"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="20dp"
+                                        android:layout_marginEnd="23dp"
+                                        android:layout_marginRight="23dp"
+                                        android:gravity="right"
+                                        android:text="서울시 양천구"
+                                        android:textColor="#646464"
+                                        android:textSize="12sp" />
+                                </LinearLayout>
+
+                            </FrameLayout>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="15dp"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+
+                            <FrameLayout
+                                android:id="@+id/myScrabLayout4"
+                                android:layout_width="160dp"
+                                android:layout_height="120dp"
+                                android:layout_weight="1">
+
+                                <ImageView
+                                    android:id="@+id/myScrabImg4"
+                                    android:layout_width="160dp"
+                                    android:layout_height="120dp"
+                                    android:layout_gravity="center"
+                                    app:srcCompat="@drawable/noimage2" />
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="vertical">
+
+                                    <TextView
+                                        android:id="@+id/myScrabTitle4"
+                                        android:layout_width="90dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:layout_marginTop="20dp"
+                                        android:ellipsize="end"
+                                        android:gravity="center"
+                                        android:maxLines="1"
+                                        android:text="제목"
+                                        android:textColor="#646464"
+                                        android:textSize="16sp" />
+
+                                    <TextView
+                                        android:id="@+id/myScrabSave4"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="2dp"
+                                        android:layout_marginEnd="23dp"
+                                        android:layout_marginRight="23dp"
+                                        android:gravity="right"
+                                        android:text="20.12.28 저장"
+                                        android:textColor="#646464"
+                                        android:textSize="10sp" />
+
+                                    <TextView
+                                        android:id="@+id/myScrabPlace4"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="20dp"
+                                        android:layout_marginEnd="23dp"
+                                        android:layout_marginRight="23dp"
+                                        android:gravity="right"
+                                        android:text="서울시 양천구"
+                                        android:textColor="#646464"
+                                        android:textSize="12sp" />
+                                </LinearLayout>
+
+                            </FrameLayout>
+
+                            <FrameLayout
+                                android:id="@+id/myScrabLayout5"
+                                android:layout_width="160dp"
+                                android:layout_height="120dp"
+                                android:layout_weight="1">
+
+                                <ImageView
+                                    android:id="@+id/myScrabImg5"
+                                    android:layout_width="160dp"
+                                    android:layout_height="120dp"
+                                    android:layout_gravity="center"
+                                    app:srcCompat="@drawable/noimage2" />
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="vertical">
+
+                                    <TextView
+                                        android:id="@+id/myScrabTitle5"
+                                        android:layout_width="90dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:layout_marginTop="20dp"
+                                        android:ellipsize="end"
+                                        android:gravity="center"
+                                        android:maxLines="1"
+                                        android:text="제목"
+                                        android:textColor="#646464"
+                                        android:textSize="16sp" />
+
+                                    <TextView
+                                        android:id="@+id/myScrabSave5"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="2dp"
+                                        android:layout_marginEnd="23dp"
+                                        android:layout_marginRight="23dp"
+                                        android:gravity="right"
+                                        android:text="20.12.28 저장"
+                                        android:textColor="#646464"
+                                        android:textSize="10sp" />
+
+                                    <TextView
+                                        android:id="@+id/myScrabPlace5"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="20dp"
+                                        android:layout_marginEnd="23dp"
+                                        android:layout_marginRight="23dp"
+                                        android:gravity="right"
+                                        android:text="서울시 양천구"
+                                        android:textColor="#646464"
+                                        android:textSize="12sp" />
+                                </LinearLayout>
+
+                            </FrameLayout>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+
+                            <FrameLayout
+                                android:id="@+id/myScrabLayout6"
+                                android:layout_width="160dp"
+                                android:layout_height="120dp"
+                                android:layout_weight="1">
+
+                                <ImageView
+                                    android:id="@+id/myScrabImg6"
+                                    android:layout_width="160dp"
+                                    android:layout_height="120dp"
+                                    android:layout_gravity="center"
+                                    app:srcCompat="@drawable/noimage2" />
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="vertical">
+
+                                    <TextView
+                                        android:id="@+id/myScrabTitle6"
+                                        android:layout_width="90dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:layout_marginTop="20dp"
+                                        android:ellipsize="end"
+                                        android:gravity="center"
+                                        android:maxLines="1"
+                                        android:text="제목"
+                                        android:textColor="#646464"
+                                        android:textSize="16sp" />
+
+                                    <TextView
+                                        android:id="@+id/myScrabSave6"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="2dp"
+                                        android:layout_marginEnd="23dp"
+                                        android:layout_marginRight="23dp"
+                                        android:gravity="right"
+                                        android:text="20.12.28 저장"
+                                        android:textColor="#646464"
+                                        android:textSize="10sp" />
+
+                                    <TextView
+                                        android:id="@+id/myScrabPlace6"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="20dp"
+                                        android:layout_marginEnd="23dp"
+                                        android:layout_marginRight="23dp"
+                                        android:gravity="right"
+                                        android:text="서울시 양천구"
+                                        android:textColor="#646464"
+                                        android:textSize="12sp" />
+                                </LinearLayout>
+
+                            </FrameLayout>
+
+                            <FrameLayout
+                                android:id="@+id/myScrabLayout7"
+                                android:layout_width="160dp"
+                                android:layout_height="120dp"
+                                android:layout_weight="1">
+
+                                <ImageView
+                                    android:id="@+id/myScrabImg7"
+                                    android:layout_width="160dp"
+                                    android:layout_height="120dp"
+                                    android:layout_gravity="center"
+                                    app:srcCompat="@drawable/noimage2" />
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="vertical">
+
+                                    <TextView
+                                        android:id="@+id/myScrabTitle7"
+                                        android:layout_width="90dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:layout_marginTop="20dp"
+                                        android:ellipsize="end"
+                                        android:gravity="center"
+                                        android:maxLines="1"
+                                        android:text="제목"
+                                        android:textColor="#646464"
+                                        android:textSize="16sp" />
+
+                                    <TextView
+                                        android:id="@+id/myScrabSave7"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="2dp"
+                                        android:layout_marginEnd="23dp"
+                                        android:layout_marginRight="23dp"
+                                        android:gravity="right"
+                                        android:text="20.12.28 저장"
+                                        android:textColor="#646464"
+                                        android:textSize="10sp" />
+
+                                    <TextView
+                                        android:id="@+id/myScrabPlace7"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="20dp"
+                                        android:layout_marginEnd="23dp"
+                                        android:layout_marginRight="23dp"
+                                        android:gravity="right"
+                                        android:text="서울시 양천구"
+                                        android:textColor="#646464"
+                                        android:textSize="12sp" />
+                                </LinearLayout>
+
+                            </FrameLayout>
+
                         </LinearLayout>
 
                     </LinearLayout>
 
-
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="15dp"
-                        android:gravity="center"
-                        android:orientation="horizontal">
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="70dp"
+                        android:background="#E2D7C6"
+                        android:orientation="vertical">
 
-                        <FrameLayout
-                            android:id="@+id/myScrabLayout"
-                            android:layout_width="160dp"
-                            android:layout_height="120dp"
-                            android:layout_weight="1">
-
-                            <ImageView
-                                android:id="@+id/myScrabImg"
-                                android:layout_width="160dp"
-                                android:layout_height="120dp"
-                                android:layout_gravity="center"
-                                app:srcCompat="@drawable/noimage2" />
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:id="@+id/myScrabTitle"
-                                    android:layout_width="90dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:layout_marginTop="20dp"
-                                    android:ellipsize="end"
-                                    android:gravity="center"
-                                    android:maxLines="1"
-                                    android:text="제목"
-                                    android:textColor="#646464"
-                                    android:textSize="16sp" />
-
-                                <TextView
-                                    android:id="@+id/myScrabSave"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="2dp"
-                                    android:layout_marginEnd="23dp"
-                                    android:layout_marginRight="23dp"
-                                    android:gravity="right"
-                                    android:text="20.12.28 저장"
-                                    android:textColor="#646464"
-                                    android:textSize="10sp" />
-
-                                <TextView
-                                    android:id="@+id/myScrabPlace"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="20dp"
-                                    android:layout_marginEnd="23dp"
-                                    android:layout_marginRight="23dp"
-                                    android:gravity="right"
-                                    android:text="서울시 양천구"
-                                    android:textColor="#646464"
-                                    android:textSize="12sp" />
-                            </LinearLayout>
-
-                        </FrameLayout>
-
-                        <FrameLayout
-                            android:id="@+id/myScrabLayout1"
-                            android:layout_width="160dp"
-                            android:layout_height="120dp"
-                            android:layout_weight="1">
-
-                            <ImageView
-                                android:id="@+id/myScrabImg1"
-                                android:layout_width="160dp"
-                                android:layout_height="120dp"
-                                android:layout_gravity="center"
-                                app:srcCompat="@drawable/noimage2" />
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:id="@+id/myScrabTitle1"
-                                    android:layout_width="90dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:layout_marginTop="20dp"
-                                    android:ellipsize="end"
-                                    android:gravity="center"
-                                    android:maxLines="1"
-                                    android:text="제목"
-                                    android:textColor="#646464"
-                                    android:textSize="16sp" />
-
-                                <TextView
-                                    android:id="@+id/myScrabSave1"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="2dp"
-                                    android:layout_marginEnd="23dp"
-                                    android:layout_marginRight="23dp"
-                                    android:gravity="right"
-                                    android:text="20.12.28 저장"
-                                    android:textColor="#646464"
-                                    android:textSize="10sp" />
-
-                                <TextView
-                                    android:id="@+id/myScrabPlace1"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="20dp"
-                                    android:layout_marginEnd="23dp"
-                                    android:layout_marginRight="23dp"
-                                    android:gravity="right"
-                                    android:text="서울시 양천구"
-                                    android:textColor="#646464"
-                                    android:textSize="12sp" />
-                            </LinearLayout>
-
-                        </FrameLayout>
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="15dp"
-                        android:gravity="center"
-                        android:orientation="horizontal">
-
-                        <FrameLayout
-                            android:id="@+id/myScrabLayout2"
-                            android:layout_width="160dp"
-                            android:layout_height="120dp"
-                            android:layout_weight="1">
-
-                            <ImageView
-                                android:id="@+id/myScrabImg2"
-                                android:layout_width="160dp"
-                                android:layout_height="120dp"
-                                android:layout_gravity="center"
-                                app:srcCompat="@drawable/noimage2" />
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:id="@+id/myScrabTitle2"
-                                    android:layout_width="90dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:layout_marginTop="20dp"
-                                    android:ellipsize="end"
-                                    android:gravity="center"
-                                    android:maxLines="1"
-                                    android:text="제목"
-                                    android:textColor="#646464"
-                                    android:textSize="16sp" />
-
-                                <TextView
-                                    android:id="@+id/myScrabSave2"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="2dp"
-                                    android:layout_marginEnd="23dp"
-                                    android:layout_marginRight="23dp"
-                                    android:gravity="right"
-                                    android:text="20.12.28 저장"
-                                    android:textColor="#646464"
-                                    android:textSize="10sp" />
-
-                                <TextView
-                                    android:id="@+id/myScrabPlace2"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="20dp"
-                                    android:layout_marginEnd="23dp"
-                                    android:layout_marginRight="23dp"
-                                    android:gravity="right"
-                                    android:text="서울시 양천구"
-                                    android:textColor="#646464"
-                                    android:textSize="12sp" />
-                            </LinearLayout>
-
-                        </FrameLayout>
-
-                        <FrameLayout
-                            android:id="@+id/myScrabLayout3"
-                            android:layout_width="160dp"
-                            android:layout_height="120dp"
-                            android:layout_weight="1">
-
-                            <ImageView
-                                android:id="@+id/myScrabImg3"
-                                android:layout_width="160dp"
-                                android:layout_height="120dp"
-                                android:layout_gravity="center"
-                                app:srcCompat="@drawable/noimage2" />
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:id="@+id/myScrabTitle3"
-                                    android:layout_width="90dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:layout_marginTop="20dp"
-                                    android:ellipsize="end"
-                                    android:gravity="center"
-                                    android:maxLines="1"
-                                    android:text="제목"
-                                    android:textColor="#646464"
-                                    android:textSize="16sp" />
-
-                                <TextView
-                                    android:id="@+id/myScrabSave3"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="2dp"
-                                    android:layout_marginEnd="23dp"
-                                    android:layout_marginRight="23dp"
-                                    android:gravity="right"
-                                    android:text="20.12.28 저장"
-                                    android:textColor="#646464"
-                                    android:textSize="10sp" />
-
-                                <TextView
-                                    android:id="@+id/myScrabPlace3"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="20dp"
-                                    android:layout_marginEnd="23dp"
-                                    android:layout_marginRight="23dp"
-                                    android:gravity="right"
-                                    android:text="서울시 양천구"
-                                    android:textColor="#646464"
-                                    android:textSize="12sp" />
-                            </LinearLayout>
-
-                        </FrameLayout>
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="15dp"
-                        android:gravity="center"
-                        android:orientation="horizontal">
-
-                        <FrameLayout
-                            android:id="@+id/myScrabLayout4"
-                            android:layout_width="160dp"
-                            android:layout_height="120dp"
-                            android:layout_weight="1">
-
-                            <ImageView
-                                android:id="@+id/myScrabImg4"
-                                android:layout_width="160dp"
-                                android:layout_height="120dp"
-                                android:layout_gravity="center"
-                                app:srcCompat="@drawable/noimage2" />
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:id="@+id/myScrabTitle4"
-                                    android:layout_width="90dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:layout_marginTop="20dp"
-                                    android:ellipsize="end"
-                                    android:gravity="center"
-                                    android:maxLines="1"
-                                    android:text="제목"
-                                    android:textColor="#646464"
-                                    android:textSize="16sp" />
-
-                                <TextView
-                                    android:id="@+id/myScrabSave4"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="2dp"
-                                    android:layout_marginEnd="23dp"
-                                    android:layout_marginRight="23dp"
-                                    android:gravity="right"
-                                    android:text="20.12.28 저장"
-                                    android:textColor="#646464"
-                                    android:textSize="10sp" />
-
-                                <TextView
-                                    android:id="@+id/myScrabPlace4"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="20dp"
-                                    android:layout_marginEnd="23dp"
-                                    android:layout_marginRight="23dp"
-                                    android:gravity="right"
-                                    android:text="서울시 양천구"
-                                    android:textColor="#646464"
-                                    android:textSize="12sp" />
-                            </LinearLayout>
-
-                        </FrameLayout>
-
-                        <FrameLayout
-                            android:id="@+id/myScrabLayout5"
-                            android:layout_width="160dp"
-                            android:layout_height="120dp"
-                            android:layout_weight="1">
-
-                            <ImageView
-                                android:id="@+id/myScrabImg5"
-                                android:layout_width="160dp"
-                                android:layout_height="120dp"
-                                android:layout_gravity="center"
-                                app:srcCompat="@drawable/noimage2" />
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:id="@+id/myScrabTitle5"
-                                    android:layout_width="90dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:layout_marginTop="20dp"
-                                    android:ellipsize="end"
-                                    android:gravity="center"
-                                    android:maxLines="1"
-                                    android:text="제목"
-                                    android:textColor="#646464"
-                                    android:textSize="16sp" />
-
-                                <TextView
-                                    android:id="@+id/myScrabSave5"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="2dp"
-                                    android:layout_marginEnd="23dp"
-                                    android:layout_marginRight="23dp"
-                                    android:gravity="right"
-                                    android:text="20.12.28 저장"
-                                    android:textColor="#646464"
-                                    android:textSize="10sp" />
-
-                                <TextView
-                                    android:id="@+id/myScrabPlace5"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="20dp"
-                                    android:layout_marginEnd="23dp"
-                                    android:layout_marginRight="23dp"
-                                    android:gravity="right"
-                                    android:text="서울시 양천구"
-                                    android:textColor="#646464"
-                                    android:textSize="12sp" />
-                            </LinearLayout>
-
-                        </FrameLayout>
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:orientation="horizontal">
-
-                        <FrameLayout
-                            android:id="@+id/myScrabLayout6"
-                            android:layout_width="160dp"
-                            android:layout_height="120dp"
-                            android:layout_weight="1">
-
-                            <ImageView
-                                android:id="@+id/myScrabImg6"
-                                android:layout_width="160dp"
-                                android:layout_height="120dp"
-                                android:layout_gravity="center"
-                                app:srcCompat="@drawable/noimage2" />
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:id="@+id/myScrabTitle6"
-                                    android:layout_width="90dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:layout_marginTop="20dp"
-                                    android:ellipsize="end"
-                                    android:gravity="center"
-                                    android:maxLines="1"
-                                    android:text="제목"
-                                    android:textColor="#646464"
-                                    android:textSize="16sp" />
-
-                                <TextView
-                                    android:id="@+id/myScrabSave6"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="2dp"
-                                    android:layout_marginEnd="23dp"
-                                    android:layout_marginRight="23dp"
-                                    android:gravity="right"
-                                    android:text="20.12.28 저장"
-                                    android:textColor="#646464"
-                                    android:textSize="10sp" />
-
-                                <TextView
-                                    android:id="@+id/myScrabPlace6"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="20dp"
-                                    android:layout_marginEnd="23dp"
-                                    android:layout_marginRight="23dp"
-                                    android:gravity="right"
-                                    android:text="서울시 양천구"
-                                    android:textColor="#646464"
-                                    android:textSize="12sp" />
-                            </LinearLayout>
-
-                        </FrameLayout>
-
-                        <FrameLayout
-                            android:id="@+id/myScrabLayout7"
-                            android:layout_width="160dp"
-                            android:layout_height="120dp"
-                            android:layout_weight="1">
-
-                            <ImageView
-                                android:id="@+id/myScrabImg7"
-                                android:layout_width="160dp"
-                                android:layout_height="120dp"
-                                android:layout_gravity="center"
-                                app:srcCompat="@drawable/noimage2" />
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:id="@+id/myScrabTitle7"
-                                    android:layout_width="90dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:layout_marginTop="20dp"
-                                    android:ellipsize="end"
-                                    android:gravity="center"
-                                    android:maxLines="1"
-                                    android:text="제목"
-                                    android:textColor="#646464"
-                                    android:textSize="16sp" />
-
-                                <TextView
-                                    android:id="@+id/myScrabSave7"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="2dp"
-                                    android:layout_marginEnd="23dp"
-                                    android:layout_marginRight="23dp"
-                                    android:gravity="right"
-                                    android:text="20.12.28 저장"
-                                    android:textColor="#646464"
-                                    android:textSize="10sp" />
-
-                                <TextView
-                                    android:id="@+id/myScrabPlace7"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="20dp"
-                                    android:layout_marginEnd="23dp"
-                                    android:layout_marginRight="23dp"
-                                    android:gravity="right"
-                                    android:text="서울시 양천구"
-                                    android:textColor="#646464"
-                                    android:textSize="12sp" />
-                            </LinearLayout>
-
-                        </FrameLayout>
-
+                        <TextView
+                            android:id="@+id/myAskTextView"
+                            android:layout_width="60dp"
+                            android:layout_height="40dp"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginLeft="20dp"
+                            android:gravity="center_vertical"
+                            android:text="문의하기"
+                            android:textColor="#646464"
+                            android:textStyle="bold" />
                     </LinearLayout>
 
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="#E2D7C6"
-                    android:orientation="vertical">
+                    android:id="@+id/myLevelInfoLayout"
+                    android:layout_width="310dp"
+                    android:layout_height="190dp"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="250dp"
+                    android:background="@drawable/mylevelbackimg"
+                    android:elevation="50dp"
+                    android:orientation="vertical"
+                    android:paddingLeft="20dp"
+                    android:paddingTop="20dp"
+                    android:paddingRight="20dp"
+                    android:paddingBottom="0dp"
+                    android:visibility="invisible">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="-5dp"
+                        android:layout_marginEnd="-5dp"
+                        android:layout_marginRight="-5dp"
+                        android:orientation="vertical">
+
+                        <Button
+                            android:id="@+id/myLevelOutBtn"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_gravity="end"
+                            android:background="@drawable/close_button"
+                            app:backgroundTint="@null" />
+                    </LinearLayout>
 
                     <TextView
-                        android:id="@+id/myAskTextView"
-                        android:layout_width="60dp"
-                        android:layout_height="40dp"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginLeft="20dp"
-                        android:gravity="center_vertical"
-                        android:text="문의하기"
-                        android:textColor="#646464"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/myLevelInfoLayout"
-                android:layout_width="310dp"
-                android:layout_height="190dp"
-                android:layout_gravity="center"
-                android:layout_marginBottom="130dp"
-                android:background="@drawable/mylevelbackimg"
-                android:elevation="50dp"
-                android:orientation="vertical"
-                android:padding="20dp"
-                android:visibility="gone">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:gravity="center"
-                    android:text="다람쥐는 경험치를 먹고 자랍니다"
-                    android:textColor="#000000"
-                    android:textSize="16sp" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="30dp"
-                        app:srcCompat="@drawable/squirrel2" />
-
-                    <ProgressBar
-                        android:id="@+id/myLevelProgressBar"
-                        style="?android:attr/progressBarStyleHorizontal"
-                        android:layout_width="190dp"
-                        android:layout_height="30dp"
-                        android:layout_marginStart="5dp"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginEnd="5dp"
-                        android:layout_marginRight="5dp"
-                        android:background="@null"
-                        android:progress="30"
-                        android:progressBackgroundTint="@color/white"
-                        android:progressTint="#F57F17" />
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="-7dp"
+                        android:layout_marginBottom="10dp"
+                        android:gravity="center"
+                        android:text="다람쥐는 경험치를 먹고 자랍니다"
+                        android:textColor="#000000"
+                        android:textSize="16sp" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:orientation="horizontal">
 
                         <ImageView
                             android:layout_width="24dp"
                             android:layout_height="30dp"
-                            android:layout_gravity="right"
-                            app:srcCompat="@drawable/acorn" />
+                            app:srcCompat="@drawable/squirrel2" />
+
+                        <ProgressBar
+                            android:id="@+id/myLevelProgressBar"
+                            style="?android:attr/progressBarStyleHorizontal"
+                            android:layout_width="190dp"
+                            android:layout_height="30dp"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginEnd="5dp"
+                            android:layout_marginRight="5dp"
+                            android:background="@null"
+                            android:progress="30"
+                            android:progressBackgroundTint="@color/white"
+                            android:progressTint="#F57F17" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:layout_width="24dp"
+                                android:layout_height="30dp"
+                                android:layout_gravity="right"
+                                app:srcCompat="@drawable/acorn" />
+                        </LinearLayout>
+                        <![CDATA[
+
+                        "/>
+                    ]]>
                     </LinearLayout>
-                    <![CDATA[
 
-                    "/>
-                ]]>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal"
+                        android:padding="2dp">
+
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_weight="1"
+                            app:srcCompat="@drawable/level1" />
+
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_weight="1"
+                            app:srcCompat="@drawable/level2" />
+
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_weight="1"
+                            app:srcCompat="@drawable/level3" />
+
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_weight="1"
+                            app:srcCompat="@drawable/leveladult" />
+
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_weight="1"
+                            app:srcCompat="@drawable/level5" />
+
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_weight="1"
+                            app:srcCompat="@drawable/level6" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="3dp">
+
+                        <TextView
+                            android:layout_width="27dp"
+                            android:layout_height="40dp"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="아기\n다람쥐"
+                            android:textColor="#000000"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:layout_width="27dp"
+                            android:layout_height="40dp"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="어린\n다람쥐"
+                            android:textColor="#000000"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:layout_width="27dp"
+                            android:layout_height="40dp"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="학생\n다람쥐"
+                            android:textColor="#000000"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:layout_width="27dp"
+                            android:layout_height="40dp"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="어른\n다람쥐"
+                            android:textColor="#000000"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:layout_width="27dp"
+                            android:layout_height="40dp"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="박사\n다람쥐"
+                            android:textColor="#000000"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:layout_width="28dp"
+                            android:layout_height="40dp"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="다람쥐의\n신"
+                            android:textColor="#000000"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
                 </LinearLayout>
+            </FrameLayout>
+        </ScrollView>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:orientation="horizontal"
-                    android:padding="2dp">
+    </RelativeLayout>
 
-                    <ImageView
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_weight="1"
-                        app:srcCompat="@drawable/level1" />
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_appBar"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
 
-                    <ImageView
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_weight="1"
-                        app:srcCompat="@drawable/level2" />
 
-                    <ImageView
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_weight="1"
-                        app:srcCompat="@drawable/level3" />
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="675dp"
+        android:background="@color/brown"
+        android:visibility="visible"
+        app:itemIconTint="@color/white"
+        app:labelVisibilityMode="unlabeled"
+        app:menu="@menu/menu_bottom">
 
-                    <ImageView
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_weight="1"
-                        app:srcCompat="@drawable/leveladult" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom">
 
-                    <ImageView
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_weight="1"
-                        app:srcCompat="@drawable/level5" />
+            <RelativeLayout
+                android:id="@+id/bottomNavUnderbarHome"
+                android:layout_width="70dp"
+                android:layout_height="7dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="35dp"
+                android:layout_marginLeft="35dp"
+                android:background="@color/white"
+                android:visibility="gone">
 
-                    <ImageView
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_weight="1"
-                        app:srcCompat="@drawable/level6" />
-                </LinearLayout>
+            </RelativeLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="3dp">
+            <RelativeLayout
+                android:id="@+id/bottomNavUnderbarTheme"
+                android:layout_width="70dp"
+                android:layout_height="7dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginStart="35dp"
+                android:layout_marginLeft="35dp"
+                android:background="@color/white"
+                android:visibility="gone">
 
-                    <TextView
-                        android:layout_width="27dp"
-                        android:layout_height="40dp"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="아기\n다람쥐"
-                        android:textColor="#000000"
-                        android:textSize="12sp" />
+            </RelativeLayout>
 
-                    <TextView
-                        android:layout_width="27dp"
-                        android:layout_height="40dp"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="어린\n다람쥐"
-                        android:textColor="#000000"
-                        android:textSize="12sp" />
+            <RelativeLayout
+                android:id="@+id/bottomNavUnderbarUser"
+                android:layout_width="70dp"
+                android:layout_height="7dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="35dp"
+                android:layout_marginLeft="35dp"
+                android:layout_marginEnd="35dp"
+                android:layout_marginRight="35dp"
+                android:background="@color/white"
+                android:visibility="visible">
 
-                    <TextView
-                        android:layout_width="27dp"
-                        android:layout_height="40dp"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="학생\n다람쥐"
-                        android:textColor="#000000"
-                        android:textSize="12sp" />
+            </RelativeLayout>
 
-                    <TextView
-                        android:layout_width="27dp"
-                        android:layout_height="40dp"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="어른\n다람쥐"
-                        android:textColor="#000000"
-                        android:textSize="12sp" />
+        </RelativeLayout>
+    </com.google.android.material.bottomnavigation.BottomNavigationView>
 
-                    <TextView
-                        android:layout_width="27dp"
-                        android:layout_height="40dp"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="박사\n다람쥐"
-                        android:textColor="#000000"
-                        android:textSize="12sp" />
-
-                    <TextView
-                        android:layout_width="28dp"
-                        android:layout_height="40dp"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="다람쥐의\n신"
-                        android:textColor="#000000"
-                        android:textSize="12sp" />
-                </LinearLayout>
-            </LinearLayout>
-        </FrameLayout>
-    </ScrollView>
-
-</LinearLayout>
+</RelativeLayout>
