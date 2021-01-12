@@ -125,7 +125,7 @@
                     android:layout_marginRight="30dp"
                     android:background="@drawable/edge_white_item"
                     android:ems="10"
-                    android:hint="아이디"
+                    android:hint="example@example.com"
                     android:inputType="textPersonName"
                     android:paddingLeft="10dp"
                     android:textColor="#000000"
@@ -178,7 +178,7 @@
                         android:background="@drawable/edge_white_item"
                         android:ems="10"
                         android:hint="비밀번호"
-                        android:inputType="numberPassword"
+                        android:inputType="textPassword"
                         android:paddingLeft="10dp"
                         android:textColor="#000000"
                         android:textSize="18sp" />
@@ -230,7 +230,7 @@
                         android:background="@drawable/edge_white_item"
                         android:ems="10"
                         android:hint="비밀번호 확인"
-                        android:inputType="numberPassword"
+                        android:inputType="textPassword"
                         android:paddingLeft="10dp"
                         android:textColor="#000000"
                         android:textSize="18sp" />
@@ -241,17 +241,37 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/signin_nicname"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginLeft="20dp"
-                        android:paddingTop="20dp"
-                        android:paddingBottom="10dp"
-                        android:text="닉네임"
-                        android:textColor="#000000"
-                        android:textSize="18sp" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/signin_nicname"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginLeft="20dp"
+                            android:paddingTop="20dp"
+                            android:paddingBottom="10dp"
+                            android:text="닉네임"
+                            android:textColor="#000000"
+                            android:textSize="18sp" />
+
+                        <TextView
+                            android:id="@+id/signin_userName_check"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="40dp"
+                            android:layout_marginLeft="40dp"
+                            android:layout_marginEnd="50dp"
+                            android:layout_marginRight="50dp"
+                            android:layout_weight="1"
+                            android:text="닉네임 중복"
+                            android:textColor="#FF002E"
+                            android:visibility="invisible" />
+
+                    </LinearLayout>
 
                     <EditText
                         android:id="@+id/signin_nicname_edittext"
@@ -306,6 +326,7 @@
                         android:ems="10"
                         android:hint="휴대전화 번호"
                         android:inputType="textShortMessage|numberSigned|textPersonName"
+                        android:maxLength="11"
                         android:paddingLeft="10dp"
                         android:textColor="#000000"
                         android:textSize="14sp" />
@@ -343,6 +364,18 @@
                         android:paddingLeft="10dp"
                         android:textColor="#000000"
                         android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/signin_mobile_check"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="40dp"
+                        android:layout_marginLeft="40dp"
+                        android:layout_marginEnd="50dp"
+                        android:layout_marginRight="50dp"
+                        android:text="이미 가입된 번호입니다"
+                        android:textColor="#FF002E"
+                        android:visibility="invisible" />
                 </LinearLayout>
 
                 <LinearLayout

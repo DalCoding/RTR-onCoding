@@ -8,16 +8,18 @@ import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.rotory.Interface.OnTabItemSelectedListener;
+
 import com.example.rotory.signup.SignUpActivity;
+
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.FirebaseFirestore;
 
+import com.google.firebase.firestore.FirebaseFirestore;
 public class MainActivity extends AppCompatActivity implements OnTabItemSelectedListener {
 
+    public static final String TAG = "MainActivity";
     public static final int loginCode = 1001;
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
