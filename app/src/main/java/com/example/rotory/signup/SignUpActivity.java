@@ -1,9 +1,18 @@
 package com.example.rotory.signup;
 
+<<<<<<< HEAD
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+=======
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+>>>>>>> master
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,18 +24,28 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+<<<<<<< HEAD
 import com.example.rotory.Interface.DtrDialogListener;
 import com.example.rotory.MainActivity;
 import com.example.rotory.R;
 import com.example.rotory.VO.Person;
+=======
+import com.example.rotory.MainActivity;
+import com.example.rotory.R;
+>>>>>>> master
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+<<<<<<< HEAD
+=======
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+>>>>>>> master
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
+<<<<<<< HEAD
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -46,6 +65,17 @@ public class SignUpActivity extends AppCompatActivity implements DtrDialogListen
     private final String REGEX_NUMBER = "^(?=.*[0-9])[0-9]{9,12}$";
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
+=======
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.util.Util;
+
+import java.util.HashMap;
+import java.util.regex.Pattern;
+
+public class SignUpActivity extends AppCompatActivity {
+    private FirebaseAuth mAuth;
+    private static final String TAG = "SignUpActivity";
+>>>>>>> master
 
     EditText signin_id_edittext;
     EditText signin_pw_edittext;
@@ -59,8 +89,11 @@ public class SignUpActivity extends AppCompatActivity implements DtrDialogListen
     TextView signUpTitlewithBtnTextView;
     TextView signin_pwcheck_check;
     TextView signin_id_check;
+<<<<<<< HEAD
     TextView signin_userName_check;
     TextView signin_mobile_check;
+=======
+>>>>>>> master
 
     String userId;
     String pw ;
@@ -69,8 +102,11 @@ public class SignUpActivity extends AppCompatActivity implements DtrDialogListen
     String mobile;
     String email;
 
+<<<<<<< HEAD
     Person persons = new Person();
     String whichExist;
+=======
+>>>>>>> master
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -88,21 +124,39 @@ public class SignUpActivity extends AppCompatActivity implements DtrDialogListen
         signUpBackImageButton = findViewById(R.id.signUpBackImageButton);
         signUpCheckBtn = findViewById(R.id.signUpCheckBtn);
 
+<<<<<<< HEAD
         signin_userName_check = findViewById(R.id.signin_userName_check);
         signin_userName_check.setVisibility(View.GONE);
         signin_mobile_check = findViewById(R.id.signin_mobile_check);
         signin_mobile_check.setVisibility(View.GONE);
 
+=======
+>>>>>>> master
         signUpTitlewithBtnTextView.setText("회원가입");
         signUpBackImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+<<<<<<< HEAD
                 goMain();
                 finish();
+=======
+                //Intent intent = new Intent(getApplicationContext(), LogInActivity.class);
+                goMain();
+               /* LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                View view = inflater.inflate(R.layout.activity_main, null);
+
+                BottomNavigationView bottomNavigation;
+                bottomNavigation = view.findViewById(R.id.bottom_appBar);
+                bottomNavigation.setVisibility(View.VISIBLE);*/
+
+                finish();
+
+>>>>>>> master
             }
         });
         mAuth = FirebaseAuth.getInstance();
 
+<<<<<<< HEAD
         userId = signin_id_edittext.getText().toString().trim();
         pw =signin_pw_edittext.getText().toString().trim();
         pwCheck = signin_pwcheck_edittext.getText().toString().trim();
@@ -214,6 +268,29 @@ public class SignUpActivity extends AppCompatActivity implements DtrDialogListen
     }
         private boolean checkValidation(){
 
+=======
+       userId = signin_id_edittext.getText().toString().trim();
+       pw =signin_pw_edittext.getText().toString().trim();
+       pwCheck = signin_pwcheck_edittext.getText().toString().trim();
+       userName = signin_nicname_edittext.getText().toString().trim();
+       mobile = signin_mobile.getText().toString().trim();
+       email = signin_email_edittext.getText().toString().trim();
+
+        signUpCheckBtn.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View v) {
+              if(checkValidation()) {
+                  signUp(userId, pw, email, userName, mobile);
+              }
+          }
+      });
+
+
+
+    }
+
+    private boolean checkValidation(){
+>>>>>>> master
         userId = signin_id_edittext.getText().toString().trim();
         pw =signin_pw_edittext.getText().toString().trim();
         pwCheck = signin_pwcheck_edittext.getText().toString().trim();
@@ -221,6 +298,7 @@ public class SignUpActivity extends AppCompatActivity implements DtrDialogListen
         mobile = signin_mobile.getText().toString().trim();
         email = signin_email_edittext.getText().toString().trim();
 
+<<<<<<< HEAD
 
         signin_id_check = findViewById(R.id.signin_id_check);
         signin_id_check.setVisibility(View.GONE);
@@ -240,23 +318,47 @@ public class SignUpActivity extends AppCompatActivity implements DtrDialogListen
            //다이얼로그 넣기
             return false;
 
+=======
+        signin_id_check = findViewById(R.id.signin_id_check);
+        signin_pwcheck_check = findViewById(R.id. signin_pwcheck_check);
+
+        if(userId.equals("") || userId.length() ==0 ||
+                userName.equals("")|| userName.length()==0 ||
+                mobile.equals("") || mobile.length() <= 9 ||
+                pw.equals("") || pw.length()<6 ||
+                pwCheck.equals("") || pwCheck.length() <6){
+
+            signin_id_check.setText("이메일 양식으로 작성해주세요");
+            signin_id_check.setVisibility(View.VISIBLE);
+            signin_pwcheck_check.setVisibility(View.VISIBLE);
+
+            return false;
+>>>>>>> master
         } else if(!pwCheck.equals(pw)){
             signin_pwcheck_check.setVisibility(View.VISIBLE);
 
             return false;
+<<<<<<< HEAD
         }else if(!userId.contains("@")|| userId.equals("") || userId.length() < 4){
+=======
+        }else if(!userId.contains("@")){
+>>>>>>> master
             signin_id_check.setText("이메일 양식으로 작성해주세요");
             signin_id_check.setVisibility(View.VISIBLE);
 
             return false;
+<<<<<<< HEAD
         }else if(!mobilePattern){
             return false;
+=======
+>>>>>>> master
         }
 
         return true;
 
     }
 
+<<<<<<< HEAD
     public Person setNewAccount(Person persons){
     persons.setUserId(userId);
     persons.setPassword(pw);
@@ -299,12 +401,55 @@ public class SignUpActivity extends AppCompatActivity implements DtrDialogListen
         //Date (그날날짜) 받아와서 다시저장
 
 
+=======
+    private final void signUp(final String userId, final String password,
+                              String email, String name,String mobile){
+        FirebaseAuth firebaseAuth = this.mAuth;
+        if (firebaseAuth == null){
+            Log.e(TAG,"firebaseauth 연결 안됨");
+        }
+        mAuth.createUserWithEmailAndPassword(userId, password).addOnCompleteListener(
+                SignUpActivity.this, new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if(task.isSuccessful()){
+                    Log.d(TAG, "등록버튼" + userId + ", " + password);
+                    FirebaseUser user = mAuth.getCurrentUser();
+                    String userId = user.getEmail();
+                    String uid = user.getUid();
+
+                    saveUserAccount(userId, pw, email,name, mobile, uid);
+
+                }else {
+                    Toast.makeText(getApplicationContext(),"회원가입 실패",Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    private void saveUserAccount(String userId, String pw, String email,
+                                 String name,String mobile, String Uid) {
+
+        HashMap<Object, String> person = new HashMap<>();
+        person.put("userEmail", email);
+        person.put("email", userId);
+        person.put("name", name);
+        person.put("password", pw);
+        person.put("mobile", mobile);
+        person.put("uid", Uid);
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+>>>>>>> master
         db.collection("person")
                 .add(person)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
                         Log.d(TAG, "Person add with id" + documentReference.getId());
+<<<<<<< HEAD
+=======
+
+>>>>>>> master
                         goMain();
                     }
                 })
@@ -321,6 +466,7 @@ public class SignUpActivity extends AppCompatActivity implements DtrDialogListen
         startActivity(mainIntent);
 
     }
+<<<<<<< HEAD
 }
 
   /*  private void existUserName() {
@@ -360,3 +506,6 @@ public class SignUpActivity extends AppCompatActivity implements DtrDialogListen
         }else
             exist = 0;
     }*/
+=======
+}
+>>>>>>> master

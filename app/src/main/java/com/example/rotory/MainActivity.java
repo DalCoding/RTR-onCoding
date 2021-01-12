@@ -2,7 +2,6 @@ package com.example.rotory;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -12,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.rotory.Interface.OnContentsListener;
 import com.example.rotory.Interface.OnTabItemSelectedListener;
+<<<<<<< HEAD
 import com.example.rotory.Interface.OnUserListener;
 import com.example.rotory.VO.Contents;
 import com.example.rotory.signup.SignUpActivity;
@@ -22,12 +22,21 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+=======
+import com.example.rotory.signup.SignUpActivity;
+import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+>>>>>>> master
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+<<<<<<< HEAD
 import java.util.ArrayList;
 
+=======
+>>>>>>> master
 public class MainActivity extends AppCompatActivity implements OnTabItemSelectedListener {
 
     public static final String TAG = "MainActivity";
