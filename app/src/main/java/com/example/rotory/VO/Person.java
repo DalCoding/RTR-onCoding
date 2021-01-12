@@ -27,12 +27,9 @@ public class Person {
         this.userLevelImage = userLevelImage;
     }
 
-<<<<<<< HEAD
-    public String getPerson_id() {
-=======
 
-    public int getPerson_id() {
->>>>>>> master
+    public String getPerson_id() {
+
         return person_id;
     }
 
