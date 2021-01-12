@@ -2,27 +2,19 @@ package com.example.rotory;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.rotory.Interface.OnTabItemSelectedListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
+import com.example.rotory.signup.SignUpActivity;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements OnTabItemSelectedListener {
 
@@ -40,7 +32,7 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
 
     RelativeLayout userAppbarContainer;
 
-
+    private FirebaseAuth mAuth;
 
 
     AppBarLayout appBarLayout;
@@ -52,35 +44,14 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mAuth = FirebaseAuth.getInstance();
+
         appBarLayout = findViewById(R.id.appBarLayout);
         bottomNavUnderbarHome = findViewById(R.id.bottomNavUnderbarHome);
         bottomNavUnderbarTheme = findViewById(R.id.bottomNavUnderbarTheme);
         bottomNavUnderbarUser = findViewById(R.id.bottomNavUnderbarUser);
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-
-        Map<String, Object> user = new HashMap<>();
-        user.put("first", "Ada");
-        user.put("last", "Lovelace");
-        user.put("born", 1815);
-
-// Add a new document with a generated ID
-        db.collection("users")
-                .add(user)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        Log.d("TAG", "DocumentSnapshot added with ID: " + documentReference.getId());
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w("TAG", "Error adding document", e);
-                    }
-                });
-
 
         mainPage = new MainPage();
         themePage = new ThemePage();
