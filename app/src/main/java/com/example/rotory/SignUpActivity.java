@@ -75,6 +75,7 @@ public class SignUpActivity extends AppCompatActivity {
 
             }
         });
+
         mAuth = FirebaseAuth.getInstance();
         String userId = signin_id_edittext.getText().toString().trim();
         String pw =signin_pw_edittext.getText().toString().trim();
@@ -159,10 +160,6 @@ public class SignUpActivity extends AppCompatActivity {
         return false;
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-    }
 
     private void saveUserAccount(String userId, String pw, String pwCheck, String email, String name, String mobile) {
 
