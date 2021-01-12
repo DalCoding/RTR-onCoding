@@ -1,19 +1,20 @@
 package com.example.rotory.VO;
 
-import java.util.HashMap;
-
 public class Person {
-    int	person_id;
+    String	person_id;
     String	userId;
     String	password;
     String	userName;
     String	mobile;
     String	email;
     String	userImage;
-    int	userLevel;
+    String userLevel;
 
-    public Person(int person_id, String userId, String password, String userName,
-                  String mobile, String email, String userImage, int userLevel) {
+    public Person() {
+    }
+
+    public Person(String person_id, String userId, String password, String userName,
+                  String mobile, String email, String userImage, String userLevel) {
         this.person_id = person_id;
         this.userId = userId;
         this.password = password;
@@ -24,11 +25,12 @@ public class Person {
         this.userLevel = userLevel;
     }
 
-    public int getPerson_id() {
+
+    public String getPerson_id() {
         return person_id;
     }
 
-    public void setPerson_id(int person_id) {
+    public void setPerson_id(String person_id) {
         this.person_id = person_id;
     }
 
@@ -80,11 +82,11 @@ public class Person {
         this.userImage = userImage;
     }
 
-    public int getUserLevel() {
+    public String getUserLevel() {
         return userLevel;
     }
 
-    public void setUserLevel(int userLevel) {
+    public void setUserLevel(String userLevel) {
         this.userLevel = userLevel;
     }
 }
