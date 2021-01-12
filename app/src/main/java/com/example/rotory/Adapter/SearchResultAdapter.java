@@ -11,8 +11,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.rotory.R;
 import com.example.rotory.SearchResultItem;
-import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
-import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+/*import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;*/
 
 public class SearchResultAdapter/* extends FirestoreRecyclerAdapter<SearchResultItem, SearchResultAdapter.ViewHolder> */{
 

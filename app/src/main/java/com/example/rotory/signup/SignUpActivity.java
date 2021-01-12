@@ -103,10 +103,8 @@ public class SignUpActivity extends AppCompatActivity {
         signUpBackImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 goMain();
                 finish();
-
 
             }
         });
@@ -131,13 +129,14 @@ public class SignUpActivity extends AppCompatActivity {
                                 if (error != null) {
                                     Log.e(TAG, "Listen failed.", error);
                                 }
+                                loop:
                                 for (QueryDocumentSnapshot documentSnapshot : value) {
                                     if (documentSnapshot.get("userName") != null) {
                                         userNameList.add(documentSnapshot.getString("userName"));
                                         if (userNameList.contains("hello")) {
                                             signin_userName_check.setVisibility(View.VISIBLE);
                                             Log.d(TAG, "Duplicated Username"+ userName + ", Check userNameList : " + userNameList);
-
+                                            break loop;
                                         } else {
                                             Log.d(TAG,"new Username" + userName);
                                             existMobile(mobile);
@@ -155,42 +154,10 @@ public class SignUpActivity extends AppCompatActivity {
 
     }
 
-    private final void signUp(final String userId, final String password,
-                              Person persons){
-        FirebaseAuth firebaseAuth = this.mAuth;
-        if (firebaseAuth == null){
-            Log.e(TAG,"firebaseauth 연결 안됨");
-        }
-        FirebaseUser user = mAuth.getCurrentUser();
-        final ProgressDialog pDialog= new ProgressDialog(SignUpActivity.this);
-
-        mAuth.createUserWithEmailAndPassword(userId, password).addOnCompleteListener(
-                SignUpActivity.this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()){
-                            Log.d(TAG, "등록버튼" + userId + ", " + password);
-
-                            pDialog.setMessage("가입중...");
-                            pDialog.show();
-                            String userId = user.getEmail();
-                            String uid = user.getUid();
-                            saveUserAccount(userId, uid, persons);
-
-
-                        }else {
-                            Log.e(TAG, "signUp Failed : " + userId + ", " + password + "," + task.getException().toString());
-                            pDialog.dismiss();
-                            checkValidation();
-                            signin_id_check = findViewById(R.id.signin_id_check);
-                            signin_id_check.setVisibility(View.VISIBLE);
-                        }
-                    }
-                });
-    }
-
     private void existMobile(String mobile){
         List<String> mobileList = new ArrayList<>();
+        userId = signin_id_edittext.getText().toString().trim();
+        pw =signin_pw_edittext.getText().toString().trim();
 
             db.collection("person")
                     .addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -199,18 +166,21 @@ public class SignUpActivity extends AppCompatActivity {
                             if (error != null) {
                                 Log.w(TAG, "Listen failed", error);
                             }
+                            loop:
                             for (QueryDocumentSnapshot documentSnapshot : value) {
                                 if (documentSnapshot.get("mobile") != null) {
                                     mobileList.add(documentSnapshot.getString("mobile"));
-                                    if (mobileList.contains("01011235852")) {
+                                    if (mobileList.contains('"'+mobile+ '"')) {
                                         signin_mobile_check.setVisibility(View.VISIBLE);
                                         Log.d(TAG, "mobileList : " + mobileList);
+                                        break loop;
 
                                     } else {
                                         Log.d(TAG,"new mobile");
                                         if(checkValidation()) {
                                             setNewAccount(persons);
                                             signUp(userId, pw, persons);
+
                                         }
                                     }
                                 } else {
@@ -220,7 +190,37 @@ public class SignUpActivity extends AppCompatActivity {
                             }
                         }
                     });
+            Toast.makeText(getApplicationContext(),"중복확인",Toast.LENGTH_SHORT).show();
     }
+    private final void signUp(final String userId, final String password,
+                              Person persons){
+        FirebaseAuth firebaseAuth = this.mAuth;
+        if (firebaseAuth == null){
+            Log.e(TAG,"firebaseauth 연결 안됨");
+        }
+        FirebaseUser user = mAuth.getCurrentUser();
+
+        mAuth.createUserWithEmailAndPassword(userId, password).addOnCompleteListener(
+                SignUpActivity.this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if(task.isSuccessful()){
+                            Log.d(TAG, "등록버튼" + userId + ", " + password);
+
+                            String userId = user.getEmail();
+                            String uid = user.getUid();
+                            saveUserAccount(userId, uid, persons);
+
+                        }else {
+                            Log.e(TAG, "signUp Failed : " + userId + ", " + password + "," + task.getException().toString());
+                            checkValidation();
+                            signin_id_check = findViewById(R.id.signin_id_check);
+                            signin_id_check.setVisibility(View.VISIBLE);
+                        }
+                    }
+                });
+    }
+
 
 
     private boolean checkValidation(){
@@ -302,9 +302,27 @@ public class SignUpActivity extends AppCompatActivity {
         person.put("userLevelImage", persons.getUserLevelImage());
         person.put("signUpDate", new Date().toString());
         //Date (그날날짜) 받아와서 다시저장
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        db.collection("person")
+                .add(person)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Log.d(TAG, "Person add with id" + documentReference.getId());
+                        goMain();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error adding user", e);
+                    }
+                });
     }
 
-    private final void signUp(final String userId, final String password,
+   /* private final void signUp(final String userId, final String password,
                               String email, String name,String mobile){
         FirebaseAuth firebaseAuth = this.mAuth;
         if (firebaseAuth == null){
@@ -327,9 +345,9 @@ public class SignUpActivity extends AppCompatActivity {
                 }
             }
         });
-    }
+    }*/
 
-    private void saveUserAccount(String userId, String pw, String email,
+  /*  private void saveUserAccount(String userId, String pw, String email,
                                  String name,String mobile, String Uid) {
 
         HashMap<Object, String> person = new HashMap<>();
@@ -358,7 +376,7 @@ public class SignUpActivity extends AppCompatActivity {
                     }
                 });
 
-    }
+    }*/
     public void goMain(){
         Intent mainIntent = new Intent(getApplicationContext(), MainActivity.class);
         startActivity(mainIntent);
