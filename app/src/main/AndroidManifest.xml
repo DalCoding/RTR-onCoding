@@ -15,7 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Rotory">
         <meta-data android:name="com.kakao.sdk.AppKey" android:value="c8daee16562c01709b387cc817f8d6b7"/>
-        <activity android:name=".MainActivity">
+        <activity android:name=".SearchResultPage">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
