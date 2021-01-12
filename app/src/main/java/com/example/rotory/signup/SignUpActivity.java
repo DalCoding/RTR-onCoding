@@ -1,14 +1,9 @@
 package com.example.rotory.signup;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Application;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -28,24 +23,28 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.util.Util;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.regex.Pattern;
 
 public class SignUpActivity extends AppCompatActivity implements DtrDialogListener {
     private FirebaseAuth mAuth;
     private static final String TAG = "SignUpActivity";
-    private final String REGEX = "0-9|a-z|A-Z|ㄱ-ㅎ|ㅏ-ㅣ|" +
-            "가-힣|@\\-\\_\\.\\;\\·\u318D\u119E\u11A2\u2022\u2025a\u00B7\uFE55]*";
+    private final String REGEX_PATTERN = "^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[$@$!%*#?&])[A-Za-z[0-9]$@$!%*#?&]{8,20}$";
+    private final String REGEX_NUMBER = "^(?=.*[0-9])[0-9]{9,12}$";
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
 
 
     EditText signin_id_edittext;
@@ -60,6 +59,8 @@ public class SignUpActivity extends AppCompatActivity implements DtrDialogListen
     TextView signUpTitlewithBtnTextView;
     TextView signin_pwcheck_check;
     TextView signin_id_check;
+    TextView signin_userName_check;
+    TextView signin_mobile_check;
 
     String userId;
     String pw ;
@@ -69,6 +70,7 @@ public class SignUpActivity extends AppCompatActivity implements DtrDialogListen
     String email;
 
     Person persons = new Person();
+    String whichExist;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -86,20 +88,17 @@ public class SignUpActivity extends AppCompatActivity implements DtrDialogListen
         signUpBackImageButton = findViewById(R.id.signUpBackImageButton);
         signUpCheckBtn = findViewById(R.id.signUpCheckBtn);
 
+        signin_userName_check = findViewById(R.id.signin_userName_check);
+        signin_userName_check.setVisibility(View.GONE);
+        signin_mobile_check = findViewById(R.id.signin_mobile_check);
+        signin_mobile_check.setVisibility(View.GONE);
+
         signUpTitlewithBtnTextView.setText("회원가입");
         signUpBackImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Intent intent = new Intent(getApplicationContext(), LogInActivity.class);
                 goMain();
-               /* LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                View view = inflater.inflate(R.layout.activity_main, null);
-                BottomNavigationView bottomNavigation;
-                bottomNavigation = view.findViewById(R.id.bottom_appBar);
-                bottomNavigation.setVisibility(View.VISIBLE);*/
-
                 finish();
-
             }
         });
         mAuth = FirebaseAuth.getInstance();
@@ -114,12 +113,37 @@ public class SignUpActivity extends AppCompatActivity implements DtrDialogListen
         signUpCheckBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(checkValidation()) {
-                    setNewAccount(persons);
-                    signUp(userId, pw, persons);
-                }
+                List<String> userNameList = new ArrayList<>();
+
+                db.collection("person")
+                        .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                            @Override
+                            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                                if (error != null) {
+                                    Log.e(TAG, "Listen failed.", error);
+                                }
+                                for (QueryDocumentSnapshot documentSnapshot : value) {
+                                    if (documentSnapshot.get("userName") != null) {
+                                        userNameList.add(documentSnapshot.getString("userName"));
+                                        if (userNameList.contains("hello")) {
+                                            signin_userName_check.setVisibility(View.VISIBLE);
+                                            Log.d(TAG, "Duplicated Username"+ userName + ", Check userNameList : " + userNameList);
+
+                                        } else {
+                                            Log.d(TAG,"new Username" + userName);
+                                            existMobile(mobile);
+
+                                        }
+                                    } else {
+                                    }
+                                }
+
+                            }
+                        });
             }
         });
+
+
     }
 
     private final void signUp(final String userId, final String password,
@@ -130,7 +154,6 @@ public class SignUpActivity extends AppCompatActivity implements DtrDialogListen
         }
         FirebaseUser user = mAuth.getCurrentUser();
         final ProgressDialog pDialog= new ProgressDialog(SignUpActivity.this);
-        pDialog.setMessage("가입중...");
 
         mAuth.createUserWithEmailAndPassword(userId, password).addOnCompleteListener(
                 SignUpActivity.this, new OnCompleteListener<AuthResult>() {
@@ -138,24 +161,127 @@ public class SignUpActivity extends AppCompatActivity implements DtrDialogListen
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
                             Log.d(TAG, "등록버튼" + userId + ", " + password);
+
+                            pDialog.setMessage("가입중...");
                             pDialog.show();
                             String userId = user.getEmail();
                             String uid = user.getUid();
                             saveUserAccount(userId, uid, persons);
-                            pDialog.dismiss();
 
 
                         }else {
-                          Toast.makeText(getApplicationContext(),"회원가입 실패", Toast.LENGTH_SHORT).show();
-                            Log.e(TAG, "signUp Failed : " + userId + ", " + password + "," + user.getUid());
-                            return;
+                            Log.e(TAG, "signUp Failed : " + userId + ", " + password + "," + task.getException().toString());
+                            pDialog.dismiss();
+                            checkValidation();
+                            signin_id_check = findViewById(R.id.signin_id_check);
+                            signin_id_check.setVisibility(View.VISIBLE);
                         }
                     }
                 });
     }
 
-    private void saveUserAccount(String userId, String uid, Person persons) {
+    private void existMobile(String mobile){
+        List<String> mobileList = new ArrayList<>();
 
+            db.collection("person")
+                    .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                        @Override
+                        public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                            if (error != null) {
+                                Log.w(TAG, "Listen failed", error);
+                            }
+                            for (QueryDocumentSnapshot documentSnapshot : value) {
+                                if (documentSnapshot.get("mobile") != null) {
+                                    mobileList.add(documentSnapshot.getString("mobile"));
+                                    if (mobileList.contains("01011235852")) {
+                                        signin_mobile_check.setVisibility(View.VISIBLE);
+                                        Log.d(TAG, "mobileList : " + mobileList);
+
+                                    } else {
+                                        Log.d(TAG,"new mobile");
+                                        if(checkValidation()) {
+                                            setNewAccount(persons);
+                                            signUp(userId, pw, persons);
+                                        }
+                                    }
+                                } else {
+
+                                }
+
+                            }
+                        }
+                    });
+    }
+        private boolean checkValidation(){
+
+        userId = signin_id_edittext.getText().toString().trim();
+        pw =signin_pw_edittext.getText().toString().trim();
+        pwCheck = signin_pwcheck_edittext.getText().toString().trim();
+        userName = signin_nicname_edittext.getText().toString().trim();
+        mobile = signin_mobile.getText().toString().trim();
+        email = signin_email_edittext.getText().toString().trim();
+
+
+        signin_id_check = findViewById(R.id.signin_id_check);
+        signin_id_check.setVisibility(View.GONE);
+        signin_pwcheck_check = findViewById(R.id. signin_pwcheck_check);
+        signin_pwcheck_check.setVisibility(View.GONE);
+
+        boolean pwPattern = Pattern.matches(REGEX_PATTERN, pw);
+        boolean mobilePattern = Pattern.matches(REGEX_NUMBER, mobile);
+
+
+      if( userName.equals("")|| userName.length()<1) {
+            signin_userName_check.setText("닉네임을 입력해 주세요");
+            signin_userName_check.setVisibility(View.VISIBLE);
+            return false;
+        }else if(!pwPattern){
+            Toast.makeText(getApplicationContext(),"비밀번호 양식을 확인해주세요", Toast.LENGTH_SHORT).show();
+           //다이얼로그 넣기
+            return false;
+
+        } else if(!pwCheck.equals(pw)){
+            signin_pwcheck_check.setVisibility(View.VISIBLE);
+
+            return false;
+        }else if(!userId.contains("@")|| userId.equals("") || userId.length() < 4){
+            signin_id_check.setText("이메일 양식으로 작성해주세요");
+            signin_id_check.setVisibility(View.VISIBLE);
+
+            return false;
+        }else if(!mobilePattern){
+            return false;
+        }
+
+        return true;
+
+    }
+
+    public Person setNewAccount(Person persons){
+    persons.setUserId(userId);
+    persons.setPassword(pw);
+    persons.setMobile(mobile);
+    persons.setUserImage(String.valueOf(R.drawable.squirrel));
+    persons.setEmail(email);
+    persons.setUserLevel("아기다람쥐");
+    persons.setUserName(userName);
+    persons.setUserLevelImage(String.valueOf(R.drawable.level1));
+    return persons;
+    }
+
+    @Override
+    public void oneBtnDialog() {
+
+    }
+
+    @Override
+    public void twoBtnDialog() {
+
+    }
+
+
+    private void saveUserAccount(String userId, String uid, Person persons) {
+        // 이후에 계정으로 저장과 계정 정보 수정으로 나누어서 정리, 합침
         persons.setUserId(userId);
         persons.setPerson_id(uid);
 
@@ -168,16 +294,17 @@ public class SignUpActivity extends AppCompatActivity implements DtrDialogListen
         person.put("uid", persons.getPerson_id());
         person.put("userLevel", persons.getUserLevel());
         person.put("userImage", persons.getUserImage());
-        person.put("signUpDate", "2021-01-12");
+        person.put("userLevelImage", persons.getUserLevelImage());
+        person.put("signUpDate", new Date().toString());
+        //Date (그날날짜) 받아와서 다시저장
 
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
         db.collection("person")
                 .add(person)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
                         Log.d(TAG, "Person add with id" + documentReference.getId());
-
                         goMain();
                     }
                 })
@@ -194,66 +321,42 @@ public class SignUpActivity extends AppCompatActivity implements DtrDialogListen
         startActivity(mainIntent);
 
     }
-    private boolean checkValidation(){
-        userId = signin_id_edittext.getText().toString().trim();
-        pw =signin_pw_edittext.getText().toString().trim();
-        pwCheck = signin_pwcheck_edittext.getText().toString().trim();
-        userName = signin_nicname_edittext.getText().toString().trim();
-        mobile = signin_mobile.getText().toString().trim();
-        email = signin_email_edittext.getText().toString().trim();
-
-        signin_id_check = findViewById(R.id.signin_id_check);
-        signin_pwcheck_check = findViewById(R.id. signin_pwcheck_check);
-
-        if(userId.equals("") || userId.length() < 4 ||
-                userName.equals("")|| userName.length()==0 ||
-                mobile.equals("") || mobile.length() <= 9 ||
-                pw.equals("") || pw.length()<6 ||
-                pwCheck.equals("") || pwCheck.length() <6){
-
-            signin_id_check.setText("이메일 양식으로 작성해주세요");
-            signin_id_check.setVisibility(View.VISIBLE);
-            signin_pwcheck_check.setVisibility(View.VISIBLE);
-
-            return false;
-        } else if(!pw.matches(REGEX)){
-           
-            return false;
-
-        } else if(!pwCheck.equals(pw)){
-            signin_pwcheck_check.setVisibility(View.VISIBLE);
-
-            return false;
-        }else if(!userId.contains("@")){
-            signin_id_check.setText("이메일 양식으로 작성해주세요");
-            signin_id_check.setVisibility(View.VISIBLE);
-
-            return false;
-        }
-
-        return true;
-
-    }
-
-    public Person setNewAccount(Person persons){
-    persons.setUserId(userId);
-    persons.setPassword(pw);
-    persons.setMobile(mobile);
-    persons.setUserImage(String.valueOf(R.drawable.squirrel));
-    persons.setEmail(email);
-    persons.setUserLevel("아기다람쥐");
-    persons.setUserName(userName);
-    return persons;
-    }
-
-    @Override
-    public void oneBtnDialog() {
-
-    }
-
-    @Override
-    public void twoBtnDialog() {
-
-    }
 }
 
+  /*  private void existUserName() {
+        List<String> userNameList = new ArrayList<>();
+
+            db.collection("person")
+                    .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                        @Override
+                        public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                            if (error != null) {
+                                Log.w(TAG, "Listen failed.", error);
+                            }
+                            boolean exist = true;
+                            for (QueryDocumentSnapshot documentSnapshot : value) {
+                                if (documentSnapshot.get("userName") != null) {
+                                    userNameList.add(documentSnapshot.getString("userName"));
+                                    if (userNameList.contains("hello")) {
+                                        signin_userName_check.setVisibility(View.VISIBLE);
+                                        Log.d(TAG, "Duplicated Username"+ userName + ", Check userNameList : " + userNameList);
+
+                                    } else {
+                                        Log.d(TAG,"new Username" + userName);
+                                    }
+                                } else {
+                                }
+                            }
+
+                        }
+
+                    });
+
+    }*/
+
+   /* private void existOrNot(int tf){
+        if (tf == 0){
+            exist = 1;
+        }else
+            exist = 0;
+    }*/

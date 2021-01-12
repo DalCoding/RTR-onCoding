@@ -9,12 +9,13 @@ public class Person {
     String	email;
     String	userImage;
     String userLevel;
+    String userLevelImage;
 
     public Person() {
     }
 
-    public Person(String person_id, String userId, String password, String userName,
-                  String mobile, String email, String userImage, String userLevel) {
+    public Person(String person_id, String userId, String password, String userName, String mobile,
+                  String email, String userImage, String userLevel, String userLevelImage) {
         this.person_id = person_id;
         this.userId = userId;
         this.password = password;
@@ -23,8 +24,8 @@ public class Person {
         this.email = email;
         this.userImage = userImage;
         this.userLevel = userLevel;
+        this.userLevelImage = userLevelImage;
     }
-
 
     public String getPerson_id() {
         return person_id;
@@ -88,5 +89,13 @@ public class Person {
 
     public void setUserLevel(String userLevel) {
         this.userLevel = userLevel;
+    }
+
+    public String getUserLevelImage() {
+        return userLevelImage;
+    }
+
+    public void setUserLevelImage(String userLevelImage) {
+        this.userLevelImage = userLevelImage;
     }
 }

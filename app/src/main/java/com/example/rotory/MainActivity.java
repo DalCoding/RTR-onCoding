@@ -2,6 +2,7 @@ package com.example.rotory;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -9,15 +10,27 @@ import android.widget.RelativeLayout;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.rotory.Interface.OnContentsListener;
 import com.example.rotory.Interface.OnTabItemSelectedListener;
+import com.example.rotory.Interface.OnUserListener;
+import com.example.rotory.VO.Contents;
 import com.example.rotory.signup.SignUpActivity;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements OnTabItemSelectedListener {
 
+    public static final String TAG = "MainActivity";
     public static final int loginCode = 1001;
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
