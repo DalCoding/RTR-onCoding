@@ -50,9 +50,6 @@ public class SignUpActivity extends AppCompatActivity {
     private final String REGEX_NUMBER = "^(?=.*[0-9])[0-9]{9,12}$";
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-
-
-
     EditText signin_id_edittext;
     EditText signin_pw_edittext;
     EditText signin_pwcheck_edittext;
