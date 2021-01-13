@@ -8,97 +8,112 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.os.Handler;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 
 import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
+import net.daum.mf.map.api.MapReverseGeoCoder;
 import net.daum.mf.map.api.MapView;
 
 
-
-public class BigMapPage extends AppCompatActivity{} /*implements MapView.CurrentLocationEventListener, MapView.MapViewEventListener, MapView.POIItemEventListener {
-=======
 public class BigMapPage extends AppCompatActivity {
->>>>>>> 9e88d5ab87ffd04bf9157d143ea44986e3fb0210
+    private static final String TAG = "BigMapPage";
 
-    MapView mapView;
-    ViewGroup mapViewContainer;
-    ImageView bigMapMyLocationBtn;
-
+    LinearLayout bigMapBtnLayout;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(@NonNull Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-<<<<<<< HEAD
-        setContentView(R.layout.write_map_page);
+        setContentView(R.layout.big_map_page);
 
-        MapView mapView = new MapView(this);
+        /*MapView mapView = new MapView(this);
 
         ViewGroup mapViewContainer = (ViewGroup) findViewById(R.id.writeMapContainer);
         mapViewContainer.addView(mapView);
 
         // 기본마커 설정
-        */
-/*MapPOIItem marker = new MapPOIItem();
-=======
-        setContentView(R.layout.big_map_page);
+
+        MapPOIItem marker = new MapPOIItem();
+        setContentView(R.layout.big_map_page);*/
 
         MapView mapView = new MapView(this);
-        ViewGroup mapViewContainer = (ViewGroup) findViewById(R.id.bigMapLayout);
-        mapViewContainer.addView(mapView);
+        ViewGroup bigMapLayout = (ViewGroup) findViewById(R.id.bigMapLayout);
+        bigMapLayout.addView(mapView);
+
+        MapPoint mapPoint = MapPoint.mapPointWithGeoCoord(37.541255, 126.838155);
+        mapView.setMapCenterPoint(mapPoint, false);
+        //true면 앱 실행 시 애니메이션 효과가 나오고 false면 애니메이션이 나오지않음.
+
+        MapPOIItem marker = new MapPOIItem();
+        marker.setItemName("더조은아카데미 화곡캠퍼스");
+        marker.setTag(0);
+        marker.setMapPoint(mapPoint);
+        // 기본으로 제공하는 BluePin 마커 모양.
+        marker.setMarkerType(MapPOIItem.MarkerType.BluePin);
+        // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
+        marker.setSelectedMarkerType(MapPOIItem.MarkerType.RedPin);
+        mapView.addPOIItem(marker);
+
+
+        Button thisBigMapBtn = findViewById(R.id.thisBigMapBtn);
+        ImageButton bigMapMyLocationBtn = findViewById(R.id.bigMapMyLocationBtn);
+
+    }
+}
+
 
         // 기본마커 설정
         /*MapPOIItem marker = new MapPOIItem();
->>>>>>> 9e88d5ab87ffd04bf9157d143ea44986e3fb0210
         marker.setItemName("Default Marker");
         marker.setTag(0);
         marker.setMapPoint(MARKER_POINT);
         marker.setMarkerType(MapPOIItem.MarkerType.CustomImage); // 기본으로 제공하는 BluePin 마커 모양.
         marker.setSelectedMarkerType(MapPOIItem.MarkerType.RedPin); // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
 
-<<<<<<< HEAD
         mapView.addPOIItem(marker);
 
         // 커스텀마커 설정
       MapPOIItem customMarker = new MapPOIItem();
       //  customMarker.setItemName("Custom Marker");
        customMarker.setTag(1);
-=======
-        mapView.addPOIItem(marker);*/
+
+        mapView.addPOIItem(marker);
+
+        mapView.addPOIItem(marker);
+
 
         // 커스텀마커 설정
-       /* MapPOIItem customMarker = new MapPOIItem();
+        MapPOIItem customMarker = new MapPOIItem();
       //  customMarker.setItemName("Custom Marker");
         customMarker.setTag(1);
->>>>>>> 9e88d5ab87ffd04bf9157d143ea44986e3fb0210
       //  customMarker.setMapPoint(MARKER_POINT);
         customMarker.setMarkerType(MapPOIItem.MarkerType.CustomImage); // 마커타입을 커스텀 마커로 지정.
         customMarker.setCustomImageResourceId(R.drawable.squirrel_small); // 마커 이미지.
         customMarker.setCustomImageAutoscale(false); // hdpi, xhdpi 등 안드로이드 플랫폼의 스케일을 사용할 경우 지도 라이브러리의 스케일 기능을 꺼줌.
         customMarker.setCustomImageAnchor(0.5f, 1.0f); // 마커 이미지중 기준이 되는 위치(앵커포인트) 지정 - 마커 이미지 좌측 상단 기준 x(0.0f ~ 1.0f), y(0.0f ~ 1.0f) 값.
 
-<<<<<<< HEAD
+
+
         mapView.addPOIItem(customMarker);  *//*
-=======
+
         mapView.addPOIItem(customMarker);
->>>>>>> 9e88d5ab87ffd04bf9157d143ea44986e3fb0210
+        mapView.addPOIItem(customMarker);*/
 
 
-        moveMyLocation(mapView);
+        //moveMyLocation(mapView);
 
-        bigMapMyLocationBtn = findViewById(R.id.bigMapMyLocationBtn);
+        /*bigMapMyLocationBtn = findViewById(R.id.bigMapMyLocationBtn);
         bigMapMyLocationBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -107,9 +122,9 @@ public class BigMapPage extends AppCompatActivity {
 
             }
         });
-    }
+    }*/
 
-    public void moveMyLocation(MapView mapView){
+    /*public void moveMyLocation(MapView mapView){
         mapView.setMapViewEventListener(this);
         mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading);
 
@@ -125,39 +140,36 @@ public class BigMapPage extends AppCompatActivity {
     }
 
 
-<<<<<<< HEAD
      */
 /*   mapView.setMapViewEventListener(this);
-=======
         *//*mapView.setMapViewEventListener(this);
->>>>>>> 9e88d5ab87ffd04bf9157d143ea44986e3fb0210
+        mapView.setMapViewEventListener(this);
         mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading);
         if (!checkLocationServicesStatus()) {
             showDialogForLocationServiceSetting();
         }else {
             checkRunTimePermission();
-<<<<<<< HEAD
+
         }   *//*
-=======
+
         }*//*
->>>>>>> 9e88d5ab87ffd04bf9157d143ea44986e3fb0210
+        }*/
 
 
 
 
 
-    @Override
+
+    /*@Override
     protected void onDestroy() {
         super.onDestroy();
         mapViewContainer.removeAllViews();
     }
 
-<<<<<<< HEAD
  */
 /*   public void moveMyLocation() {
-=======
+
    public void moveMyLocation() {
->>>>>>> 9e88d5ab87ffd04bf9157d143ea44986e3fb0210
         LocationManager manager = (LocationManager)
                 getSystemService(Context.LOCATION_SERVICE);// LocationManager 객체 참조하기
         try {   // 이전에 확인햿던 위치 정보 가져오기
@@ -182,14 +194,10 @@ public class BigMapPage extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-<<<<<<< HEAD
-    } *//*
-=======
-    }
->>>>>>> 9e88d5ab87ffd04bf9157d143ea44986e3fb0210
+    } */
 
 
-    @Override
+    /*@Override
     public void onCurrentLocationUpdate(MapView mapView, MapPoint mapPoint, float v) {
 
     }
@@ -275,17 +283,14 @@ public class BigMapPage extends AppCompatActivity {
     public void onDraggablePOIItemMoved(MapView mapView, MapPOIItem mapPOIItem, MapPoint mapPoint) {
 
     }
-<<<<<<< HEAD
 }
 
 
 
 
-=======
-=======
->>>>>>> c8ecf8eaa69418ac6e9f1ab02ca32497e9f61398
-=======
+
 }*/
+
 
 /*
 import android.os.Bundle;
@@ -320,7 +325,6 @@ public class BigMapPage extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.big_map_page, container, false);
-<<<<<<< HEAD
         initUI(rootView);
         return rootView;
     }
@@ -332,7 +336,6 @@ public class BigMapPage extends Fragment {
         MapView bigMapView = new MapView(getContext());
         ViewGroup mapView = (ViewGroup) rootView.findViewById(R.id.bigMapLayout);
         mapView.addView(bigMapView);
-=======
 
         MapView bigMapView = new MapView(getContext());
         ViewGroup mapView = (ViewGroup) rootView.findViewById(R.id.bigMapLayout);
@@ -352,19 +355,17 @@ public class BigMapPage extends Fragment {
         *//**//*MapView bigMapView = new MapView(getActivity());
         ViewGroup mapView = (ViewGroup) rootView.findViewById(R.id.bigMapLayout);
         mapView.addView(bigMapView);*//**//*
-<<<<<<< HEAD
-         9e88d5ab87ffd04bf9157d143ea44986e3fb0210
-=======
->>>>>>> 9e88d5ab87ffd04bf9157d143ea44986e3fb0210
->>>>>>> 1e57c27aace6b28417c22caf7e357564c0b206ad
 
         Button thisBigMapBtn = rootView.findViewById(R.id.thisBigMapBtn);
         ImageButton bigMapMyLocationBtn = rootView.findViewById(R.id.bigMapMyLocationBtn);
 
 
-<<<<<<< HEAD
 
     }
 }
 
-*/
+
+    }
+}
+    }
+}*/
