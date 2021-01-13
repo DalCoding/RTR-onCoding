@@ -25,16 +25,15 @@
             </intent-filter>
         </activity>
         <activity android:name=".MyPage"/>
-<<<<<<< HEAD
+
         <activity android:name=".account.SignUpActivity"/>
-        <activity android:name=".SearchResultPage" />
+
         <activity android:name=".account.LogInActivity"/>
-=======
-        <activity android:name=".Account.SignUpActivity"/>
+
         <!--<activity android:name=".Search.SearchResultPage" />-->
-        <activity android:name=".Account.LogInActivity"/>
+
         <activity android:name=".BigMapPage" />
->>>>>>> 9e88d5ab87ffd04bf9157d143ea44986e3fb0210
+
     </application>
 
 </manifest>
