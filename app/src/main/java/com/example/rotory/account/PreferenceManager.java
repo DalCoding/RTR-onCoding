@@ -1,4 +1,4 @@
-package com.example.rotory.Account;
+package com.example.rotory.account;
 
 import android.content.Context;
 import android.content.SharedPreferences;

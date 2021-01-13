@@ -25,9 +25,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".MyPage"/>
-        <activity android:name=".Account.SignUpActivity"/>
+        <activity android:name=".account.SignUpActivity"/>
         <activity android:name=".SearchResultPage" />
-        <activity android:name=".Account.LogInActivity"/>
+        <activity android:name=".account.LogInActivity"/>
     </application>
 
 </manifest>
