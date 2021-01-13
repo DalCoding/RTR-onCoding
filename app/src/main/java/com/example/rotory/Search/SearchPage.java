@@ -1,4 +1,4 @@
-package com.example.rotory;
+package com.example.rotory.Search;
 
 import android.os.Bundle;
 import android.text.Editable;
@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.rotory.Adapter.TagAdapter;
 import com.example.rotory.Interface.OnTagItemClickListener;
+import com.example.rotory.R;
 import com.example.rotory.VO.Tag;
 
 import java.util.ArrayList;

@@ -1,5 +1,9 @@
 package com.example.rotory;
 
+<<<<<<< HEAD
+=======
+import android.content.Intent;
+>>>>>>> 9e88d5ab87ffd04bf9157d143ea44986e3fb0210
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +15,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import net.daum.mf.map.api.MapPOIItem;
+import net.daum.mf.map.api.MapPoint;
 import net.daum.mf.map.api.MapView;
 
 public class MainPage extends Fragment {
@@ -30,10 +36,27 @@ public class MainPage extends Fragment {
 
     private void initUI(ViewGroup rootView) {
 
+<<<<<<< HEAD
       /*  MapView mapView = new MapView(getContext());
         ViewGroup mapViewContainer = (ViewGroup) rootView.findViewById(R.id.mainMapLayout);
         mapViewContainer.addView(mapView);
+=======
+        /*MapView mapView = new MapView(getContext());
+        ViewGroup mapViewContainer = (ViewGroup) rootView.findViewById(R.id.mainMapLayout);
+        mapViewContainer.addView(mapView);
 
+        mapView.setMapCenterPointAndZoomLevel(MapPoint.mapPointWithGeoCoord(37.541258, 126.838193), 2, true);*/
+>>>>>>> 9e88d5ab87ffd04bf9157d143ea44986e3fb0210
+
+        ImageButton mainMapExtendBtn = rootView.findViewById(R.id.mainMapExtendBtn);
+        mainMapExtendBtn.bringToFront();
+        mainMapExtendBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent (getActivity(), BigMapPage.class);
+                startActivity(intent);
+            }
+        });
 
         ImageButton mainMapExtendBtn = rootView.findViewById(R.id.mainMapExtendBtn);
         mainMapExtendBtn.bringToFront();

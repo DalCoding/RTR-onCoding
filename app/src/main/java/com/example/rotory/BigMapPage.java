@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 package com.example.rotory;
 
@@ -9,13 +10,39 @@ import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+=======
+package com.example.rotory;
+
+import android.Manifest;
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
+import android.os.Bundle;
+import android.os.Handler;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+>>>>>>> 9e88d5ab87ffd04bf9157d143ea44986e3fb0210
 
 import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
 import net.daum.mf.map.api.MapView;
 
 
+<<<<<<< HEAD
 public class BigMapPage extends AppCompatActivity{} /*implements MapView.CurrentLocationEventListener, MapView.MapViewEventListener, MapView.POIItemEventListener {
+=======
+public class BigMapPage extends AppCompatActivity {
+>>>>>>> 9e88d5ab87ffd04bf9157d143ea44986e3fb0210
 
     MapView mapView;
     ViewGroup mapViewContainer;
@@ -25,6 +52,7 @@ public class BigMapPage extends AppCompatActivity{} /*implements MapView.Current
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+<<<<<<< HEAD
         setContentView(R.layout.write_map_page);
 
         MapView mapView = new MapView(this);
@@ -35,25 +63,48 @@ public class BigMapPage extends AppCompatActivity{} /*implements MapView.Current
         // 기본마커 설정
         */
 /*MapPOIItem marker = new MapPOIItem();
+=======
+        setContentView(R.layout.big_map_page);
+
+        MapView mapView = new MapView(this);
+        ViewGroup mapViewContainer = (ViewGroup) findViewById(R.id.bigMapLayout);
+        mapViewContainer.addView(mapView);
+
+        // 기본마커 설정
+        /*MapPOIItem marker = new MapPOIItem();
+>>>>>>> 9e88d5ab87ffd04bf9157d143ea44986e3fb0210
         marker.setItemName("Default Marker");
         marker.setTag(0);
         marker.setMapPoint(MARKER_POINT);
         marker.setMarkerType(MapPOIItem.MarkerType.CustomImage); // 기본으로 제공하는 BluePin 마커 모양.
         marker.setSelectedMarkerType(MapPOIItem.MarkerType.RedPin); // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
 
+<<<<<<< HEAD
         mapView.addPOIItem(marker);
 
         // 커스텀마커 설정
       MapPOIItem customMarker = new MapPOIItem();
       //  customMarker.setItemName("Custom Marker");
        customMarker.setTag(1);
+=======
+        mapView.addPOIItem(marker);*/
+
+        // 커스텀마커 설정
+       /* MapPOIItem customMarker = new MapPOIItem();
+      //  customMarker.setItemName("Custom Marker");
+        customMarker.setTag(1);
+>>>>>>> 9e88d5ab87ffd04bf9157d143ea44986e3fb0210
       //  customMarker.setMapPoint(MARKER_POINT);
         customMarker.setMarkerType(MapPOIItem.MarkerType.CustomImage); // 마커타입을 커스텀 마커로 지정.
         customMarker.setCustomImageResourceId(R.drawable.squirrel_small); // 마커 이미지.
         customMarker.setCustomImageAutoscale(false); // hdpi, xhdpi 등 안드로이드 플랫폼의 스케일을 사용할 경우 지도 라이브러리의 스케일 기능을 꺼줌.
         customMarker.setCustomImageAnchor(0.5f, 1.0f); // 마커 이미지중 기준이 되는 위치(앵커포인트) 지정 - 마커 이미지 좌측 상단 기준 x(0.0f ~ 1.0f), y(0.0f ~ 1.0f) 값.
 
+<<<<<<< HEAD
         mapView.addPOIItem(customMarker);  *//*
+=======
+        mapView.addPOIItem(customMarker);
+>>>>>>> 9e88d5ab87ffd04bf9157d143ea44986e3fb0210
 
 
         moveMyLocation(mapView);
@@ -85,14 +136,22 @@ public class BigMapPage extends AppCompatActivity{} /*implements MapView.Current
     }
 
 
+<<<<<<< HEAD
      */
 /*   mapView.setMapViewEventListener(this);
+=======
+        *//*mapView.setMapViewEventListener(this);
+>>>>>>> 9e88d5ab87ffd04bf9157d143ea44986e3fb0210
         mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading);
         if (!checkLocationServicesStatus()) {
             showDialogForLocationServiceSetting();
         }else {
             checkRunTimePermission();
+<<<<<<< HEAD
         }   *//*
+=======
+        }*//*
+>>>>>>> 9e88d5ab87ffd04bf9157d143ea44986e3fb0210
 
 
 
@@ -104,8 +163,12 @@ public class BigMapPage extends AppCompatActivity{} /*implements MapView.Current
         mapViewContainer.removeAllViews();
     }
 
+<<<<<<< HEAD
  */
 /*   public void moveMyLocation() {
+=======
+   public void moveMyLocation() {
+>>>>>>> 9e88d5ab87ffd04bf9157d143ea44986e3fb0210
         LocationManager manager = (LocationManager)
                 getSystemService(Context.LOCATION_SERVICE);// LocationManager 객체 참조하기
         try {   // 이전에 확인햿던 위치 정보 가져오기
@@ -130,7 +193,11 @@ public class BigMapPage extends AppCompatActivity{} /*implements MapView.Current
         } catch (Exception e) {
             e.printStackTrace();
         }
+<<<<<<< HEAD
     } *//*
+=======
+    }
+>>>>>>> 9e88d5ab87ffd04bf9157d143ea44986e3fb0210
 
 
     @Override
@@ -219,6 +286,7 @@ public class BigMapPage extends AppCompatActivity{} /*implements MapView.Current
     public void onDraggablePOIItemMoved(MapView mapView, MapPOIItem mapPOIItem, MapPoint mapPoint) {
 
     }
+<<<<<<< HEAD
 }
 
 
@@ -227,11 +295,21 @@ public class BigMapPage extends AppCompatActivity{} /*implements MapView.Current
 =======
 =======
 >>>>>>> c8ecf8eaa69418ac6e9f1ab02ca32497e9f61398
+=======
+}*/
+
+/*
+import android.os.Bundle;
+>>>>>>> 9e88d5ab87ffd04bf9157d143ea44986e3fb0210
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+<<<<<<< HEAD
+=======
+import android.widget.ImageView;
+>>>>>>> 9e88d5ab87ffd04bf9157d143ea44986e3fb0210
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
@@ -253,6 +331,7 @@ public class BigMapPage extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.big_map_page, container, false);
+<<<<<<< HEAD
         initUI(rootView);
         return rootView;
     }
@@ -264,11 +343,33 @@ public class BigMapPage extends Fragment {
         MapView bigMapView = new MapView(getContext());
         ViewGroup mapView = (ViewGroup) rootView.findViewById(R.id.bigMapLayout);
         mapView.addView(bigMapView);
+=======
+
+        MapView bigMapView = new MapView(getContext());
+        ViewGroup mapView = (ViewGroup) rootView.findViewById(R.id.bigMapLayout);
+        mapView.addView(bigMapView);
+
+        Button thisBigMapBtn = rootView.findViewById(R.id.thisBigMapBtn);
+        ImageButton bigMapMyLocationBtn = rootView.findViewById(R.id.bigMapMyLocationBtn);
+
+        //initUI(rootView);
+        return rootView;
+    }
+
+    *//*private void initUI(ViewGroup rootView) {
+
+        //FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        *//**//*MapView bigMapView = new MapView(getActivity());
+        ViewGroup mapView = (ViewGroup) rootView.findViewById(R.id.bigMapLayout);
+        mapView.addView(bigMapView);*//**//*
+>>>>>>> 9e88d5ab87ffd04bf9157d143ea44986e3fb0210
 
         Button thisBigMapBtn = rootView.findViewById(R.id.thisBigMapBtn);
         ImageButton bigMapMyLocationBtn = rootView.findViewById(R.id.bigMapMyLocationBtn);
 
 
+<<<<<<< HEAD
     }
 }
 <<<<<<< HEAD
@@ -276,3 +377,9 @@ public class BigMapPage extends Fragment {
 =======
 >>>>>>> c8ecf8eaa69418ac6e9f1ab02ca32497e9f61398
 */
+=======
+    }*//*
+}*/
+    }
+}
+>>>>>>> 9e88d5ab87ffd04bf9157d143ea44986e3fb0210
