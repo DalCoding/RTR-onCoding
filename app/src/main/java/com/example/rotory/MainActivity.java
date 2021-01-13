@@ -9,7 +9,13 @@ import android.widget.RelativeLayout;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+
 import com.example.rotory.Account.LogInActivity;
+
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
 import com.example.rotory.Interface.OnTabItemSelectedListener;
 
 import com.example.rotory.Account.SignUpActivity;
@@ -28,6 +34,7 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
     MainPage mainPage;
     ThemePage themePage;
     SignUpActivity signUpActivity;
+    BigMapPage bigMapPage;
 
     RelativeLayout bottomNavUnderbarHome;
     RelativeLayout bottomNavUnderbarTheme;
@@ -57,6 +64,8 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
 
         mainPage = new MainPage();
         themePage = new ThemePage();
+
+        bigMapPage = new BigMapPage();
 
 
         getSupportFragmentManager().beginTransaction().replace(R.id.container, mainPage).commit();
@@ -134,5 +143,16 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
         }
 
 }
+
+
+    public void replaceFragment(Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        if (!fragment.isAdded()) {
+            fragmentTransaction.replace(R.id.container, fragment);
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
+        }
+    }
 
 }
