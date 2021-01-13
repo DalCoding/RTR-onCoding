@@ -8,9 +8,11 @@ import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.rotory.Account.LogInActivity;
 import com.example.rotory.Interface.OnTabItemSelectedListener;
 
-import com.example.rotory.signup.SignUpActivity;
+import com.example.rotory.Account.SignUpActivity;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -52,11 +54,10 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
         bottomNavUnderbarTheme = findViewById(R.id.bottomNavUnderbarTheme);
         bottomNavUnderbarUser = findViewById(R.id.bottomNavUnderbarUser);
 
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         mainPage = new MainPage();
         themePage = new ThemePage();
-        signUpActivity = new SignUpActivity();
+
 
         getSupportFragmentManager().beginTransaction().replace(R.id.container, mainPage).commit();
 
@@ -77,7 +78,7 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
                             getSupportFragmentManager().beginTransaction().replace(R.id.container, themePage).commit();
                             setTabUnderBar(1);
                         } else {
-                            Intent LogInIntent= new Intent(getApplicationContext(), SignUpActivity.class);
+                            Intent LogInIntent= new Intent(getApplicationContext(), LogInActivity.class);
                             startActivityForResult(LogInIntent, loginCode);
                             bottomNavigation.setVisibility(View.GONE);
 
@@ -89,7 +90,7 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
                             getSupportFragmentManager().beginTransaction().replace(R.id.container, themePage).commit();
                             setTabUnderBar(2);
                         } else {
-                            Intent LogInIntent= new Intent(getApplicationContext(), SignUpActivity.class);
+                            Intent LogInIntent= new Intent(getApplicationContext(), LogInActivity.class);
                             startActivityForResult(LogInIntent, loginCode);
                             bottomNavigation.setVisibility(View.GONE);
                         }
@@ -133,4 +134,5 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
         }
 
 }
+
 }
