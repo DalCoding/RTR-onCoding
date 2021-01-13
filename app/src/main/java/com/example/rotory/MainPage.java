@@ -1,5 +1,13 @@
 package com.example.rotory;
+<<<<<<< HEAD
 import android.content.Intent;
+=======
+
+<<<<<<< HEAD
+=======
+import android.content.Intent;
+>>>>>>> 9e88d5ab87ffd04bf9157d143ea44986e3fb0210
+>>>>>>> 1e57c27aace6b28417c22caf7e357564c0b206ad
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,13 +40,25 @@ public class MainPage extends Fragment {
 
     private void initUI(ViewGroup rootView) {
 
+<<<<<<< HEAD
 
 
+=======
+<<<<<<< HEAD
+      /*  MapView mapView = new MapView(getContext());
+        ViewGroup mapViewContainer = (ViewGroup) rootView.findViewById(R.id.mainMapLayout);
+        mapViewContainer.addView(mapView);
+=======
+>>>>>>> 1e57c27aace6b28417c22caf7e357564c0b206ad
         /*MapView mapView = new MapView(getContext());
         ViewGroup mapViewContainer = (ViewGroup) rootView.findViewById(R.id.mainMapLayout);
         mapViewContainer.addView(mapView);
 
         mapView.setMapCenterPointAndZoomLevel(MapPoint.mapPointWithGeoCoord(37.541258, 126.838193), 2, true);*/
+<<<<<<< HEAD
+=======
+>>>>>>> 9e88d5ab87ffd04bf9157d143ea44986e3fb0210
+>>>>>>> 1e57c27aace6b28417c22caf7e357564c0b206ad
 
         ImageButton mainMapExtendBtn = rootView.findViewById(R.id.mainMapExtendBtn);
         mainMapExtendBtn.bringToFront();

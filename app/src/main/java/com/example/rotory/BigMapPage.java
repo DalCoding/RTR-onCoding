@@ -1,6 +1,24 @@
+<<<<<<< HEAD
 
 package com.example.rotory;
 
+=======
+<<<<<<< HEAD
+
+package com.example.rotory;
+
+import android.os.Bundle;
+import android.os.Handler;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+=======
+package com.example.rotory;
+
+>>>>>>> 1e57c27aace6b28417c22caf7e357564c0b206ad
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -19,14 +37,22 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+<<<<<<< HEAD
 
+=======
+>>>>>>> 9e88d5ab87ffd04bf9157d143ea44986e3fb0210
+>>>>>>> 1e57c27aace6b28417c22caf7e357564c0b206ad
 
 import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
 import net.daum.mf.map.api.MapView;
 
 
+<<<<<<< HEAD
 
+=======
+<<<<<<< HEAD
+>>>>>>> 1e57c27aace6b28417c22caf7e357564c0b206ad
 public class BigMapPage extends AppCompatActivity{} /*implements MapView.CurrentLocationEventListener, MapView.MapViewEventListener, MapView.POIItemEventListener {
 =======
 public class BigMapPage extends AppCompatActivity {
@@ -351,14 +377,35 @@ public class BigMapPage extends Fragment {
         *//**//*MapView bigMapView = new MapView(getActivity());
         ViewGroup mapView = (ViewGroup) rootView.findViewById(R.id.bigMapLayout);
         mapView.addView(bigMapView);*//**//*
+<<<<<<< HEAD
          9e88d5ab87ffd04bf9157d143ea44986e3fb0210
+=======
+>>>>>>> 9e88d5ab87ffd04bf9157d143ea44986e3fb0210
+>>>>>>> 1e57c27aace6b28417c22caf7e357564c0b206ad
 
         Button thisBigMapBtn = rootView.findViewById(R.id.thisBigMapBtn);
         ImageButton bigMapMyLocationBtn = rootView.findViewById(R.id.bigMapMyLocationBtn);
 
 
+<<<<<<< HEAD
 
     }
 }
 
 */
+=======
+<<<<<<< HEAD
+    }
+}
+<<<<<<< HEAD
+>>>>>>> c8ecf8eaa69418ac6e9f1ab02ca32497e9f61398
+=======
+>>>>>>> c8ecf8eaa69418ac6e9f1ab02ca32497e9f61398
+*/
+=======
+    }*//*
+}*/
+    }
+}
+>>>>>>> 9e88d5ab87ffd04bf9157d143ea44986e3fb0210
+>>>>>>> 1e57c27aace6b28417c22caf7e357564c0b206ad

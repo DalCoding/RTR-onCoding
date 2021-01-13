@@ -12,12 +12,28 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 
+<<<<<<< HEAD
 import com.example.rotory.account.LogInActivity;
 import androidx.fragment.app.Fragment;
 
 import com.example.rotory.Interface.OnTabItemSelectedListener;
 
 import com.example.rotory.account.SignUpActivity;
+=======
+<<<<<<< HEAD
+import com.example.rotory.account.LogInActivity;
+import com.example.rotory.account.LogInActivity_NA;
+=======
+import com.example.rotory.Account.LogInActivity;
+>>>>>>> 9e88d5ab87ffd04bf9157d143ea44986e3fb0210
+
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
+import com.example.rotory.Interface.OnTabItemSelectedListener;
+
+>>>>>>> 1e57c27aace6b28417c22caf7e357564c0b206ad
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.appbar.AppBarLayout;
@@ -37,10 +53,18 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
 
     MainPage mainPage;
     ThemePage themePage;
+<<<<<<< HEAD
 
     BigMapPage bigMapPage;
 
+=======
+<<<<<<< HEAD
+   BigMapPage bigMapPage;
+=======
+>>>>>>> 1e57c27aace6b28417c22caf7e357564c0b206ad
     SignUpActivity signUpActivity;
+    BigMapPage bigMapPage;
+>>>>>>> 9e88d5ab87ffd04bf9157d143ea44986e3fb0210
 
 
     RelativeLayout bottomNavUnderbarHome;
@@ -57,8 +81,13 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+<<<<<<< HEAD
         if (requestCode == loginCode) {
             if (resultCode == RESULT_OK) {
+=======
+        if (requestCode == loginCode){
+            if(resultCode == RESULT_OK){
+>>>>>>> 1e57c27aace6b28417c22caf7e357564c0b206ad
                 String tokenInfo = data.getStringExtra("token");
                 Log.d(TAG, "onActivityResult, token 받아옴 : " + tokenInfo);
                 logIn(tokenInfo);
@@ -70,8 +99,13 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
         mAuth.signInWithCustomToken(tokenInfo).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
+<<<<<<< HEAD
                 if (task.isSuccessful()) {
                     Log.d(TAG, "signInWithCustomToken:success");
+=======
+                if (task.isSuccessful()){
+                    Log.d(TAG,"signInWithCustomToken:success");
+>>>>>>> 1e57c27aace6b28417c22caf7e357564c0b206ad
 
                 }
             }
@@ -85,6 +119,7 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
 
         FirebaseUser user = mAuth.getInstance().getCurrentUser();
 
+<<<<<<< HEAD
         if (user != null) {
             String checkLogIN = user.getEmail();
             Log.d(TAG, "로그인 정보 유저네임 : " + checkLogIN);
@@ -93,6 +128,16 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
             Log.d(TAG, "로그인 실패");
             isSignIn = false;
         }
+=======
+       if (user != null){
+           String checkLogIN = user.getEmail();
+           Log.d(TAG,"로그인 정보 유저네임 : " + checkLogIN);
+           isSignIn = true;
+       }else{
+           Log.d(TAG,"로그인 실패" );
+           isSignIn = false;
+       }
+>>>>>>> 1e57c27aace6b28417c22caf7e357564c0b206ad
 
 
         appBarLayout = findViewById(R.id.appBarLayout);
@@ -105,6 +150,14 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
         themePage = new ThemePage();
 
         bigMapPage = new BigMapPage();
+<<<<<<< HEAD
+=======
+
+
+        bigMapPage = new BigMapPage();
+
+
+>>>>>>> 1e57c27aace6b28417c22caf7e357564c0b206ad
 
         getSupportFragmentManager().beginTransaction().replace(R.id.container, mainPage).commit();
 
@@ -112,7 +165,11 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
         bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+<<<<<<< HEAD
                 switch (item.getItemId()) {
+=======
+                switch (item.getItemId()){
+>>>>>>> 1e57c27aace6b28417c22caf7e357564c0b206ad
                     case R.id.home:
                         getSupportFragmentManager().beginTransaction().replace(R.id.container, mainPage).commit();
                         setTabUnderBar(0);
@@ -124,7 +181,11 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
                             getSupportFragmentManager().beginTransaction().replace(R.id.container, themePage).commit();
                             setTabUnderBar(1);
                         } else {
+<<<<<<< HEAD
                             Intent LogInIntent = new Intent(getApplicationContext(), LogInActivity.class);
+=======
+                            Intent LogInIntent= new Intent(getApplicationContext(), LogInActivity.class);
+>>>>>>> 1e57c27aace6b28417c22caf7e357564c0b206ad
                             startActivityForResult(LogInIntent, loginCode);
                             bottomNavigation.setVisibility(View.GONE);
 
@@ -136,7 +197,11 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
                             getSupportFragmentManager().beginTransaction().replace(R.id.container, themePage).commit();
                             setTabUnderBar(2);
                         } else {
+<<<<<<< HEAD
                             Intent LogInIntent = new Intent(getApplicationContext(), LogInActivity.class);
+=======
+                            Intent LogInIntent= new Intent(getApplicationContext(), LogInActivity.class);
+>>>>>>> 1e57c27aace6b28417c22caf7e357564c0b206ad
                             startActivityForResult(LogInIntent, loginCode);
                             bottomNavigation.setVisibility(View.GONE);
                         }
@@ -183,10 +248,18 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
     }
 }
 
+<<<<<<< HEAD
 
 
 
 
+=======
+<<<<<<< HEAD
+
+
+    public void replaceFragment(Fragment fragment) {
+=======
+>>>>>>> 1e57c27aace6b28417c22caf7e357564c0b206ad
     /*public void replaceFragment(Fragment fragment) {
 
 >>>>>>> 9e88d5ab87ffd04bf9157d143ea44986e3fb0210
@@ -197,7 +270,18 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
         }
+<<<<<<< HEAD
 
     }
 
     }*/
+=======
+<<<<<<< HEAD
+    }
+
+
+=======
+    }*/
+>>>>>>> 9e88d5ab87ffd04bf9157d143ea44986e3fb0210
+}
+>>>>>>> 1e57c27aace6b28417c22caf7e357564c0b206ad
