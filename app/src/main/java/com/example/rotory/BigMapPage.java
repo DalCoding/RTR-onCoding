@@ -2,6 +2,7 @@ package com.example.rotory;
 
 import android.os.Bundle;
 <<<<<<< HEAD
+<<<<<<< HEAD
 import android.os.Handler;
 import android.view.View;
 import android.view.ViewGroup;
@@ -219,6 +220,8 @@ public class BigMapPage extends AppCompatActivity implements MapView.CurrentLoca
 
 
 =======
+=======
+>>>>>>> c8ecf8eaa69418ac6e9f1ab02ca32497e9f61398
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -263,4 +266,7 @@ public class BigMapPage extends Fragment {
 
     }
 }
+<<<<<<< HEAD
+>>>>>>> c8ecf8eaa69418ac6e9f1ab02ca32497e9f61398
+=======
 >>>>>>> c8ecf8eaa69418ac6e9f1ab02ca32497e9f61398
