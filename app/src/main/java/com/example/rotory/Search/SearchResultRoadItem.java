@@ -9,6 +9,7 @@ public class SearchResultRoadItem {
     String likedIcon;
     String liked;
 
+
     public SearchResultRoadItem() {
 
     }
