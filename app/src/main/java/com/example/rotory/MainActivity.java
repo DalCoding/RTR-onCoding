@@ -144,8 +144,8 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
 
 }
 
+    /*public void replaceFragment(Fragment fragment) {
 
-    public void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         if (!fragment.isAdded()) {
@@ -153,6 +153,5 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
         }
-    }
-
+    }*/
 }

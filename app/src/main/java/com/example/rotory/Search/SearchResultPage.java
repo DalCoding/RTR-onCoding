@@ -1,40 +1,23 @@
-package com.example.rotory;
+package com.example.rotory.Search;
 
 import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Adapter;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.ImageButton;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.MergeAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.rotory.Adapter.ContentsAdapter;
-import com.example.rotory.Adapter.SearchResultAdapter;
-import com.example.rotory.Interface.OnContentsItemClickListener;
-import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
-import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.Query;
+import com.example.rotory.R;
+import com.google.api.Distribution;
 
 import java.util.ArrayList;
-
-import de.hdodenhof.circleimageview.CircleImageView;
+import java.util.HashMap;
 
 public class SearchResultPage extends AppCompatActivity {
-    FirebaseFirestore db;
-    FirestoreRecyclerAdapter searchResultAdapter;
-    RecyclerView searchResultList;
 
 
     @Override
@@ -42,25 +25,29 @@ public class SearchResultPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search_result_page);
 
-        db =FirebaseFirestore.getInstance();
 
-        searchResultList = findViewById(R.id.searchResultList);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        searchResultList.setLayoutManager(layoutManager);
 
-        getSearchResultList();
+
+
 
     }
 
-    private void getSearchResultList() {
+}
+
+
+
+
+
+
+    /*private void getSearchResultList() {
         Query query = db.collection("contents");
 
-        FirestoreRecyclerOptions<SearchResultItem> items = new FirestoreRecyclerOptions.Builder<SearchResultItem>()
-                .setQuery(query, SearchResultItem.class)
+        FirestoreRecyclerOptions<SearchResultStoryItem> items = new FirestoreRecyclerOptions.Builder<SearchResultStoryItem>()
+                .setQuery(query, SearchResultStoryItem.class)
                 .build();
-        searchResultAdapter = new FirestoreRecyclerAdapter<SearchResultItem, ViewHolder>(items) {
+        searchResultAdapter = new FirestoreRecyclerAdapter<SearchResultStoryItem, ViewHolder>(items) {
             @Override
-            public void onBindViewHolder(ViewHolder viewHolder, int position, SearchResultItem model) {
+            public void onBindViewHolder(ViewHolder viewHolder, int position, SearchResultStoryItem model) {
                 //viewHolder.searchResultUserLevel.setImageResource(Integer.parseInt(model.getUserLevelImage()));
                 //viewHolder.searchResultListImg.setImageResource(Integer.parseInt(model.getTitleImage()));
                 //viewHolder.searchResultFavoriteIcon.setImageResource(Integer.parseInt(model.getLikedImage()));
@@ -89,9 +76,9 @@ public class SearchResultPage extends AppCompatActivity {
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        /*ImageView searchResultUserLevel;
+        *//*ImageView searchResultUserLevel;
         ImageView searchResultListImg;
-        ImageView searchResultFavoriteIcon;*/
+        ImageView searchResultFavoriteIcon;*//*
         TextView searchResultUserName;
         //TextView searchResultListType;
         TextView searchResultListTitle;
@@ -102,9 +89,9 @@ public class SearchResultPage extends AppCompatActivity {
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            /*searchResultUserLevel = itemView.findViewById(R.id.searchResultUserLevel);
+            *//*searchResultUserLevel = itemView.findViewById(R.id.searchResultUserLevel);
             searchResultListImg = itemView.findViewById(R.id.searchResultListImg);
-            searchResultFavoriteIcon = itemView.findViewById(R.id.searchResultFavoriteIcon);*/
+            searchResultFavoriteIcon = itemView.findViewById(R.id.searchResultFavoriteIcon);*//*
             searchResultUserName = itemView.findViewById(R.id.searchResultUserName);
             //searchResultListType = itemView.findViewById(R.id.searchResultListType);
             searchResultListTitle = itemView.findViewById(R.id.searchResultListTitle);
@@ -124,4 +111,4 @@ public class SearchResultPage extends AppCompatActivity {
         super.onStop();
         searchResultAdapter.stopListening();
     }
-}
+}*/

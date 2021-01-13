@@ -1,5 +1,6 @@
 package com.example.rotory;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,13 +12,11 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import net.daum.mf.map.api.MapPOIItem;
+import net.daum.mf.map.api.MapPoint;
 import net.daum.mf.map.api.MapView;
 
 public class MainPage extends Fragment {
-
-    public static MainPage newInstance() {
-        return new MainPage();
-    }
 
     @Nullable
     @Override
@@ -30,17 +29,19 @@ public class MainPage extends Fragment {
 
     private void initUI(ViewGroup rootView) {
 
-        MapView mapView = new MapView(getContext());
+        /*MapView mapView = new MapView(getContext());
         ViewGroup mapViewContainer = (ViewGroup) rootView.findViewById(R.id.mainMapLayout);
         mapViewContainer.addView(mapView);
 
+        mapView.setMapCenterPointAndZoomLevel(MapPoint.mapPointWithGeoCoord(37.541258, 126.838193), 2, true);*/
 
         ImageButton mainMapExtendBtn = rootView.findViewById(R.id.mainMapExtendBtn);
         mainMapExtendBtn.bringToFront();
         mainMapExtendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((MainActivity)getActivity()).replaceFragment(BigMapPage.newInstance());
+                Intent intent = new Intent (getActivity(), BigMapPage.class);
+                startActivity(intent);
             }
         });
 
