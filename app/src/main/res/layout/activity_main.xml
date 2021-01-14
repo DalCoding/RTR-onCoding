@@ -166,15 +166,15 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="60dp"
         >
 
         <FrameLayout
             android:id="@+id/container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="60dp"
             android:background="#FFFFFF"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+           >
 
         </FrameLayout>
     </androidx.core.widget.NestedScrollView>
@@ -194,7 +194,7 @@
         app:menu="@menu/menu_bottom">
 
         <RelativeLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom">
 

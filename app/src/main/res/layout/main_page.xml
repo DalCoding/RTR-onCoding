@@ -169,10 +169,12 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
         android:layout_marginRight="20dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="30dp"
+        android:adjustViewBounds="false"
+        android:background="@drawable/ripple_custom"
+        android:baselineAlignBottom="true"
         android:clickable="true"
         app:backgroundTint="#EFEBDA"
-        android:background="@drawable/ripple_custom"
-        app:srcCompat="@drawable/add_icon"/>
+        app:srcCompat="@drawable/add_icon" />
 
 </RelativeLayout>

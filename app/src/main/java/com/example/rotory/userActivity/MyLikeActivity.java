@@ -18,7 +18,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.rotory.BigMapPage;
-import com.example.rotory.MainActivity;
 import com.example.rotory.MainPage;
 import com.example.rotory.MyPage;
 import com.example.rotory.R;
@@ -35,7 +34,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
-public class MyFavoriteActivity  extends AppCompatActivity  {
+public class MyLikeActivity extends AppCompatActivity  {
     public static final int loginCode = 3000;
     final static String TAG = "MyFavoriteActivity";
 
@@ -94,8 +93,8 @@ public class MyFavoriteActivity  extends AppCompatActivity  {
                 mainPage, themePage);
 
 
-    Query query = db.collection("person")
-                .orderBy("signUpDate", Query.Direction.ASCENDING);
+        Query query = db.collection("person")
+                .orderBy("signUpDate", Query.Direction.DESCENDING);
 
         FirestoreRecyclerOptions<Person> options = new FirestoreRecyclerOptions.Builder<Person>()
                 .setQuery(query, Person.class)
@@ -197,7 +196,7 @@ public class MyFavoriteActivity  extends AppCompatActivity  {
         bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                Intent LogInIntent = new Intent(MyFavoriteActivity.this, LogInActivity.class);
+                Intent LogInIntent = new Intent(MyLikeActivity.this, LogInActivity.class);
                 switch (item.getItemId()) {
                     case R.id.home:
                         startActivityForResult(LogInIntent, loginCode);
@@ -218,7 +217,7 @@ public class MyFavoriteActivity  extends AppCompatActivity  {
                         return true;
                     case R.id.user:
                         if (isSignIn) {
-                            Intent myPageIntent = new Intent(MyFavoriteActivity.this, MyPage.class);
+                            Intent myPageIntent = new Intent(MyLikeActivity.this, MyPage.class);
                             startActivity(myPageIntent);
                             setTabUnderBar(2);
                         } else {

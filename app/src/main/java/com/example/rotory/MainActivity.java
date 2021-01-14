@@ -8,10 +8,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 
@@ -20,28 +18,18 @@ import androidx.fragment.app.Fragment;
 import com.example.rotory.Interface.OnTabItemSelectedListener;
 
 import com.example.rotory.account.SignUpActivity;
-import com.example.rotory.account.LogInActivity_NA;
 import com.example.rotory.account.LogInActivity;
-
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-
-import com.example.rotory.Interface.OnTabItemSelectedListener;
 
 
 import com.example.rotory.userActivity.MyFavoriteActivity;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-public class MainActivity extends AppCompatActivity implements OnTabItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements OnTabItemSelectedListener{
 
     public static final String TAG = "MainActivity";
     public static final int loginCode = 3000;
@@ -66,34 +54,7 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
     Boolean isSignIn = false;
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
-   /* @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-                if (requestCode == loginCode) {
-                    if (resultCode == RESULT_OK) {
-                        String tokenInfo = data.getStringExtra("token");
-                        Log.d(TAG, "onActivityResult, token 받아옴 : " + tokenInfo);
-                        logIn(tokenInfo);
-                    }
 
-        }
-    }
-
-    private void logIn(String tokenInfo) {
-        mAuth.signInWithCustomToken(tokenInfo).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()) {
-                    Log.d(TAG, "signInWithCustomToken:success");
-                    if (task.isSuccessful()) {
-                        Log.d(TAG, "signInWithCustomToken:success");
-
-                    }
-                }
-            }
-        });
-    }
-*/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -109,6 +70,7 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
             Log.d(TAG, "로그인 실패");
             isSignIn = false;
         }
+
 
         // 아래부분 이후 옮김 -> 로그아웃 여부 실험!
         Button mainAlarmBtn = findViewById(R.id.mainAlarmBtn);
@@ -131,14 +93,18 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
         pageTitleTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, MyFavoriteActivity.class);
-                startActivity(intent);
+                if (user != null) {
+                    Intent intent = new Intent(MainActivity.this, MyFavoriteActivity.class);
+                    startActivity(intent);
+                }else{
+                    Intent intent = new Intent(MainActivity.this, LogInActivity.class);
+                    startActivity(intent);
+                }
 
             }
 
         });
         appBarLayout = findViewById(R.id.appBarLayout);
-        appBarLayout.setVisibility(View.VISIBLE);
         bottomNavUnderbarHome = findViewById(R.id.bottomNavUnderbarHome);
         bottomNavUnderbarTheme = findViewById(R.id.bottomNavUnderbarTheme);
         bottomNavUnderbarUser = findViewById(R.id.bottomNavUnderbarUser);
@@ -152,6 +118,25 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
         getSupportFragmentManager().beginTransaction().replace(R.id.container, mainPage).commit();
 
         bottomNavigation = findViewById(R.id.bottom_appBar);
+        setBottomNavigation(bottomNavigation, isSignIn, loginCode,
+                mainPage, themePage);
+
+    }
+
+
+    @Override
+    public void OnTabSelected(int position) {
+        if (position == 0) {
+            bottomNavigation.setSelectedItemId(R.id.home);
+        } else if (position == 1) {
+            bottomNavigation.setSelectedItemId(R.id.theme);
+        } else if (position == 2) {
+            bottomNavigation.setSelectedItemId(R.id.user);
+        }
+    }
+
+
+    public void setBottomNavigation(BottomNavigationView bottomNavigation, boolean isSignIn, int loginCode, MainPage mainPage, ThemePage themePage) {
         bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -170,14 +155,13 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
                             Intent LogInIntent = new Intent(getApplicationContext(), LogInActivity.class);
                             startActivityForResult(LogInIntent, loginCode);
                             bottomNavigation.setVisibility(View.GONE);
-
                         }
 
                         return true;
                     case R.id.user:
                         if (isSignIn) {
-                          Intent myPageIntent = new Intent(MainActivity.this, MyPage.class);
-                          startActivity(myPageIntent);
+                            Intent myPageIntent = new Intent(MainActivity.this, MyPage.class);
+                            startActivity(myPageIntent);
                             setTabUnderBar(2);
                         } else {
                             Intent LogInIntent = new Intent(getApplicationContext(), LogInActivity.class);
@@ -191,18 +175,6 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
                 return false;
             }
         });
-    }
-
-
-    @Override
-    public void OnTabSelected(int position) {
-        if (position == 0) {
-            bottomNavigation.setSelectedItemId(R.id.home);
-        } else if (position == 1) {
-            bottomNavigation.setSelectedItemId(R.id.theme);
-        } else if (position == 2) {
-            bottomNavigation.setSelectedItemId(R.id.user);
-        }
     }
 
     public void setTabUnderBar(int position) {
@@ -223,7 +195,6 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
             bottomNavUnderbarUser.setVisibility(View.VISIBLE);
         }
     }
-
 
     public void replaceFragment(Fragment fragment) {
         /*FragmentManager fragmentManager = getSupportFragmentManager();
@@ -253,5 +224,33 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
             }
         });
     }*/
+       /* @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+                if (requestCode == loginCode) {
+                    if (resultCode == RESULT_OK) {
+                        String tokenInfo = data.getStringExtra("token");
+                        Log.d(TAG, "onActivityResult, token 받아옴 : " + tokenInfo);
+                        logIn(tokenInfo);
+                    }
+
+        }
+    }
+
+    private void logIn(String tokenInfo) {
+        mAuth.signInWithCustomToken(tokenInfo).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+                    Log.d(TAG, "signInWithCustomToken:success");
+                    if (task.isSuccessful()) {
+                        Log.d(TAG, "signInWithCustomToken:success");
+
+                    }
+                }
+            }
+        });
+    }
+*/
 }
 

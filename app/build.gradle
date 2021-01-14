@@ -55,10 +55,10 @@ dependencies {
     implementation 'com.google.android.gms:play-services-base:17.5.0'
     implementation files('libs/libDaumMapAndroid.jar')
     implementation 'androidx.recyclerview:recyclerview:1.2.0-alpha02'
-<<<<<<< HEAD
+
     implementation "androidx.core:core-ktx:+"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-=======
+
     implementation 'com.google.firebase:firebase-analytics-ktx'
 
 
@@ -76,8 +76,6 @@ dependencies {
 
 
 
-
->>>>>>> 55e62ee925272115b8e26acfa40577a019017fd8
 
 }
 repositories {
