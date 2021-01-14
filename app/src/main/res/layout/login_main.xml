@@ -11,11 +11,13 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_centerVertical="false"
         android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginTop="120dp"
             android:background="#FFFFFF"
             android:orientation="vertical">
 
@@ -28,11 +30,11 @@
 
                 <ImageView
                     android:id="@+id/login_logo"
-                    android:layout_width="250dp"
-                    android:layout_height="250dp"
+                    android:layout_width="350dp"
+                    android:layout_height="200dp"
                     android:layout_gravity="center|center_horizontal|center_vertical"
-                    android:layout_marginTop="56dp"
-                    app:srcCompat="@drawable/dalcodinglogo" />
+                    android:layout_marginBottom="10dp"
+                    app:srcCompat="@drawable/daramwithcity4" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -81,7 +83,8 @@
                     android:layout_marginBottom="10dp"
                     android:padding="5dp"
                     android:text="로그인 상태 유지"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:visibility="gone" />
 
 
                 <Button
@@ -89,7 +92,10 @@
                     android:layout_width="252dp"
                     android:layout_height="50dp"
                     android:layout_gravity="center"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp"
                     android:background="@drawable/button_drawable"
+                    android:elevation="10dp"
                     android:gravity="center_horizontal"
                     android:text="로그인"
                     android:textColor="#000000"

@@ -35,16 +35,16 @@ public class BigMapPage extends AppCompatActivity {
     protected void onCreate(@NonNull Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.big_map_page);
+/*
+        //MapView mapView = new MapView(this);
 
-        /*MapView mapView = new MapView(this);
-
-        ViewGroup mapViewContainer = (ViewGroup) findViewById(R.id.writeMapContainer);
-        mapViewContainer.addView(mapView);
+      *//*  ViewGroup mapViewContainer = (ViewGroup) findViewById(R.id.writeMapContainer);
+        mapViewContainer.addView(mapView);*//*
 
         // 기본마커 설정
 
-        MapPOIItem marker = new MapPOIItem();
-        setContentView(R.layout.big_map_page);*/
+        //MapPOIItem marker = new MapPOIItem();
+        setContentView(R.layout.big_map_page);
 
         MapView mapView = new MapView(this);
         ViewGroup bigMapLayout = (ViewGroup) findViewById(R.id.bigMapLayout);
@@ -67,7 +67,7 @@ public class BigMapPage extends AppCompatActivity {
 
         Button thisBigMapBtn = findViewById(R.id.thisBigMapBtn);
         ImageButton bigMapMyLocationBtn = findViewById(R.id.bigMapMyLocationBtn);
-
+*/
     }
 }
 

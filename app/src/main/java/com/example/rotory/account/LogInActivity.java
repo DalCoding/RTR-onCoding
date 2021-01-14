@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,6 +20,7 @@ import com.example.rotory.R;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -33,8 +36,11 @@ public class LogInActivity extends AppCompatActivity  {
     private EditText login_pw_edittext;
     private Button login_button;
     private TextView login_join;
+
+    CheckBox login_auto;
     String logInId;
     String logInPw;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -86,15 +92,7 @@ public class LogInActivity extends AppCompatActivity  {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null){
-                   /*
-                   //MainActivity로 넘기는 배열, 로그인 정보 담고 있음
-                    ArrayList<String> RCInfo = new ArrayList<>();
-                    RCInfo.add(0,loginMainBinding.loginIdEdittext.getText().toString());
-                    RCInfo.add(1,loginMainBinding.loginPwEdittext.getText().toString());
-                    Intent intent = new Intent(LogInActivity.this, MainActivity.class);
-                    intent.putExtra("RcInfo", RCInfo);
-                    */
-                    user.getIdToken(true).addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                    /*user.getIdToken(true).addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
                         @Override
                         public void onComplete(@NonNull Task<GetTokenResult> task) {
                             if (task.isSuccessful()) {
@@ -107,8 +105,8 @@ public class LogInActivity extends AppCompatActivity  {
                             }
                         }
                     });
+*/                 moveMainPage();
 
-                    finish();
                 }else {
                     Log.d(TAG,"AuthStateChangeListener, 유저 불러오기 실패");
                 }
@@ -156,6 +154,10 @@ public class LogInActivity extends AppCompatActivity  {
         Intent intent = new Intent(LogInActivity.this, SignUpActivity.class);
         startActivity(intent);
 
+    }
+    private  void moveMainPage(){
+        Intent intent = new Intent(LogInActivity.this, MainActivity.class);
+        startActivity(intent);
     }
 
 

@@ -1,7 +1,12 @@
 package com.example.rotory.VO;
 
+import com.google.firebase.firestore.ServerTimestamp;
+
+import java.util.Date;
+
 public class Person {
-    String	person_id;
+
+    String	Uid;
     String	userId;
     String	password;
     String	userName;
@@ -10,13 +15,14 @@ public class Person {
     String	userImage;
     String userLevel;
     String userLevelImage;
+    String  signUpDate;
 
     public Person() {
     }
 
     public Person(String person_id, String userId, String password, String userName, String mobile,
-                  String email, String userImage, String userLevel, String userLevelImage) {
-        this.person_id = person_id;
+                  String email, String userImage, String userLevel, String userLevelImage, String  signUpDate) {
+        this.Uid = person_id;
         this.userId = userId;
         this.password = password;
         this.userName = userName;
@@ -25,16 +31,16 @@ public class Person {
         this.userImage = userImage;
         this.userLevel = userLevel;
         this.userLevelImage = userLevelImage;
+        this.signUpDate = signUpDate;
     }
 
 
-    public String getPerson_id() {
-
-        return person_id;
+    public String getUid() {
+        return Uid;
     }
 
-    public void setPerson_id(String person_id) {
-        this.person_id = person_id;
+    public void setUid(String uid) {
+        Uid = uid;
     }
 
     public String getUserId() {
@@ -99,5 +105,13 @@ public class Person {
 
     public void setUserLevelImage(String userLevelImage) {
         this.userLevelImage = userLevelImage;
+    }
+
+    public String  getSignUpDate() {
+        return signUpDate;
+    }
+
+    public void setSignUpDate(String  signUpDate) {
+        this.signUpDate = signUpDate;
     }
 }

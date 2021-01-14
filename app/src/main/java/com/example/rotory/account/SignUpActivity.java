@@ -3,6 +3,9 @@ package com.example.rotory.account;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -35,6 +38,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.regex.Pattern;
@@ -71,6 +77,7 @@ public class SignUpActivity extends AppCompatActivity {
     String userName;
     String mobile;
     String email;
+    String signUpDate = new Date().toString();
 
     Person persons = new Person();
     boolean checkUserName = true;
@@ -218,21 +225,22 @@ public class SignUpActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
                             Log.d(TAG, "등록버튼" + userId + ", " + password);
-                            String userId = user.getEmail();
-                            String uid = user.getUid();
+                            FirebaseUser users= mAuth.getCurrentUser();
+                            String userId = users.getEmail();
+                            String uid = users.getUid();
                             UserProfileChangeRequest profileUpdate = new UserProfileChangeRequest.Builder()
                                     .setDisplayName(UserName)
                                     .build();
-                            user.updateProfile(profileUpdate)
+                            users.updateProfile(profileUpdate)
                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if(task.isSuccessful())
                                                 Log.d(TAG, "user profile update");
-                                            saveUserAccount(userId, uid, persons, user);
-                                            finish();
                                         }
                                     });
+                            saveUserAccount(userId, uid, persons, users);
+                            goMain();
 
                         }else {
                             Log.e(TAG, "signUp Failed : " + userId + ", " + password + ","
@@ -296,23 +304,30 @@ public class SignUpActivity extends AppCompatActivity {
 
 
     public Person setNewAccount(Person persons){
-    persons.setUserId(userId);
-    persons.setPassword(pw);
-    persons.setMobile(mobile);
-    persons.setUserImage(String.valueOf(R.drawable.squirrel));
-    persons.setEmail(email);
-    persons.setUserLevel("아기다람쥐");
-    persons.setUserName(userName);
-    persons.setUserLevelImage(String.valueOf(R.drawable.level1));
-    return persons;
+        Uri userImageUri = Uri.parse("android.resource://com.example.rotory/drawable/squirrel");
+        Uri userLevelImageUri = Uri.parse("android.resource://com.example.rotory/drawable/level1");
+
+        persons.setUserId(userId);
+        persons.setPassword(pw);
+        persons.setMobile(mobile);
+        persons.setUserImage(userImageUri.toString());
+        persons.setEmail(email);
+        persons.setUserLevel("아기다람쥐");
+        persons.setUserLevelImage(userLevelImageUri.toString());
+        persons.setUserName(userName);
+        persons.setSignUpDate(signUpDate);
+        return persons;
+
+
     }
 
 
 
     private void saveUserAccount(String userId, String uid, Person persons, FirebaseUser user) {
         // 이후에 계정으로 저장과 계정 정보 수정으로 나누어서 정리, 합침
+
         persons.setUserId(userId);
-        persons.setPerson_id(uid);
+        persons.setUid(uid);
 
         HashMap<Object, String> person = new HashMap<>();
         person.put("userEmail", persons.getEmail());
@@ -320,11 +335,11 @@ public class SignUpActivity extends AppCompatActivity {
         person.put("userName", persons.getUserName());
         person.put("password", persons.getPassword());
         person.put("mobile", persons.getMobile());
-        person.put("uid", persons.getPerson_id());
+        person.put("uid", persons.getUid());
         person.put("userLevel", persons.getUserLevel());
         person.put("userImage", persons.getUserImage());
         person.put("userLevelImage", persons.getUserLevelImage());
-        person.put("signUpDate", new Date().toString());
+        person.put("signUpDate", persons.getSignUpDate());
         //Date (그날날짜) 받아와서 다시저장
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();

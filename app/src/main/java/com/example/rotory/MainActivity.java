@@ -5,7 +5,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,6 +29,8 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.rotory.Interface.OnTabItemSelectedListener;
 
+
+import com.example.rotory.userActivity.MyFavoriteActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.appbar.AppBarLayout;
@@ -59,21 +64,18 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
     AppBarLayout appBarLayout;
     BottomNavigationView bottomNavigation;
     Boolean isSignIn = false;
-    FirebaseAuth mAuth;
+    FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
-    @Override
+   /* @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == loginCode) {
-            if (resultCode == RESULT_OK) {
                 if (requestCode == loginCode) {
                     if (resultCode == RESULT_OK) {
                         String tokenInfo = data.getStringExtra("token");
                         Log.d(TAG, "onActivityResult, token 받아옴 : " + tokenInfo);
                         logIn(tokenInfo);
                     }
-                }
-            }
+
         }
     }
 
@@ -91,15 +93,13 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
             }
         });
     }
-
-
-
+*/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        FirebaseUser user = mAuth.getInstance().getCurrentUser();
+        FirebaseUser user = mAuth.getCurrentUser();
 
         if (user != null) {
             String checkLogIN = user.getEmail();
@@ -109,16 +109,36 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
             Log.d(TAG, "로그인 실패");
             isSignIn = false;
         }
-       if (user != null){
-           String checkLogIN = user.getEmail();
-           Log.d(TAG,"로그인 정보 유저네임 : " + checkLogIN);
-           isSignIn = true;
-       }else{
-           Log.d(TAG,"로그인 실패" );
-           isSignIn = false;
-       }
 
+        // 아래부분 이후 옮김 -> 로그아웃 여부 실험!
+        Button mainAlarmBtn = findViewById(R.id.mainAlarmBtn);
+        mainAlarmBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (user != null){
+                    mAuth.signOut();
+                    Log.d(TAG, "로그아웃");
+                    Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                    startActivity(intent);
+                }
+                else {
+
+                }
+            }
+        });
+
+        TextView pageTitleTextView = findViewById(R.id.pageTitleTextView);
+        pageTitleTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, MyFavoriteActivity.class);
+                startActivity(intent);
+
+            }
+
+        });
         appBarLayout = findViewById(R.id.appBarLayout);
+        appBarLayout.setVisibility(View.VISIBLE);
         bottomNavUnderbarHome = findViewById(R.id.bottomNavUnderbarHome);
         bottomNavUnderbarTheme = findViewById(R.id.bottomNavUnderbarTheme);
         bottomNavUnderbarUser = findViewById(R.id.bottomNavUnderbarUser);
@@ -156,7 +176,8 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
                         return true;
                     case R.id.user:
                         if (isSignIn) {
-                            getSupportFragmentManager().beginTransaction().replace(R.id.container, themePage).commit();
+                          Intent myPageIntent = new Intent(MainActivity.this, MyPage.class);
+                          startActivity(myPageIntent);
                             setTabUnderBar(2);
                         } else {
                             Intent LogInIntent = new Intent(getApplicationContext(), LogInActivity.class);
@@ -212,5 +233,25 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();*/
         }
+
+  /*  private void reload() {
+        mAuth.getCurrentUser().reload().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    mAuth.getCurrentUser();
+                    Toast.makeText(getApplicationContext(),
+                            "Reload successful!",
+                            Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, "reload 후 로그인 정보" + mAuth.getCurrentUser().getEmail());
+                } else {
+                    Log.e(TAG, "reload", task.getException());
+                    Toast.makeText(getApplicationContext(),
+                            "Failed to reload user.",
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }*/
 }
 

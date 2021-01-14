@@ -19,6 +19,7 @@ import net.daum.mf.map.api.MapView;
 
 public class MainPage extends Fragment {
 
+
     public static MainPage newInstance() {
         return new MainPage();
     }
@@ -33,6 +34,7 @@ public class MainPage extends Fragment {
     }
 
     private void initUI(ViewGroup rootView) {
+
 
 
 

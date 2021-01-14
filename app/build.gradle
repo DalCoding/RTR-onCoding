@@ -2,13 +2,11 @@ plugins {
     id 'com.android.application'
     id 'com.google.gms.google-services'
 }
+apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
-    dataBinding{
-        enabled = true;
-    }
 
     defaultConfig {
         applicationId "com.example.rotory"
@@ -57,5 +55,11 @@ dependencies {
     implementation 'com.google.android.gms:play-services-base:17.5.0'
     implementation files('libs/libDaumMapAndroid.jar')
     implementation 'androidx.recyclerview:recyclerview:1.2.0-alpha02'
+    implementation "androidx.core:core-ktx:+"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
+}
+repositories {
+    maven { url 'https://dl.bintray.com/kotlin/kotlin-eap' }
+    mavenCentral()
 }
