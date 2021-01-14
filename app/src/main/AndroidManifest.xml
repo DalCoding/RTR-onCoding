@@ -17,7 +17,7 @@
         >
         <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />
         <meta-data android:name="com.kakao.sdk.AppKey" android:value="c8daee16562c01709b387cc817f8d6b7"/>
-        <activity android:name=".MainActivity">
+        <activity android:name=".BigMapPage">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -25,8 +25,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".MyPage"/>
-        <activity android:name=".signup.SignUpActivity"/>
-        <activity android:name=".SearchResultPage" />
+        <activity android:name=".account.SignUpActivity"/>
+        <activity android:name=".account.LogInActivity"/>
+
     </application>
 
 </manifest>
