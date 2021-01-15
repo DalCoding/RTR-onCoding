@@ -123,6 +123,19 @@
                     android:layout_marginLeft="5dp"
                     app:srcCompat="@drawable/box" />
 
+                <ImageButton
+                    android:id="@+id/writeStorySetDeleteImageBtn"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/delete_button"
+
+                    android:backgroundTint="#8C8B8B"
+                    app:backgroundTint="@empty" />
+
                 <Button
                     android:id="@+id/writeStorySetMainImageBtn"
                     android:layout_width="35dp"
@@ -134,7 +147,8 @@
                     android:layout_marginRight="10dp"
                     android:layout_marginBottom="10dp"
                     android:background="@drawable/mainimageset"
-                    app:backgroundTint="@empty" />
+                    app:backgroundTint="@empty"
+                    app:rippleColor="#FFFFFF" />
             </RelativeLayout>
 
             <RelativeLayout
