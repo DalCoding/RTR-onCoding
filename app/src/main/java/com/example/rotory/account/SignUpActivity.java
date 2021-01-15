@@ -21,6 +21,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.rotory.MainActivity;
 import com.example.rotory.R;
+import com.example.rotory.VO.AppConstruct;
 import com.example.rotory.VO.Person;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -32,24 +33,33 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 
 public class SignUpActivity extends AppCompatActivity {
-    //닉네임 중복검사 -> PreferenceManager가 실시간으로 잡힐수 있게하는 방법? 안되면 중복확인용 데이터 만들어서 바로 넣고 지우도록설정
+    //닉네임 중복검사 -> 진행중.. 과정중에 한번 브레이크가 걸려야 중복검사 가능.. 어떤식으로? 고민중... 0115
 
 
+    AppConstruct appConstruct;
     private static final String TAG = "SignUpActivity";
     private final String REGEX_PATTERN = "^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[$@$!%*#?&])[A-Za-z[0-9]$@$!%*#?&]{8,20}$";
     private final String REGEX_NUMBER = "^(?=.*[0-9])[0-9]{9,12}$";
@@ -72,7 +82,7 @@ public class SignUpActivity extends AppCompatActivity {
     TextView signin_mobile_check;
 
     String userId;
-    String pw ;
+    String pw;
     String pwCheck;
     String userName;
     String mobile;
@@ -81,6 +91,7 @@ public class SignUpActivity extends AppCompatActivity {
 
     Person persons = new Person();
     boolean checkUserName = true;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         SharedPreferences sharedPref = getSharedPreferences("person Document Id List", Context.MODE_PRIVATE);
@@ -89,12 +100,12 @@ public class SignUpActivity extends AppCompatActivity {
         setContentView(R.layout.sign_up_page);
         FirebaseUser user = mAuth.getCurrentUser();
 
-        String data = sharedPref.getString("#0", "");
+       /* String data = sharedPref.getString("#0", "");
         Log.d(TAG, "회원가입 시작 모든 데이터 삭제전 -> " + data);
         editor.clear();
         editor.commit();
 
-        Log.d(TAG, "회원가입 시작 모든 데이터 삭제? -> " + data);
+        Log.d(TAG, "회원가입 시작 모든 데이터 삭제? -> " + data);*/
 
         signin_id_edittext = findViewById(R.id.signin_id_edittext);
         signin_pw_edittext = findViewById(R.id.signin_pw_edittext);
@@ -113,7 +124,7 @@ public class SignUpActivity extends AppCompatActivity {
         signin_mobile_check = findViewById(R.id.signin_mobile_check);
         signin_mobile_check.setVisibility(View.GONE);
         signin_id_check = findViewById(R.id.signin_id_check);
-        signin_pwcheck_check = findViewById(R.id. signin_pwcheck_check);
+        signin_pwcheck_check = findViewById(R.id.signin_pwcheck_check);
 
         signUpTitlewithBtnTextView.setText("회원가입");
         signUpBackImageButton.setOnClickListener(new View.OnClickListener() {
@@ -140,7 +151,7 @@ public class SignUpActivity extends AppCompatActivity {
         });
 
         userId = signin_id_edittext.getText().toString().trim();
-        pw =signin_pw_edittext.getText().toString().trim();
+        pw = signin_pw_edittext.getText().toString().trim();
         pwCheck = signin_pwcheck_edittext.getText().toString().trim();
         userName = signin_nicname_edittext.getText().toString().trim();
         mobile = signin_mobile.getText().toString().trim();
@@ -159,12 +170,12 @@ public class SignUpActivity extends AppCompatActivity {
                     Log.e(TAG, "firebaseauth 연결 안됨");
                 }
 
-                String data = sharedPref.getString("#0", "");
+             /*   String data = sharedPref.getString("#0", "");
                 Log.d(TAG, "모든 데이터 삭제전 -> " + data);
                 editor.clear();
                 editor.commit();
 
-                Log.d(TAG, "모든 데이터 삭제? -> " + data);
+                Log.d(TAG, "모든 데이터 삭제? -> " + data);*/
 
 
                 /*if (userId.equals("") || userId.length() == 0) {
@@ -172,13 +183,28 @@ public class SignUpActivity extends AppCompatActivity {
                     signin_id_check.setVisibility(View.VISIBLE);
                     return;
 
-                } else*/ if (checkValidation2(sharedPref, editor)) {
-                        setNewAccount(persons);
-                        signUp(userId, pw, persons, user, sharedPref, editor);
-                        Log.d(TAG, "회원가입진행");
-                    } else {
-                        Log.d(TAG, "데이터 적정성 검사 통과 안됨");
+                } else*/
+                if (checkValidation2()) {
+                    setNewAccount(persons);
+                    //checkUser(userName);
+                    boolean userNameCheck;
+                    if (signin_userName_check.getVisibility() == View.VISIBLE){
+                        userNameCheck = true;
+                    }else{
+                        userNameCheck = false;
                     }
+
+                    if(userNameCheck){
+                        Log.d(TAG, "중복된 이름" + userName);
+
+                    }else{
+                        signUp(userId, pw, persons, user);
+                        Log.d(TAG, "회원가입진행");
+
+                    }
+                } else {
+                    Log.d(TAG, "데이터 적정성 검사 통과 안됨");
+                }
 
             }
         });
@@ -188,34 +214,33 @@ public class SignUpActivity extends AppCompatActivity {
 
         userName = signin_nicname_edittext.getText().toString();
         db.collection("person")
-                .whereEqualTo("userName",  userName )
+                .whereEqualTo("userName", userName)
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()){
+                if (task.isSuccessful()) {
                     int i = 0;
-                    for (QueryDocumentSnapshot documentSnapshot : task.getResult()){
+                    for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
 
-                        editor.putString("#"+ i, documentSnapshot.getId());
-                        Log.d(TAG,i + ":" + documentSnapshot.getId());
+                        editor.putString("#" + i, documentSnapshot.getId());
+                        Log.d(TAG, i + ":" + documentSnapshot.getId());
                         i++;
                         //Log.d(TAG, documentSnapshot.getId());
                     }
                     editor.commit();
 
-                }else{
-                    Log.d("TAG", "Error getting documents: " +task.getException().toString(), task.getException());
+                } else {
+                    Log.d("TAG", "Error getting documents: " + task.getException().toString(), task.getException());
                 }
             }
         });
-        String checkResultList = sharedPref.getString("#0","");
+        String checkResultList = sharedPref.getString("#0", "");
         return checkResultList;
 
     }
 
     private final void signUp(final String userId, final String password,
-                              Person persons, FirebaseUser user,
-                              SharedPreferences sharedPref, SharedPreferences.Editor editor){
+                              Person persons, FirebaseUser user) {
 
         String UserName = persons.getUserName();
 
@@ -223,9 +248,9 @@ public class SignUpActivity extends AppCompatActivity {
                 SignUpActivity.this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()){
+                        if (task.isSuccessful()) {
                             Log.d(TAG, "등록버튼" + userId + ", " + password);
-                            FirebaseUser users= mAuth.getCurrentUser();
+                            FirebaseUser users = mAuth.getCurrentUser();
                             String userId = users.getEmail();
                             String uid = users.getUid();
                             UserProfileChangeRequest profileUpdate = new UserProfileChangeRequest.Builder()
@@ -235,17 +260,17 @@ public class SignUpActivity extends AppCompatActivity {
                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
-                                            if(task.isSuccessful())
+                                            if (task.isSuccessful())
                                                 Log.d(TAG, "user profile update");
                                         }
                                     });
                             saveUserAccount(userId, uid, persons, users);
-                            goMain();
+                            //goMain();
 
-                        }else {
+                        } else {
                             Log.e(TAG, "signUp Failed : " + userId + ", " + password + ","
                                     + task.getException().toString());
-                            checkValidation2(sharedPref, editor);
+                            checkValidation2();
                             signin_id_check.setText("아이디 중복");
                             signin_id_check.setVisibility(View.VISIBLE);
                         }
@@ -255,9 +280,9 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
 
-    private boolean checkValidation2(SharedPreferences sharedPref, SharedPreferences.Editor editor) {
+    private boolean checkValidation2() {
         userId = signin_id_edittext.getText().toString().trim();
-        pw =signin_pw_edittext.getText().toString().trim();
+        pw = signin_pw_edittext.getText().toString().trim();
         pwCheck = signin_pwcheck_edittext.getText().toString().trim();
         userName = signin_nicname_edittext.getText().toString().trim();
         mobile = signin_mobile.getText().toString().trim();
@@ -265,20 +290,21 @@ public class SignUpActivity extends AppCompatActivity {
 
         boolean mobilePattern = Pattern.matches(REGEX_NUMBER, mobile);
         boolean pwPattern = Pattern.matches(REGEX_PATTERN, pw);
+        Log.d(TAG,"visibility 확인" + signin_userName_check.getVisibility());
         if (userId.equals("") || userId.length() == 0) {
             signin_id_check.setText("아이디를 입력해 주세요");
             signin_id_check.setVisibility(View.VISIBLE);
             return false;
-        }else if (!userId.contains("@")) {
+        } else if (!userId.contains("@")) {
             signin_id_check.setText("이메일 양식으로 작성해주세요");
             signin_id_check.setVisibility(View.VISIBLE);
             return false;
-        } else if(!pwPattern) {
-                signin_pwcheck_check.setText("비밀번호를 확인해주세요");
-                signin_pwcheck_check.setVisibility(View.VISIBLE);
-                return false;
+        } else if (!pwPattern) {
+            signin_pwcheck_check.setText("비밀번호를 확인해주세요");
+            signin_pwcheck_check.setVisibility(View.VISIBLE);
+            return false;
 
-        }else if (!pwCheck.equals(pw)) {
+        } else if (!pwCheck.equals(pw)) {
             signin_pwcheck_check.setText("비밀번호 불일치");
             signin_pwcheck_check.setVisibility(View.VISIBLE);
             return false;
@@ -286,24 +312,18 @@ public class SignUpActivity extends AppCompatActivity {
             signin_userName_check.setText("닉네임을 입력해 주세요");
             signin_userName_check.setVisibility(View.VISIBLE);
             return false;
-        }  else if (!mobilePattern) {
+        } else if (!mobilePattern) {
             return false;
-        }else  if (!userName.equals("") && userName.length() != 0) {
-            if (checkExistData(sharedPref, editor).length() >= 1) {
-                Log.d(TAG, "받아온 데이터 리스트" + checkExistData(sharedPref, editor));
-                //닉네임 중복 알림
-                Log.d(TAG, "닉네임 중복 알림 뜸");
+        } /*else if (signin_userName_check.getVisibility() == View.VISIBLE) {
+                Log.d(TAG, "중복된 이름" + userName);
                 return false;
-            }
+        }*/
 
-        }
         return true;
-        }
+    }
 
 
-
-
-    public Person setNewAccount(Person persons){
+    public Person setNewAccount(Person persons) {
         Uri userImageUri = Uri.parse("android.resource://com.example.rotory/drawable/squirrel");
         Uri userLevelImageUri = Uri.parse("android.resource://com.example.rotory/drawable/level1");
 
@@ -322,7 +342,6 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
 
-
     private void saveUserAccount(String userId, String uid, Person persons, FirebaseUser user) {
         // 이후에 계정으로 저장과 계정 정보 수정으로 나누어서 정리, 합침
 
@@ -330,8 +349,8 @@ public class SignUpActivity extends AppCompatActivity {
         persons.setUid(uid);
 
         HashMap<Object, String> person = new HashMap<>();
-        person.put("userEmail", persons.getEmail());
-        person.put("email", persons.getUserId());
+        person.put("email", persons.getEmail());
+        person.put("userId", persons.getUserId());
         person.put("userName", persons.getUserName());
         person.put("password", persons.getPassword());
         person.put("mobile", persons.getMobile());
@@ -350,7 +369,7 @@ public class SignUpActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
                         Log.d(TAG, "Person add with id" + documentReference.getId());
-                        goMain();
+                        //goMain();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -359,12 +378,65 @@ public class SignUpActivity extends AppCompatActivity {
                         Log.w(TAG, "Error adding user", e);
                     }
                 });
+
+        Map<String, String> addUserName = new HashMap<>();
+        addUserName.put(userName, userName);
+        db.collection("person").document("userNameList")
+                .set(addUserName, SetOptions.merge()).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()){
+                    Log.d(TAG,"adduserList Success" + userName);
+                }else {
+                    Log.d(TAG,"adduserList Failed");
+                }
+            }
+        });
+
+
     }
 
 
-    public void goMain(){
+    public void goMain() {
         Intent mainIntent = new Intent(getApplicationContext(), MainActivity.class);
-        startActivity(mainIntent);
+        startActivityForResult(mainIntent,appConstruct.mainCode);
+
+    }
+
+    private void checkUser(String userName) {
+
+        DocumentReference reference = db.collection("person").document("userNameList");
+        reference
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if(task.isSuccessful()) {
+                            DocumentSnapshot snapshot = task.getResult();
+                            if (snapshot.exists()) {
+                                Map<String, Object> userNameList = new HashMap<>();
+                                userNameList = snapshot.getData();
+                                if (userNameList.get(userName) != null) {
+                                    String existUserName = userNameList.get(userName).toString();
+                                    if (existUserName.equals(userName)) {
+                                        Log.d(TAG, "Exist userName" + existUserName);
+                                        signin_userName_check.setVisibility(View.VISIBLE);
+
+                                    } else {
+                                        Log.d(TAG, "new userName" + userName);
+                                        signin_userName_check.setVisibility(View.INVISIBLE);
+                                    }
+
+                                } else {
+                                    Log.d(TAG, "checkUser Failed");
+                                }
+                            } else {
+                                Log.d(TAG, "db 불러오기 실패");
+
+                            }
+                        }
+                    }
+                });
 
     }
 

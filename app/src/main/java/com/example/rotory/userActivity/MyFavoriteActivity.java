@@ -23,6 +23,7 @@ import com.example.rotory.MainPage;
 import com.example.rotory.MyPage;
 import com.example.rotory.R;
 import com.example.rotory.ThemePage;
+import com.example.rotory.VO.AppConstruct;
 import com.example.rotory.VO.Person;
 import com.example.rotory.account.LogInActivity;
 import com.example.rotory.account.SignUpActivity;
@@ -36,7 +37,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
 public class MyFavoriteActivity  extends AppCompatActivity  {
-    public static final int loginCode = 3000;
+    AppConstruct appConstruct;
     final static String TAG = "MyFavoriteActivity";
 
     RecyclerView myFavoriteRecyclerView;
@@ -90,7 +91,7 @@ public class MyFavoriteActivity  extends AppCompatActivity  {
 
 
         bottomNavigation = findViewById(R.id.bottom_appBar);
-        setBottomNavigation(bottomNavigation, isSignIn, loginCode,
+        setBottomNavigation(bottomNavigation, isSignIn, appConstruct.loginCode,
                 mainPage, themePage);
 
 
@@ -198,16 +199,18 @@ public class MyFavoriteActivity  extends AppCompatActivity  {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 Intent LogInIntent = new Intent(MyFavoriteActivity.this, LogInActivity.class);
+                Intent mainIntent = new Intent(MyFavoriteActivity.this, MainActivity.class);
                 switch (item.getItemId()) {
                     case R.id.home:
-                        startActivityForResult(LogInIntent, loginCode);
+
+                        startActivityForResult(mainIntent, appConstruct.mainCode);
                         setTabUnderBar(0);
                         bottomNavigation.setVisibility(View.VISIBLE);
 
                         return true;
                     case R.id.theme:
                         if (isSignIn) {
-                            getSupportFragmentManager().beginTransaction().replace(R.id.container, themePage).commit();
+                            startActivityForResult(mainIntent, appConstruct.themeCode);
                             setTabUnderBar(1);
                         } else {
 
