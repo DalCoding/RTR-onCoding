@@ -20,8 +20,9 @@ import androidx.transition.Transition;
 
 import com.example.rotory.Interface.OnTabItemSelectedListener;
 
+
 import com.example.rotory.VO.AppConstruct;
-import com.example.rotory.VO.Person;
+
 import com.example.rotory.account.SignUpActivity;
 import com.example.rotory.account.LogInActivity;
 
@@ -54,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
 
     MainPage mainPage;
     ThemePage themePage;
+    StoryContentsPage storyContentsPage;
 
     BigMapPage bigMapPage;
     SignUpActivity signUpActivity;
@@ -222,6 +224,16 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
         bottomNavUnderbarTheme = findViewById(R.id.bottomNavUnderbarTheme);
         bottomNavUnderbarUser = findViewById(R.id.bottomNavUnderbarUser);
 
+
+        mainPage = new MainPage();
+        themePage = new ThemePage();
+        bigMapPage = new BigMapPage();
+        storyContentsPage = new StoryContentsPage();
+
+
+        getSupportFragmentManager().beginTransaction().replace(R.id.container, mainPage).commit();
+
+
         bottomNavigation = findViewById(R.id.bottom_appBar);
         setBottomNavigation(bottomNavigation, isSignIn, appConstruct.loginCode,
                 mainPage, themePage);
@@ -254,7 +266,7 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
                         return true;
                     case R.id.theme:
                         if (isSignIn) {
-                            getSupportFragmentManager().beginTransaction().replace(R.id.container, themePage).commit();
+                            getSupportFragmentManager().beginTransaction().replace(R.id.container, storyContentsPage).commit();
                             setTabUnderBar(1);
                         } else {
                             Intent LogInIntent = new Intent(getApplicationContext(), LogInActivity.class);

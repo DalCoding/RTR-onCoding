@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -22,17 +23,35 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.rotory.Interface.OnTabItemSelectedListener;
+import com.example.rotory.VO.Person;
 import com.example.rotory.account.SignUpActivity;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.HashMap;
 
 
 public class MyPage extends AppCompatActivity implements OnTabItemSelectedListener {
 
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    Person persons = new Person();
+    final static String TAG = "MyPage";
+
     public static final int REQUEST_CODE_GALLERY = 101;
     public static final int MainCode = 1000;
    // public static final int ThemeCode = 2000;
-    // public static final int LoginCode = 2000;
+    // public static final int LoginCode = 3000;
 
     ImageView myProfileImg;
     ImageView myEditImg;
@@ -40,6 +59,8 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
     FrameLayout myScrapLayout;
     Button myLevelOutBtn;
     TextView userActivityTextView;
+    TextView myNickTextView;
+    TextView myLevelTextView;
 
     ImageView myFavoriteImg;
     ImageView myLikeImg;
@@ -73,6 +94,39 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.my_page);
+
+        FirebaseUser user = mAuth.getCurrentUser();
+        String userEmail = user.getEmail();
+
+        // 유저 정보 세팅
+         db.collection("person")
+                .whereEqualTo("email", userEmail)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+
+                                String userName1 = String.valueOf(document.get("userName"));
+                                myNickTextView = findViewById(R.id.myNickTextView);
+                                myNickTextView.setText(userName1);
+                                String userLevel = String.valueOf(document.get("userLevel"));
+                                myLevelTextView = findViewById(R.id.myLevelTextView);
+                                myLevelTextView.setText(userLevel);
+
+
+                            //    Log.d("firebase", document.getId() + " => " + personId);
+
+                            }
+                        } else {
+                            Log.d("firebase", "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+
+
+
 
         userActivityTextView = findViewById(R.id.userActivityTextView);
         userActivityTextView.setOnClickListener(new View.OnClickListener() {
@@ -216,6 +270,7 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
             }
         });
     }
+
 
 
     @Override
