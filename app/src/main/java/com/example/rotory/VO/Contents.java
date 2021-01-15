@@ -4,11 +4,19 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Contents {
-    int contents_id;
     int contentsType;
-    int user_id;
-    String roadTitle;
-    ArrayList<String> tag;
+    int uid;
+    String title;
+    String tag1;
+    String tag2;
+    String tag3;
+    String tag4;
+    String tag5;
+    String tag6;
+    String tag7;
+    String tag8;
+    String tag9;
+    String tag10;
     String hour;
     String min;
     String isPartner;
@@ -16,8 +24,7 @@ public class Contents {
     String ratingComment;
     ArrayList<Integer> dtrRoadLine;
     ArrayList<String> dtrName;
-    String storyTitle;
-    int prefix_id;
+    String prefix;
     String storyAddress;
     String titleImage;
     ArrayList<String> smallImage;
@@ -28,7 +35,285 @@ public class Contents {
     String writeDate;
     String modifiedDate;
 
+    public Contents(int contentsType, int uid, String title,
+                    String tag1, String tag2, String tag3, String tag4, String tag5, String tag6, String tag7, String tag8, String tag9, String tag10,
+                    String hour, String min, String isPartner, int dtrRating, String ratingComment, ArrayList<Integer> dtrRoadLine, ArrayList<String> dtrName, String prefix,
+                    String storyAddress, String titleImage, ArrayList<String> smallImage, HashMap<String,
+            ArrayList<Integer>> dtrAddress, ArrayList<String> imageComment, String storyContents, int isPublic, String writeDate, String modifiedDate) {
+        this.contentsType = contentsType;
+        this.uid = uid;
+        this.title = title;
+        this.tag1 = tag1;
+        this.tag2 = tag2;
+        this.tag3 = tag3;
+        this.tag4 = tag4;
+        this.tag5 = tag5;
+        this.tag6 = tag6;
+        this.tag7 = tag7;
+        this.tag8 = tag8;
+        this.tag9 = tag9;
+        this.tag10 = tag10;
+        this.hour = hour;
+        this.min = min;
+        this.isPartner = isPartner;
+        this.dtrRating = dtrRating;
+        this.ratingComment = ratingComment;
+        this.dtrRoadLine = dtrRoadLine;
+        this.dtrName = dtrName;
+        this.prefix = prefix;
+        this.storyAddress = storyAddress;
+        this.titleImage = titleImage;
+        this.smallImage = smallImage;
+        this.dtrAddress = dtrAddress;
+        this.imageComment = imageComment;
+        this.storyContents = storyContents;
+        this.isPublic = isPublic;
+        this.writeDate = writeDate;
+        this.modifiedDate = modifiedDate;
+    }
 
+    public Contents() {
+    }
+
+    public int getContentsType() {
+        return contentsType;
+    }
+
+    public void setContentsType(int contentsType) {
+        this.contentsType = contentsType;
+    }
+
+    public int getUid() {
+        return uid;
+    }
+
+    public void setUid(int uid) {
+        this.uid = uid;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getTag1() {
+        return tag1;
+    }
+
+    public void setTag1(String tag1) {
+        this.tag1 = tag1;
+    }
+
+    public String getTag2() {
+        return tag2;
+    }
+
+    public void setTag2(String tag2) {
+        this.tag2 = tag2;
+    }
+
+    public String getTag3() {
+        return tag3;
+    }
+
+    public void setTag3(String tag3) {
+        this.tag3 = tag3;
+    }
+
+    public String getTag4() {
+        return tag4;
+    }
+
+    public void setTag4(String tag4) {
+        this.tag4 = tag4;
+    }
+
+    public String getTag5() {
+        return tag5;
+    }
+
+    public void setTag5(String tag5) {
+        this.tag5 = tag5;
+    }
+
+    public String getTag6() {
+        return tag6;
+    }
+
+    public void setTag6(String tag6) {
+        this.tag6 = tag6;
+    }
+
+    public String getTag7() {
+        return tag7;
+    }
+
+    public void setTag7(String tag7) {
+        this.tag7 = tag7;
+    }
+
+    public String getTag8() {
+        return tag8;
+    }
+
+    public void setTag8(String tag8) {
+        this.tag8 = tag8;
+    }
+
+    public String getTag9() {
+        return tag9;
+    }
+
+    public void setTag9(String tag9) {
+        this.tag9 = tag9;
+    }
+
+    public String getTag10() {
+        return tag10;
+    }
+
+    public void setTag10(String tag10) {
+        this.tag10 = tag10;
+    }
+
+    public String getHour() {
+        return hour;
+    }
+
+    public void setHour(String hour) {
+        this.hour = hour;
+    }
+
+    public String getMin() {
+        return min;
+    }
+
+    public void setMin(String min) {
+        this.min = min;
+    }
+
+    public String getIsPartner() {
+        return isPartner;
+    }
+
+    public void setIsPartner(String isPartner) {
+        this.isPartner = isPartner;
+    }
+
+    public int getDtrRating() {
+        return dtrRating;
+    }
+
+    public void setDtrRating(int dtrRating) {
+        this.dtrRating = dtrRating;
+    }
+
+    public String getRatingComment() {
+        return ratingComment;
+    }
+
+    public void setRatingComment(String ratingComment) {
+        this.ratingComment = ratingComment;
+    }
+
+    public ArrayList<Integer> getDtrRoadLine() {
+        return dtrRoadLine;
+    }
+
+    public void setDtrRoadLine(ArrayList<Integer> dtrRoadLine) {
+        this.dtrRoadLine = dtrRoadLine;
+    }
+
+    public ArrayList<String> getDtrName() {
+        return dtrName;
+    }
+
+    public void setDtrName(ArrayList<String> dtrName) {
+        this.dtrName = dtrName;
+    }
+
+    public String getPrefix() {
+        return prefix;
+    }
+
+    public void setPrefix(String prefix) {
+        this.prefix = prefix;
+    }
+
+    public String getStoryAddress() {
+        return storyAddress;
+    }
+
+    public void setStoryAddress(String storyAddress) {
+        this.storyAddress = storyAddress;
+    }
+
+    public String getTitleImage() {
+        return titleImage;
+    }
+
+    public void setTitleImage(String titleImage) {
+        this.titleImage = titleImage;
+    }
+
+    public ArrayList<String> getSmallImage() {
+        return smallImage;
+    }
+
+    public void setSmallImage(ArrayList<String> smallImage) {
+        this.smallImage = smallImage;
+    }
+
+    public HashMap<String, ArrayList<Integer>> getDtrAddress() {
+        return dtrAddress;
+    }
+
+    public void setDtrAddress(HashMap<String, ArrayList<Integer>> dtrAddress) {
+        this.dtrAddress = dtrAddress;
+    }
+
+    public ArrayList<String> getImageComment() {
+        return imageComment;
+    }
+
+    public void setImageComment(ArrayList<String> imageComment) {
+        this.imageComment = imageComment;
+    }
+
+    public String getStoryContents() {
+        return storyContents;
+    }
+
+    public void setStoryContents(String storyContents) {
+        this.storyContents = storyContents;
+    }
+
+    public int getIsPublic() {
+        return isPublic;
+    }
+
+    public void setIsPublic(int isPublic) {
+        this.isPublic = isPublic;
+    }
+
+    public String getWriteDate() {
+        return writeDate;
+    }
+
+    public void setWriteDate(String writeDate) {
+        this.writeDate = writeDate;
+    }
+
+    public String getModifiedDate() {
+        return modifiedDate;
+    }
+
+    public void setModifiedDate(String modifiedDate) {
+        this.modifiedDate = modifiedDate;
+    }
 }
 
 

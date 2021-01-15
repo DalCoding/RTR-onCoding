@@ -6,18 +6,33 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.RecyclerView;
 
 import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
 import net.daum.mf.map.api.MapView;
 
 public class MainPage extends Fragment {
+    Button mainFloatingBtn;
+    Button mainSearchBtn;
+    EditText mainSearchEdit;
+
+    RecyclerView mainRoadList;
+    Button mainStoryNextBtn;
+    RecyclerView mainStoryList;
+    Button mainRoadNextBtn;
+
+    FrameLayout mainMapLayout;
+    Button mainMapExtendBtn;
 
 
     public static MainPage newInstance() {
@@ -33,10 +48,15 @@ public class MainPage extends Fragment {
 
     }
 
+    public void showWrite(){}
+
+   /* public void onContentsListener (contentsAdapter.ViewHolder holder, View view, int position) {
+        if (listener != null) {
+            listener.onContentsListener(holder, view, position);
+        }
+    }*/
+
     private void initUI(ViewGroup rootView) {
-
-
-
 
 
       /*  MapView mapView = new MapView(getContext());
@@ -50,6 +70,11 @@ public class MainPage extends Fragment {
 
         mapView.setMapCenterPointAndZoomLevel(MapPoint.mapPointWithGeoCoord(37.541258, 126.838193), 2, true);*/
 /*
+  Button button = rootView.findViewById(R.id.mainFloatingBtn);
+        button.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) { showWrite(); }
+        });
         ImageButton mainMapExtendBtn = rootView.findViewById(R.id.mainMapExtendBtn);
         mainMapExtendBtn.bringToFront();
         mainMapExtendBtn.setOnClickListener(new View.OnClickListener() {
