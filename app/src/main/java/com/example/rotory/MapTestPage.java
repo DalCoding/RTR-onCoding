@@ -101,7 +101,8 @@ public class MapTestPage extends AppCompatActivity implements MapView.CurrentLoc
         // 근사값 배열 구하기
         for (int j = 0; j < manyPins.size(); j++) {
 
-            MapPoint Pin2 = manyPins.get(j);
+         /*   MapPoint Pin2 = manyPins.get(j);
+
             MapPOIItem customMarker4 = new MapPOIItem();
             customMarker4.setItemName("가까운핀"); // 이게 필수로 들어가야하는데 => 말풍선 안보이게 가능할듯
             customMarker4.setTag(7);
@@ -111,10 +112,10 @@ public class MapTestPage extends AppCompatActivity implements MapView.CurrentLoc
             customMarker4.setCustomImageAutoscale(false); // hdpi, xhdpi 등 안드로이드 플랫폼의 스케일을 사용할 경우 지도 라이브러리의 스케일 기능을 꺼줌.
             customMarker4.setCustomImageAnchor(0.5f, 1.0f); // 마커 이미지중 기준이 되는 위치(앵커포인트) 지정 - 마커 이미지 좌측 상단 기준 x(0.0f ~ 1.0f), y(0.0f ~ 1.0f) 값.
             customMarker4.setShowCalloutBalloonOnTouch(false);
-            mapView.addPOIItem(customMarker4);
+            mapView.addPOIItem(customMarker4);    // 여기까진 확인 OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO */
 
 
-        /*    MapPoint.GeoCoordinate latLng = manyPins.get(j).getMapPointGeoCoord();
+           MapPoint.GeoCoordinate latLng = manyPins.get(j).getMapPointGeoCoord();
             double latlat = latLng.latitude;
             double longlong = latLng.longitude;
 
@@ -133,9 +134,9 @@ public class MapTestPage extends AppCompatActivity implements MapView.CurrentLoc
             double dist = (double) (earthRadius * c);
             String dist1 = Double.toString(dist);
 
-            Log.d ("배열", dist1);
+            Log.d ("배열", dist1);  // 여기까진 확인 OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
 
-            ArrayList<NearPin> nearPin = new ArrayList<NearPin>(); // double + MapPoint형 배열
+       /*     ArrayList<NearPin> nearPin = new ArrayList<NearPin>(); // double + MapPoint형 배열
             nearPin.add(new NearPin(dist, manyPins.get(j)));
             Collections.sort(nearPin);
 
