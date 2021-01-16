@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -181,7 +182,6 @@ public class RoadContentsPage extends Fragment {
 
 
     private void initUI(ViewGroup rootView) {
-
         rcontentsCommBtn = rootView.findViewById(R.id.rcontentsCommBtn);
         rcontentsLinkImg = rootView.findViewById(R.id.rcontentsLinkImg);
         rcontentsScrapImg = rootView.findViewById(R.id.rcontentsScrapImg);
@@ -200,9 +200,11 @@ public class RoadContentsPage extends Fragment {
 
         rCommRView.setAdapter(adapter);
 */
+        FirebaseUser user = mAuth.getCurrentUser();
+        String userId = user.getEmail();
 
-/*
         db.collection("contents")
+                .whereEqualTo("contentsType", 0)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -213,13 +215,21 @@ public class RoadContentsPage extends Fragment {
                                 Log.d(TAG, document.getId() + " => " + contentsID);
 
                                 loadContents(contentsID);
+                                rcontentsHeartImg.setClickable(true);
+                                rcontentsHeartImg.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        Toast.makeText(getContext(), "좋아요 버튼 눌림", Toast.LENGTH_SHORT);
+                                        listener.OnLikeClicked(contentsID, userId);
+                                    }
+                                });
                             }
                         } else {
                             Log.d(TAG, "Error getting documents : " , task.getException());
                         }
                     }
                 });
-
+    }
     private void loadContents(String contentsID) {
 
             DocumentReference docRef = db.collection("contents").document(contentsID);
@@ -240,6 +250,9 @@ public class RoadContentsPage extends Fragment {
                         Log.d(TAG, "get failed with ", task.getException());
                     }
                 }
+
+                private void setContents(Map<String, Object> contentsList) {
+                }
             });
         }
 
@@ -249,10 +262,7 @@ public class RoadContentsPage extends Fragment {
             rcontentsTakewhoText.setText(contentsList.get("roadTakewho").toString());
 
         }
-*/
 
     }
-
-}
 
 //https://machine-woong.tistory.com/53 스피너

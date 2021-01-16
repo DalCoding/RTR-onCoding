@@ -1,5 +1,6 @@
 package com.example.rotory;
 
+import android.app.ActionBar;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
@@ -86,6 +87,10 @@ public class StoryContentsPage extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.story_contents_page, container, false);
 
+/*        ActionBar ab = getSupportActionBar();
+        ab.setTitle("ActionBar Title by setTitle()");*/
+        //상단바 제목 바꾸기
+
         initUI(rootView);
         return rootView;
     }
@@ -122,7 +127,7 @@ public class StoryContentsPage extends Fragment {
 
                                 loadContents(contentsID);
                                 scontentsHeartImg.setClickable(true);
-                               scontentsHeartImg.setOnClickListener(new View.OnClickListener() {
+                                scontentsHeartImg.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
                                         Toast.makeText(getContext(),"좋아요 버튼 눌림", Toast.LENGTH_SHORT);
@@ -170,9 +175,8 @@ public class StoryContentsPage extends Fragment {
         Log.d(TAG, "title확인" + contentsList.get("title"));
 
      scontentsTitleText.setText(contentsList.get("title").toString());
-
      //scontentsBigImg.setImage(contentsList.get("titleImage").toString());
-    // scontentsMentText.setText(contentsList.get("storyMent").toString());
+     scontentsMentText.setText(contentsList.get("imageComment").toString());
      scontentsTextText.setText(contentsList.get("storyText").toString());
      scontentsLocText.setText(contentsList.get("storyAddress").toString());
 
