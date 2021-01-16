@@ -8,6 +8,9 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -20,17 +23,34 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.rotory.Adapter.LocationAdapter;
+import com.example.rotory.kakao.ApiClient;
+import com.example.rotory.kakao.ApiInterface;
+import com.example.rotory.kakao.CategoryResult;
+import com.example.rotory.kakao.Document;
 
 import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
 import net.daum.mf.map.api.MapPolyline;
 import net.daum.mf.map.api.MapView;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Locale;
+
+import okio.Utf8;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class WriteMapPage extends AppCompatActivity implements MapView.CurrentLocationEventListener, MapView.MapViewEventListener, MapView.POIItemEventListener {
-
+    private static final String TAG = "WriteMaoPage";
     MapView mapView;
     ViewGroup mapViewContainer;
     Button writeMapAddBtn;
@@ -38,7 +58,10 @@ public class WriteMapPage extends AppCompatActivity implements MapView.CurrentLo
     boolean MarkerExists = false;
     public static MapPoint mapPointNow;
     ArrayList<MapPoint> PolyPoints = new ArrayList<>();
+    ArrayList<Document> documentArrayList = new ArrayList<>();
+    EditText mapSearchEditText;
 
+    RecyclerView recyclerView;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,8 +69,84 @@ public class WriteMapPage extends AppCompatActivity implements MapView.CurrentLo
 
         MapView mapView = new MapView(this);
 
+        mapSearchEditText = findViewById(R.id.writeMapSearchEditText);
         ViewGroup mapViewContainer = (ViewGroup) findViewById(R.id.writeMapContainer);
         mapViewContainer.addView(mapView);
+        recyclerView = findViewById(R.id.searchLocationRecyclerView);
+        LocationAdapter locationAdapter = new LocationAdapter(documentArrayList, getApplicationContext(),
+                mapSearchEditText, recyclerView);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        recyclerView.addItemDecoration(new DividerItemDecoration(getApplicationContext(), DividerItemDecoration.VERTICAL));
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(locationAdapter);
+
+        mapSearchEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                //Log.d(TAG,"검색창에서 텍스트 변화 인지 시작");
+                recyclerView.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+               // Log.d(TAG,"검색창에서 텍스트 변화 인지 시작");
+                if (s.length() >= 1){
+                    documentArrayList.clear();
+                    locationAdapter.clear();
+                    locationAdapter.notifyDataSetChanged();;
+                    ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
+                    Call<CategoryResult> call = null;
+
+                        call = apiInterface.getSearchLocation(getString(R.string.restapi_key),s.toString(), 15);
+
+                    Log.d(TAG,URLEncoder.encode(s.toString()));
+                    call.enqueue(new Callback<CategoryResult>() {
+                        @Override
+                        public void onResponse(Call<CategoryResult> call, Response<CategoryResult> response) {
+                            Log.d(TAG,response.toString());
+                            if (response.isSuccessful()){
+                                Log.d(TAG,"응답 받기 성공");
+                                Log.d(TAG, response.body().getDocuments().toString());
+                                assert response.body() != null;
+                                for (Document document : response.body().getDocuments()){
+                                    locationAdapter.addItem(document);
+                                }
+                                locationAdapter.notifyDataSetChanged();
+
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<CategoryResult> call, Throwable t) {
+                            Log.d(TAG, "텍스트 변화 인지 실패");
+
+                        }
+                    });
+                }else {
+                    if (s.length() <=0){
+                        recyclerView.setVisibility(View.GONE);
+                    }
+                }
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        mapSearchEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus){
+                    Log.d(TAG,"Focus changeListener On : 검색창 누름 인식");
+                }else {
+                    Log.d(TAG,"Focus changeListener Off : 검색창 꺼짐");
+                    recyclerView.setVisibility(View.GONE);
+                }
+            }
+        });
 
         // 기본마커 설정
         /*MapPOIItem marker = new MapPOIItem();
@@ -312,6 +411,7 @@ public class WriteMapPage extends AppCompatActivity implements MapView.CurrentLo
         //marker.setSelectedMarkerType(MapPOIItem.MarkerType.RedPin); // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
 
         mapView.addPOIItem(marker); */
+        recyclerView.setVisibility(View.GONE);
 
         if(MarkerExists) {
             MapPOIItem ExistItem = mapView.findPOIItemByTag(5);
