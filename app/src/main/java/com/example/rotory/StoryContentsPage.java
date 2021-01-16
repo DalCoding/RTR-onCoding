@@ -1,5 +1,6 @@
 package com.example.rotory;
 
+import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -94,6 +95,10 @@ public class StoryContentsPage extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.story_contents_page, container, false);
 
+/*        ActionBar ab = getSupportActionBar();
+        ab.setTitle("ActionBar Title by setTitle()");*/
+        //상단바 제목 바꾸기
+
         initUI(rootView);
         return rootView;
     }
@@ -121,6 +126,7 @@ public class StoryContentsPage extends Fragment {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
+
                                 if (user != null) {
                                     getUserActivityIcon(document, "myLike", scontentsHeartImg, R.drawable.heartfilled, R.drawable.heart);
                                     getUserActivityIcon(document, "myStar", scontentsStarImg, R.drawable.starfilled, R.drawable.star);
@@ -297,12 +303,11 @@ public class StoryContentsPage extends Fragment {
     private void setContents(Map<String, Object> contentsList) {
         Log.d(TAG, "title확인" + contentsList.get("title"));
 
-        scontentsTitleText.setText(contentsList.get("title").toString());
-
-        //scontentsBigImg.setImage(contentsList.get("titleImage").toString());
-        // scontentsMentText.setText(contentsList.get("storyMent").toString());
-        scontentsTextText.setText(contentsList.get("storyText").toString());
-        scontentsLocText.setText(contentsList.get("storyAddress").toString());
+     scontentsTitleText.setText(contentsList.get("title").toString());
+     //scontentsBigImg.setImage(contentsList.get("titleImage").toString());
+     scontentsMentText.setText(contentsList.get("imageComment").toString());
+     scontentsTextText.setText(contentsList.get("storyText").toString());
+     scontentsLocText.setText(contentsList.get("storyAddress").toString());
 
     }
 
