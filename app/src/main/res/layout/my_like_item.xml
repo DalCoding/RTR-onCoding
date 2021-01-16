@@ -121,7 +121,7 @@
                     android:layout_marginEnd="16dp"
                     android:layout_marginRight="16dp"
                     android:layout_marginBottom="13dp"
-                    app:srcCompat="@drawable/heart" />
+                    app:srcCompat="@drawable/heartfilled" />
 
             </FrameLayout>
 

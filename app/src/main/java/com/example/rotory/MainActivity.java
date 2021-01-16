@@ -267,14 +267,13 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
                             contents = task.getResult().getData();
                             Map<String, Object> myLike = new HashMap<>();
                             myLike.put("contentsId",contentsId);
-                            myLike.put("contentsType", contents.get("contentsType").toString());
+                            myLike.put("contentsType", contents.get("contentsType"));
                             myLike.put("title", contents.get("title").toString());
                             myLike.put("titleImage", contents.get("titleImage").toString());
-                            myLike.put("likedDate", new Date().toString());
+                            myLike.put("savedDate", new Date().toString());
                             Log.d(TAG, "맵에 잘 들어갔니?" + myLike.get("title"));
                             String userCollection = "myLike";
                             saveMyLike(userId, myLike, userCollection);
-
                         }
                     }
                 });

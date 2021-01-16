@@ -25,20 +25,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.rotory.Interface.OnTabItemSelectedListener;
 import com.example.rotory.VO.Person;
 import com.example.rotory.account.SignUpActivity;
+import com.example.rotory.userActivity.MyLikeActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-
-import java.util.HashMap;
 
 
 public class MyPage extends AppCompatActivity implements OnTabItemSelectedListener {
@@ -56,6 +52,7 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
     ImageView myProfileImg;
     ImageView myEditImg;
     ImageView myLevelImg;
+    FrameLayout container;
     FrameLayout myScrapLayout;
     Button myLevelOutBtn;
     TextView userActivityTextView;
@@ -69,6 +66,7 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
 
     MainPage mainPage;
     ThemePage themePage;
+    MyLikeActivity myLikePage;
     SignUpActivity signUpActivity;
 
     // 개인정보 설정
@@ -171,6 +169,7 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
             }
         });
 
+
         myFavoriteImg = findViewById(R.id.myFavoriteImg);
         myFavoriteImg.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -185,9 +184,9 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
         myLikeImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Intent intent = new Intent(getApplicationContext(), myFavoritePage.class);
-                //intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                //startActivity(intent);
+                Intent intent = new Intent(getApplicationContext(), MyLikeActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
             }
         });
 
