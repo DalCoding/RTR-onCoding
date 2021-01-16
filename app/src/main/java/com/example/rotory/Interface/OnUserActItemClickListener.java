@@ -5,7 +5,7 @@ public interface OnUserActItemClickListener {
     // onclick만 사용!
     public void OnStarClicked();
 
-    public void OnLikeClicked();
+    public void OnLikeClicked(String contentsId, String userId);
 
     public void OnFlagClicked();
 
