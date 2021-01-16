@@ -29,12 +29,16 @@ import com.example.rotory.account.LogInActivity;
 import com.example.rotory.account.SignUpActivity;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 public class MyFavoriteActivity  extends AppCompatActivity  {
     AppConstruct appConstruct;
@@ -93,17 +97,37 @@ public class MyFavoriteActivity  extends AppCompatActivity  {
         bottomNavigation = findViewById(R.id.bottom_appBar);
         setBottomNavigation(bottomNavigation, isSignIn, appConstruct.loginCode,
                 mainPage, themePage);
-
-
-    Query query = db.collection("person")
-                .orderBy("signUpDate", Query.Direction.ASCENDING);
-
-        FirestoreRecyclerOptions<Person> options = new FirestoreRecyclerOptions.Builder<Person>()
-                .setQuery(query, Person.class)
-                .build();
-
         myFavoriteRecyclerView = findViewById(R.id.myFavoriteRecyclerView);
         myFavoriteRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        db.collection("person")
+                .whereEqualTo("userId", user.getEmail())
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()){
+                    for (QueryDocumentSnapshot document : task.getResult()){
+                        String personId = document.getId();
+
+                        Query query = db.collection("person")
+                                .document(personId).collection("myStar")
+                                .orderBy("savedDate", Query.Direction.ASCENDING);
+
+                        FirestoreRecyclerOptions<Person> options = new FirestoreRecyclerOptions.Builder<Person>()
+                                .setQuery(query, Person.class)
+                                .build();
+                        makeAdapter(options);
+
+                    }
+                }
+            }
+        });
+
+        myFavoriteRecyclerView.setAdapter(adapter);
+
+    }
+
+    private void makeAdapter(FirestoreRecyclerOptions<Person> options) {
 
         adapter = new FirestoreRecyclerAdapter<Person, favoriteViewHolder>(options) {
 
@@ -122,12 +146,11 @@ public class MyFavoriteActivity  extends AppCompatActivity  {
             @NonNull
             @Override
             public favoriteViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-               View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.my_favorite_item, parent,false);
-               return new favoriteViewHolder(view);
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.my_favorite_item, parent,false);
+                return new favoriteViewHolder(view);
             }
         };
 
-        myFavoriteRecyclerView.setAdapter(adapter);
     }
 
     @Override

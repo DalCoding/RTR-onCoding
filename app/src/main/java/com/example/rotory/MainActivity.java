@@ -131,15 +131,14 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
             @Override
             public void onClick(View v) {
                 // 즐겨찾기 리스트 띄우는 엑티비티 실험(MyFavoriteActivity)
-                /*if (user != null) {
-                    Intent intent = new Intent(MainActivity.this, MyFavoriteActivity.class);
-                    startActivity(intent);
+                Intent intent;
+                if (user != null) {
+                    intent = new Intent(MainActivity.this, MyFavoriteActivity.class);
                 }else{
-                    Intent intent = new Intent(MainActivity.this, LogInActivity.class);
-                    startActivity(intent);
-                }*/
+                    intent = new Intent(MainActivity.this, LogInActivity.class);
+                }
+                startActivity(intent);
 
-                getSupportFragmentManager().beginTransaction().replace(R.id.container,storyContentsPage );
 
             }
         });
@@ -186,18 +185,18 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
                         getSupportFragmentManager().beginTransaction().replace(R.id.container, mainPage).commit();
                         setTabUnderBar(0);
                         bottomNavigation.setVisibility(View.VISIBLE);
-
                         return true;
                     case R.id.theme:
-                        if (isSignIn) {
+                        getSupportFragmentManager().beginTransaction().replace(R.id.container, storyContentsPage).commit();
+                        setTabUnderBar(1);
+                        /*if (isSignIn) {
                             getSupportFragmentManager().beginTransaction().replace(R.id.container, storyContentsPage).commit();
                             setTabUnderBar(1);
                         } else {
                             Intent LogInIntent = new Intent(getApplicationContext(), LogInActivity.class);
                             startActivityForResult(LogInIntent, loginCode);
                             bottomNavigation.setVisibility(View.GONE);
-                        }
-
+                        }*/
                         return true;
                     case R.id.user:
                         if (isSignIn) {
@@ -209,10 +208,8 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
                             startActivityForResult(LogInIntent, loginCode);
                             bottomNavigation.setVisibility(View.GONE);
                         }
-
                         return true;
                 }
-
                 return false;
             }
         });
@@ -246,14 +243,39 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
             fragmentTransaction.commit();*/
         }
 
-    @Override
-    public void OnStarClicked() {
 
+    @Override
+    public void OnStarClicked(String savedUserId, String myUserId) {
+        Log.d(TAG, "onStarClicked : " + savedUserId);
+
+        db.collection("person")
+                .document(savedUserId)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()){
+                            Log.d(TAG,"onStared : 저장할 사용자 정보 받아오기 성공");
+                            Map<String, Object> persons = new HashMap<>();
+                            persons = task.getResult().getData();
+                            Map<String, Object> myStar = new HashMap<>();
+                            myStar.put("personId", savedUserId);
+                            myStar.put("savedDate", new Date().toString());
+                            myStar.put("userName", persons.get("userName"));
+                            myStar.put("userLevel", persons.get("userLevel"));
+                            myStar.put("userImage", persons.get("userImage"));
+                            myStar.put("uid", persons.get("uid")); //이후 리스트에 포함되어있는지 여부를 찾기 위해 해당 항목 사용
+                            Log.d(TAG, "onStared  맵에 잘 들어갔나?" + persons.get("userName"));
+                            String userCollection = "myStar";
+                            saveUserAct(myUserId, myStar,userCollection);
+                        }
+                    }
+                });
     }
 
     @Override
     public void OnLikeClicked(String contentsId, String userId) {
-        Log.d(TAG, "user에서 아이디 잘 받아옴?" + userId);
+        Log.d(TAG, "onClicked: user에서 아이디 잘 받아옴?" + userId);
 
         db.collection("contents")
                 .document(contentsId)
@@ -262,7 +284,7 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         if (task.isSuccessful()) {
-                            Log.d(TAG, "콘텐츠 페이지에서 해당 다큐먼트 받아오기 성공");
+                            Log.d(TAG, "onClicked: 콘텐츠 페이지에서 해당 다큐먼트 받아오기 성공");
                             Map<String, Object> contents = new HashMap<>();
                             contents = task.getResult().getData();
                             Map<String, Object> myLike = new HashMap<>();
@@ -271,16 +293,16 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
                             myLike.put("title", contents.get("title").toString());
                             myLike.put("titleImage", contents.get("titleImage").toString());
                             myLike.put("savedDate", new Date().toString());
-                            Log.d(TAG, "맵에 잘 들어갔니?" + myLike.get("title"));
+                            myLike.put("uid", contents.get("uid").toString());//이후 리스트에 포함되어있는지 여부를 찾기 위해 해당 항목 사용
                             String userCollection = "myLike";
-                            saveMyLike(userId, myLike, userCollection);
+                            saveUserAct(userId, myLike, userCollection);
                         }
                     }
                 });
 
     }
     //star, Like, Flag 폴더에 저장하는 메서드
-    private void saveMyLike(String userId, Map<String, Object> myLike, String userCollection) {
+    private void saveUserAct(String userId, Map<String, Object> myLike, String userCollection) {
         //1. userId-> 현재사용자에게서 받아온 사용자아이디로 사용자의 고유번호 찾기
         //2. 해당 고유번호 이용해서 사용자 자료 아래에 좋아요 폴더 생성
         db.collection("person")
@@ -329,6 +351,7 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
     public void OnLinkClicked() {
 
     }
+
 
   /*  private void reload() {
         mAuth.getCurrentUser().reload().addOnCompleteListener(new OnCompleteListener<Void>() {

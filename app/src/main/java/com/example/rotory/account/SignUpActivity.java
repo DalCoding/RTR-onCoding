@@ -265,7 +265,7 @@ public class SignUpActivity extends AppCompatActivity {
                                         }
                                     });
                             saveUserAccount(userId, uid, persons, users);
-                            //goMain();
+                            goMain();
 
                         } else {
                             Log.e(TAG, "signUp Failed : " + userId + ", " + password + ","
@@ -363,7 +363,7 @@ public class SignUpActivity extends AppCompatActivity {
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        db.collection("person")
+       /* db.collection("person")
                 .add(person)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
@@ -378,7 +378,7 @@ public class SignUpActivity extends AppCompatActivity {
                         Log.w(TAG, "Error adding user", e);
                     }
                 });
-
+*/
         Map<String, String> addUserName = new HashMap<>();
         addUserName.put(userName, userName);
         db.collection("person").document("userNameList")

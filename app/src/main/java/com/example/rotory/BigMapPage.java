@@ -24,11 +24,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-
-import com.example.rotory.kakao.ApiClient;
-import com.example.rotory.kakao.CategoryResult;
-import com.example.rotory.kakao.Document;
-
 import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
 import net.daum.mf.map.api.MapReverseGeoCoder;
