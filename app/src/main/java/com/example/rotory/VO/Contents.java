@@ -5,7 +5,7 @@ import java.util.HashMap;
 
 public class Contents {
     int contentsType;
-    int uid;
+    String uid;
     String title;
     String tag1;
     String tag2;
@@ -27,50 +27,12 @@ public class Contents {
     String prefix;
     String storyAddress;
     String titleImage;
-    ArrayList<String> smallImage;
     HashMap<String, ArrayList<Integer>> dtrAddress;
     ArrayList<String> imageComment;
     String storyContents;
     int isPublic;
     String writeDate;
     String modifiedDate;
-
-    public Contents(int contentsType, int uid, String title,
-                    String tag1, String tag2, String tag3, String tag4, String tag5, String tag6, String tag7, String tag8, String tag9, String tag10,
-                    String hour, String min, String isPartner, int dtrRating, String ratingComment, ArrayList<Integer> dtrRoadLine, ArrayList<String> dtrName, String prefix,
-                    String storyAddress, String titleImage, ArrayList<String> smallImage, HashMap<String,
-            ArrayList<Integer>> dtrAddress, ArrayList<String> imageComment, String storyContents, int isPublic, String writeDate, String modifiedDate) {
-        this.contentsType = contentsType;
-        this.uid = uid;
-        this.title = title;
-        this.tag1 = tag1;
-        this.tag2 = tag2;
-        this.tag3 = tag3;
-        this.tag4 = tag4;
-        this.tag5 = tag5;
-        this.tag6 = tag6;
-        this.tag7 = tag7;
-        this.tag8 = tag8;
-        this.tag9 = tag9;
-        this.tag10 = tag10;
-        this.hour = hour;
-        this.min = min;
-        this.isPartner = isPartner;
-        this.dtrRating = dtrRating;
-        this.ratingComment = ratingComment;
-        this.dtrRoadLine = dtrRoadLine;
-        this.dtrName = dtrName;
-        this.prefix = prefix;
-        this.storyAddress = storyAddress;
-        this.titleImage = titleImage;
-        this.smallImage = smallImage;
-        this.dtrAddress = dtrAddress;
-        this.imageComment = imageComment;
-        this.storyContents = storyContents;
-        this.isPublic = isPublic;
-        this.writeDate = writeDate;
-        this.modifiedDate = modifiedDate;
-    }
 
     public Contents() {
     }
@@ -83,11 +45,11 @@ public class Contents {
         this.contentsType = contentsType;
     }
 
-    public int getUid() {
+    public String getUid() {
         return uid;
     }
 
-    public void setUid(int uid) {
+    public void setUid(String uid) {
         this.uid = uid;
     }
 
@@ -257,14 +219,6 @@ public class Contents {
 
     public void setTitleImage(String titleImage) {
         this.titleImage = titleImage;
-    }
-
-    public ArrayList<String> getSmallImage() {
-        return smallImage;
-    }
-
-    public void setSmallImage(ArrayList<String> smallImage) {
-        this.smallImage = smallImage;
     }
 
     public HashMap<String, ArrayList<Integer>> getDtrAddress() {

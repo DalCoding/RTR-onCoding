@@ -153,7 +153,7 @@ public class StoryContentsPage extends Fragment {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
-                        Log.d(TAG, "자료 받아오기 성공 " );
+                        Log.d(TAG, "자료 받아오기 완료" );
 
                         Map<String, Object> ContentsList = new HashMap<>();
                         ContentsList = document.getData();

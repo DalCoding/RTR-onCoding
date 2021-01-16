@@ -2,12 +2,16 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.rotory">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
-
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.CAMERA,android.permission.READ_PHONE_STATE"/>
 
     <application
         android:usesCleartextTraffic="true"
@@ -19,8 +23,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Rotory">
         <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />
-        <meta-data android:name="com.kakao.sdk.AppKey" android:value="c8daee16562c01709b387cc817f8d6b7"/>
-        <activity android:name=".MainActivity">
+        <meta-data android:name="com.kakao.sdk.AppKey" android:value="74327a949b44e3526226fb17f890121f"/>
+        <activity android:name=".WriteMapPage">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -31,6 +35,7 @@
         <activity android:name=".account.SignUpActivity"/>
         <activity android:name=".account.LogInActivity"/>
         <activity android:name=".userActivity.MyFavoriteActivity"/>
+        <activity android:name=".userActivity.MyLikeActivity" />
 <!--        <activity android:name=".Write_Story" />-->
 
     </application>
