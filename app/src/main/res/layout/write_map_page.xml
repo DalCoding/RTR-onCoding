@@ -61,4 +61,12 @@
         app:iconTint="@color/beige"
         app:rippleColor="#FFFFFF" />
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/searchLocationRecyclerView"
+        android:layout_width="370dp"
+        android:layout_height="250dp"
+        android:layout_below="@id/writeMapSearchBox"
+        android:layout_centerHorizontal="true"
+        android:visibility="gone" />
+
 </RelativeLayout>

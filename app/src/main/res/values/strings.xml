@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Rotory5000</string>
+    <String name="restapi_key">KakaoAK 54bc67a19d2872d39ccdc3fa56f72f40</String>
     <string name="home"></string>
     <string name="theme"></string>
     <string name="user"></string>

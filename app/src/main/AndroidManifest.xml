@@ -30,7 +30,6 @@
         <activity android:name=".MyPage"/>
         <activity android:name=".account.SignUpActivity"/>
         <activity android:name=".account.LogInActivity"/>
-        <activity android:name=".BigMapPage"/>
         <activity android:name=".userActivity.MyFavoriteActivity"/>
 <!--        <activity android:name=".Write_Story" />-->
 

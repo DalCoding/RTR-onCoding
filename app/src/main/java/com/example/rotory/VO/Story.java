@@ -10,6 +10,7 @@ public class Story {
     String textStory;
     String uid;
     String userName;
+    String userLevel;
     String userLevelImage;
     String storyTitle;
     String storyContents;
@@ -27,9 +28,11 @@ public class Story {
     ArrayList<String> imageComment;
 
 
-    public Story() {}
+    public Story() {
+        // firestore 연결에 필요한 생성자
+    }
 
-    public Story(int storyId, int prefixId, int isPublic, String textStory, String uid, String userName, String userLevelImage, String storyTitle,
+    public Story(int storyId, int prefixId, int isPublic, String textStory, String uid, String userName, String userLevel, String userLevelImage, String storyTitle,
                  String storyContents, String storyAddress, String titleImage, String favoriteIcon, String liked, String stared,
                  String scrapped, String storyComment, Date addedDate, Date writeDate, Date modifiedDate, ArrayList<String> smallImage,
                  ArrayList<String> imageComment) {
@@ -39,6 +42,7 @@ public class Story {
         this.textStory = textStory;
         this.uid = uid;
         this.userName = userName;
+        this.userLevel = userLevel;
         this.userLevelImage = userLevelImage;
         this.storyTitle = storyTitle;
         this.storyContents = storyContents;
@@ -56,9 +60,10 @@ public class Story {
         this.imageComment = imageComment;
     }
 
-    public Story(String textStory, String userName, String userLevelImage, String storyTitle, String storyContents, String titleImage, String favoriteIcon, String liked) {
+    public Story(String textStory, String userLevel, String userName, String userLevelImage, String storyTitle, String storyContents, String titleImage, String favoriteIcon, String liked) {
         this.textStory = textStory;
         this.userName = userName;
+        this.userLevel = userLevel;
         this.userLevelImage = userLevelImage;
         this.storyTitle = storyTitle;
         this.storyContents = storyContents;
@@ -233,5 +238,13 @@ public class Story {
 
     public void setImageComment(ArrayList<String> imageComment) {
         this.imageComment = imageComment;
+    }
+
+    public String getUserLevel() {
+        return userLevel;
+    }
+
+    public void setUserLevel(String userLevel) {
+        this.userLevel = userLevel;
     }
 }
