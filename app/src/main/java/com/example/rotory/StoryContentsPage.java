@@ -302,10 +302,10 @@ public class StoryContentsPage extends Fragment {
     //해당 글의 내용을 뿌려줌
     private void setContents(Map<String, Object> contentsList) {
         Log.d(TAG, "title확인" + contentsList.get("title"));
-
+       Map<String, Object> imageCommentList = (Map<String, Object>) contentsList.get("imageCommet");
      scontentsTitleText.setText(contentsList.get("title").toString());
      //scontentsBigImg.setImage(contentsList.get("titleImage").toString());
-     scontentsMentText.setText(contentsList.get("imageComment").toString());
+     scontentsMentText.setText(imageCommentList.get("image1").toString());
      scontentsTextText.setText(contentsList.get("storyText").toString());
      scontentsLocText.setText(contentsList.get("storyAddress").toString());
 
