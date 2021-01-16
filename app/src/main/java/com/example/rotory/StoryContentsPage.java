@@ -30,6 +30,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -63,7 +64,9 @@ public class StoryContentsPage extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-
+        if (context instanceof OnUserActItemClickListener){
+            listener = (OnUserActItemClickListener) context;
+        }
         this.context = context;
     }
 
@@ -123,7 +126,8 @@ public class StoryContentsPage extends Fragment {
                                     @Override
                                     public void onClick(View v) {
                                         Toast.makeText(getContext(),"좋아요 버튼 눌림", Toast.LENGTH_SHORT);
-                                        clickLikeImage(contentsID, userId);
+                                        listener.OnLikeClicked(contentsID,userId);
+                                        //clickLikeImage(contentsID, userId);
                                     }
                                 });
                             }
@@ -135,6 +139,51 @@ public class StoryContentsPage extends Fragment {
 
     }
 
+    private void loadContents(String contentsID) {
+
+        DocumentReference docRef = db.collection("contents").document(contentsID);
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Log.d(TAG, "자료 받아오기 성공 " );
+
+                        Map<String, Object> ContentsList = new HashMap<>();
+                        ContentsList = document.getData();
+                        Log.d(TAG, "title확인" + ContentsList.get("title"));
+                        setContents(ContentsList);
+
+                    } else {
+                        Log.d(TAG, "No such document");
+                    }
+                } else {
+                    Log.d(TAG, "get failed with ", task.getException());
+                }
+            }
+        });
+
+    }
+
+    private void setContents(Map<String, Object> contentsList) {
+        Log.d(TAG, "title확인" + contentsList.get("title"));
+
+     scontentsTitleText.setText(contentsList.get("title").toString());
+
+     //scontentsBigImg.setImage(contentsList.get("titleImage").toString());
+    // scontentsMentText.setText(contentsList.get("storyMent").toString());
+     scontentsTextText.setText(contentsList.get("storyText").toString());
+     scontentsLocText.setText(contentsList.get("storyAddress").toString());
+
+    }
+
+
+
+
+    }
+
+    /*
     private void clickLikeImage(String contentsID,String userId) {
         //좋아요 버튼 누르면 해당 글 정보 받아가기
                 Log.d(TAG, "user에서 아이디 잘 받아옴?" + userId);
@@ -150,10 +199,11 @@ public class StoryContentsPage extends Fragment {
                                     Map<String, Object> contents = new HashMap<>();
                                     contents = task.getResult().getData();
                                     Map<String, Object> myLike = new HashMap<>();
+                                    myLike.put("contentsId",contentsID);
                                     myLike.put("contentsType", contents.get("contentsType").toString());
                                     myLike.put("title", contents.get("title").toString());
                                     myLike.put("titleImage", contents.get("titleImage").toString());
-                                    myLike.put("tag", "");
+                                    myLike.put("likedDate", new Date().toString());
                                     Log.d(TAG, "맵에 잘 들어갔니?" + myLike.get("title"));
                                     saveMyLike(userId, myLike);
 
@@ -204,51 +254,6 @@ public class StoryContentsPage extends Fragment {
                 });
     }
 
-    private void loadContents(String contentsID) {
-
-        DocumentReference docRef = db.collection("contents").document(contentsID);
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        Log.d(TAG, "자료 받아오기 성공 " );
-
-                        Map<String, Object> ContentsList = new HashMap<>();
-                        ContentsList = document.getData();
-                        Log.d(TAG, "title확인" + ContentsList.get("title"));
-                        setContents(ContentsList);
-
-                    } else {
-                        Log.d(TAG, "No such document");
-                    }
-                } else {
-                    Log.d(TAG, "get failed with ", task.getException());
-                }
-            }
-        });
-
-    }
-
-    private void setContents(Map<String, Object> contentsList) {
-        Log.d(TAG, "title확인" + contentsList.get("title"));
-
-     scontentsTitleText.setText(contentsList.get("title").toString());
-
-     //scontentsBigImg.setImage(contentsList.get("titleImage").toString());
-    // scontentsMentText.setText(contentsList.get("storyMent").toString());
-     scontentsTextText.setText(contentsList.get("storyText").toString());
-     scontentsLocText.setText(contentsList.get("storyAddress").toString());
-
-    }
-
-
-
-
-    }
-
-    /*
         scontentsCommBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {

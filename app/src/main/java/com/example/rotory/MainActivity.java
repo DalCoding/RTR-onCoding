@@ -21,6 +21,7 @@ import androidx.transition.Transition;
 import com.example.rotory.Interface.OnTabItemSelectedListener;
 
 
+import com.example.rotory.Interface.OnUserActItemClickListener;
 import com.example.rotory.VO.AppConstruct;
 
 import com.example.rotory.account.SignUpActivity;
@@ -43,10 +44,11 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MainActivity extends AppCompatActivity implements OnTabItemSelectedListener{
+public class MainActivity extends AppCompatActivity implements OnTabItemSelectedListener, OnUserActItemClickListener {
 
     public static final String TAG = "MainActivity";
     AppConstruct appConstruct;
@@ -243,6 +245,91 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();*/
         }
+
+    @Override
+    public void OnStarClicked() {
+
+    }
+
+    @Override
+    public void OnLikeClicked(String contentsId, String userId) {
+        Log.d(TAG, "user에서 아이디 잘 받아옴?" + userId);
+
+        db.collection("contents")
+                .document(contentsId)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            Log.d(TAG, "콘텐츠 페이지에서 해당 다큐먼트 받아오기 성공");
+                            Map<String, Object> contents = new HashMap<>();
+                            contents = task.getResult().getData();
+                            Map<String, Object> myLike = new HashMap<>();
+                            myLike.put("contentsId",contentsId);
+                            myLike.put("contentsType", contents.get("contentsType").toString());
+                            myLike.put("title", contents.get("title").toString());
+                            myLike.put("titleImage", contents.get("titleImage").toString());
+                            myLike.put("likedDate", new Date().toString());
+                            Log.d(TAG, "맵에 잘 들어갔니?" + myLike.get("title"));
+                            String userCollection = "myLike";
+                            saveMyLike(userId, myLike, userCollection);
+
+                        }
+                    }
+                });
+
+    }
+    //star, Like, Flag 폴더에 저장하는 메서드
+    private void saveMyLike(String userId, Map<String, Object> myLike, String userCollection) {
+        //1. userId-> 현재사용자에게서 받아온 사용자아이디로 사용자의 고유번호 찾기
+        //2. 해당 고유번호 이용해서 사용자 자료 아래에 좋아요 폴더 생성
+        db.collection("person")
+                .whereEqualTo("userId", userId)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            Log.d(TAG, "유저 아이디로 사용자 찾기 성공");
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                String userDId = document.getId();
+                                Log.d(TAG, "아이디 확인" + document.getId() + "==>" + userDId);
+                                if (userDId != null) {
+                                    db.collection("person").document(userDId)
+                                            .collection(userCollection).document()
+                                            .set(myLike)
+                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+                                                    if (task.isSuccessful()) {
+                                                        Log.d(TAG, "myLike 목록에 저장 성공");
+
+                                                    } else {
+                                                        Log.d(TAG, "테이블에 저장 실패");
+                                                    }
+                                                }
+
+                                            });
+                                } else {
+                                    Log.d(TAG, "userId 없음" + userDId);
+                                }
+                            }
+
+                        }
+                    }
+                });
+    }
+
+    @Override
+    public void OnFlagClicked() {
+
+    }
+
+    @Override
+    public void OnLinkClicked() {
+
+    }
 
   /*  private void reload() {
         mAuth.getCurrentUser().reload().addOnCompleteListener(new OnCompleteListener<Void>() {
