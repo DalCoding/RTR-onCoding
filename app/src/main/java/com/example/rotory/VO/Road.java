@@ -9,9 +9,10 @@ public class Road {
     int dtrRating;
     int isPublic;
     String ratingComment;
-    String roadText;
+    String textRoad;
     String uid;
     String userName;
+    String userLevel;
     String userLevelImage;
     String roadTitle;
     String hour;
@@ -25,24 +26,25 @@ public class Road {
     Date writeDate;
     Date modifiedDate;
     Date addedDate;
-    Map<Object, Object> dtrRoadLine;
+    // Map<Object, Object> dtrRoadLine;
     ArrayList<String> tag;
 
     public Road() {
-
+        // firestore 연결에 필요한 생성자
     }
 
-    public Road(int roadId, int dtrRating, int isPublic, String ratingComment, String roadText, String uid, String userName,
-                String userLevelImage, String roadTitle, String hour, String min, String isPartner, String favoriteIcon, String liked,
+    public Road(int roadId, int dtrRating, int isPublic, String ratingComment, String textRoad, String uid, String userName,
+                String userLevelImage, String userLevel, String roadTitle, String hour, String min, String isPartner, String favoriteIcon, String liked,
                 String stared, String scrapped, String roadComment, Date writeDate, Date modifiedDate, Date addedDate,
                 Map<Object, Object> dtrRoadLine, ArrayList<String> tag) {
         this.roadId = roadId;
         this.dtrRating = dtrRating;
         this.isPublic = isPublic;
         this.ratingComment = ratingComment;
-        this.roadText = roadText;
+        this.textRoad = textRoad;
         this.uid = uid;
         this.userName = userName;
+        this.userLevel = userLevel;
         this.userLevelImage = userLevelImage;
         this.roadTitle = roadTitle;
         this.hour = hour;
@@ -56,18 +58,27 @@ public class Road {
         this.writeDate = writeDate;
         this.modifiedDate = modifiedDate;
         this.addedDate = addedDate;
-        this.dtrRoadLine = dtrRoadLine;
+        //this.dtrRoadLine = dtrRoadLine;
         this.tag = tag;
     }
 
-    public Road(String roadText, String userName, String userLevelImage, String roadTitle, String favoriteIcon, String liked, Map<Object, Object> dtrRoadLine) {
-        this.roadText = roadText;
+    public Road(String textRoad, String userName, String userLevel, String userLevelImage, String roadTitle, String favoriteIcon, String liked, Map<Object, Object> dtrRoadLine) {
+        this.textRoad = textRoad;
         this.userName = userName;
+        this.userLevel = userLevel;
         this.userLevelImage = userLevelImage;
         this.roadTitle = roadTitle;
         this.favoriteIcon = favoriteIcon;
         this.liked = liked;
-        this.dtrRoadLine = dtrRoadLine;
+        //this.dtrRoadLine = dtrRoadLine;
+    }
+
+    public String getUserLevel() {
+        return userLevel;
+    }
+
+    public void setUserLevel(String userLevel) {
+        this.userLevel = userLevel;
     }
 
     public int getRoadId() {
@@ -102,12 +113,12 @@ public class Road {
         this.ratingComment = ratingComment;
     }
 
-    public String getRoadText() {
-        return roadText;
+    public String getTextRoad() {
+        return textRoad;
     }
 
-    public void setRoadText(String roadText) {
-        this.roadText = roadText;
+    public void setTextRoad(String roadText) {
+        this.textRoad = roadText;
     }
 
     public String getUid() {
@@ -230,13 +241,13 @@ public class Road {
         this.addedDate = addedDate;
     }
 
-    public Map<Object, Object> getDtrRoadLine() {
+    /*public Map<Object, Object> getDtrRoadLine() {
         return dtrRoadLine;
     }
 
     public void setDtrRoadLine(Map<Object, Object> dtrRoadLine) {
         this.dtrRoadLine = dtrRoadLine;
-    }
+    }*/
 
     public ArrayList<String> getTag() {
         return tag;
