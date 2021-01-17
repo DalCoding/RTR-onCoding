@@ -27,6 +27,9 @@ import com.example.rotory.Interface.OnTabItemSelectedListener;
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 731d08cec0ed8fb196e108f03b5c546e446cb718
 =======
 >>>>>>> 731d08cec0ed8fb196e108f03b5c546e446cb718
 import com.example.rotory.account.SignUpActivity;
@@ -37,6 +40,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 >>>>>>> master
 =======
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 >>>>>>> 1cabbe21ada2c288a0ae57f0e38b9b6dfe7394e9
@@ -52,6 +56,11 @@ import com.example.rotory.userActivity.MyLikeActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 >>>>>>> master
+=======
+>>>>>>> 1cabbe21ada2c288a0ae57f0e38b9b6dfe7394e9
+=======
+>>>>>>> 1cabbe21ada2c288a0ae57f0e38b9b6dfe7394e9
+>>>>>>> 731d08cec0ed8fb196e108f03b5c546e446cb718
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;

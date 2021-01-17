@@ -8,8 +8,11 @@ public class Contents {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> master
+=======
+>>>>>>> 731d08cec0ed8fb196e108f03b5c546e446cb718
 =======
 >>>>>>> 731d08cec0ed8fb196e108f03b5c546e446cb718
     String uid;
@@ -26,6 +29,9 @@ public class Contents {
     String tag10;
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 731d08cec0ed8fb196e108f03b5c546e446cb718
 =======
 >>>>>>> 731d08cec0ed8fb196e108f03b5c546e446cb718
 =======
@@ -34,8 +40,11 @@ public class Contents {
     ArrayList<String> tag;
 >>>>>>> 1cabbe21ada2c288a0ae57f0e38b9b6dfe7394e9
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> master
+=======
+>>>>>>> 731d08cec0ed8fb196e108f03b5c546e446cb718
 =======
 >>>>>>> 731d08cec0ed8fb196e108f03b5c546e446cb718
     String hour;
@@ -57,6 +66,9 @@ public class Contents {
 
     public Contents() {
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 731d08cec0ed8fb196e108f03b5c546e446cb718
     }
 
 <<<<<<< HEAD
@@ -78,8 +90,11 @@ public class Contents {
 
     public void setUid(String uid) {
         this.uid = uid;
+<<<<<<< HEAD
 =======
 >>>>>>> master
+=======
+>>>>>>> 731d08cec0ed8fb196e108f03b5c546e446cb718
     }
 
     public String getTitle() {
@@ -88,6 +103,7 @@ public class Contents {
 
     public void setTitle(String title) {
         this.title = title;
+<<<<<<< HEAD
     }
 
     public String getTag1() {
@@ -120,12 +136,46 @@ public class Contents {
         return tag4;
     }
 
+=======
+    }
+
+    public String getTag1() {
+        return tag1;
+    }
+
+    public void setTag1(String tag1) {
+        this.tag1 = tag1;
+    }
+
+    public String getTag2() {
+        return tag2;
+    }
+
+<<<<<<< HEAD
+    public void setTag2(String tag2) {
+        this.tag2 = tag2;
+    }
+
+    public String getTag3() {
+        return tag3;
+    }
+
+    public void setTag3(String tag3) {
+        this.tag3 = tag3;
+    }
+
+    public String getTag4() {
+        return tag4;
+    }
+
+>>>>>>> 731d08cec0ed8fb196e108f03b5c546e446cb718
     public void setTag4(String tag4) {
         this.tag4 = tag4;
 =======
     public String getRoadTitle() {
         return roadTitle;
 >>>>>>> 1cabbe21ada2c288a0ae57f0e38b9b6dfe7394e9
+<<<<<<< HEAD
     }
 
     public String getTag5() {
@@ -209,6 +259,18 @@ public class Contents {
         this.tag5 = tag5;
     }
 
+=======
+    }
+
+    public String getTag5() {
+        return tag5;
+    }
+
+    public void setTag5(String tag5) {
+        this.tag5 = tag5;
+    }
+
+>>>>>>> 731d08cec0ed8fb196e108f03b5c546e446cb718
     public String getTag6() {
         return tag6;
     }
@@ -225,7 +287,10 @@ public class Contents {
         this.tag7 = tag7;
     }
 
+<<<<<<< HEAD
 >>>>>>> master
+=======
+>>>>>>> 731d08cec0ed8fb196e108f03b5c546e446cb718
     public String getTag8() {
         return tag8;
     }

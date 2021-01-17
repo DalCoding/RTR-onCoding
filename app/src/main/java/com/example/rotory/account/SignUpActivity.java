@@ -3,6 +3,7 @@ package com.example.rotory.account;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+<<<<<<< HEAD
 <<<<<<< HEAD:app/src/main/java/com/example/rotory/Account/SignUpActivity.java
 <<<<<<< HEAD:app/src/main/java/com/example/rotory/account/SignUpActivity.java
 =======
@@ -12,6 +13,8 @@ import android.net.Uri;
 >>>>>>> master:app/src/main/java/com/example/rotory/signup/SignUpActivity.java
 =======
 >>>>>>> 731d08cec0ed8fb196e108f03b5c546e446cb718:app/src/main/java/com/example/rotory/account/SignUpActivity.java
+=======
+>>>>>>> 731d08cec0ed8fb196e108f03b5c546e446cb718
 import android.os.Bundle;
 import android.util.Log;
 
@@ -20,6 +23,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+<<<<<<< HEAD
+=======
+import android.widget.Toast;
+>>>>>>> 731d08cec0ed8fb196e108f03b5c546e446cb718
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -27,7 +34,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.rotory.MainActivity;
 import com.example.rotory.R;
+<<<<<<< HEAD
 import com.example.rotory.VO.AppConstruct;
+=======
+>>>>>>> 731d08cec0ed8fb196e108f03b5c546e446cb718
 import com.example.rotory.VO.Person;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -39,6 +49,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+<<<<<<< HEAD
 <<<<<<< HEAD:app/src/main/java/com/example/rotory/Account/SignUpActivity.java
 <<<<<<< HEAD:app/src/main/java/com/example/rotory/account/SignUpActivity.java
 import com.google.firebase.firestore.DocumentReference;
@@ -67,10 +78,23 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+=======
+import com.google.firebase.firestore.DocumentReference;
+
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+>>>>>>> 731d08cec0ed8fb196e108f03b5c546e446cb718
 import java.util.regex.Pattern;
 
 
 public class SignUpActivity extends AppCompatActivity {
+<<<<<<< HEAD
 <<<<<<< HEAD:app/src/main/java/com/example/rotory/account/SignUpActivity.java
 
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -80,11 +104,18 @@ public class SignUpActivity extends AppCompatActivity {
 
     AppConstruct appConstruct;
 >>>>>>> master:app/src/main/java/com/example/rotory/signup/SignUpActivity.java
+=======
+
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+>>>>>>> 731d08cec0ed8fb196e108f03b5c546e446cb718
     private static final String TAG = "SignUpActivity";
     private final String REGEX_PATTERN = "^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[$@$!%*#?&])[A-Za-z[0-9]$@$!%*#?&]{8,20}$";
     private final String REGEX_NUMBER = "^(?=.*[0-9])[0-9]{9,12}$";
     FirebaseFirestore db = FirebaseFirestore.getInstance();
+<<<<<<< HEAD
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+=======
+>>>>>>> 731d08cec0ed8fb196e108f03b5c546e446cb718
 
     EditText signin_id_edittext;
     EditText signin_pw_edittext;
@@ -101,12 +132,19 @@ public class SignUpActivity extends AppCompatActivity {
     TextView signin_userName_check;
     TextView signin_mobile_check;
 
+<<<<<<< HEAD
     String userId;
     String pw;
+=======
+
+    String userId;
+    String pw ;
+>>>>>>> 731d08cec0ed8fb196e108f03b5c546e446cb718
     String pwCheck;
     String userName;
     String mobile;
     String email;
+<<<<<<< HEAD
 <<<<<<< HEAD:app/src/main/java/com/example/rotory/account/SignUpActivity.java
 
     Person persons = new Person();
@@ -118,12 +156,18 @@ public class SignUpActivity extends AppCompatActivity {
     boolean checkUserName = true;
 
 >>>>>>> master:app/src/main/java/com/example/rotory/signup/SignUpActivity.java
+=======
+
+    Person persons = new Person();
+    boolean checkUserName = true;
+>>>>>>> 731d08cec0ed8fb196e108f03b5c546e446cb718
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         SharedPreferences sharedPref = getSharedPreferences("person Document Id List", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sign_up_page);
+<<<<<<< HEAD
         FirebaseUser user = mAuth.getCurrentUser();
 
        /* String data = sharedPref.getString("#0", "");
@@ -132,6 +176,8 @@ public class SignUpActivity extends AppCompatActivity {
         editor.commit();
 
         Log.d(TAG, "회원가입 시작 모든 데이터 삭제? -> " + data);*/
+=======
+>>>>>>> 731d08cec0ed8fb196e108f03b5c546e446cb718
 
         signin_id_edittext = findViewById(R.id.signin_id_edittext);
         signin_pw_edittext = findViewById(R.id.signin_pw_edittext);
@@ -150,11 +196,15 @@ public class SignUpActivity extends AppCompatActivity {
         signin_mobile_check = findViewById(R.id.signin_mobile_check);
         signin_mobile_check.setVisibility(View.GONE);
         signin_id_check = findViewById(R.id.signin_id_check);
+<<<<<<< HEAD
 <<<<<<< HEAD:app/src/main/java/com/example/rotory/account/SignUpActivity.java
         signin_pwcheck_check = findViewById(R.id. signin_pwcheck_check);
 =======
         signin_pwcheck_check = findViewById(R.id.signin_pwcheck_check);
 >>>>>>> master:app/src/main/java/com/example/rotory/signup/SignUpActivity.java
+=======
+        signin_pwcheck_check = findViewById(R.id. signin_pwcheck_check);
+>>>>>>> 731d08cec0ed8fb196e108f03b5c546e446cb718
 
         signUpTitlewithBtnTextView.setText("회원가입");
         signUpBackImageButton.setOnClickListener(new View.OnClickListener() {
@@ -187,6 +237,7 @@ public class SignUpActivity extends AppCompatActivity {
                     }
                 });
 
+<<<<<<< HEAD
                /* String data = sharedPref.getString("#0", "");
                 Log.d(TAG, "모든 데이터 삭제전 -> " + data);
                 editor.clear();
@@ -204,6 +255,11 @@ public class SignUpActivity extends AppCompatActivity {
 
         });
 <<<<<<< HEAD:app/src/main/java/com/example/rotory/account/SignUpActivity.java
+=======
+            }
+
+        });
+>>>>>>> 731d08cec0ed8fb196e108f03b5c546e446cb718
         String data = sharedPref.getString("#"+ 0,"");
         if(data != null){
             Log.d(TAG,"모든 데이터 삭제전 -> " + data);
@@ -217,11 +273,17 @@ public class SignUpActivity extends AppCompatActivity {
         }
 
 
+<<<<<<< HEAD
 =======
 >>>>>>> master:app/src/main/java/com/example/rotory/signup/SignUpActivity.java
 
         userId = signin_id_edittext.getText().toString().trim();
         pw = signin_pw_edittext.getText().toString().trim();
+=======
+
+        userId = signin_id_edittext.getText().toString().trim();
+        pw =signin_pw_edittext.getText().toString().trim();
+>>>>>>> 731d08cec0ed8fb196e108f03b5c546e446cb718
         pwCheck = signin_pwcheck_edittext.getText().toString().trim();
         userName = signin_nicname_edittext.getText().toString().trim();
         mobile = signin_mobile.getText().toString().trim();
@@ -230,7 +292,10 @@ public class SignUpActivity extends AppCompatActivity {
         signUpCheckBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+<<<<<<< HEAD
 <<<<<<< HEAD:app/src/main/java/com/example/rotory/account/SignUpActivity.java
+=======
+>>>>>>> 731d08cec0ed8fb196e108f03b5c546e446cb718
                 List<String> userNameList = new ArrayList<>();
                 FirebaseAuth firebaseAuth = mAuth;
                 if (firebaseAuth == null){
@@ -266,6 +331,7 @@ public class SignUpActivity extends AppCompatActivity {
                                         } else {
                                             Log.d(TAG,"new Username" + userName);
                                             existMobile(mobile);
+<<<<<<< HEAD
 =======
                 signin_userName_check.setVisibility(View.GONE);
                 signin_pwcheck_check.setVisibility(View.GONE);
@@ -284,6 +350,14 @@ public class SignUpActivity extends AppCompatActivity {
                 editor.commit();
 
 <<<<<<< HEAD:app/src/main/java/com/example/rotory/account/SignUpActivity.java
+=======
+
+                                        }
+                                    } else {
+                                    }
+                                }
+
+>>>>>>> 731d08cec0ed8fb196e108f03b5c546e446cb718
                             }
                         });*/
             }
@@ -298,6 +372,7 @@ public class SignUpActivity extends AppCompatActivity {
         signin_pwcheck_check.setVisibility(View.GONE);
         signin_id_check.setVisibility(View.GONE);
         signin_mobile_check.setVisibility(View.GONE);
+<<<<<<< HEAD
 =======
                 Log.d(TAG, "모든 데이터 삭제? -> " + data);*/
 
@@ -361,10 +436,13 @@ public class SignUpActivity extends AppCompatActivity {
         String checkResultList = sharedPref.getString("#0", "");
         return checkResultList;
 >>>>>>> master:app/src/main/java/com/example/rotory/signup/SignUpActivity.java
+=======
+>>>>>>> 731d08cec0ed8fb196e108f03b5c546e446cb718
 
     }
 
     private final void signUp(final String userId, final String password,
+<<<<<<< HEAD
 <<<<<<< HEAD:app/src/main/java/com/example/rotory/account/SignUpActivity.java
                               Person persons, FirebaseUser user){
 =======
@@ -372,15 +450,23 @@ public class SignUpActivity extends AppCompatActivity {
 
         String UserName = persons.getUserName();
 >>>>>>> master:app/src/main/java/com/example/rotory/signup/SignUpActivity.java
+=======
+                              Person persons, FirebaseUser user){
+>>>>>>> 731d08cec0ed8fb196e108f03b5c546e446cb718
 
         String UserName = persons.getUserName();
         mAuth.createUserWithEmailAndPassword(userId, password).addOnCompleteListener(
                 SignUpActivity.this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
+<<<<<<< HEAD
                         if (task.isSuccessful()) {
                             Log.d(TAG, "등록버튼" + userId + ", " + password);
 <<<<<<< HEAD:app/src/main/java/com/example/rotory/account/SignUpActivity.java
+=======
+                        if(task.isSuccessful()){
+                            Log.d(TAG, "등록버튼" + userId + ", " + password);
+>>>>>>> 731d08cec0ed8fb196e108f03b5c546e446cb718
                             String userId = user.getEmail();
                             String uid = user.getUid();
                             UserProfileChangeRequest profileUpdate = new UserProfileChangeRequest.Builder()
@@ -401,6 +487,7 @@ public class SignUpActivity extends AppCompatActivity {
                                     + task.getException().toString());
                             checkValidation();
                             signin_id_check = findViewById(R.id.signin_id_check);
+<<<<<<< HEAD
 =======
                             FirebaseUser users = mAuth.getCurrentUser();
                             String userId = users.getEmail();
@@ -425,10 +512,13 @@ public class SignUpActivity extends AppCompatActivity {
                             checkValidation2();
                             signin_id_check.setText("아이디 중복");
 >>>>>>> master:app/src/main/java/com/example/rotory/signup/SignUpActivity.java
+=======
+>>>>>>> 731d08cec0ed8fb196e108f03b5c546e446cb718
                             signin_id_check.setVisibility(View.VISIBLE);
                         }
                     }
                 });
+<<<<<<< HEAD
 <<<<<<< HEAD:app/src/main/java/com/example/rotory/account/SignUpActivity.java
 
     }
@@ -442,11 +532,23 @@ public class SignUpActivity extends AppCompatActivity {
     private boolean checkValidation2() {
         userId = signin_id_edittext.getText().toString().trim();
         pw = signin_pw_edittext.getText().toString().trim();
+=======
+
+    }
+
+
+
+    private boolean checkValidation(){
+
+        userId = signin_id_edittext.getText().toString().trim();
+        pw =signin_pw_edittext.getText().toString().trim();
+>>>>>>> 731d08cec0ed8fb196e108f03b5c546e446cb718
         pwCheck = signin_pwcheck_edittext.getText().toString().trim();
         userName = signin_nicname_edittext.getText().toString().trim();
         mobile = signin_mobile.getText().toString().trim();
         email = signin_email_edittext.getText().toString().trim();
 
+<<<<<<< HEAD
 <<<<<<< HEAD:app/src/main/java/com/example/rotory/account/SignUpActivity.java
 
         boolean pwPattern = Pattern.matches(REGEX_PATTERN, pw);
@@ -526,17 +628,91 @@ public class SignUpActivity extends AppCompatActivity {
         person.put("userImage", persons.getUserImage());
         person.put("userLevelImage", persons.getUserLevelImage());
         person.put("signUpDate", persons.getSignUpDate());
+=======
+
+        boolean pwPattern = Pattern.matches(REGEX_PATTERN, pw);
+        boolean mobilePattern = Pattern.matches(REGEX_NUMBER, mobile);
+
+
+      if( userName.equals("")|| userName.length()<1) {
+            signin_userName_check.setText("닉네임을 입력해 주세요");
+            signin_userName_check.setVisibility(View.VISIBLE);
+            return false;
+        }else if(!pwPattern){
+            Toast.makeText(getApplicationContext(),"비밀번호 양식을 확인해주세요", Toast.LENGTH_SHORT).show();
+           //다이얼로그 넣기
+            return false;
+
+        } else if(!pwCheck.equals(pw)){
+            signin_pwcheck_check.setVisibility(View.VISIBLE);
+
+            return false;
+
+        }else if(!userId.contains("@")){
+
+            signin_id_check.setText("이메일 양식으로 작성해주세요");
+            signin_id_check.setVisibility(View.VISIBLE);
+
+            return false;
+        }else if(!mobilePattern){
+            return false;
+        }
+
+        return true;
+
+    }
+
+
+    public Person setNewAccount(Person persons){
+    persons.setUserId(userId);
+    persons.setPassword(pw);
+    persons.setMobile(mobile);
+    persons.setUserImage(String.valueOf(R.drawable.squirrel));
+    persons.setEmail(email);
+    persons.setUserLevel("아기다람쥐");
+    persons.setUserName(userName);
+    persons.setUserLevelImage(String.valueOf(R.drawable.level1));
+    return persons;
+    }
+
+
+
+    private void saveUserAccount(String userId, String uid, Person persons, FirebaseUser user) {
+        // 이후에 계정으로 저장과 계정 정보 수정으로 나누어서 정리, 합침
+        persons.setUserId(userId);
+        persons.setPerson_id(uid);
+
+        HashMap<Object, String> person = new HashMap<>();
+        person.put("userEmail", persons.getEmail());
+        person.put("email", persons.getUserId());
+        person.put("userName", persons.getUserName());
+        person.put("password", persons.getPassword());
+        person.put("mobile", persons.getMobile());
+        person.put("uid", persons.getPerson_id());
+        person.put("userLevel", persons.getUserLevel());
+        person.put("userImage", persons.getUserImage());
+        person.put("userLevelImage", persons.getUserLevelImage());
+        person.put("signUpDate", new Date().toString());
+>>>>>>> 731d08cec0ed8fb196e108f03b5c546e446cb718
         //Date (그날날짜) 받아와서 다시저장
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
+<<<<<<< HEAD
        /* db.collection("person")
+=======
+        db.collection("person")
+>>>>>>> 731d08cec0ed8fb196e108f03b5c546e446cb718
                 .add(person)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
                         Log.d(TAG, "Person add with id" + documentReference.getId());
+<<<<<<< HEAD
                         //goMain();
+=======
+                        goMain();
+>>>>>>> 731d08cec0ed8fb196e108f03b5c546e446cb718
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -545,6 +721,7 @@ public class SignUpActivity extends AppCompatActivity {
                         Log.w(TAG, "Error adding user", e);
                     }
                 });
+<<<<<<< HEAD
 */
         Map<String, String> addUserName = new HashMap<>();
         addUserName.put(userName, userName);
@@ -608,6 +785,10 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
 <<<<<<< HEAD:app/src/main/java/com/example/rotory/account/SignUpActivity.java
+=======
+    }
+
+>>>>>>> 731d08cec0ed8fb196e108f03b5c546e446cb718
 
     public void goMain(){
         Intent mainIntent = new Intent(getApplicationContext(), MainActivity.class);
@@ -615,8 +796,11 @@ public class SignUpActivity extends AppCompatActivity {
 
     }
 
+<<<<<<< HEAD
 =======
 >>>>>>> master:app/src/main/java/com/example/rotory/signup/SignUpActivity.java
+=======
+>>>>>>> 731d08cec0ed8fb196e108f03b5c546e446cb718
 }
  /* private final void signUp(final String userId, final String password,
                               String email, String name,String mobile){

@@ -3,6 +3,7 @@ package com.example.rotory.VO;
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> master
 =======
@@ -27,6 +28,19 @@ public class Person {
 >>>>>>> master
 =======
 >>>>>>> 731d08cec0ed8fb196e108f03b5c546e446cb718
+=======
+import com.google.firebase.firestore.ServerTimestamp;
+
+import java.util.Date;
+
+public class Person {
+
+    String	Uid;
+=======
+public class Person {
+    String	person_id;
+>>>>>>> 1cabbe21ada2c288a0ae57f0e38b9b6dfe7394e9
+>>>>>>> 731d08cec0ed8fb196e108f03b5c546e446cb718
     String	userId;
     String	password;
     String	userName;
@@ -38,12 +52,18 @@ public class Person {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     String  signUpDate;
 =======
 >>>>>>> 1cabbe21ada2c288a0ae57f0e38b9b6dfe7394e9
 =======
     String  signUpDate;
 >>>>>>> master
+=======
+    String  signUpDate;
+=======
+>>>>>>> 1cabbe21ada2c288a0ae57f0e38b9b6dfe7394e9
+>>>>>>> 731d08cec0ed8fb196e108f03b5c546e446cb718
 =======
     String  signUpDate;
 =======
@@ -57,6 +77,9 @@ public class Person {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 731d08cec0ed8fb196e108f03b5c546e446cb718
 =======
 >>>>>>> 731d08cec0ed8fb196e108f03b5c546e446cb718
                   String email, String userImage, String userLevel, String userLevelImage, String  signUpDate) {
@@ -66,10 +89,13 @@ public class Person {
         this.person_id = person_id;
 >>>>>>> 1cabbe21ada2c288a0ae57f0e38b9b6dfe7394e9
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
                   String email, String userImage, String userLevel, String userLevelImage, String  signUpDate) {
         this.Uid = person_id;
 >>>>>>> master
+=======
+>>>>>>> 731d08cec0ed8fb196e108f03b5c546e446cb718
 =======
 >>>>>>> 731d08cec0ed8fb196e108f03b5c546e446cb718
         this.userId = userId;
@@ -83,6 +109,9 @@ public class Person {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 731d08cec0ed8fb196e108f03b5c546e446cb718
         this.signUpDate = signUpDate;
     }
 
@@ -94,6 +123,7 @@ public class Person {
     public void setUid(String uid) {
         Uid = uid;
 =======
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> 731d08cec0ed8fb196e108f03b5c546e446cb718
@@ -117,6 +147,8 @@ public class Person {
 >>>>>>> master
 =======
 =======
+=======
+>>>>>>> 731d08cec0ed8fb196e108f03b5c546e446cb718
     }
 
 
@@ -128,6 +160,9 @@ public class Person {
     public void setPerson_id(String person_id) {
         this.person_id = person_id;
 >>>>>>> 1cabbe21ada2c288a0ae57f0e38b9b6dfe7394e9
+<<<<<<< HEAD
+>>>>>>> 731d08cec0ed8fb196e108f03b5c546e446cb718
+=======
 >>>>>>> 731d08cec0ed8fb196e108f03b5c546e446cb718
     }
 
@@ -197,8 +232,11 @@ public class Person {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> master
+=======
+>>>>>>> 731d08cec0ed8fb196e108f03b5c546e446cb718
 =======
 >>>>>>> 731d08cec0ed8fb196e108f03b5c546e446cb718
 
@@ -211,10 +249,15 @@ public class Person {
     }
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 1cabbe21ada2c288a0ae57f0e38b9b6dfe7394e9
 =======
 >>>>>>> master
+=======
+=======
+>>>>>>> 1cabbe21ada2c288a0ae57f0e38b9b6dfe7394e9
+>>>>>>> 731d08cec0ed8fb196e108f03b5c546e446cb718
 =======
 =======
 >>>>>>> 1cabbe21ada2c288a0ae57f0e38b9b6dfe7394e9
