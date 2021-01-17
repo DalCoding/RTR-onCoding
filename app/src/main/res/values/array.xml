@@ -20,6 +20,14 @@
         <item>엽기</item>
         <item>일상</item>
         <item>기타</item>
-
     </string-array>
+
+    <string-array name="reportList">
+        <item>잘못된 정보</item>
+        <item>욕설</item>
+        <item>광고성 댓글</item>
+        <item>도배/스팸</item>
+    </string-array>
+
+
 </resources>

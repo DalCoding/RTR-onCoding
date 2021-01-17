@@ -68,8 +68,6 @@ public class StoryContentsPage extends Fragment {
     Context context;
     OnUserActItemClickListener listener;
 
-
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
