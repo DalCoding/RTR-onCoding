@@ -166,15 +166,28 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:clipToPadding="false">
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+        android:layout_marginTop="60dp"
+=======
+>>>>>>> 1cabbe21ada2c288a0ae57f0e38b9b6dfe7394e9
+=======
+        android:layout_marginTop="60dp"
+>>>>>>> master
+=======
+        android:layout_marginTop="60dp"
+=======
+>>>>>>> 1cabbe21ada2c288a0ae57f0e38b9b6dfe7394e9
+>>>>>>> 731d08cec0ed8fb196e108f03b5c546e446cb718
+        >
 
         <FrameLayout
             android:id="@+id/container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="60dp"
             android:background="#FFFFFF"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+           >
 
         </FrameLayout>
     </androidx.core.widget.NestedScrollView>
@@ -194,7 +207,7 @@
         app:menu="@menu/menu_bottom">
 
         <RelativeLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom">
 

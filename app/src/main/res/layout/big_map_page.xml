@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
     <FrameLayout
         android:id="@+id/bigMapLayout"
@@ -13,18 +12,86 @@
 
     </FrameLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/bigMapBtnLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="30dp"
+        android:background="@drawable/map_button_container_background"
+        android:paddingLeft="10dp"
+        android:paddingTop="10dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="10dp">
+
+        <android.widget.Button
+            android:id="@+id/thisBigMapBtn"
+            android:layout_width="130dp"
+            android:layout_height="40dp"
+            android:background="@drawable/ripple_custom"
+            android:text="이 지도에서 찾기" />
+
+        <ImageButton
+            android:id="@+id/bigMapMyLocationBtn"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/thisBigMapBtn"
+            android:background="@drawable/ripple_custom"
+            app:srcCompat="@drawable/gps_icon"/>
+
+    </RelativeLayout>
+
+    <!--<RelativeLayout
+        android:id="@+id/bigMapLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/bigMapBtnLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/map_button_container_background"
+            android:orientation="horizontal"
+            android:paddingLeft="10dp"
+            android:paddingTop="10dp"
+            android:paddingRight="10dp"
+            android:paddingBottom="10dp">
+
+            <android.widget.Button
+                android:id="@+id/thisBigMapBtn"
+                android:layout_width="130dp"
+                android:layout_height="40dp"
+                android:background="@drawable/ripple_custom"
+                android:text="이 지도에서 찾기" />
+
+            <ImageButton
+                android:id="@+id/bigMapMyLocationBtn"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/ripple_custom"
+                app:srcCompat="@drawable/gps_icon" />
+
+        </LinearLayout>
+
+    </RelativeLayout>-->
+
+    <!--<LinearLayout
+        android:id="@+id/bigMapBtnLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:layout_marginTop="30dp"
         android:background="@drawable/map_button_container_background"
         android:orientation="horizontal"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
         android:paddingLeft="10dp"
-        android:paddingRight="10dp">
+        android:paddingTop="10dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="10dp">
 
         <android.widget.Button
             android:id="@+id/thisBigMapBtn"
@@ -41,6 +108,6 @@
             android:background="@drawable/ripple_custom"
             app:srcCompat="@drawable/gps_icon" />
 
-    </LinearLayout>
+    </LinearLayout>-->
 
-</FrameLayout>
+</RelativeLayout>

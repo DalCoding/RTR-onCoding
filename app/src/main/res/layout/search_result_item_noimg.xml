@@ -25,7 +25,7 @@
                     android:id="@+id/searchResultNoImgUserLevel"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:layout_marginTop="14dp"
+                    android:layout_marginTop="10dp"
                     android:layout_marginLeft="10dp"
                     app:srcCompat="@drawable/graduationhat" />
 
@@ -45,7 +45,8 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="10dp"
                     android:text="길"
-                    android:textSize="18sp" />
+                    android:textColor="#B3B3B3"
+                    android:textSize="16sp" />
 
             </LinearLayout>
 
@@ -64,6 +65,8 @@
                     android:layout_height="45dp"
                     android:text="제목"
                     android:textSize="18sp"
+                    android:singleLine="true"
+                    android:ellipsize="end"
                     android:gravity="center_vertical" />
 
                 <TextView
@@ -72,6 +75,8 @@
                     android:layout_height="45dp"
                     android:text="내용"
                     android:textSize="18sp"
+                    android:singleLine="true"
+                    android:ellipsize="end"
                     android:gravity="center_vertical" />
 
             </LinearLayout>

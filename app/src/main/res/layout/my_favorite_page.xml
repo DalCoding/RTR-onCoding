@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_marginTop="20dp"
-        android:background="@color/white">
+        android:background="@null">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -26,6 +26,7 @@
 
 
                 <TextView
+                    android:id="@+id/profileTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
                     android:layout_weight="1"
@@ -37,6 +38,7 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/userActivityTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
                     android:layout_weight="1"
@@ -68,6 +70,7 @@
                     app:srcCompat="@drawable/myrectimg" />
 
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -150,7 +153,6 @@
 
 
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="675dp"
         android:background="@color/brown"
         android:visibility="visible"
         app:itemIconTint="@color/white"

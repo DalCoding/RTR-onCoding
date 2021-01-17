@@ -1,27 +1,43 @@
 package com.example.rotory;
 
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.Signature;
+import android.content.Intent;
+
 import android.os.Bundle;
-import android.util.Base64;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.RecyclerView;
 
+import net.daum.mf.map.api.MapPOIItem;
+import net.daum.mf.map.api.MapPoint;
 import net.daum.mf.map.api.MapView;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-
 public class MainPage extends Fragment {
+    Button mainFloatingBtn;
+    Button mainSearchBtn;
+    EditText mainSearchEdit;
+
+    RecyclerView mainRoadList;
+    Button mainStoryNextBtn;
+    RecyclerView mainStoryList;
+    Button mainRoadNextBtn;
+
+    FrameLayout mainMapLayout;
+    Button mainMapExtendBtn;
+
+
+    public static MainPage newInstance() {
+        return new MainPage();
+    }
 
     @Nullable
     @Override
@@ -32,14 +48,52 @@ public class MainPage extends Fragment {
 
     }
 
+    public void showWrite(){}
+
+   /* public void onContentsListener (contentsAdapter.ViewHolder holder, View view, int position) {
+        if (listener != null) {
+            listener.onContentsListener(holder, view, position);
+        }
+    }*/
+
     private void initUI(ViewGroup rootView) {
 
-          /*MapView mapView = new MapView(this);
 
-        ViewGroup mapViewContainer = (ViewGroup) findViewById(R.id.bigMapLayout);
-        mapViewContainer.addView(mapView);*/
+      /*  MapView mapView = new MapView(getContext());
+        ViewGroup mapViewContainer = (ViewGroup) rootView.findViewById(R.id.mainMapLayout);
+        mapViewContainer.addView(mapView);
 
+       */
+        /*MapView mapView = new MapView(getContext());
+        ViewGroup mapViewContainer = (ViewGroup) rootView.findViewById(R.id.mainMapLayout);
+        mapViewContainer.addView(mapView);
 
+        mapView.setMapCenterPointAndZoomLevel(MapPoint.mapPointWithGeoCoord(37.541258, 126.838193), 2, true);*/
+/*
+  Button button = rootView.findViewById(R.id.mainFloatingBtn);
+        button.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) { showWrite(); }
+        });
+        ImageButton mainMapExtendBtn = rootView.findViewById(R.id.mainMapExtendBtn);
+        mainMapExtendBtn.bringToFront();
+        mainMapExtendBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent (getActivity(), BigMapPage.class);
+                startActivity(intent);
+            }
+        });
+
+        ImageButton mainMapExtendBtn = rootView.findViewById(R.id.mainMapExtendBtn);
+        mainMapExtendBtn.bringToFront();
+        mainMapExtendBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MainActivity)getActivity()).replaceFragment(BigMapPage.newInstance());
+            }
+        });
+*/
 
         // 디버그 키 해시 구하기 (카카오 맵 API 연동 시 필요), 맵 코드 주석 처리 후 실행! (애뮬에서 돌리면 실행 오류 날 수 있음)
         /*try {
@@ -57,7 +111,7 @@ public class MainPage extends Fragment {
             e.printStackTrace();
         }*/
     }
-    }
+}
 
 
 

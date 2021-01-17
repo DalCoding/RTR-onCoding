@@ -1,20 +1,77 @@
 package com.example.rotory.VO;
 
-import java.util.HashMap;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> master
+=======
+>>>>>>> 731d08cec0ed8fb196e108f03b5c546e446cb718
+import com.google.firebase.firestore.ServerTimestamp;
 
+import java.util.Date;
+
+<<<<<<< HEAD
 public class Person {
-    int	person_id;
+
+    String	Uid;
+=======
+public class Person {
+    String	person_id;
+>>>>>>> 1cabbe21ada2c288a0ae57f0e38b9b6dfe7394e9
+<<<<<<< HEAD
+=======
+public class Person {
+
+    String	Uid;
+>>>>>>> master
+=======
+>>>>>>> 731d08cec0ed8fb196e108f03b5c546e446cb718
     String	userId;
     String	password;
     String	userName;
     String	mobile;
     String	email;
     String	userImage;
-    int	userLevel;
+    String userLevel;
+    String userLevelImage;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+    String  signUpDate;
+=======
+>>>>>>> 1cabbe21ada2c288a0ae57f0e38b9b6dfe7394e9
+=======
+    String  signUpDate;
+>>>>>>> master
+=======
+    String  signUpDate;
+=======
+>>>>>>> 1cabbe21ada2c288a0ae57f0e38b9b6dfe7394e9
+>>>>>>> 731d08cec0ed8fb196e108f03b5c546e446cb718
 
-    public Person(int person_id, String userId, String password, String userName,
-                  String mobile, String email, String userImage, int userLevel) {
+    public Person() {
+    }
+
+    public Person(String person_id, String userId, String password, String userName, String mobile,
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 731d08cec0ed8fb196e108f03b5c546e446cb718
+                  String email, String userImage, String userLevel, String userLevelImage, String  signUpDate) {
+        this.Uid = person_id;
+=======
+                  String email, String userImage, String userLevel, String userLevelImage) {
         this.person_id = person_id;
+>>>>>>> 1cabbe21ada2c288a0ae57f0e38b9b6dfe7394e9
+<<<<<<< HEAD
+=======
+                  String email, String userImage, String userLevel, String userLevelImage, String  signUpDate) {
+        this.Uid = person_id;
+>>>>>>> master
+=======
+>>>>>>> 731d08cec0ed8fb196e108f03b5c546e446cb718
         this.userId = userId;
         this.password = password;
         this.userName = userName;
@@ -22,14 +79,56 @@ public class Person {
         this.email = email;
         this.userImage = userImage;
         this.userLevel = userLevel;
+        this.userLevelImage = userLevelImage;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+        this.signUpDate = signUpDate;
     }
 
-    public int getPerson_id() {
+
+    public String getUid() {
+        return Uid;
+    }
+
+    public void setUid(String uid) {
+        Uid = uid;
+=======
+=======
+=======
+>>>>>>> 731d08cec0ed8fb196e108f03b5c546e446cb718
+        this.signUpDate = signUpDate;
+>>>>>>> master
+    }
+
+
+    public String getUid() {
+        return Uid;
+    }
+
+<<<<<<< HEAD
+    public void setPerson_id(String person_id) {
+        this.person_id = person_id;
+>>>>>>> 1cabbe21ada2c288a0ae57f0e38b9b6dfe7394e9
+=======
+    public void setUid(String uid) {
+        Uid = uid;
+<<<<<<< HEAD
+>>>>>>> master
+=======
+=======
+    }
+
+
+    public String getPerson_id() {
+
         return person_id;
     }
 
-    public void setPerson_id(int person_id) {
+    public void setPerson_id(String person_id) {
         this.person_id = person_id;
+>>>>>>> 1cabbe21ada2c288a0ae57f0e38b9b6dfe7394e9
+>>>>>>> 731d08cec0ed8fb196e108f03b5c546e446cb718
     }
 
     public String getUserId() {
@@ -80,11 +179,44 @@ public class Person {
         this.userImage = userImage;
     }
 
-    public int getUserLevel() {
+    public String getUserLevel() {
         return userLevel;
     }
 
-    public void setUserLevel(int userLevel) {
+    public void setUserLevel(String userLevel) {
         this.userLevel = userLevel;
     }
+
+    public String getUserLevelImage() {
+        return userLevelImage;
+    }
+
+    public void setUserLevelImage(String userLevelImage) {
+        this.userLevelImage = userLevelImage;
+    }
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> master
+=======
+>>>>>>> 731d08cec0ed8fb196e108f03b5c546e446cb718
+
+    public String  getSignUpDate() {
+        return signUpDate;
+    }
+
+    public void setSignUpDate(String  signUpDate) {
+        this.signUpDate = signUpDate;
+    }
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 1cabbe21ada2c288a0ae57f0e38b9b6dfe7394e9
+=======
+>>>>>>> master
+=======
+=======
+>>>>>>> 1cabbe21ada2c288a0ae57f0e38b9b6dfe7394e9
+>>>>>>> 731d08cec0ed8fb196e108f03b5c546e446cb718
 }

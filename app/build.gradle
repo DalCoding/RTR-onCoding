@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'com.google.gms.google-services'
 }
+apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion 30
@@ -28,21 +29,141 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    splits {
+        abi {
+            enable true
+            reset()
+            include 'x86', 'x86_64', 'armeabi-v7a', 'armeabi'
+            universalApk false
+        }
+    }
 }
 
 dependencies {
 
+    implementation platform('com.google.firebase:firebase-bom:26.1.0')
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.google.android.material:material:1.2.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'com.google.firebase:firebase-auth:20.0.1'
+    implementation 'com.google.firebase:firebase-analytics:17.4.3'
+    implementation 'com.google.firebase:firebase-core:17.2.3'
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 731d08cec0ed8fb196e108f03b5c546e446cb718
+    implementation 'com.google.android.gms:play-services-basement:17.4.0'
+    implementation 'com.google.android.gms:play-services-base:17.3.0'
+    implementation platform('com.google.firebase:firebase-bom:26.1.0')
     implementation 'com.google.firebase:firebase-firestore:22.0.1'
+    implementation 'com.google.firebase:firebase-auth'
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+    implementation 'com.firebaseui:firebase-ui-firestore:6.4.0'
+    implementation 'com.firebaseui:firebase-ui-auth:6.4.0'
+    implementation 'com.google.firebase:firebase-analytics-ktx'
+    //implementation 'com.google.android.gms:play-services-base:17.5.0'
+
+    implementation 'org.jetbrains:annotations:15.0'
+>>>>>>> master
+=======
+>>>>>>> 1cabbe21ada2c288a0ae57f0e38b9b6dfe7394e9
+=======
+    implementation 'org.jetbrains:annotations:15.0'
+    implementation 'com.google.firebase:firebase-firestore:22.0.1'
+    implementation 'com.google.firebase:firebase-auth'
+>>>>>>> 1cabbe21ada2c288a0ae57f0e38b9b6dfe7394e9
+<<<<<<< HEAD
+=======
+    implementation 'com.google.android.gms:play-services-basement:17.4.0'
+    implementation 'com.google.android.gms:play-services-base:17.3.0'
+    implementation platform('com.google.firebase:firebase-bom:26.1.0')
+    implementation 'com.google.firebase:firebase-firestore:22.0.1'
+    implementation 'com.google.firebase:firebase-auth'
+    implementation 'com.firebaseui:firebase-ui-firestore:6.4.0'
+    implementation 'com.firebaseui:firebase-ui-auth:6.4.0'
+    implementation 'com.google.firebase:firebase-analytics-ktx'
+    //implementation 'com.google.android.gms:play-services-base:17.5.0'
+
+    implementation 'org.jetbrains:annotations:15.0'
+>>>>>>> master
+=======
+>>>>>>> 731d08cec0ed8fb196e108f03b5c546e446cb718
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     implementation 'de.hdodenhof:circleimageview:3.1.0'
     implementation 'com.google.android.material:material: 1.2.1'
     implementation "androidx.constraintlayout:constraintlayout:2.0.2"
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 731d08cec0ed8fb196e108f03b5c546e446cb718
+    implementation 'com.firebaseui:firebase-ui-firestore:6.4.0'
+    implementation 'com.firebaseui:firebase-ui-auth:6.4.0'
+    implementation 'com.google.android.gms:play-services-base:17.5.0'
+=======
+
+
+>>>>>>> master
+=======
+    implementation 'com.firebaseui:firebase-ui-firestore:6.4.0'
+    implementation 'com.firebaseui:firebase-ui-auth:6.4.0'
+    implementation 'com.google.android.gms:play-services-base:17.5.0'
+>>>>>>> 1cabbe21ada2c288a0ae57f0e38b9b6dfe7394e9
+<<<<<<< HEAD
     implementation files('libs/libDaumMapAndroid.jar')
+    implementation 'androidx.recyclerview:recyclerview:1.2.0-alpha02'
+
+    implementation "androidx.core:core-ktx:+"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    implementation 'com.squareup:otto:1.3.8'//otto
+
+    // retrofit2
+    implementation('com.squareup.retrofit2:retrofit:2.9.0') {
+        exclude module: 'okhttp'
+    }
+    implementation 'com.google.code.gson:gson:2.8.6'                 // Gson 사용시
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'     // Gson 처리시
+    implementation 'com.squareup.retrofit2:converter-scalars:2.9.0'  // String 처리시
+    implementation 'com.squareup.okhttp3:okhttp:3.14.7'                     //okhttp3
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.14.7'
+
+=======
+
+
+=======
+>>>>>>> 731d08cec0ed8fb196e108f03b5c546e446cb718
+    implementation files('libs/libDaumMapAndroid.jar')
+    implementation 'androidx.recyclerview:recyclerview:1.2.0-alpha02'
+
+    implementation "androidx.core:core-ktx:+"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    implementation 'com.squareup:otto:1.3.8'//otto
+
+    // retrofit2
+    implementation('com.squareup.retrofit2:retrofit:2.9.0') {
+        exclude module: 'okhttp'
+    }
+    implementation 'com.google.code.gson:gson:2.8.6'                 // Gson 사용시
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'     // Gson 처리시
+    implementation 'com.squareup.retrofit2:converter-scalars:2.9.0'  // String 처리시
+    implementation 'com.squareup.okhttp3:okhttp:3.14.7'                     //okhttp3
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.14.7'
+
+>>>>>>> master
+    compile files('libs/libDaumMapAndroid.jar')
+
+
+
+}
+repositories {
+    maven { url 'https://dl.bintray.com/kotlin/kotlin-eap' }
+    mavenCentral()
 }

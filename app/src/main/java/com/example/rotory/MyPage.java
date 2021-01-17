@@ -5,36 +5,159 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.rotory.Interface.OnTabItemSelectedListener;
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 731d08cec0ed8fb196e108f03b5c546e446cb718
+import com.example.rotory.account.SignUpActivity;
+=======
+import com.example.rotory.VO.Person;
+import com.example.rotory.userActivity.MyLikeActivity;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+>>>>>>> master
+=======
+<<<<<<< HEAD
+=======
+>>>>>>> 1cabbe21ada2c288a0ae57f0e38b9b6dfe7394e9
+=======
+>>>>>>> 731d08cec0ed8fb196e108f03b5c546e446cb718
+>>>>>>> 1cabbe21ada2c288a0ae57f0e38b9b6dfe7394e9
+=======
+>>>>>>> 1cabbe21ada2c288a0ae57f0e38b9b6dfe7394e9
+=======
+import com.example.rotory.VO.Person;
+import com.example.rotory.account.SignUpActivity;
+import com.example.rotory.userActivity.MyLikeActivity;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+>>>>>>> master
+import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
-public class MyPage extends AppCompatActivity {
+
+public class MyPage extends AppCompatActivity implements OnTabItemSelectedListener {
+
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    Person persons = new Person();
+    final static String TAG = "MyPage";
 
     public static final int REQUEST_CODE_GALLERY = 101;
+    public static final int MainCode = 1000;
+   // public static final int ThemeCode = 2000;
+    // public static final int LoginCode = 3000;
+
     ImageView myProfileImg;
     ImageView myEditImg;
     ImageView myLevelImg;
+    FrameLayout container;
     FrameLayout myScrapLayout;
     Button myLevelOutBtn;
+    TextView userActivityTextView;
+    TextView myNickTextView;
+    TextView myLevelTextView;
 
-    //활동내역, 즐겨찾기, 좋아요, 스크랩리스트, 문의하기 이동동
+    ImageView myFavoriteImg;
+    ImageView myLikeImg;
+    Button myScrapBtn;
+    TextView myAskTextView;
 
-   @Override
+    MainPage mainPage;
+    ThemePage themePage;
+    MyLikeActivity myLikePage;
+    SignUpActivity signUpActivity;
+
+    // 개인정보 설정
+    /* TextView myNickTextView;
+    TextView myLevelTextView;
+    TextView myExpTextView; // 이걸 프로그레스로 적용할땐 나눈값을 반올림하던가 해야할듯
+    TextView myFavoriteTextView;
+    TextView myLikeTextView; */
+
+    // 하단탭
+    RelativeLayout bottomNavUnderbarHome;
+    RelativeLayout bottomNavUnderbarTheme;
+    RelativeLayout bottomNavUnderbarUser;
+
+    RelativeLayout userAppbarContainer;
+
+    AppBarLayout appBarLayout;
+    BottomNavigationView bottomNavigation;
+    Boolean isSignIn;
+
+
+    @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.my_page);
+
+        FirebaseUser user = mAuth.getCurrentUser();
+        String userEmail = user.getEmail();
+
+        // 유저 정보 세팅
+         db.collection("person")
+                .whereEqualTo("email", userEmail)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+
+                                String userName1 = String.valueOf(document.get("userName"));
+                                myNickTextView = findViewById(R.id.myNickTextView);
+                                myNickTextView.setText(userName1);
+                                String userLevel = String.valueOf(document.get("userLevel"));
+                                myLevelTextView = findViewById(R.id.myLevelTextView);
+                                myLevelTextView.setText(userLevel);
+
+
+                            //    Log.d("firebase", document.getId() + " => " + personId);
+
+                            }
+                        } else {
+                            Log.d("firebase", "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+
+
+
+
+        userActivityTextView = findViewById(R.id.userActivityTextView);
+        userActivityTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Intent intent = new Intent(getApplicationContext(), userActivityPage.class);
+                //startActivity(intent);
+            }
+        });
 
         myProfileImg = findViewById(R.id.myProfileImg);
         myProfileImg.setOnClickListener(new View.OnClickListener() {
@@ -69,8 +192,140 @@ public class MyPage extends AppCompatActivity {
                 myLevelInfoLayout.setVisibility(View.INVISIBLE);
             }
         });
+
+
+        myFavoriteImg = findViewById(R.id.myFavoriteImg);
+        myFavoriteImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Intent intent = new Intent(getApplicationContext(), myLikePage.class);
+                //intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                //startActivity(intent);
+            }
+        });
+
+        myLikeImg = findViewById(R.id.myLikeImg);
+        myLikeImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), MyLikeActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            }
+        });
+
+        myScrapBtn = findViewById(R.id.myScrabBtn);
+        myScrapBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Intent intent = new Intent(getApplicationContext(), myscrapPage.class);
+                //intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                //startActivity(intent);
+            }
+        });
+
+        myAskTextView = findViewById(R.id.myAskTextView);
+        myAskTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), AskPage.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            }
+        });
+
+
         loadPersonInfo();
         loadScrapList();
+
+        //하단탭
+        appBarLayout = findViewById(R.id.appBarLayout);
+        bottomNavUnderbarHome = findViewById(R.id.bottomNavUnderbarHome);
+        bottomNavUnderbarTheme = findViewById(R.id.bottomNavUnderbarTheme);
+        bottomNavUnderbarUser = findViewById(R.id.bottomNavUnderbarUser);
+
+        mainPage = new MainPage();
+        themePage = new ThemePage();
+
+        bottomNavigation = findViewById(R.id.bottom_appBar);
+        bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                isSignIn = true;
+                switch (item.getItemId()){
+                    case R.id.home:
+                        Intent MainIntent= new Intent(getApplicationContext(), MainActivity.class);
+                        startActivityForResult(MainIntent, MainCode);
+                        bottomNavigation.setVisibility(View.VISIBLE);
+                        setTabUnderBar(0);
+                        return  true;
+
+                    case R.id.theme:
+                     /*   if(isSignIn) {
+                            Intent ThemeIntent= new Intent(getApplicationContext(), ThemePage.class);
+                            startActivityForResult(ThemeIntent, ThemeCode);
+                            bottomNavigation.setVisibility(View.VISIBLE);
+                             setTabUnderBar(1);
+                            //여기선 필요없을듯
+                        } else  {
+                            Intent LogInIntent= new Intent(getApplicationContext(), SignUpActivity.class);
+                            startActivityForResult(LogInIntent, LoginCode);
+                            bottomNavigation.setVisibility(View.GONE);
+
+                        }
+                        return true; */
+
+                    case R.id.user:
+                 /*       if(isSignIn) {
+                            Intent intent = getIntent();
+                            finish();
+                            startActivity(intent);
+                        } else {
+                            Intent LogInIntent= new Intent(getApplicationContext(), SignUpActivity.class);
+                            startActivityForResult(LogInIntent, LoginCode);
+                            bottomNavigation.setVisibility(View.GONE);
+                        }
+
+                        return true; */
+                }
+
+                return false;
+            }
+        });
+    }
+
+
+
+    @Override
+    public void OnTabSelected(int position) {
+        if(position == 0){
+            bottomNavigation.setSelectedItemId(R.id.home);
+        }else if(position == 1){
+            bottomNavigation.setSelectedItemId(R.id.theme);
+        }else if(position ==2){
+            bottomNavigation.setSelectedItemId(R.id.user);
+        }
+
+    }
+
+    public void setTabUnderBar(int position){
+        if(position == 0){
+            bottomNavigation.setVisibility(View.VISIBLE);
+            bottomNavUnderbarHome.setVisibility(View.VISIBLE);
+            bottomNavUnderbarTheme.setVisibility(View.GONE);
+            bottomNavUnderbarUser.setVisibility(View.GONE);
+        }else if(position == 1){
+            bottomNavigation.setVisibility(View.VISIBLE);
+            bottomNavUnderbarHome.setVisibility(View.GONE);
+            bottomNavUnderbarTheme.setVisibility(View.VISIBLE);
+            bottomNavUnderbarUser.setVisibility(View.GONE);
+        }else if(position ==2){
+            bottomNavigation.setVisibility(View.VISIBLE);
+            bottomNavUnderbarHome.setVisibility(View.GONE);
+            bottomNavUnderbarTheme.setVisibility(View.GONE);
+            bottomNavUnderbarUser.setVisibility(View.VISIBLE);
+        }
+
     }
 
     /* onCreate 이후 기타 메소드들 */
@@ -154,13 +409,9 @@ public class MyPage extends AppCompatActivity {
 
 }
 
-// showGalleryActivity O
-//onActivityResult O
-//showPWDialog O  (https://dhparkdh.tistory.com/103)
-//loadscrapList O
-//loadscrapItem O
-//userExp O
 
-//남은것 : DB불러와서 개인정보 담기(좋아요 수 포함), 스크랩리스트부르기
-// :  기타 이동 버튼(활동내역 ,즐겨찾기, 좋아요, 스크랩리스트, 문의하기)
-// :  상단탭 넣기  / 하단탭 코드
+//showPWDialog O  (https://dhparkdh.tistory.com/103)
+// :  기타 이동 버튼(활동내역 ,즐겨찾기, 좋아요, 스크랩리스트, 문의하기) O
+// 상단탭 넣기  / 하단탭 코드 O
+
+//남은것 : DB작업 => 1.불러와서 개인정보 담기(좋아요 수, EXP 포함), 2.스크랩리스트부르기
