@@ -1,5 +1,6 @@
 package com.example.rotory.Search;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -29,10 +30,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.example.rotory.BigMapPage;
-import com.example.rotory.Interface.OnTagItemClickListener;
+//import com.example.rotory.Interface.OnTagItemClickListener;
 import com.example.rotory.MainPage;
 import com.example.rotory.R;
 import com.example.rotory.ThemePage;
+import com.example.rotory.VO.AppConstruct;
 import com.example.rotory.VO.Road;
 import com.example.rotory.VO.Tag;
 import com.example.rotory.account.SignUpActivity;
@@ -54,8 +56,13 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.rotory.VO.AppConstruct.searchCode;
+
 
 public class SearchPage extends AppCompatActivity {
+
+    AppConstruct appConstruct;
+
     private static final String TAG = "SearchPage";
 
     RecyclerView searchTagList;
@@ -108,7 +115,7 @@ public class SearchPage extends AppCompatActivity {
         searchTagList = findViewById(R.id.searchTagList);
         searchTagList.setLayoutManager(new GridLayoutManager(this, 3));
 
-        Query query = db.collection("tag");
+        Query query = db.collection("road");
         FirestoreRecyclerOptions<Tag> options = new FirestoreRecyclerOptions.Builder<Tag>()
                 .setQuery(query, Tag.class)
                 .build();
@@ -125,7 +132,9 @@ public class SearchPage extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                Log.d(TAG, "searchbox has changed to : " + s.toString());
 
+                adapter.updateOptions(options);
             }
 
             @Override
@@ -136,7 +145,7 @@ public class SearchPage extends AppCompatActivity {
                 FirestoreRecyclerOptions<Tag> options = new FirestoreRecyclerOptions.Builder<Tag>()
                         .setQuery(query, Tag.class)
                         .build();
-                adapter.updateOptions(options);
+                //adapter.updateOptions(options);
 
             }
         });

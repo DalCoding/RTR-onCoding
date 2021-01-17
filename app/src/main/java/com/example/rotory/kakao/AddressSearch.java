@@ -1,5 +1,7 @@
 package com.example.rotory.kakao;
 
+import com.example.rotory.kakao.Document;
+import com.example.rotory.kakao.Meta;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
