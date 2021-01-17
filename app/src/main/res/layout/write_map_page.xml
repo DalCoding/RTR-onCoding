@@ -30,7 +30,9 @@
             android:layout_marginRight="45dp"
             android:ems="10"
             android:inputType="textPersonName"
-            android:textSize="16dp" />
+            android:textColor="#FFFFFF"
+            android:textSize="16dp"
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/writeMapSearchBtn"
@@ -40,8 +42,7 @@
             android:layout_centerVertical="true"
             android:layout_marginEnd="10dp"
             android:layout_marginRight="10dp"
-            android:background="@drawable/searchwhite"
-            android:text="Button" />
+            android:background="@drawable/searchwhite" />
 
     </RelativeLayout>
 
@@ -54,8 +55,21 @@
         android:layout_marginEnd="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginBottom="10dp"
+        android:backgroundTint="@color/beige"
         android:text="추가"
         android:textSize="16sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:visibility="invisible"
+        app:iconTint="@color/beige"
+        app:rippleColor="#FFFFFF" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/searchLocationRecyclerView"
+        android:layout_width="370dp"
+        android:layout_height="350dp"
+        android:layout_below="@id/writeMapSearchBox"
+        android:layout_centerHorizontal="true"
+        android:background="@color/white"
+        android:visibility="invisible" />
 
 </RelativeLayout>

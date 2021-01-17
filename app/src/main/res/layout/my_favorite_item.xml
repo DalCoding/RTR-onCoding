@@ -87,12 +87,14 @@
                 <ImageView
                     android:id="@+id/myFavoriteSearchImg"
                     android:layout_height="25dp"
+                    android:layout_width="25dp"
                     android:layout_weight="1"
                     app:srcCompat="@drawable/searchcontentsbrown" />
 
                 <ImageView
                     android:id="@+id/myFavoriteDeleteImg"
                     android:layout_height="25dp"
+                    android:layout_width="25dp"
                     android:layout_weight="1"
                     app:srcCompat="@drawable/deletestarredbrown" />
             </LinearLayout>

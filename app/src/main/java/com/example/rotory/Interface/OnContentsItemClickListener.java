@@ -2,11 +2,9 @@ package com.example.rotory.Interface;
 
 import android.view.View;
 
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.example.rotory.Adapter.ContentsAdapter;
+import com.example.rotory.Adapter.WriteStoryImageAdapter;
 
 
 public interface OnContentsItemClickListener {
-   // public void onItemClick(ContentsAdapter.ViewHolder holder, View view, int position);
+   void onItemClick(WriteStoryImageAdapter.writestroyHolder writestroyHolder, View view, int position);
 }

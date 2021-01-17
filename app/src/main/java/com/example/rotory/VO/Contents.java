@@ -4,13 +4,19 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Contents {
-    int contents_id;
     int contentsType;
-    int user_id;
-    int road_id;
-    int story_id;
-    String roadTitle;
-    ArrayList<String> tag;
+    String uid;
+    String title;
+    String tag1;
+    String tag2;
+    String tag3;
+    String tag4;
+    String tag5;
+    String tag6;
+    String tag7;
+    String tag8;
+    String tag9;
+    String tag10;
     String hour;
     String min;
     String isPartner;
@@ -18,28 +24,17 @@ public class Contents {
     String ratingComment;
     ArrayList<Integer> dtrRoadLine;
     ArrayList<String> dtrName;
-    String storyTitle;
-    int prefix_id;
+    String prefix;
     String storyAddress;
     String titleImage;
-    ArrayList<String> smallImage;
     HashMap<String, ArrayList<Integer>> dtrAddress;
     ArrayList<String> imageComment;
-    String storyContent;
+    String storyContents;
     int isPublic;
     String writeDate;
     String modifiedDate;
-    String roadAddress;
 
-
-
-
-    public int getContents_id() {
-        return contents_id;
-    }
-
-    public void setContents_id(int contents_id) {
-        this.contents_id = contents_id;
+    public Contents() {
     }
 
     public int getContentsType() {
@@ -50,44 +45,100 @@ public class Contents {
         this.contentsType = contentsType;
     }
 
-    public int getUser_id() {
-        return user_id;
+    public String getUid() {
+        return uid;
     }
 
-    public void setUser_id(int user_id) {
-        this.user_id = user_id;
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
-    public int getRoad_id() {
-        return road_id;
+    public String getTitle() {
+        return title;
     }
 
-    public void setRoad_id(int road_id) {
-        this.road_id = road_id;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public int getStory_id() {
-        return story_id;
+    public String getTag1() {
+        return tag1;
     }
 
-    public void setStory_id(int story_id) {
-        this.story_id = story_id;
+    public void setTag1(String tag1) {
+        this.tag1 = tag1;
     }
 
-    public String getRoadTitle() {
-        return roadTitle;
+    public String getTag2() {
+        return tag2;
     }
 
-    public void setRoadTitle(String roadTitle) {
-        this.roadTitle = roadTitle;
+    public void setTag2(String tag2) {
+        this.tag2 = tag2;
     }
 
-    public ArrayList<String> getTag() {
-        return tag;
+    public String getTag3() {
+        return tag3;
     }
 
-    public void setTag(ArrayList<String> tag) {
-        this.tag = tag;
+    public void setTag3(String tag3) {
+        this.tag3 = tag3;
+    }
+
+    public String getTag4() {
+        return tag4;
+    }
+
+    public void setTag4(String tag4) {
+        this.tag4 = tag4;
+    }
+
+    public String getTag5() {
+        return tag5;
+    }
+
+    public void setTag5(String tag5) {
+        this.tag5 = tag5;
+    }
+
+    public String getTag6() {
+        return tag6;
+    }
+
+    public void setTag6(String tag6) {
+        this.tag6 = tag6;
+    }
+
+    public String getTag7() {
+        return tag7;
+    }
+
+    public void setTag7(String tag7) {
+        this.tag7 = tag7;
+    }
+
+    public String getTag8() {
+        return tag8;
+    }
+
+    public void setTag8(String tag8) {
+        this.tag8 = tag8;
+    }
+
+    public String getTag9() {
+        return tag9;
+    }
+
+    public void setTag9(String tag9) {
+        this.tag9 = tag9;
+    }
+
+    public String getTag10() {
+        return tag10;
+    }
+
+    public void setTag10(String tag10) {
+        this.tag10 = tag10;
     }
 
     public String getHour() {
@@ -146,20 +197,12 @@ public class Contents {
         this.dtrName = dtrName;
     }
 
-    public String getStoryTitle() {
-        return storyTitle;
+    public String getPrefix() {
+        return prefix;
     }
 
-    public void setStoryTitle(String storyTitle) {
-        this.storyTitle = storyTitle;
-    }
-
-    public int getPrefix_id() {
-        return prefix_id;
-    }
-
-    public void setPrefix_id(int prefix_id) {
-        this.prefix_id = prefix_id;
+    public void setPrefix(String prefix) {
+        this.prefix = prefix;
     }
 
     public String getStoryAddress() {
@@ -178,12 +221,12 @@ public class Contents {
         this.titleImage = titleImage;
     }
 
-    public ArrayList<String> getSmallImage() {
-        return smallImage;
+    public HashMap<String, ArrayList<Integer>> getDtrAddress() {
+        return dtrAddress;
     }
 
-    public void setSmallImage(ArrayList<String> smallImage) {
-        this.smallImage = smallImage;
+    public void setDtrAddress(HashMap<String, ArrayList<Integer>> dtrAddress) {
+        this.dtrAddress = dtrAddress;
     }
 
     public ArrayList<String> getImageComment() {
@@ -194,12 +237,12 @@ public class Contents {
         this.imageComment = imageComment;
     }
 
-    public String getStoryContent() {
-        return storyContent;
+    public String getStoryContents() {
+        return storyContents;
     }
 
-    public void setStoryContent(String storyContent) {
-        this.storyContent = storyContent;
+    public void setStoryContents(String storyContents) {
+        this.storyContents = storyContents;
     }
 
     public int getIsPublic() {
@@ -224,22 +267,6 @@ public class Contents {
 
     public void setModifiedDate(String modifiedDate) {
         this.modifiedDate = modifiedDate;
-    }
-
-    public String getRoadAddress() {
-        return roadAddress;
-    }
-
-    public void setRoadAddress(String roadAddress) {
-        this.roadAddress = roadAddress;
-    }
-
-    public HashMap<String, ArrayList<Integer>> getDtrAddress() {
-        return dtrAddress;
-    }
-
-    public void setDtrAddress(HashMap<String, ArrayList<Integer>> dtrAddress) {
-        this.dtrAddress = dtrAddress;
     }
 }
 

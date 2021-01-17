@@ -23,24 +23,49 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.rotory.Interface.OnTabItemSelectedListener;
-import com.example.rotory.signup.SignUpActivity;
+<<<<<<< HEAD
+<<<<<<< HEAD
+import com.example.rotory.Account.SignUpActivity;
+=======
+import com.example.rotory.VO.Person;
+import com.example.rotory.account.SignUpActivity;
+import com.example.rotory.userActivity.MyLikeActivity;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+>>>>>>> master
+=======
+import com.example.rotory.Account.SignUpActivity;
+>>>>>>> 1cabbe21ada2c288a0ae57f0e38b9b6dfe7394e9
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 
 public class MyPage extends AppCompatActivity implements OnTabItemSelectedListener {
 
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    Person persons = new Person();
+    final static String TAG = "MyPage";
+
     public static final int REQUEST_CODE_GALLERY = 101;
     public static final int MainCode = 1000;
    // public static final int ThemeCode = 2000;
-    // public static final int LoginCode = 2000;
+    // public static final int LoginCode = 3000;
 
     ImageView myProfileImg;
     ImageView myEditImg;
     ImageView myLevelImg;
+    FrameLayout container;
     FrameLayout myScrapLayout;
     Button myLevelOutBtn;
     TextView userActivityTextView;
+    TextView myNickTextView;
+    TextView myLevelTextView;
 
     ImageView myFavoriteImg;
     ImageView myLikeImg;
@@ -49,6 +74,7 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
 
     MainPage mainPage;
     ThemePage themePage;
+    MyLikeActivity myLikePage;
     SignUpActivity signUpActivity;
 
     // 개인정보 설정
@@ -74,6 +100,39 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.my_page);
+
+        FirebaseUser user = mAuth.getCurrentUser();
+        String userEmail = user.getEmail();
+
+        // 유저 정보 세팅
+         db.collection("person")
+                .whereEqualTo("email", userEmail)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+
+                                String userName1 = String.valueOf(document.get("userName"));
+                                myNickTextView = findViewById(R.id.myNickTextView);
+                                myNickTextView.setText(userName1);
+                                String userLevel = String.valueOf(document.get("userLevel"));
+                                myLevelTextView = findViewById(R.id.myLevelTextView);
+                                myLevelTextView.setText(userLevel);
+
+
+                            //    Log.d("firebase", document.getId() + " => " + personId);
+
+                            }
+                        } else {
+                            Log.d("firebase", "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+
+
+
 
         userActivityTextView = findViewById(R.id.userActivityTextView);
         userActivityTextView.setOnClickListener(new View.OnClickListener() {
@@ -118,6 +177,7 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
             }
         });
 
+
         myFavoriteImg = findViewById(R.id.myFavoriteImg);
         myFavoriteImg.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -132,9 +192,9 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
         myLikeImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Intent intent = new Intent(getApplicationContext(), myFavoritePage.class);
-                //intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                //startActivity(intent);
+                Intent intent = new Intent(getApplicationContext(), MyLikeActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
             }
         });
 
@@ -217,6 +277,7 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
             }
         });
     }
+
 
 
     @Override
