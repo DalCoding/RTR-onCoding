@@ -3,6 +3,7 @@ package com.example.rotory;
 import android.content.Intent;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,9 +18,23 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.rotory.VO.Contents;
+import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
 import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
 import net.daum.mf.map.api.MapView;
+
+import javax.annotation.Nonnull;
 
 public class MainPage extends Fragment {
     Button mainFloatingBtn;
@@ -34,6 +49,10 @@ public class MainPage extends Fragment {
     FrameLayout mainMapLayout;
     Button mainMapExtendBtn;
 
+    private FirestoreRecyclerAdapter adapter;
+    FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    FirebaseFirestore db;
+
 
     public static MainPage newInstance() {
         return new MainPage();
@@ -46,9 +65,10 @@ public class MainPage extends Fragment {
        initUI(rootView);
        return rootView;
 
-    }
+       db = FirebaseFirestore.getInstance();
 
-    public void showWrite(){}
+
+   // public void showWrite(){}
 
    /* public void onContentsListener (contentsAdapter.ViewHolder holder, View view, int position) {
         if (listener != null) {
@@ -57,6 +77,55 @@ public class MainPage extends Fragment {
     }*/
 
     private void initUI(ViewGroup rootView) {
+            db.collection("contents")
+                    .whereEqualTo("uid", user.getEmail())
+                    .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>(){
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()){
+                        for(QueryDocumentSnapshot document : task.getResult()){
+                            String contentsId = document.getId();
+
+                            Query query = db.collection("contents")
+                                    .document(contentsId).collection("title")
+                                    .orderBy("");
+
+                            FirestoreRecyclerOptions<Contents> options = new FirestoreRecyclerOptions.Builder<Contents>()
+                                    .setQuery(query, Contents.class)
+                                    .build();
+                            makeAdapter(options);
+                        }
+                    }
+                }
+            });
+
+            mainRoadList.setAdapter(adapter);
+
+            private void makeAdapter(FirestoreRecyclerOptions<Contents> options) {
+                adapter = new FirestoreRecyclerOptions<Contents> (options) {
+
+                    @Override
+                    public void onDataChanged() {
+                        super.onDataChanged();
+                        Log.d(TAG, "어댑터 작동");
+                    }
+
+                    @Override
+                    protected void onBindViewHolder(@NonNull contentsViewHolder holder, int position,
+                                                    @NonNull Contents model) {
+                        holder.setUserItems(model);
+                    }
+                }
+            }
+
+            public class contentsViewHolder extends RecyclerView.ViewHolder {
+                private View view;
+
+                public contentsViewHolder(NonNull View itemView) {
+                    super(itemView);
+                    view = itemView;
+                }
+            }
 
 
       /*  MapView mapView = new MapView(getContext());
