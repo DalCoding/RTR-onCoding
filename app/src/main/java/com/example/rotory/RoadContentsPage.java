@@ -215,14 +215,14 @@ public class RoadContentsPage extends Fragment {
                                 Log.d(TAG, document.getId() + " => " + contentsID);
 
                                 loadContents(contentsID);
-                                rcontentsHeartImg.setClickable(true);
+                             /*   rcontentsHeartImg.setClickable(true);
                                 rcontentsHeartImg.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
                                         Toast.makeText(getContext(), "좋아요 버튼 눌림", Toast.LENGTH_SHORT);
-                                        listener.OnLikeClicked(contentsID, userId);
+                                        listener.OnLikeClicked(contentsID,contentli userId);
                                     }
-                                });
+                                });*/
                             }
                         } else {
                             Log.d(TAG, "Error getting documents : " , task.getException());

@@ -26,6 +26,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -68,8 +69,6 @@ public class StoryContentsPage extends Fragment {
     Context context;
     OnUserActItemClickListener listener;
 
-
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -88,7 +87,6 @@ public class StoryContentsPage extends Fragment {
             listener = null;
         }
     }
-
 
     @Nullable
     @Override
@@ -120,13 +118,14 @@ public class StoryContentsPage extends Fragment {
         scontentsTextText = rootView.findViewById(R.id.scontentsTextText);
         scontentsLocText = rootView.findViewById(R.id.scontentsLocText);
 
-        db.collection("contents").whereEqualTo("contentsType", 1).get()
+        //나중에는 해당 글에서 글의 contentsID 넘기는 방식으로 변경할 예정
+        db.collection("story").whereEqualTo("contentsType", 1).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-
+                                Log.d(TAG, "initUI : 스토리에서 받아오기 성공" + document.getId());
                                 if (user != null) {
                                     getUserActivityIcon(document, "myLike", scontentsHeartImg, R.drawable.heartfilled, R.drawable.heart);
                                     getUserActivityIcon(document, "myStar", scontentsStarImg, R.drawable.starfilled, R.drawable.star);
@@ -142,8 +141,8 @@ public class StoryContentsPage extends Fragment {
     }
 
     private void loadContents(QueryDocumentSnapshot contentsData, FirebaseUser user) {
-        String contentsID = contentsData.getId();
-        DocumentReference docRef = db.collection("contents").document(contentsID);
+        String contentsID = contentsData.getId(); // 해당글의 아이디 -> 해당 글의 정보 받아오려면 아이디로 다시 검색 필요!
+        DocumentReference docRef = db.collection("story").document(contentsID);
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -151,15 +150,11 @@ public class StoryContentsPage extends Fragment {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
                         Log.d(TAG, "자료 받아오기 완료");
-
                         Map<String, Object> ContentsList = new HashMap<>();
                         ContentsList = document.getData();
                         Log.d(TAG, "title확인" + ContentsList.get("title"));
-                        findWriter(ContentsList.get("uid").toString());
                         setContents(ContentsList);
-                        clickUserActIcon(contentsData, ContentsList, user);
-
-
+                        clickUserActIcon(contentsID, ContentsList, user);
                     } else {
                         Log.d(TAG, "No such document");
                     }
@@ -168,11 +163,12 @@ public class StoryContentsPage extends Fragment {
                 }
             }
         });
-
     }
 
     private void getUserActivityIcon(QueryDocumentSnapshot cDocument, String userCollection, ImageView imageView,
                                      int listIn, int listOut) {
+        // 해당 글의 아이디 받아오는 방식으로 바꾼 후에 디비 연결문 수정! -> QueryDocumentSnapshot 대신 contentsId(=해당 다큐먼트의 아이디)
+        // 받아 cDocument 입력되는 자리에 넣고  contentsId 키와 비교
         db.collection("person").whereEqualTo("userId", user.getEmail()).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -187,12 +183,12 @@ public class StoryContentsPage extends Fragment {
                                         .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                             @Override
                                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                                Log.d(TAG, userCollection + "사용자의 활동리스트 정보 받아오기 성공" + cDocument.get("uid").toString());
+                                                Log.d(TAG, userCollection + " getUserActivity 사용자의 활동리스트 정보 받아오기 성공" + cDocument.get("uid").toString());
                                                 if (task.isSuccessful()) {
                                                     QuerySnapshot snapshot = task.getResult();
                                                     List userActList = new ArrayList();
                                                     userActList = snapshot.getDocuments();
-                                                    Log.d(TAG, userCollection + "리스트 사이즈는?" + userActList.size() + "\n리스트 아이템?"/* + userActList.get(0)*/);
+                                                    //Log.d(TAG, userCollection + "리스트 사이즈는?" + userActList.size() + "\n리스트 아이템?"/* + userActList.get(0)*/);
                                                     if (userActList.size() > 0) {
                                                         imageView.setImageResource(listIn);
                                                     } else {
@@ -208,29 +204,47 @@ public class StoryContentsPage extends Fragment {
     }
 
 
-    private void clickUserActIcon(QueryDocumentSnapshot contentsData, Map<String, Object> contentsList,
+    private void clickUserActIcon(String contentsId, Map<String, Object> contentsList,
                                   FirebaseUser user) {
         // 로그인 정보 없을경우 다이얼로그 먼저 띄워주기 " 로그인이 필요한 서비스 입니다"
-        String writerUid = contentsData.get("uid").toString();
+        Log.d(TAG, "ClickActIcon 시작");
+        String writerUid = contentsList.get("uid").toString();
         if (user != null) {
             scontentsHeartImg.setClickable(true);
             scontentsHeartImg.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (writerUid.equals(user.getUid())) {
-                        Toast.makeText(getContext(), "자신의 글을 저장할 수 없습니다.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), user.getDisplayName() +"님의 도토리! 자신의 도토리는 담을 수 없습니다.", Toast.LENGTH_SHORT).show();
                     } else {
-                        isInList(contentsData.getId(), "myLike", user, writerUid,
+                        Log.d(TAG, "하트아이콘 클릭");
+                        isInList(contentsId, contentsList, "myLike", user,
                                 scontentsHeartImg, R.drawable.heartfilled, R.drawable.heart);
-
                     }
                 }
             });
-
             scontentsStarImg.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    setFavoriteAct(contentsList.get("uid").toString(), user);
+                    if (writerUid.equals(user.getUid())){
+                        Toast.makeText(getContext(), user.getDisplayName() +"님의 도토리! 자신의 도토리는 담을 수 없습니다.", Toast.LENGTH_SHORT).show();
+                    }else {
+                        setFavoriteAct(contentsList, user);
+                        Log.d(TAG, "스타아이콘 클릭");
+                    }
+                }
+            });
+            scontentsScrapImg.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (writerUid.equals(user.getUid())) {
+                        Toast.makeText(getContext(), user.getDisplayName() +"님의 도토리! 자신의 도토리는 담을 수 없습니다.", Toast.LENGTH_SHORT).show();
+                    } else {
+                        isInList(contentsId, contentsList, "myScrap", user,
+                                scontentsScrapImg, R.drawable.scrabtagfilled, R.drawable.scrabtag);
+                        Log.d(TAG, "태그아이콘 클릭");
+                    }
+
                 }
             });
         } else {
@@ -248,50 +262,35 @@ public class StoryContentsPage extends Fragment {
                     startActivity(logInIntent);
                 }
             });
+            scontentsScrapImg.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    Intent logInIntent = new Intent(getContext(), LogInActivity.class);
+                    startActivity(logInIntent);
+                }
+            });
         }
     }
-
-    //글쓴이의 정보를 뿌려줌
-    private void findWriter(String uid) {
-
-        db.collection("person").whereEqualTo("uid", uid)
-                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        String userName = document.get("userName").toString();
-                        String userLevel = document.get("userLevel").toString();
-                        scontentsUsernameText.setText(userName);
-                        scontentsLevelImg.setImageResource(getUserLevelImage(userLevel));
-                    }
-                } else {
-                    Log.d(TAG, "findWriter : 글쓴이 정보 받아오기 실패");
-                }
-            }
-        });
-    }
-
     //사용자의 아이디와 글쓴이의 아이디를 비교해 같을경우 즐겨찾기를 할수 없도록 설정(자기 자신 즐겨찾기 못함)
-    private void setFavoriteAct(String uid, FirebaseUser user) {
+    private void setFavoriteAct(Map<String, Object> contentsList, FirebaseUser user) {
         String userId = user.getEmail();
-        db.collection("person")
-                .whereEqualTo("uid", uid)
-                .get()
+        db.collection("person").whereEqualTo("uid", contentsList.get("uid")).get() //글쓴이 정보 검색
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                String savedDocumentId = document.getId();
-                                String savedUserId = document.get("userId").toString();
-                                if (savedUserId.equals(userId)) {
-                                    Toast.makeText(getContext(), "자신을 즐겨찾기 설정할 수 없습니다.", Toast.LENGTH_SHORT).show();
+                            for (QueryDocumentSnapshot writerDocument : task.getResult()) {
+                                String savedDocumentId = writerDocument.getId();
+                                String savedUserId = writerDocument.get("userId").toString();
+                                if (savedUserId.equals(userId)) { //글쓴이의 아이디와 비교
+                                    Toast.makeText(getContext(), "자신을 관심 목록에 넣을 수 없습니다.", Toast.LENGTH_SHORT).show();
                                 } else {
-                                    listener.OnStarClicked(savedDocumentId, userId);
-                                    Toast.makeText(getContext(), "이 사용자를 즐겨찾기합니다.", Toast.LENGTH_SHORT).show();
+                                    isInList(savedDocumentId, contentsList, "myStar", user,  scontentsStarImg, R.drawable.starfilled, R.drawable.star);
                                 }
                             }
+
+
                         } else {
                             Log.d(TAG, "setFavoriteAct : 즐겨찾기 등록할 사용자 정보 찾기 실패");
                         }
@@ -302,12 +301,15 @@ public class StoryContentsPage extends Fragment {
     //해당 글의 내용을 뿌려줌
     private void setContents(Map<String, Object> contentsList) {
         Log.d(TAG, "title확인" + contentsList.get("title"));
-       Map<String, Object> imageCommentList = (Map<String, Object>) contentsList.get("imageCommet");
-     scontentsTitleText.setText(contentsList.get("title").toString());
-     //scontentsBigImg.setImage(contentsList.get("titleImage").toString());
-     scontentsMentText.setText(imageCommentList.get("image1").toString());
-     scontentsTextText.setText(contentsList.get("storyText").toString());
-     scontentsLocText.setText(contentsList.get("storyAddress").toString());
+          Map<String, Object> imageCommentList = (Map<String, Object>) contentsList.get("imageComment");
+          String userLevel =contentsList.get("userLevel").toString();
+        scontentsTitleText.setText(contentsList.get("title").toString());
+        //scontentsBigImg.setImage(contentsList.get("titleImage").toString());
+        scontentsMentText.setText(imageCommentList.get("image1").toString());
+        scontentsTextText.setText(contentsList.get("article").toString());
+        scontentsLocText.setText(contentsList.get("address").toString());
+        scontentsUsernameText.setText(contentsList.get("userName").toString());
+        scontentsLevelImg.setImageResource(getUserLevelImage(userLevel));
 
     }
 
@@ -315,49 +317,87 @@ public class StoryContentsPage extends Fragment {
     // 해당 글쓴이의 uid와 리스트에 저장된 uid를 비교해 찾음(사용자 행동 리스트에 넣을때 uid 항목 포함)
     // 저장여부에따라 아이콘 띄우고 이후행동,
     //클릭시 이 메서드 호출
-    private void isInList(String contentsId, String userCollection, FirebaseUser user, String writerUid,
+    private void isInList(String contentsId, Map<String, Object> contentsList, String userCollection, FirebaseUser user,
                           ImageView imageView, int listIn, int listOut) {
         Log.d(TAG, "인리스트 메서드 작동 : 이미지 뷰 = " + imageView.toString());
-
+        String writerUid = contentsList.get("uid").toString();
         db.collection("person").whereEqualTo("userId", user.getEmail()).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                String pDocumentId = document.getId();
-                                db.collection("person").document(pDocumentId).collection(userCollection)
-                                        .whereEqualTo("uid", writerUid)
-                                        .get()
-                                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                                if (task.isSuccessful()) {
-                                                    QuerySnapshot document = task.getResult();
-                                                    List docList = new ArrayList();
-                                                    docList = document.getDocuments();
-                                                    Log.d(TAG, "리스트 사이즈는?" + docList.size());
-                                                    Log.d(TAG, "사용자 활동리스트 정보 리스트에 넣기");
-                                                    if (docList.size() > 0) {
+                            for (QueryDocumentSnapshot pDocument : task.getResult()) {
+                                String pDocumentId = pDocument.getId();
+                                Log.d(TAG, "isInList : 해당 유저 고유번호 받아옴" + pDocumentId);
+                                CollectionReference userCollectionRef = db.collection("person").document(pDocumentId).collection(userCollection);
+                                if (userCollection.equals("myStar")){
+                                    userCollectionRef
+                                            .whereEqualTo("personId", contentsId)
+                                            .get()
+                                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                    if (task.isSuccessful()) {
+                                                        Log.d(TAG, "엔트리셋?" + contentsId);
+                                                        Log.d(TAG, "사용자 활동리스트 정보 리스트에서 빼기");
                                                         imageView.setImageResource(listIn);
-
-                                                    } else {
-                                                        imageView.setImageResource(listOut);
-                                                        if (userCollection.equals("myLike")) {
-                                                            listener.OnLikeClicked(contentsId, user.getEmail());
-                                                            Toast.makeText(getContext(), "이 글을 좋아합니다.", Toast.LENGTH_SHORT).show();
-                                                        } else if (userCollection.equals("myScrap")) {
-                                                            //스크랩 구현 아직 안함
-                                                            listener.OnFlagClicked();
-                                                            Toast.makeText(getContext(), "이 글을 스크랩합니다.", Toast.LENGTH_SHORT).show();
+                                                        for (QueryDocumentSnapshot thisLikeDocument : task.getResult()) {
+                                                            String userActDocId = thisLikeDocument.getId();
+                                                            Log.d(TAG, "해당다큐먼츠 찾기 => id" + userActDocId);
+                                                            userCollectionRef.document(userActDocId).delete();
+                                                            imageView.setImageResource(listOut);
+                                                            Toast.makeText(getContext(), "관심있는 이웃 취소", Toast.LENGTH_SHORT).show();
+                                                            return;
                                                         }
+                                                        Log.d(TAG, "사용자 활동리스트 정보 리스트에 넣기");
+                                                        imageView.setImageResource(listOut);
+                                                        listener.OnStarClicked(contentsId, user.getEmail());
+                                                        Toast.makeText(getContext(), "관심있는 이웃 다람쥐로 등록", Toast.LENGTH_SHORT).show();
                                                         imageView.setImageResource(listIn);
+                                                        return;
                                                     }
-                                                } else {
-                                                    Log.d(TAG, "사용자의 활동리스트 접근 실패");
                                                 }
-                                            }
-                                        });
+                                            });
+
+                                }
+                                else {
+                                    if (userCollection.contains(userCollection)) {
+                                        Log.d(TAG, "isInList " + userCollection + " 호출 성공");
+                                        userCollectionRef
+                                                .whereEqualTo("contentsId", contentsId)
+                                                .get()
+                                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                        if (task.isSuccessful()) {
+                                                            Log.d(TAG, "엔트리셋?" + contentsId);
+                                                            Log.d(TAG, "사용자 활동리스트 정보 리스트에서 빼기");
+                                                            imageView.setImageResource(listIn);
+                                                            for (QueryDocumentSnapshot thisLikeDocument : task.getResult()) {
+                                                                String userActDocId = thisLikeDocument.getId();
+                                                                Log.d(TAG, "해당다큐먼츠 찾기 => id" + userActDocId);
+                                                                userCollectionRef.document(userActDocId).delete();
+                                                                imageView.setImageResource(listOut);
+                                                                Toast.makeText(getContext(), "이 도토리을 버립니다.", Toast.LENGTH_SHORT).show();
+                                                                return;
+                                                            }
+                                                            Log.d(TAG, "사용자 활동리스트 정보 리스트에 넣기");
+                                                            imageView.setImageResource(listOut);
+                                                            if (userCollection.equals("myLike")) {
+                                                                listener.OnLikeClicked(contentsId, contentsList, user.getEmail());
+                                                                Toast.makeText(getContext(), "이 도토리을 좋아합니다.", Toast.LENGTH_SHORT).show();
+                                                            } else if (userCollection.equals("myScrap")) {
+                                                                //스크랩 구현 아직 안함
+                                                                listener.OnFlagClicked(contentsId, contentsList, user.getEmail());
+                                                                Toast.makeText(getContext(), "이 도토리를 담아갑니다.", Toast.LENGTH_SHORT).show();
+                                                            }
+                                                            imageView.setImageResource(listIn);
+                                                            return;
+                                                        }
+                                                    }
+                                                });
+                                    }
+                                }
                             }
                         }
                     }

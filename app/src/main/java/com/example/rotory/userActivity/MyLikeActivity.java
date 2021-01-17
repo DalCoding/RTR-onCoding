@@ -116,6 +116,7 @@ public class MyLikeActivity extends AppCompatActivity {
                                 setLikeAdapter(personId);
                                 likedAdapter.startListening();
                                 myLikeRecyclerView.setAdapter(likedAdapter);
+
                             }
                         }
 
