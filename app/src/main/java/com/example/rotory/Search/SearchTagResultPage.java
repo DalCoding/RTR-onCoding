@@ -1,11 +1,8 @@
 package com.example.rotory.Search;
 
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -22,17 +19,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.rotory.BigMapPage;
 import com.example.rotory.Interface.LoadMoreContentsListener;
 import com.example.rotory.MainPage;
-import com.example.rotory.MyPage;
 import com.example.rotory.R;
 import com.example.rotory.ThemePage;
 import com.example.rotory.VO.Road;
-import com.example.rotory.VO.Story;
-import com.example.rotory.account.LogInActivity;
 import com.example.rotory.account.SignUpActivity;
-//import com.example.rotory.model.research.SearchResult;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -40,14 +32,11 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 
-//import static com.example.rotory.MainActivity.loginCode;
-
-
-public class SearchResultPage extends AppCompatActivity implements LoadMoreContentsListener {
+public class SearchTagResultPage extends AppCompatActivity implements LoadMoreContentsListener {
     private static final String uri = "android.resource://com.example.rotory/drawable/bridge";
-    private static final String TAG = "SearchResultPage";
+    private static final String TAG = "SearchTagResultPage";
 
-    RecyclerView searchResultRecyclerView;
+    RecyclerView searchTagResultRecyclerView;
     MainPage mainPage;
     ThemePage themePage;
     BigMapPage bigMapPage;
@@ -59,9 +48,6 @@ public class SearchResultPage extends AppCompatActivity implements LoadMoreConte
 
     SignUpActivity signUpActivity;
 
-    RelativeLayout userAppbarContainer;
-
-    AppBarLayout appBarLayout;
     BottomNavigationView bottomNavigation;
 
     Boolean isSignIn = false;
@@ -73,7 +59,8 @@ public class SearchResultPage extends AppCompatActivity implements LoadMoreConte
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.search_result_page);
+        setContentView(R.layout.search_tag_result_page);
+
         db = FirebaseFirestore.getInstance();
 
         FirebaseUser user = mAuth.getCurrentUser();
@@ -87,14 +74,9 @@ public class SearchResultPage extends AppCompatActivity implements LoadMoreConte
             isSignIn = false;
         }
 
-        appBarLayout = findViewById(R.id.appBarLayout);
         bottomNavUnderbarHome = findViewById(R.id.bottomNavUnderbarHome);
         bottomNavUnderbarTheme = findViewById(R.id.bottomNavUnderbarTheme);
         bottomNavUnderbarUser = findViewById(R.id.bottomNavUnderbarUser);
-
-        Button searchAccuracySortingBtn = findViewById(R.id.searchAccuracySortingBtn);
-        Button searchPopularitySortingBtn = findViewById(R.id.searchPopularitySortingBtn);
-        Button searchLatestSortingBtn = findViewById(R.id.searchLatestSortingBtn);
 
 
         mainPage = new MainPage();
@@ -113,8 +95,8 @@ public class SearchResultPage extends AppCompatActivity implements LoadMoreConte
                 .setQuery(query, Story.class)
                 .build();
 
-        searchResultRecyclerView = findViewById(R.id.searchResultList);
-        searchResultRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        searchTagResultRecyclerView = findViewById(R.id.searchTagResultList);
+        searchTagResultRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         adapter = new FirestoreRecyclerAdapter<Story, ViewHolder>(options) {
 
@@ -136,7 +118,7 @@ public class SearchResultPage extends AppCompatActivity implements LoadMoreConte
             }
         };
 
-        searchResultRecyclerView.setAdapter(adapter);
+        searchTagResultRecyclerView.setAdapter(adapter);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -186,16 +168,21 @@ public class SearchResultPage extends AppCompatActivity implements LoadMoreConte
                 .setQuery(query, Road.class)
                 .build();
 
-        searchResultRecyclerView = findViewById(R.id.searchResultList);
-        searchResultRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        searchTagResultRecyclerView = findViewById(R.id.searchTagResultList);
+        searchTagResultRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        adapter = new FirestoreRecyclerAdapter<Road, ViewHolder>(options) {
+        adapter = new FirestoreRecyclerAdapter<Road, SearchTagResultPage.ViewHolder>(options) {
+
+            @Override
+            public int getItemCount() {
+                return 10;
+            }
 
             @NonNull
             @Override
-            public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            public SearchTagResultPage.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
                 View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.search_result_item_noimg, parent, false);
-                return new ViewHolder(view);
+                return new SearchTagResultPage.ViewHolder(view);
             }
 
             @Override
@@ -204,14 +191,15 @@ public class SearchResultPage extends AppCompatActivity implements LoadMoreConte
             }
 
             @Override
-            protected void onBindViewHolder(@NonNull ViewHolder holder, int position, @NonNull Road model) {
+            protected void onBindViewHolder(@NonNull SearchTagResultPage.ViewHolder holder, int position, @NonNull Road model) {
                 holder.setRoadItems(model);
             }
         };
 
-        searchResultRecyclerView.setAdapter(adapter);
+        searchTagResultRecyclerView.setAdapter(adapter);
 
-        Button loadMoreBtn = findViewById(R.id.searchResultExpandBtn);
+
+        Button loadMoreBtn = findViewById(R.id.searchTagResultExpandBtn);
         loadMoreBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
