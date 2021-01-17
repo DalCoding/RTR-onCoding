@@ -1,5 +1,6 @@
 package com.example.rotory;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -23,8 +24,11 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.rotory.Interface.OnTabItemSelectedListener;
+import com.example.rotory.VO.AppConstant;
 import com.example.rotory.VO.Person;
+import com.example.rotory.account.ProfileEditPage;
 import com.example.rotory.account.SignUpActivity;
+import com.example.rotory.userActivity.MyFavoriteActivity;
 import com.example.rotory.userActivity.MyLikeActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -36,9 +40,13 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.List;
+import java.util.Map;
+
 
 public class MyPage extends AppCompatActivity implements OnTabItemSelectedListener {
 
+    AppConstant appConstant = new AppConstant();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     Person persons = new Person();
@@ -46,19 +54,22 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
 
     public static final int REQUEST_CODE_GALLERY = 101;
     public static final int MainCode = 1000;
-   // public static final int ThemeCode = 2000;
+    public static final int ThemeCode = 2000;
     // public static final int LoginCode = 3000;
 
-    ImageView myProfileImg;
-    ImageView myEditImg;
-    ImageView myLevelImg;
-    FrameLayout container;
+    RelativeLayout relativeLayout1;
+    RelativeLayout relativeLayout2;
+
+    FrameLayout profileEditContainer;
     FrameLayout myScrapLayout;
     Button myLevelOutBtn;
     TextView userActivityTextView;
     TextView myNickTextView;
     TextView myLevelTextView;
 
+    ImageView myProfileImg;
+    ImageView myEditImg;
+    ImageView myLevelImg;
     ImageView myFavoriteImg;
     ImageView myLikeImg;
     Button myScrapBtn;
@@ -66,8 +77,7 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
 
     MainPage mainPage;
     ThemePage themePage;
-    MyLikeActivity myLikePage;
-    SignUpActivity signUpActivity;
+    ProfileEditPage profileEditPage = new ProfileEditPage();
 
     // 개인정보 설정
     /* TextView myNickTextView;
@@ -93,12 +103,16 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.my_page);
 
+        relativeLayout1 = findViewById(R.id.myRelativeLayout1);
+        relativeLayout2 = findViewById(R.id.myRelativeLayout2);
+        profileEditContainer = findViewById(R.id.profileEditContainer);
+
         FirebaseUser user = mAuth.getCurrentUser();
         String userEmail = user.getEmail();
 
         // 유저 정보 세팅
          db.collection("person")
-                .whereEqualTo("email", userEmail)
+                .whereEqualTo("userId", userEmail)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -112,6 +126,17 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
                                 String userLevel = String.valueOf(document.get("userLevel"));
                                 myLevelTextView = findViewById(R.id.myLevelTextView);
                                 myLevelTextView.setText(userLevel);
+                                myLevelImg = findViewById(R.id.myLevelImg);
+                                myLevelImg.setImageResource(appConstant.getUserLevelImage(userLevel));
+                                myEditImg = findViewById(R.id.myEditImg);
+                                myEditImg.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        showPWDialog(document, document.getId());
+                                    }
+                                });
+
+
 
 
                             //    Log.d("firebase", document.getId() + " => " + personId);
@@ -143,14 +168,6 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
             }
         });
 
-        myEditImg = findViewById(R.id.myEditImg);
-        myEditImg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showPWDialog();
-            }
-        });
-
         myLevelImg = findViewById(R.id.myLevelImg);
         myLevelImg.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -174,9 +191,9 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
         myFavoriteImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Intent intent = new Intent(getApplicationContext(), myLikePage.class);
-                //intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                //startActivity(intent);
+                Intent intent = new Intent(getApplicationContext(), MyFavoriteActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
             }
         });
 
@@ -211,7 +228,7 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
         });
 
 
-        loadPersonInfo();
+
         loadScrapList();
 
         //하단탭
@@ -237,22 +254,22 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
                         return  true;
 
                     case R.id.theme:
-                     /*   if(isSignIn) {
-                            Intent ThemeIntent= new Intent(getApplicationContext(), ThemePage.class);
+                       // if(isSignIn) {
+                            Intent ThemeIntent= new Intent(getApplicationContext(), MainActivity.class);
                             startActivityForResult(ThemeIntent, ThemeCode);
                             bottomNavigation.setVisibility(View.VISIBLE);
                              setTabUnderBar(1);
                             //여기선 필요없을듯
-                        } else  {
+                       /* } else  {
                             Intent LogInIntent= new Intent(getApplicationContext(), SignUpActivity.class);
                             startActivityForResult(LogInIntent, LoginCode);
                             bottomNavigation.setVisibility(View.GONE);
 
-                        }
-                        return true; */
+                        }*/
+                        return true;
 
                     case R.id.user:
-                 /*       if(isSignIn) {
+                     /*if(isSignIn) {
                             Intent intent = getIntent();
                             finish();
                             startActivity(intent);
@@ -260,11 +277,9 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
                             Intent LogInIntent= new Intent(getApplicationContext(), SignUpActivity.class);
                             startActivityForResult(LogInIntent, LoginCode);
                             bottomNavigation.setVisibility(View.GONE);
-                        }
-
-                        return true; */
+                        }*/
+                        return true;
                 }
-
                 return false;
             }
         });
@@ -306,11 +321,6 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
 
     /* onCreate 이후 기타 메소드들 */
 
-    public void loadPersonInfo() {
-
-        // 전체적인인 정보 수정 + 레벨 레이아웃에 exp 도 담기
-    }
-
     public void showGalleryActivity() {
         Intent intent = new Intent(Intent.ACTION_PICK,
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -326,7 +336,7 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
         }
     }
 
-    public void showPWDialog(){
+    public void showPWDialog(QueryDocumentSnapshot pDocument, String pDocumentId){
         AlertDialog.Builder PWCheck = new AlertDialog.Builder(this);
         PWCheck.setTitle("비밀번호 확인");       // 제목 설정
         // EditText 삽입하기
@@ -337,21 +347,49 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
         PWCheck.setPositiveButton("확인", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                Log.d(TAG,"showPwDialog"+pDocument.get("password").toString());
 
                 // Text 값 받아서 처리
                 String PWCheckEditText1 = PWCheckEditText.getText().toString();
-                dialog.dismiss();     //닫기
+                  //닫기
 
-                if (PWCheckEditText1=="1234") {
-                    //Intent intent = new Intent(getApplicationContext(), ProfileEditPage.class);
-                    //intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    //startActivity(intent);
+                if (PWCheckEditText1.equals(pDocument.get("password").toString())) {
+                    loadPersonInfo();
+                    Bundle pDocumentIdBundle = new Bundle();
+                    pDocumentIdBundle.putString("pDocumentId", pDocumentId);
+
+                    profileEditPage.setArguments(pDocumentIdBundle);
+
+                    Log.d(TAG,"비밀번호 일치, 페이지 변경");
                 } else {
                     Toast.makeText(getApplicationContext(), "비밀번호가 틀렸습니다.", Toast.LENGTH_SHORT).show();
                 }
+                dialog.dismiss();
             }
         });
         PWCheck.show();
+    }
+    // 설정창으로 이동
+    private void loadPersonInfo() {
+
+
+        relativeLayout1.setVisibility(View.GONE);
+        relativeLayout2.setVisibility(View.GONE);
+        bottomNavigation.setVisibility(View.GONE);
+
+        profileEditContainer.setVisibility(View.VISIBLE);
+        getSupportFragmentManager().beginTransaction().replace(R.id.profileEditContainer, profileEditPage).commit();
+
+        // 전체적인인 정보 수정 + 레벨 레이아웃에 exp 도 담기
+    }
+    public void closeProfileEditor(){
+
+        relativeLayout1.setVisibility(View.VISIBLE);
+        relativeLayout2.setVisibility(View.VISIBLE);
+        bottomNavigation.setVisibility(View.VISIBLE);
+
+        profileEditContainer.setVisibility(View.GONE);
+
     }
 
     public void loadScrapList(){

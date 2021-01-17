@@ -23,7 +23,7 @@ import com.example.rotory.MainPage;
 import com.example.rotory.MyPage;
 import com.example.rotory.R;
 import com.example.rotory.ThemePage;
-import com.example.rotory.VO.AppConstruct;
+import com.example.rotory.VO.AppConstant;
 import com.example.rotory.VO.Person;
 import com.example.rotory.account.LogInActivity;
 import com.example.rotory.account.SignUpActivity;
@@ -41,7 +41,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 public class MyFavoriteActivity  extends AppCompatActivity  {
-    AppConstruct appConstruct;
+    AppConstant appConstant = new AppConstant();
     final static String TAG = "MyFavoriteActivity";
 
     RecyclerView myFavoriteRecyclerView;
@@ -95,7 +95,7 @@ public class MyFavoriteActivity  extends AppCompatActivity  {
 
 
         bottomNavigation = findViewById(R.id.bottom_appBar);
-        setBottomNavigation(bottomNavigation, isSignIn, appConstruct.loginCode,
+        setBottomNavigation(bottomNavigation, isSignIn, appConstant.loginCode,
                 mainPage, themePage);
         myFavoriteRecyclerView = findViewById(R.id.myFavoriteRecyclerView);
         myFavoriteRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -189,7 +189,7 @@ public class MyFavoriteActivity  extends AppCompatActivity  {
             myFavoriteLevelTextView = itemView.findViewById(R.id.myFavoriteLevelTextView);
 
 
-            int levelImg = getUserLevelImage(user.getUserLevel());
+            int levelImg = appConstant.getUserLevelImage(user.getUserLevel());
             myFavoriteLevelImg.setImageResource(levelImg);
             myFavoriteNickTextView.setText(user.getUserName());
             myFavoriteLevelTextView.setText(user.getUserLevel());
@@ -197,25 +197,6 @@ public class MyFavoriteActivity  extends AppCompatActivity  {
 
         }
 
-    }
-
-
-    //다람쥐 레벨용 이미지는 프로그램 내부에 넣어놓고, 유저레벨애 따라 불러서 사용
-    private int getUserLevelImage(String userLevel) {
-        switch (userLevel){
-            case "어린다람쥐":
-                return R.drawable.level2;
-            case "학생다람쥐":
-                return R.drawable.level3;
-            case "어른다람쥐" :
-                return R.drawable.level4;
-            case "박사다람쥐" :
-                return R.drawable.level5;
-            case "다람쥐의 신":
-                return R.drawable.level6;
-            default:
-                return R.drawable.level1;
-        }
     }
 
     //하단바 설정
@@ -228,14 +209,14 @@ public class MyFavoriteActivity  extends AppCompatActivity  {
                 switch (item.getItemId()) {
                     case R.id.home:
 
-                        startActivityForResult(mainIntent, appConstruct.mainCode);
+                        startActivityForResult(mainIntent, appConstant.mainCode);
                         setTabUnderBar(0);
                         bottomNavigation.setVisibility(View.VISIBLE);
 
                         return true;
                     case R.id.theme:
                         if (isSignIn) {
-                            startActivityForResult(mainIntent, appConstruct.themeCode);
+                            startActivityForResult(mainIntent, appConstant.themeCode);
                             setTabUnderBar(1);
                         } else {
 

@@ -1,12 +1,12 @@
 package com.example.rotory;
 
 import android.content.Intent;
-import android.media.MediaDrm;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -16,13 +16,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 
 import androidx.fragment.app.Fragment;
-import androidx.transition.Transition;
 
 import com.example.rotory.Interface.OnTabItemSelectedListener;
 
 
 import com.example.rotory.Interface.OnUserActItemClickListener;
-import com.example.rotory.VO.AppConstruct;
+import com.example.rotory.VO.AppConstant;
 
 import com.example.rotory.account.SignUpActivity;
 import com.example.rotory.account.LogInActivity;
@@ -36,11 +35,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -51,7 +47,7 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity implements OnTabItemSelectedListener, OnUserActItemClickListener {
 
     public static final String TAG = "MainActivity";
-    AppConstruct appConstruct;
+    AppConstant appConstant;
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -62,6 +58,7 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
     BigMapPage bigMapPage;
     SignUpActivity signUpActivity;
 
+    ImageButton mainMapExtendBtn;
 
     RelativeLayout bottomNavUnderbarHome;
     RelativeLayout bottomNavUnderbarTheme;
@@ -74,20 +71,28 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
     Boolean isSignIn = false;
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        //setContentView(R.layout.activity_main);
+    }
+
     //인텐트 전달 왜안됨?
-  /*  @Override
+   @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == appConstruct.themeCode){
+        if (requestCode == appConstant.themeCode){
             if (resultCode == RESULT_OK){
                 getSupportFragmentManager().beginTransaction().replace(R.id.container, themePage).commit();
             }
-        }else if(requestCode == appConstruct.mainCode){
+        }else if(requestCode == appConstant.mainCode){
             if (resultCode==RESULT_OK){
-                //getSupportFragmentManager().beginTransaction().replace(R.id.container, mainPage).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.container, mainPage).commit();
             }
+        }else {
+            getSupportFragmentManager().beginTransaction().replace(R.id.container, mainPage).commit();
         }
-    }*/
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -142,6 +147,9 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
 
             }
         });
+
+
+
         appBarLayout = findViewById(R.id.appBarLayout);
         bottomNavUnderbarHome = findViewById(R.id.bottomNavUnderbarHome);
         bottomNavUnderbarTheme = findViewById(R.id.bottomNavUnderbarTheme);
@@ -158,7 +166,7 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
 
 
         bottomNavigation = findViewById(R.id.bottom_appBar);
-        setBottomNavigation(bottomNavigation, isSignIn, appConstruct.loginCode,
+        setBottomNavigation(bottomNavigation, isSignIn, appConstant.loginCode,
                 mainPage, themePage);
 
     }

@@ -1,29 +1,121 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <ScrollView
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        android:visibility="visible">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/topToolBar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/brown"
+            android:elevation="1dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <RelativeLayout
+                    android:id="@+id/withBackBtnContainer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:visibility="visible">
+
+                    <ImageButton
+                        android:id="@+id/backImageButton"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/backbuttonwhite"
+                        app:srcCompat="@drawable/backbuttonwhite" />
+
+                    <TextView
+                        android:id="@+id/pageTitlewithBtnTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_toRightOf="@id/backImageButton"
+                        android:text="PageTitle"
+                        android:textAppearance="@style/Base.TextAppearance.Widget.AppCompat.Toolbar.Title" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rightIconContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <Button
+                        android:id="@+id/profilecheckBtn"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="20dp"
+                        android:layout_marginRight="20dp"
+                        android:background="@drawable/checkwhite"
+                        android:visibility="visible"
+                        app:backgroundTint="@empty" />
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+        </androidx.appcompat.widget.Toolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal|center_vertical"
-            android:layout_margin="15dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginBottom="30dp"
             android:orientation="vertical">
 
-            <TextView
-
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="닉네임"
-                android:textColor="#000000"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <TextView
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="닉네임"
+                    android:textColor="#000000"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/profileNickCheck"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="7dp"
+                    android:layout_marginLeft="7dp"
+                    android:layout_weight="1"
+                    android:padding="5dp"
+                    android:textColor="#E74C3C"
+                    android:textSize="14sp"
+                    android:visibility="gone" />
+
+            </LinearLayout>
 
             <EditText
                 android:id="@+id/profileNickEditText"
@@ -35,7 +127,7 @@
                 android:ems="10"
                 android:inputType="textPersonName"
                 android:padding="7dp"
-                android:textSize="14sp" />
+                android:textSize="18sp" />
 
             <TextView
 
@@ -54,9 +146,9 @@
                 android:layout_marginBottom="25dp"
                 android:background="@drawable/askbackimg"
                 android:ems="10"
-                android:inputType="textPersonName"
+                android:inputType="textPassword"
                 android:padding="7dp"
-                android:textSize="14sp" />
+                android:textSize="18sp" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -80,7 +172,8 @@
                     android:layout_marginLeft="7dp"
                     android:padding="5dp"
                     android:textColor="#E74C3C"
-                    android:textSize="12sp" />
+                    android:textSize="14sp"
+                    android:visibility="gone" />
             </LinearLayout>
 
             <EditText
@@ -91,9 +184,9 @@
                 android:layout_marginBottom="25dp"
                 android:background="@drawable/askbackimg"
                 android:ems="10"
-                android:inputType="textPersonName"
+                android:inputType="textPassword"
                 android:padding="7dp"
-                android:textSize="14sp" />
+                android:textSize="18sp" />
 
             <TextView
 
@@ -114,18 +207,20 @@
                 android:ems="10"
                 android:inputType="textPersonName"
                 android:padding="7dp"
-                android:textSize="14sp" />
+                android:textSize="18sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
                 android:orientation="horizontal">
 
                 <TextView
 
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="7dp"
                     android:text="전화번호"
                     android:textColor="#000000"
                     android:textSize="16sp"
@@ -133,28 +228,23 @@
 
                 <EditText
                     android:id="@+id/profilePhoneEditText"
-                    android:layout_width="150dp"
+                    android:layout_width="190dp"
                     android:layout_height="40dp"
-                    android:layout_marginStart="10dp"
+                    android:layout_gravity="center_vertical"
                     android:layout_marginLeft="10dp"
-                    android:layout_marginTop="7dp"
-                    android:layout_marginEnd="7dp"
                     android:layout_marginRight="7dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_weight="1"
                     android:background="@drawable/askbackimg"
-                    android:ems="10"
                     android:hint="휴대전화 번호"
                     android:inputType="number"
                     android:padding="7dp"
-                    android:textSize="12sp" />
+                    android:textSize="18sp" />
 
                 <Button
                     android:id="@+id/profilePhoneBtn"
-                    android:layout_width="120dp"
+                    android:layout_width="110dp"
                     android:layout_height="40dp"
-                    android:layout_marginTop="7dp"
-                    android:background="@drawable/ripple_custom"
+                    android:background="@drawable/button_drawable"
+                    android:elevation="10dp"
                     android:text="인증번호 받기"
                     android:textColor="#442C2E"
                     android:textSize="12sp"
@@ -171,22 +261,23 @@
                 <EditText
                     android:id="@+id/profileConfirmEditText"
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:layout_marginEnd="7dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center_vertical"
                     android:layout_marginRight="7dp"
-                    android:layout_marginBottom="10dp"
                     android:layout_weight="1"
                     android:background="@drawable/askbackimg"
                     android:ems="10"
                     android:hint="인증번호 입력"
                     android:inputType="textPersonName"
-                    android:textSize="12sp" />
+                    android:textSize="18sp" />
 
                 <Button
                     android:id="@+id/profileConfirmBtn"
                     android:layout_width="80dp"
                     android:layout_height="40dp"
-                    android:background="@drawable/ripple_custom"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/button_drawable"
+                    android:elevation="10dp"
                     android:text="확인"
                     android:textColor="#442C2E"
                     android:textSize="14sp"
@@ -200,12 +291,13 @@
                 android:layout_height="40dp"
                 android:layout_gravity="center"
                 android:layout_margin="30dp"
-                android:background="@drawable/ripple_custom"
+                android:background="@drawable/button_drawable"
+                android:elevation="10dp"
                 android:text="탈퇴"
                 android:textColor="#442C2E"
                 android:textSize="14sp"
                 app:backgroundTint="@empty" />
 
         </LinearLayout>
-    </ScrollView>
-</LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

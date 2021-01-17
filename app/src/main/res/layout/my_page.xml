@@ -5,6 +5,13 @@
     android:layout_height="wrap_content"
     android:layout_weight="1"
     android:orientation="vertical">
+    <FrameLayout
+        android:id="@+id/profileEditContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:background="@color/white"
+        />
 
     <RelativeLayout
         android:id="@+id/myRelativeLayout1"
@@ -143,7 +150,7 @@
                                         android:id="@+id/myNickTextView"
                                         android:layout_width="match_parent"
                                         android:layout_height="30dp"
-                                        android:text="유저닉네임입니다"
+                                        android:text="userName"
                                         android:textColor="#000000"
                                         android:textSize="20sp" />
 
@@ -174,7 +181,7 @@
                                             android:id="@+id/myLevelTextView"
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
-                                            android:text="다람쥐 레벨"
+                                            android:text="level"
                                             android:textColor="#000000"
                                             android:textSize="12sp" />
 
@@ -194,7 +201,7 @@
                                         android:layout_height="30dp"
                                         android:layout_marginStart="10dp"
                                         android:layout_marginLeft="10dp"
-                                        app:srcCompat="@drawable/leveladult" />
+                                         />
                                 </LinearLayout>
                             </LinearLayout>
                         </LinearLayout>
@@ -230,7 +237,7 @@
 
                                     android:layout_gravity="center"
                                     android:layout_marginTop="10dp"
-                                    android:text="즐겨찾기 0"
+                                    android:text="즐겨찾기"
                                     android:textColor="#646464"
                                     android:textSize="12sp" />
 
@@ -255,7 +262,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center"
                                     android:layout_marginTop="10dp"
-                                    android:text="좋아요 0"
+                                    android:text="좋아요"
                                     android:textColor="#646464"
                                     android:textSize="12sp" />
 
@@ -1041,8 +1048,6 @@
         android:id="@+id/bottom_appBar"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-
-
         android:layout_alignParentBottom="true"
         android:background="@color/brown"
         android:visibility="visible"

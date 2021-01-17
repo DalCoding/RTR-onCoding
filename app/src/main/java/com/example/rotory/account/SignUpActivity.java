@@ -3,8 +3,6 @@ package com.example.rotory.account;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,7 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.rotory.MainActivity;
 import com.example.rotory.R;
-import com.example.rotory.VO.AppConstruct;
+import com.example.rotory.VO.AppConstant;
 import com.example.rotory.VO.Person;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -33,24 +31,16 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
@@ -59,10 +49,10 @@ public class SignUpActivity extends AppCompatActivity {
     //닉네임 중복검사 -> 진행중.. 과정중에 한번 브레이크가 걸려야 중복검사 가능.. 어떤식으로? 고민중... 0115
 
 
-    AppConstruct appConstruct;
+    AppConstant appConstant;
     private static final String TAG = "SignUpActivity";
-    private final String REGEX_PATTERN = "^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[$@$!%*#?&])[A-Za-z[0-9]$@$!%*#?&]{8,20}$";
-    private final String REGEX_NUMBER = "^(?=.*[0-9])[0-9]{9,12}$";
+    private final String REGEX_PATTERN = appConstant.REGEX_PATTERN;
+    private final String REGEX_NUMBER = appConstant.REGEX_NUMBER;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
@@ -104,7 +94,6 @@ public class SignUpActivity extends AppCompatActivity {
         Log.d(TAG, "회원가입 시작 모든 데이터 삭제전 -> " + data);
         editor.clear();
         editor.commit();
-
         Log.d(TAG, "회원가입 시작 모든 데이터 삭제? -> " + data);*/
 
         signin_id_edittext = findViewById(R.id.signin_id_edittext);
@@ -117,7 +106,6 @@ public class SignUpActivity extends AppCompatActivity {
         signUpTitlewithBtnTextView = findViewById(R.id.signUpTitlewithBtnTextView);
         signUpBackImageButton = findViewById(R.id.signUpBackImageButton);
         signUpCheckBtn = findViewById(R.id.signUpCheckBtn);
-
 
         signin_userName_check = findViewById(R.id.signin_userName_check);
         signin_userName_check.setVisibility(View.GONE);
@@ -132,20 +120,6 @@ public class SignUpActivity extends AppCompatActivity {
             public void onClick(View v) {
                 goMain();
                 finish();
-
-               /* String data = sharedPref.getString("#0", "");
-                Log.d(TAG, "모든 데이터 삭제전 -> " + data);
-                editor.clear();
-                editor.commit();
-
-                Log.d(TAG, "모든 데이터 삭제? -> " + data);
-
-                resetNotiMsg();
-                if (checkValidation2(sharedPref, editor)){
-                    Log.d(TAG, "회원가입진행");
-                }else{
-                    Log.d(TAG, "데이터 적정성 검사 통과 안됨");
-                }*/
             }
 
         });
@@ -177,12 +151,10 @@ public class SignUpActivity extends AppCompatActivity {
 
                 Log.d(TAG, "모든 데이터 삭제? -> " + data);*/
 
-
                 /*if (userId.equals("") || userId.length() == 0) {
                     signin_id_check.setText("아이디를 입력해 주세요");
                     signin_id_check.setVisibility(View.VISIBLE);
                     return;
-
                 } else*/
                 if (checkValidation2()) {
                     setNewAccount(persons);
@@ -193,19 +165,16 @@ public class SignUpActivity extends AppCompatActivity {
                     }else{
                         userNameCheck = false;
                     }
-
                     if(userNameCheck){
                         Log.d(TAG, "중복된 이름" + userName);
 
                     }else{
                         signUp(userId, pw, persons, user);
                         Log.d(TAG, "회원가입진행");
-
                     }
                 } else {
                     Log.d(TAG, "데이터 적정성 검사 통과 안됨");
                 }
-
             }
         });
     }
@@ -361,9 +330,9 @@ public class SignUpActivity extends AppCompatActivity {
         person.put("signUpDate", persons.getSignUpDate());
         //Date (그날날짜) 받아와서 다시저장
 
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+       // FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-       /* db.collection("person")
+    db.collection("person")
                 .add(person)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
@@ -378,7 +347,7 @@ public class SignUpActivity extends AppCompatActivity {
                         Log.w(TAG, "Error adding user", e);
                     }
                 });
-*/
+
         Map<String, String> addUserName = new HashMap<>();
         addUserName.put(userName, userName);
         db.collection("person").document("userNameList")
@@ -399,7 +368,7 @@ public class SignUpActivity extends AppCompatActivity {
 
     public void goMain() {
         Intent mainIntent = new Intent(getApplicationContext(), MainActivity.class);
-        startActivityForResult(mainIntent,appConstruct.mainCode);
+        startActivityForResult(mainIntent, appConstant.mainCode);
 
     }
 
