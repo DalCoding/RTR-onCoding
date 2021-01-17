@@ -1,5 +1,6 @@
 package com.example.rotory.VO;
 
+<<<<<<< HEAD
 import com.google.firebase.firestore.ServerTimestamp;
 
 import java.util.Date;
@@ -7,6 +8,10 @@ import java.util.Date;
 public class Person {
 
     String	Uid;
+=======
+public class Person {
+    String	person_id;
+>>>>>>> 1cabbe21ada2c288a0ae57f0e38b9b6dfe7394e9
     String	userId;
     String	password;
     String	userName;
@@ -15,14 +20,22 @@ public class Person {
     String	userImage;
     String userLevel;
     String userLevelImage;
+<<<<<<< HEAD
     String  signUpDate;
+=======
+>>>>>>> 1cabbe21ada2c288a0ae57f0e38b9b6dfe7394e9
 
     public Person() {
     }
 
     public Person(String person_id, String userId, String password, String userName, String mobile,
+<<<<<<< HEAD
                   String email, String userImage, String userLevel, String userLevelImage, String  signUpDate) {
         this.Uid = person_id;
+=======
+                  String email, String userImage, String userLevel, String userLevelImage) {
+        this.person_id = person_id;
+>>>>>>> 1cabbe21ada2c288a0ae57f0e38b9b6dfe7394e9
         this.userId = userId;
         this.password = password;
         this.userName = userName;
@@ -31,6 +44,7 @@ public class Person {
         this.userImage = userImage;
         this.userLevel = userLevel;
         this.userLevelImage = userLevelImage;
+<<<<<<< HEAD
         this.signUpDate = signUpDate;
     }
 
@@ -41,6 +55,18 @@ public class Person {
 
     public void setUid(String uid) {
         Uid = uid;
+=======
+    }
+
+
+    public String getPerson_id() {
+
+        return person_id;
+    }
+
+    public void setPerson_id(String person_id) {
+        this.person_id = person_id;
+>>>>>>> 1cabbe21ada2c288a0ae57f0e38b9b6dfe7394e9
     }
 
     public String getUserId() {
@@ -106,6 +132,7 @@ public class Person {
     public void setUserLevelImage(String userLevelImage) {
         this.userLevelImage = userLevelImage;
     }
+<<<<<<< HEAD
 
     public String  getSignUpDate() {
         return signUpDate;
@@ -114,4 +141,6 @@ public class Person {
     public void setSignUpDate(String  signUpDate) {
         this.signUpDate = signUpDate;
     }
+=======
+>>>>>>> 1cabbe21ada2c288a0ae57f0e38b9b6dfe7394e9
 }

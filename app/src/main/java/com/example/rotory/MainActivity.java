@@ -1,7 +1,6 @@
 package com.example.rotory;
 
 import android.content.Intent;
-import android.media.MediaDrm;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -11,50 +10,32 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-import com.example.rotory.Account.LogInActivity;
 import com.example.rotory.Interface.OnTabItemSelectedListener;
 
-import com.example.rotory.Account.SignUpActivity;
-=======
+import com.example.rotory.account.SignUpActivity;
+
 
 import androidx.fragment.app.Fragment;
-import androidx.transition.Transition;
-
-import com.example.rotory.Interface.OnTabItemSelectedListener;
 
 
 import com.example.rotory.Interface.OnUserActItemClickListener;
 import com.example.rotory.VO.AppConstruct;
 
-import com.example.rotory.account.SignUpActivity;
-import com.example.rotory.account.LogInActivity;
 
 
 import com.example.rotory.userActivity.MyFavoriteActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
->>>>>>> master
-=======
-import com.example.rotory.Account.LogInActivity;
-import com.example.rotory.Interface.OnTabItemSelectedListener;
 
-import com.example.rotory.Account.SignUpActivity;
->>>>>>> 1cabbe21ada2c288a0ae57f0e38b9b6dfe7394e9
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -66,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
 
     public static final String TAG = "MainActivity";
     AppConstruct appConstruct;
+
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -149,9 +131,9 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
                 if (user != null) {
                     intent = new Intent(MainActivity.this, MyFavoriteActivity.class);
                 }else{
-                    intent = new Intent(MainActivity.this, LogInActivity.class);
+                    //intent = new Intent(MainActivity.this, LogInActivity.LogInActivity.class);
                 }
-                startActivity(intent);
+                //startActivity(intent);
 
 
             }
@@ -164,11 +146,8 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
 
         mainPage = new MainPage();
         themePage = new ThemePage();
-<<<<<<< HEAD
         bigMapPage = new BigMapPage();
         storyContentsPage = new StoryContentsPage();
-=======
->>>>>>> 1cabbe21ada2c288a0ae57f0e38b9b6dfe7394e9
 
 
         getSupportFragmentManager().beginTransaction().replace(R.id.container, mainPage).commit();
@@ -212,10 +191,14 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
                         } else {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                             Intent LogInIntent= new Intent(getApplicationContext(), LogInActivity.class);
 =======
                             Intent LogInIntent = new Intent(getApplicationContext(), LogInActivity.class);
 >>>>>>> master
+=======
+                            Intent LogInIntent= new Intent(getApplicationContext(), LogInActivity.class);
+>>>>>>> 1cabbe21ada2c288a0ae57f0e38b9b6dfe7394e9
 =======
                             Intent LogInIntent= new Intent(getApplicationContext(), LogInActivity.class);
 >>>>>>> 1cabbe21ada2c288a0ae57f0e38b9b6dfe7394e9
@@ -229,17 +212,10 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
                             startActivity(myPageIntent);
                             setTabUnderBar(2);
                         } else {
-<<<<<<< HEAD
-<<<<<<< HEAD
-                            Intent LogInIntent= new Intent(getApplicationContext(), LogInActivity.class);
-=======
-                            Intent LogInIntent = new Intent(getApplicationContext(), LogInActivity.class);
->>>>>>> master
-=======
-                            Intent LogInIntent= new Intent(getApplicationContext(), LogInActivity.class);
->>>>>>> 1cabbe21ada2c288a0ae57f0e38b9b6dfe7394e9
+                           /* Intent LogInIntent= new Intent(getApplicationContext(), LogInActivity.class);
+
                             startActivityForResult(LogInIntent, loginCode);
-                            bottomNavigation.setVisibility(View.GONE);
+                            bottomNavigation.setVisibility(View.GONE);*/
                         }
                         return true;
                 }
@@ -435,12 +411,3 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
 */
 }
 
-<<<<<<< HEAD
-}
-<<<<<<< HEAD
-=======
->>>>>>> master
-=======
-
-}
->>>>>>> 1cabbe21ada2c288a0ae57f0e38b9b6dfe7394e9

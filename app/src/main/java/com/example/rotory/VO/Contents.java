@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 public class Contents {
     int contentsType;
+<<<<<<< HEAD
     String uid;
     String title;
     String tag1;
@@ -17,6 +18,11 @@ public class Contents {
     String tag8;
     String tag9;
     String tag10;
+=======
+    int user_id;
+    String roadTitle;
+    ArrayList<String> tag;
+>>>>>>> 1cabbe21ada2c288a0ae57f0e38b9b6dfe7394e9
     String hour;
     String min;
     String isPartner;
@@ -37,6 +43,7 @@ public class Contents {
     public Contents() {
     }
 
+<<<<<<< HEAD
     public int getContentsType() {
         return contentsType;
     }
@@ -47,6 +54,10 @@ public class Contents {
 
     public String getUid() {
         return uid;
+=======
+    public int getContents_id() {
+        return contents_id;
+>>>>>>> 1cabbe21ada2c288a0ae57f0e38b9b6dfe7394e9
     }
 
     public void setUid(String uid) {
@@ -73,6 +84,7 @@ public class Contents {
         return tag2;
     }
 
+<<<<<<< HEAD
     public void setTag2(String tag2) {
         this.tag2 = tag2;
     }
@@ -91,6 +103,10 @@ public class Contents {
 
     public void setTag4(String tag4) {
         this.tag4 = tag4;
+=======
+    public String getRoadTitle() {
+        return roadTitle;
+>>>>>>> 1cabbe21ada2c288a0ae57f0e38b9b6dfe7394e9
     }
 
     public String getTag5() {

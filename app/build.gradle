@@ -48,6 +48,7 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'com.google.firebase:firebase-analytics:17.4.3'
     implementation 'com.google.firebase:firebase-core:17.2.3'
+<<<<<<< HEAD
     implementation 'com.google.android.gms:play-services-basement:17.4.0'
     implementation 'com.google.android.gms:play-services-base:17.3.0'
     implementation platform('com.google.firebase:firebase-bom:26.1.0')
@@ -65,12 +66,18 @@ dependencies {
 >>>>>>> master
 =======
 >>>>>>> 1cabbe21ada2c288a0ae57f0e38b9b6dfe7394e9
+=======
+    implementation 'org.jetbrains:annotations:15.0'
+    implementation 'com.google.firebase:firebase-firestore:22.0.1'
+    implementation 'com.google.firebase:firebase-auth'
+>>>>>>> 1cabbe21ada2c288a0ae57f0e38b9b6dfe7394e9
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     implementation 'de.hdodenhof:circleimageview:3.1.0'
     implementation 'com.google.android.material:material: 1.2.1'
     implementation "androidx.constraintlayout:constraintlayout:2.0.2"
+<<<<<<< HEAD
 <<<<<<< HEAD
     implementation 'com.firebaseui:firebase-ui-firestore:6.4.0'
     implementation 'com.firebaseui:firebase-ui-auth:6.4.0'
@@ -79,6 +86,11 @@ dependencies {
 
 
 >>>>>>> master
+=======
+    implementation 'com.firebaseui:firebase-ui-firestore:6.4.0'
+    implementation 'com.firebaseui:firebase-ui-auth:6.4.0'
+    implementation 'com.google.android.gms:play-services-base:17.5.0'
+>>>>>>> 1cabbe21ada2c288a0ae57f0e38b9b6dfe7394e9
     implementation files('libs/libDaumMapAndroid.jar')
     implementation 'androidx.recyclerview:recyclerview:1.2.0-alpha02'
 

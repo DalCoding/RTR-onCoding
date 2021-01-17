@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -25,16 +24,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.rotory.Interface.OnTabItemSelectedListener;
 <<<<<<< HEAD
 <<<<<<< HEAD
-import com.example.rotory.Account.SignUpActivity;
+<<<<<<< HEAD
+import com.example.rotory.account.SignUpActivity;
 =======
 import com.example.rotory.VO.Person;
-import com.example.rotory.account.SignUpActivity;
 import com.example.rotory.userActivity.MyLikeActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 >>>>>>> master
 =======
-import com.example.rotory.Account.SignUpActivity;
+>>>>>>> 1cabbe21ada2c288a0ae57f0e38b9b6dfe7394e9
+=======
 >>>>>>> 1cabbe21ada2c288a0ae57f0e38b9b6dfe7394e9
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
