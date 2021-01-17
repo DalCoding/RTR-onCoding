@@ -10,6 +10,7 @@ public class Imagelist{
         this.smallimage = smallimage;
     }
 
+
     public String getSmallimage() {
         return smallimage;
     }
