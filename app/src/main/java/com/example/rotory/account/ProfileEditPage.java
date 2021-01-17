@@ -28,6 +28,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -133,7 +134,7 @@ public class ProfileEditPage extends Fragment {
         modifiedData.put("password",profilePwd.getText().toString());
         modifiedData.put("mobile", profileMobile.getText().toString());
 
-        db.collection("person").document(pDocumentId).set(modifiedData)
+        db.collection("person").document(pDocumentId).set(modifiedData, SetOptions.merge())
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -141,7 +142,7 @@ public class ProfileEditPage extends Fragment {
                                 + "/n 해당 다큐먼트 아이디 : " + pDocumentId);
 
                         Toast.makeText(getContext(),"사용자 정보 변경 완료", Toast.LENGTH_SHORT).show();
-                        //((MyPage)getActivity()).closeProfileEditor();
+                        ((MyPage)getActivity()).closeProfileEditor();
 
 
                     }

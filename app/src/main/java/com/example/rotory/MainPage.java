@@ -51,7 +51,7 @@ public class MainPage extends Fragment {
 
     private FirestoreRecyclerAdapter adapter;
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
-    FirebaseFirestore db;
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
 
 
     public static MainPage newInstance() {
@@ -61,14 +61,14 @@ public class MainPage extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-       ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.main_page, container, false);
-       initUI(rootView);
-       return rootView;
+        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.main_page, container, false);
+        initUI(rootView);
+        return rootView;
 
-       db = FirebaseFirestore.getInstance();
+    }
 
 
-   // public void showWrite(){}
+    // public void showWrite(){}
 
    /* public void onContentsListener (contentsAdapter.ViewHolder holder, View view, int position) {
         if (listener != null) {
@@ -77,55 +77,62 @@ public class MainPage extends Fragment {
     }*/
 
     private void initUI(ViewGroup rootView) {
-            db.collection("contents")
-                    .whereEqualTo("uid", user.getEmail())
-                    .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>(){
-                @Override
-                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                    if (task.isSuccessful()){
-                        for(QueryDocumentSnapshot document : task.getResult()){
-                            String contentsId = document.getId();
+        FirebaseUser user = mAuth.getCurrentUser();
+        db.collection("contents")
+                .whereEqualTo("uid", user.getEmail())
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        String contentsId = document.getId();
 
-                            Query query = db.collection("contents")
-                                    .document(contentsId).collection("title")
-                                    .orderBy("");
+                        Query query = db.collection("contents")
+                                .document(contentsId).collection("title")
+                                .orderBy("");
 
-                            FirestoreRecyclerOptions<Contents> options = new FirestoreRecyclerOptions.Builder<Contents>()
-                                    .setQuery(query, Contents.class)
-                                    .build();
-                            makeAdapter(options);
-                        }
+                        FirestoreRecyclerOptions<Contents> options = new FirestoreRecyclerOptions.Builder<Contents>()
+                                .setQuery(query, Contents.class)
+                                .build();
+                        makeAdapter(options);
                     }
                 }
-            });
+            }
+        });
 
-            mainRoadList.setAdapter(adapter);
+        //mainRoadList.setAdapter(adapter);
+    }
 
-            private void makeAdapter(FirestoreRecyclerOptions<Contents> options) {
-                adapter = new FirestoreRecyclerOptions<Contents> (options) {
+    private void makeAdapter(FirestoreRecyclerOptions<Contents> options) {
+      /*  adapter = new FirestoreRecyclerOptions<Contents>(options) {
 
-                    @Override
-                    public void onDataChanged() {
-                        super.onDataChanged();
-                        Log.d(TAG, "어댑터 작동");
-                    }
+               @Override
+                public void onDataChanged() {
+                    super.onDataChanged();
+                    Log.d(TAG, "어댑터 작동");
+                }
 
-                    @Override
-                    protected void onBindViewHolder(@NonNull contentsViewHolder holder, int position,
+                @Override
+                protected void onBindViewHolder(@NonNull contentsViewHolder holder, int position,
                                                     @NonNull Contents model) {
                         holder.setUserItems(model);
                     }
                 }
+        }*/
+    }
+
+        public class contentsViewHolder extends RecyclerView.ViewHolder {
+            private View view;
+
+            public contentsViewHolder(@NonNull View itemView) {
+                super(itemView);
             }
 
-            public class contentsViewHolder extends RecyclerView.ViewHolder {
-                private View view;
-
-                public contentsViewHolder(NonNull View itemView) {
-                    super(itemView);
-                    view = itemView;
-                }
-            }
+          /*  public contentsViewHolder(NonNull View itemView) {
+                super(itemView);
+                view = itemView;
+            }*/
+        }
 
 
       /*  MapView mapView = new MapView(getContext());
@@ -179,8 +186,10 @@ public class MainPage extends Fragment {
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }*/
-    }
+
 }
+
+
 
 
 
