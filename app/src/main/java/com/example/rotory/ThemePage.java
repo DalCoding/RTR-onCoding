@@ -39,6 +39,11 @@ public class ThemePage extends Fragment {
 
     Information information;
 
+    Boolean isSignIn = false;
+    private FirestoreRecyclerAdapter adapter;
+    FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    FirebaseFirestore db;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

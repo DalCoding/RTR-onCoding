@@ -1,17 +1,21 @@
 package com.example.rotory;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 
@@ -76,6 +80,10 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
         super.onStart();
         //setContentView(R.layout.activity_main);
     }
+
+    TextView commReportText;
+    // report 신고
+
 
     //인텐트 전달 왜안됨?
    @Override
@@ -172,6 +180,38 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
     }
 
 
+/*    TextView commReportText = (commReportText)findViewById(R.id.commReportText);
+    commReportText.setOnClickListener(new View.OnClickListener(){
+        @Override
+        public void onClick(View v) {
+            dial();
+        }
+    });
+
+    AlertDialog.Builder aBuilder = new AlertDialog.Builder(MainActivity.this);
+    View mView = getLayoutInflater().inflate(R.layout.report, null);
+
+    final Spinner sp = (Spinner)mView.findViewById(R.id.spinner);
+
+    ArrayAdapter reportAdapter = ArrayAdapter.createFromResource(this, R.array.location, R.layout.simple_spinner_item);
+    sp.setAdapte r(reportAdapter);
+
+    aBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener(){
+        @Override
+                public void onClick(DialogInterface dialog, int which) {
+            String value = et.getText().toString();
+
+            TextView text = (TextView)findViewById(R.id.test);
+            text.setText(value);
+            dialog.dismiss();  //닫기
+        }
+    });
+
+    aBuilder.setView(mView);
+    AlertDialog dialog = aBuilder.create();
+    dialog.show();
+
+
     @Override
     public void OnTabSelected(int position) {
         if (position == 0) {
@@ -181,7 +221,7 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
         } else if (position == 2) {
             bottomNavigation.setSelectedItemId(R.id.user);
         }
-    }
+    }*/
 
 
     public void setBottomNavigation(BottomNavigationView bottomNavigation, boolean isSignIn, int loginCode, MainPage mainPage, ThemePage themePage) {
@@ -358,6 +398,11 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
     @Override
     public void OnLinkClicked() {
 
+    }
+
+    @Override
+    public void OnTabSelected(int position) {
+        
     }
 
 

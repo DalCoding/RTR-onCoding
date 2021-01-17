@@ -1,11 +1,16 @@
 package com.example.rotory.Adapter;
 
+import android.app.Notification;
 import android.content.Context;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
@@ -16,13 +21,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.rotory.Imagelist;
 import com.example.rotory.Interface.OnContentsItemClickListener;
 import com.example.rotory.R;
+import com.example.rotory.Write_Story;
 
+import java.io.InputStream;
+import java.net.URI;
+import java.security.Provider;
 import java.util.ArrayList;
 
 public class WriteStoryImageAdapter extends RecyclerView.Adapter<com.example.rotory.Adapter.WriteStoryImageAdapter.writestroyHolder> implements OnContentsItemClickListener {
     OnContentsItemClickListener listener;
     private Context context;
     private static ArrayList<Imagelist>items;
+
 
     public WriteStoryImageAdapter(Context context, ArrayList<Imagelist> items) {
         this.context= context;
@@ -42,8 +52,10 @@ public class WriteStoryImageAdapter extends RecyclerView.Adapter<com.example.rot
 
     @Override
     public void onBindViewHolder(@NonNull com.example.rotory.Adapter.WriteStoryImageAdapter.writestroyHolder holder, int position) {
-        Uri ImageUri= Uri.parse(items.get(position).getSmallimage());
+//        Uri ImageUri= Uri.parse(items.get(position).getSmallimage());
+        Uri ImageUri= Uri.parse(Uri.decode(items.get(position).getSmallimage()));
         holder.itemImage.setImageURI(ImageUri);
+        holder.onBind(items.get(position));
 
     }
 
@@ -61,6 +73,7 @@ public class WriteStoryImageAdapter extends RecyclerView.Adapter<com.example.rot
     public void onItemClick(writestroyHolder writestroyHolder, View view, int position) {
         if (listener != null) {
             listener.onItemClick(writestroyHolder, view, position);
+
         }
     }
 
@@ -71,34 +84,38 @@ public class WriteStoryImageAdapter extends RecyclerView.Adapter<com.example.rot
         private ImageButton mainImage;
         private int prePosition = -1;
         private SparseBooleanArray selectedItems = new SparseBooleanArray();
+        Button writeStoryImageAddBtn;
 
 
         public writestroyHolder(@NonNull View View) {
             super(View);
             itemImage = View.findViewById(R.id.writeStroryImageSmall);
             mainImage = View.findViewById(R.id.writeStoryMainImageView);
+            ((Write_Story)Write_Story.mContext).getContentResolver();
 
             itemImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view ) {
-                    int position = getAdapterPosition();
-                    if (listener != null) {
-                        listener.onItemClick(writestroyHolder.this, view, position);
-                    }
-                    if (selectedItems.get(position)) {
-                        // 펼쳐진 Item을 클릭 시
-                        selectedItems.delete(position);
-                    }
+
+
+
                 }
+
             });
         }
 
+
+        public void onBind(Imagelist imagelist) {
+            ((Write_Story)Write_Story.mContext).getContentResolver();
+
+        }
     }
     public static void addItem(Imagelist item) {
         items.add(item);
 
     }
     public Imagelist getItem(int position) {
-       return items.get(position);
+
+        return items.get(position);
     }
 }

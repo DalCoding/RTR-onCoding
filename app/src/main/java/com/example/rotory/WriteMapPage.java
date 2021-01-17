@@ -30,8 +30,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.rotory.Adapter.LocationAdapter;
 import com.example.rotory.kakao.ApiClient;
 import com.example.rotory.kakao.ApiInterface;
+import com.example.rotory.kakao.BusProvider;
 import com.example.rotory.kakao.CategoryResult;
 import com.example.rotory.kakao.Document;
+import com.squareup.otto.Bus;
+import com.squareup.otto.Subscribe;
 
 import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
@@ -50,7 +53,7 @@ import retrofit2.Response;
 
 
 public class WriteMapPage extends AppCompatActivity implements MapView.CurrentLocationEventListener, MapView.MapViewEventListener, MapView.POIItemEventListener {
-    private static final String TAG = "WriteMaoPage";
+    private static final String TAG = "WriteMapPage";
     MapView mapView;
     ViewGroup mapViewContainer;
     Button writeMapAddBtn;
@@ -61,11 +64,26 @@ public class WriteMapPage extends AppCompatActivity implements MapView.CurrentLo
     ArrayList<Document> documentArrayList = new ArrayList<>();
     EditText mapSearchEditText;
 
+    MapPoint currentMapPoint;
+    private double mCurrentLng; //Long = X, Lat = Yㅌ
+    private double mCurrentLat;
+    private double mSearchLng = -1;
+    private double mSearchLat = -1;
+    private String mSearchName;
+    boolean isTrackingMode = false; //트래킹 모드인지 (3번째 버튼 현재위치 추적 눌렀을 경우 true되고 stop 버튼 누르면 false로 된다)
+    Bus bus = BusProvider.getInstance();
+
+    MapPOIItem searchMarker = new MapPOIItem();
+
     RecyclerView recyclerView;
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.write_map_page);
+
+        bus.register(this);
 
         MapView mapView = new MapView(this);
 
@@ -516,6 +534,25 @@ public class WriteMapPage extends AppCompatActivity implements MapView.CurrentLo
     @Override
     public void onDraggablePOIItemMoved(MapView mapView, MapPOIItem mapPOIItem, MapPoint mapPoint) {
 
+    }
+
+    @Subscribe //검색예시 클릭시 이벤트 오토버스
+    public void search(Document document) {//public항상 붙여줘야함
+        Toast.makeText(getApplicationContext(), document.getPlaceName() + " 검색", Toast.LENGTH_SHORT).show();
+        mSearchName = document.getPlaceName();
+        mSearchLng = Double.parseDouble(document.getX());
+        mSearchLat = Double.parseDouble(document.getY());
+        mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(mSearchLat, mSearchLng), true);
+        mapView.removePOIItem(searchMarker);
+        searchMarker.setItemName(mSearchName);
+        //searchMarker.setTag(0);
+        MapPoint mapPoint = MapPoint.mapPointWithGeoCoord(mSearchLat, mSearchLng);
+        searchMarker.setMapPoint(mapPoint);
+        searchMarker.setMarkerType(MapPOIItem.MarkerType.BluePin); // 기본으로 제공하는 BluePin 마커 모양.
+        searchMarker.setSelectedMarkerType(MapPOIItem.MarkerType.RedPin); // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
+        //마커 드래그 가능하게 설정
+        searchMarker.setDraggable(true);
+        mapView.addPOIItem(searchMarker);
     }
 }
 
