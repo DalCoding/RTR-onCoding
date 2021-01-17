@@ -1,8 +1,6 @@
 package com.example.rotory.Adapter;
 
 import android.content.Context;
-import android.content.DialogInterface;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
@@ -18,10 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.rotory.Imagelist;
 import com.example.rotory.Interface.OnContentsItemClickListener;
 import com.example.rotory.R;
-import com.example.rotory.Search.SearchResultRoadAdapter;
-import com.example.rotory.Search.SearchResultStoryAdapter;
 
-import java.util.AbstractSequentialList;
 import java.util.ArrayList;
 
 public class WriteStoryImageAdapter extends RecyclerView.Adapter<com.example.rotory.Adapter.WriteStoryImageAdapter.writestroyHolder> implements OnContentsItemClickListener {
@@ -69,10 +64,6 @@ public class WriteStoryImageAdapter extends RecyclerView.Adapter<com.example.rot
         }
     }
 
-    @Override
-    public void onItemClick(SearchResultRoadAdapter.ViewHolder viewHolder, View view, int position) {
-
-    }
 
 
     public class writestroyHolder extends RecyclerView.ViewHolder {
@@ -109,9 +100,5 @@ public class WriteStoryImageAdapter extends RecyclerView.Adapter<com.example.rot
     }
     public Imagelist getItem(int position) {
        return items.get(position);
-    }
-    @Override
-    public void onItemClick(SearchResultStoryAdapter.ViewHolder holder, View view, int position) {
-
     }
 }
