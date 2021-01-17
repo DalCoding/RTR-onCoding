@@ -313,31 +313,34 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
     }
 
     @Override
-    public void OnLikeClicked(String contentsId, String userId) {
+    public void OnLikeClicked(String contentsId, Map<String, Object> contentsList, String userId) {
         Log.d(TAG, "onClicked: user에서 아이디 잘 받아옴?" + userId);
+        Map<String, Object> myLike = new HashMap<>();
+        myLike.put("contentsId",contentsId);
+        myLike.put("contentsType", contentsList.get("contentsType"));
+        myLike.put("title",contentsList.get("title").toString());
+        myLike.put("titleImage",contentsList.get("titleImage").toString());
+        myLike.put("savedDate", new Date().toString());
+        myLike.put("uid",contentsList.get("uid").toString());//이후 리스트에 포함되어있는지 여부를 찾기 위해 해당 항목 사용
+        String userCollection = "myLike";
+        saveUserAct(userId, myLike, userCollection);
 
-        db.collection("contents")
-                .document(contentsId)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            Log.d(TAG, "onClicked: 콘텐츠 페이지에서 해당 다큐먼트 받아오기 성공");
-                            Map<String, Object> contents = new HashMap<>();
-                            contents = task.getResult().getData();
-                            Map<String, Object> myLike = new HashMap<>();
-                            myLike.put("contentsId",contentsId);
-                            myLike.put("contentsType", contents.get("contentsType"));
-                            myLike.put("title", contents.get("title").toString());
-                            myLike.put("titleImage", contents.get("titleImage").toString());
-                            myLike.put("savedDate", new Date().toString());
-                            myLike.put("uid", contents.get("uid").toString());//이후 리스트에 포함되어있는지 여부를 찾기 위해 해당 항목 사용
-                            String userCollection = "myLike";
-                            saveUserAct(userId, myLike, userCollection);
-                        }
-                    }
-                });
+
+    }
+    @Override
+    public void OnFlagClicked(String contentsId, Map<String, Object> contentsList, String userId) {
+
+        Map<String, Object> myScrap = new HashMap<>();
+        myScrap.put("contentsId",contentsId);
+        myScrap.put("contentsType", contentsList.get("contentsType"));
+        myScrap.put("title", contentsList.get("title").toString());
+        myScrap.put("titleImage", contentsList.get("titleImage").toString());
+        myScrap.put("article", contentsList.get("article").toString());
+        myScrap.put("contentsAddress", contentsList.get("address").toString());
+        myScrap.put("savedDate", new Date().toString());
+        myScrap.put("uid", contentsList.get("uid").toString());//이후 리스트에 포함되어있는지 여부를 찾기 위해 해당 항목 사용
+        String userCollection = "myScrap";
+        saveUserAct(userId, myScrap, userCollection);
 
     }
     //star, Like, Flag 폴더에 저장하는 메서드
@@ -381,10 +384,7 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
                 });
     }
 
-    @Override
-    public void OnFlagClicked() {
 
-    }
 
     @Override
     public void OnLinkClicked() {

@@ -12,13 +12,10 @@ import android.util.Log;
 import android.view.View;
 
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.example.rotory.Adapter.WriteStoryImageAdapter;
 import com.example.rotory.Interface.OnContentsItemClickListener;
-import com.example.rotory.Search.SearchResultRoadAdapter;
-import com.example.rotory.Search.SearchResultStoryAdapter;
 
 import java.util.ArrayList;
 
@@ -55,20 +52,9 @@ public class Write_Story extends AppCompatActivity {
 
         adapter.setOnItemClickListener(new OnContentsItemClickListener() {
             @Override
-            public void onItemClick(SearchResultStoryAdapter.ViewHolder holder, View view, int position) {
-
-            }
-
-            @Override
             public void onItemClick(WriteStoryImageAdapter.writestroyHolder writestroyHolder, View view, int position) {
                 Imagelist item = adapter.getItem(position);
                 Log.d(TAG,"아이템 선택됨."+item.getSmallimage());
-
-            }
-
-            @Override
-            public void onItemClick(SearchResultRoadAdapter.ViewHolder viewHolder, View view, int position) {
-
             }
         });
 

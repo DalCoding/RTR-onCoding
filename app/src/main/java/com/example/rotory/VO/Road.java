@@ -26,7 +26,7 @@ public class Road {
     Date writeDate;
     Date modifiedDate;
     Date addedDate;
-    // Map<Object, Object> dtrRoadLine;
+    // Map<String, String> dtrRoadLine;
     ArrayList<String> tag;
 
     public Road() {

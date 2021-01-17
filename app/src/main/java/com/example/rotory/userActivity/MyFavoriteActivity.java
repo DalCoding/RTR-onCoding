@@ -117,13 +117,15 @@ public class MyFavoriteActivity  extends AppCompatActivity  {
                                 .setQuery(query, Person.class)
                                 .build();
                         makeAdapter(options);
+                        adapter.startListening();
+                        myFavoriteRecyclerView.setAdapter(adapter);
 
                     }
                 }
             }
         });
 
-        myFavoriteRecyclerView.setAdapter(adapter);
+
 
     }
 
@@ -156,7 +158,7 @@ public class MyFavoriteActivity  extends AppCompatActivity  {
     @Override
     protected void onStart() {
         super.onStart();
-        adapter.startListening();
+
     }
 
     @Override
