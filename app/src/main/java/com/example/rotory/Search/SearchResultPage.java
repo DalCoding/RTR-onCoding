@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -28,6 +29,8 @@ import com.example.rotory.VO.AppConstant;
 import com.example.rotory.account.SignUpActivity;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -35,10 +38,12 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import static com.example.rotory.VO.AppConstant.searchCode;
 
-public class SearchResultPage extends AppCompatActivity {
+public class SearchResultPage extends AppCompatActivity implements View.OnClickListener {
 
     AppConstant appConstant;
 
@@ -67,6 +72,8 @@ public class SearchResultPage extends AppCompatActivity {
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirestoreRecyclerAdapter searchResultAdapter;
+
+    Query query;
 
 
     @Override
@@ -97,14 +104,7 @@ public class SearchResultPage extends AppCompatActivity {
 
 
         EditText searchResultEdit = findViewById(R.id.searchResultEdit);
-        searchResultEdit.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                Intent intent = new Intent(SearchResultPage.this, SearchPage.class);
-                startActivityForResult(intent, searchCode);
-                return true;
-            }
-        });
+
 
 
         Button accuracyBtn = findViewById(R.id.searchAccuracySortingBtn);
@@ -112,33 +112,10 @@ public class SearchResultPage extends AppCompatActivity {
         Button latestBtn = findViewById(R.id.searchLatestSortingBtn);
         Button expandBtn = findViewById(R.id.searchResultExpandBtn);
 
-        accuracyBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        popularityBtn.setOnClickListener(this);
+        latestBtn.setOnClickListener(this);
+        accuracyBtn.setOnClickListener(this);
 
-            }
-        });
-
-        popularityBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-
-        latestBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-
-        expandBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
 
 
         searchResultRecyclerView = findViewById(R.id.searchResultList);
@@ -146,7 +123,28 @@ public class SearchResultPage extends AppCompatActivity {
         searchResultRecyclerView.setLayoutManager(layoutManager);
 
 
-        Query query = db.collection("contents")
+        db.collection("contents")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult());
+
+                            Query query = db.collection("contents");
+
+                            FirestoreRecyclerOptions<SearchContents> options = new FirestoreRecyclerOptions.Builder<SearchContents>()
+                                    .setQuery(query, SearchContents.class)
+                                    .build();
+                            setSearchResultAdapter(options);
+                            searchResultAdapter.startListening();
+                            searchResultRecyclerView.setAdapter(searchResultAdapter);
+                        }
+                    }
+                });
+
+
+        /*Query query = db.collection("contents")
                 .orderBy("liked", Query.Direction.ASCENDING);
 
         FirestoreRecyclerOptions<SearchContents> options = new FirestoreRecyclerOptions.Builder<SearchContents>()
@@ -173,9 +171,102 @@ public class SearchResultPage extends AppCompatActivity {
             }
         };
 
-        searchResultRecyclerView.setAdapter(searchResultAdapter);
+        searchResultRecyclerView.setAdapter(searchResultAdapter);*/
 
     }
+
+    @Override
+    public void onClick(View view) {
+        int id = view.getId();
+        switch (id) {
+            case R.id.searchPopularitySortingBtn:
+                Toast.makeText(this, "인기순 버튼 눌려짐.", Toast.LENGTH_LONG).show();
+
+                db.collection("contents")
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    for (QueryDocumentSnapshot document : task.getResult());
+
+                                    Query query = db.collection("contents")
+                                            .orderBy("liked", Query.Direction.DESCENDING);
+
+                                    FirestoreRecyclerOptions<SearchContents> options = new FirestoreRecyclerOptions.Builder<SearchContents>()
+                                            .setQuery(query, SearchContents.class)
+                                            .build();
+                                    setSearchResultAdapter(options);
+                                    searchResultAdapter.startListening();
+                                    searchResultRecyclerView.setAdapter(searchResultAdapter);
+                                }
+                            }
+                        });
+
+                break;
+
+            case R.id.searchLatestSortingBtn:
+                Toast.makeText(this, "최신순 버튼 눌려짐.", Toast.LENGTH_LONG).show();
+
+                db.collection("contents")
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    for (QueryDocumentSnapshot document : task.getResult());
+
+                                    Query query = db.collection("contents")
+                                            .orderBy("modifiedDate", Query.Direction.DESCENDING);
+
+                                    FirestoreRecyclerOptions<SearchContents> options = new FirestoreRecyclerOptions.Builder<SearchContents>()
+                                            .setQuery(query, SearchContents.class)
+                                            .build();
+                                    setSearchResultAdapter(options);
+                                    searchResultAdapter.startListening();
+                                    searchResultRecyclerView.setAdapter(searchResultAdapter);
+                                }
+                            }
+                        });
+                break;
+
+            case R.id.searchAccuracySortingBtn:
+                Toast.makeText(this, "정확도순 버튼 눌러짐.", Toast.LENGTH_LONG).show();
+                break;
+
+        }
+    }
+
+
+    public void setSearchResultAdapter(FirestoreRecyclerOptions options) {
+
+        searchResultAdapter = new FirestoreRecyclerAdapter<SearchContents, SearchResultViewHolder>(options) {
+
+            @Override
+            public void onDataChanged() {
+                super.onDataChanged();
+                Log.d(TAG, " 어댑터 작동");
+            }
+
+            @NonNull
+            @Override
+            public SearchResultViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.search_result_item, parent, false);
+                return new SearchResultViewHolder(view);
+            }
+
+            @Override
+            public void onError(FirebaseFirestoreException e) {
+                Log.e("error", e.getMessage());
+            }
+
+            @Override
+            protected void onBindViewHolder(@NonNull SearchResultViewHolder holder, int position, @NonNull SearchContents model) {
+                holder.setContentsItems(model);
+            }
+        };
+    }
+
 
     public class SearchResultViewHolder extends RecyclerView.ViewHolder {
         View view;
@@ -250,12 +341,15 @@ public class SearchResultPage extends AppCompatActivity {
     public void onStart() {
         Log.d(TAG, "어댑터 작동 시작");
         super.onStart();
-        searchResultAdapter.startListening();
+        //searchResultAdapter.startListening();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        searchResultAdapter.stopListening();
+        if(searchResultAdapter != null){
+            searchResultAdapter.stopListening();
+        }
+        //searchResultAdapter.stopListening();
     }
 }
