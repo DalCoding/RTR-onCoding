@@ -142,7 +142,7 @@ public class ProfileEditPage extends Fragment {
                                 + "/n 해당 다큐먼트 아이디 : " + pDocumentId);
 
                         Toast.makeText(getContext(),"사용자 정보 변경 완료", Toast.LENGTH_SHORT).show();
-                        ((MyPage)getActivity()).closeProfileEditor();
+                        ((MyPage)getActivity()).closeProfileEditor("profileEdit");
 
 
                     }

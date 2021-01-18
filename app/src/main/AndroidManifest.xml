@@ -38,6 +38,7 @@
         <activity android:name=".userActivity.MyLikeActivity" />
         <!--<activity android:name=".WriteMapPage"/>-->
         <activity android:name=".Search.SearchPage"/>
+       <activity android:name=".userActivity.MyScrapActivity"/>
 
         <!--        <activity android:name=".Write_Story" />-->
 

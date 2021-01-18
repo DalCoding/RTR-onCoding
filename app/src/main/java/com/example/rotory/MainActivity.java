@@ -1,21 +1,17 @@
 package com.example.rotory;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 
@@ -31,7 +27,7 @@ import com.example.rotory.account.SignUpActivity;
 import com.example.rotory.account.LogInActivity;
 
 
-import com.example.rotory.userActivity.MyFavoriteActivity;
+import com.example.rotory.userActivity.MyScrapActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.appbar.AppBarLayout;
@@ -144,13 +140,16 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
             @Override
             public void onClick(View v) {
                 // 즐겨찾기 리스트 띄우는 엑티비티 실험(MyFavoriteActivity)
-                Intent intent;
+                //Intent intent;
+                /*
                 if (user != null) {
                     intent = new Intent(MainActivity.this, MyFavoriteActivity.class);
                 }else{
                     intent = new Intent(MainActivity.this, LogInActivity.class);
-                }
+                }*/
+                Intent intent = new Intent(MainActivity.this, MyScrapActivity.class);
                 startActivity(intent);
+
 
 
             }
