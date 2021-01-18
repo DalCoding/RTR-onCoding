@@ -39,6 +39,7 @@
         <!--<activity android:name=".WriteMapPage"/>-->
         <activity android:name=".Search.SearchPage"/>
        <activity android:name=".userActivity.MyScrapActivity"/>
+        <activity android:name=".LoadStoryItem"/>
 
         <!--        <activity android:name=".Write_Story" />-->
 
