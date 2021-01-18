@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.rotory.Adapter.SCommAdapter;
 import com.example.rotory.Interface.OnCommItemClickListener;
 import com.example.rotory.Interface.OnUserActItemClickListener;
+import com.example.rotory.VO.Person;
 import com.example.rotory.account.LogInActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -75,6 +76,12 @@ public class StoryContentsPage extends Fragment {
     Spinner reportSpinner;
 
     SCommAdapter commAdapter;
+    //Comment comments = new Comment();
+    Person persons = new Person();
+
+    TextView commUsernameText;
+    TextView commConText;
+    TextView commTimeText;
 
 
     // 스피너
@@ -206,17 +213,38 @@ public class StoryContentsPage extends Fragment {
                     }
                 });
 
-/*
-       db.collection("person")
+        //person db에서 comment 가져오기
+       db.collection("Person")
                .whereEqualTo("userId", userEmail)
                .get()
-               .addOnCompleteListener(new On)
+               .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                   @Override
+                   public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                       if (task.isSuccessful()) {
+                           for (QueryDocumentSnapshot document : task.getResult()) {
+                               String personId = document.getId();
 
-*/
-        //유저 정보 세팅
+                               Comment(personId);
 
+                               String userName1 = String.valueOf(document.get("userName"));
+                               commUsernameText = findViewById(R.id.commUsernameText);
+                               commUsernameText.setText(userName1);
+                               String userText = // ...
 
-    }
+                                       //불러올 내용 채우기
+
+                               commReportText.setOnClickListener(new View.OnClickListener(){
+                                   @Override
+                                   public void onClick(View v) {
+                                       showReportDialog(document, document.getId());
+                                       //신고창 띄우기
+                               });
+                           } else {
+                               Log.d("firebase", "Error getting documents: ", task.getException());
+                           }
+                       }
+                   }
+               });
 
     private void loadContents(QueryDocumentSnapshot contentsID, FirebaseUser user) {
         // 해당글의 아이디 -> 해당 글의 정보 받아오려면 아이디로 다시 검색 필요!
@@ -501,6 +529,7 @@ public class StoryContentsPage extends Fragment {
     }
 }
 
+
     /*
     private void clickLikeImage(String contentsID,String userId) {
         //좋아요 버튼 누르면 해당 글 정보 받아가기
@@ -628,4 +657,3 @@ public class StoryContentsPage extends Fragment {
  }
 
  });*/
-
