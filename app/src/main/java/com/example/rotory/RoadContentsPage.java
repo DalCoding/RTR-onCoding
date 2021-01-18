@@ -115,13 +115,11 @@ public class RoadContentsPage extends Fragment {
             Log.d(TAG, "로그인 실패");
         }
 
-<<<<<<< HEAD
-        Query query = db.collection("Contents").whereEqualTo("contentsType", 1)
-                .orderBy("contentsType", Query.Direction.DESCENDING);
-=======
-    Query query = db.collection("SearchContents").whereEqualTo("contentsType", 1)
+/*        Query query = db.collection("Contents").whereEqualTo("contentsType", 1)
+                .orderBy("contentsType", Query.Direction.DESCENDING);*/
+        Query query = db.collection("SearchContents").whereEqualTo("contentsType", 1)
             .orderBy("contentsType", Query.Direction.DESCENDING);
->>>>>>> 64f7814fea943e313351cd2769fbeca6e0da1a46
+
         FirestoreRecyclerOptions<Contents> options = new FirestoreRecyclerOptions.Builder<Contents>()
                 .setQuery(query, Contents.class)
                 .build();

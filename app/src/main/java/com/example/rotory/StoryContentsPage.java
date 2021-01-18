@@ -64,6 +64,7 @@ public class StoryContentsPage extends Fragment {
     FirebaseFirestore db = FirebaseFirestore.getInstance(); //db 선언
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseUser user = mAuth.getCurrentUser();
+    String userEmail = user.getEmail();
 
     ArrayList<Comment> commentArrayList;
 
@@ -73,7 +74,6 @@ public class StoryContentsPage extends Fragment {
     TextView commReportText;
     Spinner reportSpinner;
 
-    RecyclerView sCommRView;
     SCommAdapter commAdapter;
 
 
@@ -132,7 +132,7 @@ public class StoryContentsPage extends Fragment {
         initUI(rootView);
         return rootView;
 
-        sCommRView = findViewById(R.id.sCommRView);
+/*        sCommRView = findViewById(R.id.sCommRView);
 
         sCommRView.setLayoutManager(layoutManager);
         commAdapter = new SCommAdapter();
@@ -146,7 +146,7 @@ public class StoryContentsPage extends Fragment {
             public void onItemClick(SCommAdapter.ViewHolder holder, View view, int position) {
                 Comment item = commAdapter.getItem(position);
             }
-        });
+        });*/
     }
 
     private void initUI(ViewGroup rootView) {
@@ -205,6 +205,17 @@ public class StoryContentsPage extends Fragment {
                         }
                     }
                 });
+
+/*
+       db.collection("person")
+               .whereEqualTo("userId", userEmail)
+               .get()
+               .addOnCompleteListener(new On)
+
+*/
+        //유저 정보 세팅
+
+
     }
 
     private void loadContents(QueryDocumentSnapshot contentsID, FirebaseUser user) {
