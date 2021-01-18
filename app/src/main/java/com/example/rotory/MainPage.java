@@ -62,7 +62,10 @@ public class MainPage extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.main_page, container, false);
-        initUI(rootView);
+        FirebaseUser user = mAuth.getCurrentUser();
+        if(user != null) {
+            initUI(rootView, user);
+        }
         return rootView;
 
     }
@@ -76,8 +79,8 @@ public class MainPage extends Fragment {
         }
     }*/
 
-    private void initUI(ViewGroup rootView) {
-        FirebaseUser user = mAuth.getCurrentUser();
+    private void initUI(ViewGroup rootView, FirebaseUser user) {
+
         db.collection("contents")
                 .whereEqualTo("uid", user.getEmail())
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -104,7 +107,7 @@ public class MainPage extends Fragment {
     }
 
     private void makeAdapter(FirestoreRecyclerOptions<Contents> options) {
-      /*  adapter = new FirestoreRecyclerOptions<Contents>(options) {
+      /*  adapter = new FirestoreRecyclerOptions<SearchContents>(options) {
 
                @Override
                 public void onDataChanged() {
@@ -114,7 +117,7 @@ public class MainPage extends Fragment {
 
                 @Override
                 protected void onBindViewHolder(@NonNull contentsViewHolder holder, int position,
-                                                    @NonNull Contents model) {
+                                                    @NonNull SearchContents model) {
                         holder.setUserItems(model);
                     }
                 }

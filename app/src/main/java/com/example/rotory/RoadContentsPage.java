@@ -110,13 +110,13 @@ public class RoadContentsPage extends Fragment {
             Log.d(TAG, "로그인 실패");
         }
 
-    Query query = db.collection("Contents").whereEqualTo("contentsType", 1)
+    Query query = db.collection("SearchContents").whereEqualTo("contentsType", 1)
             .orderBy("contentsType", Query.Direction.DESCENDING);
         FirestoreRecyclerOptions<Contents> options = new FirestoreRecyclerOptions.Builder<Contents>()
                 .setQuery(query, Contents.class)
                 .build();
 
-     /*   adapter = new FirestoreRecyclerAdapter<Contents, roadcontentsViewHolder>(options) {
+     /*   adapter = new FirestoreRecyclerAdapter<SearchContents, roadcontentsViewHolder>(options) {
 
             @Override
             public void onDataChanged() {
@@ -125,7 +125,7 @@ public class RoadContentsPage extends Fragment {
             }
 
             @Override
-            protected void onBindViewHolder(@NonNull roadcontentsViewHolder holder, int position, @NonNull Contents model) {
+            protected void onBindViewHolder(@NonNull roadcontentsViewHolder holder, int position, @NonNull SearchContents model) {
                 holder.setContentsItems(model);
             }
 
@@ -165,7 +165,7 @@ public class RoadContentsPage extends Fragment {
                 view = itemView;
             }
 
-            public void setContentsItems(Contents comment) {
+            public void setContentsItems(SearchContents comment) {
                 commLevelImg
                 commUsernameText
                 commConText

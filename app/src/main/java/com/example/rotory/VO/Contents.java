@@ -1,7 +1,8 @@
 package com.example.rotory.VO;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Date;
+import java.util.Map;
 
 public class Contents {
     int contentsType;
@@ -22,19 +23,73 @@ public class Contents {
     String isPartner;
     int dtrRating;
     String ratingComment;
-    ArrayList<Integer> dtrRoadLine;
-    ArrayList<String> dtrName;
+    Map<String, String> dtrRoadLine;
     String prefix;
-    String storyAddress;
+    String address;
     String titleImage;
-    HashMap<String, ArrayList<Integer>> dtrAddress;
     ArrayList<String> imageComment;
-    String storyContents;
+    String article;
     int isPublic;
-    String writeDate;
-    String modifiedDate;
+    Date writeDate;
+    Date modifiedDate;
+    String scrapped;
+    Map<String, String> smallImage;
+    String userLevel;
+    String userName;
+    String liked;
 
-    public Contents() {
+
+    public Contents() { }
+
+    public Contents(int contentsType, String title, String titleImage, String article, String userLevel, String userName, String liked) {
+        this.contentsType = contentsType;
+        this.title = title;
+        this.titleImage = titleImage;
+        this.article = article;
+        this.userLevel = userLevel;
+        this.userName = userName;
+        this.liked = liked;
+    }
+
+    public Contents(int contentsType, String uid, String title, String tag1, String tag2, String tag3, String tag4,
+                    String tag5, String tag6, String tag7, String tag8, String tag9, String tag10, String hour, String min,
+                    String isPartner, int dtrRating, String ratingComment, Map<String, String> dtrRoadLine, String prefix,
+                    String address, String titleImage, ArrayList<String> imageComment, String article, int isPublic, Date writeDate,
+                    Date modifiedDate, String scrapped, Map<String, String> smallImage, String userLevel, String userName, String liked) {
+
+        this.contentsType = contentsType;
+        this.uid = uid;
+        this.title = title;
+        this.tag1 = tag1;
+        this.tag2 = tag2;
+        this.tag3 = tag3;
+        this.tag4 = tag4;
+        this.tag5 = tag5;
+        this.tag6 = tag6;
+        this.tag7 = tag7;
+        this.tag8 = tag8;
+        this.tag9 = tag9;
+        this.tag10 = tag10;
+        this.hour = hour;
+        this.min = min;
+        this.isPartner = isPartner;
+        this.dtrRating = dtrRating;
+        this.ratingComment = ratingComment;
+        this.dtrRoadLine = dtrRoadLine;
+        this.prefix = prefix;
+        this.address = address;
+        this.titleImage = titleImage;
+        this.imageComment = imageComment;
+        this.article = article;
+        this.isPublic = isPublic;
+        this.writeDate = writeDate;
+        this.modifiedDate = modifiedDate;
+        this.scrapped = scrapped;
+        this.smallImage = smallImage;
+        this.userLevel = userLevel;
+        this.userName = userName;
+        this.liked = liked;
+
     }
 
     public int getContentsType() {
@@ -181,20 +236,12 @@ public class Contents {
         this.ratingComment = ratingComment;
     }
 
-    public ArrayList<Integer> getDtrRoadLine() {
+    public Map<String, String> getDtrRoadLine() {
         return dtrRoadLine;
     }
 
-    public void setDtrRoadLine(ArrayList<Integer> dtrRoadLine) {
+    public void setDtrRoadLine(Map<String, String> dtrRoadLine) {
         this.dtrRoadLine = dtrRoadLine;
-    }
-
-    public ArrayList<String> getDtrName() {
-        return dtrName;
-    }
-
-    public void setDtrName(ArrayList<String> dtrName) {
-        this.dtrName = dtrName;
     }
 
     public String getPrefix() {
@@ -205,12 +252,12 @@ public class Contents {
         this.prefix = prefix;
     }
 
-    public String getStoryAddress() {
-        return storyAddress;
+    public String getAddress() {
+        return address;
     }
 
-    public void setStoryAddress(String storyAddress) {
-        this.storyAddress = storyAddress;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public String getTitleImage() {
@@ -221,14 +268,6 @@ public class Contents {
         this.titleImage = titleImage;
     }
 
-    public HashMap<String, ArrayList<Integer>> getDtrAddress() {
-        return dtrAddress;
-    }
-
-    public void setDtrAddress(HashMap<String, ArrayList<Integer>> dtrAddress) {
-        this.dtrAddress = dtrAddress;
-    }
-
     public ArrayList<String> getImageComment() {
         return imageComment;
     }
@@ -237,12 +276,12 @@ public class Contents {
         this.imageComment = imageComment;
     }
 
-    public String getStoryContents() {
-        return storyContents;
+    public String getArticle() {
+        return article;
     }
 
-    public void setStoryContents(String storyContents) {
-        this.storyContents = storyContents;
+    public void setArticle(String article) {
+        this.article = article;
     }
 
     public int getIsPublic() {
@@ -253,20 +292,60 @@ public class Contents {
         this.isPublic = isPublic;
     }
 
-    public String getWriteDate() {
+    public Date getWriteDate() {
         return writeDate;
     }
 
-    public void setWriteDate(String writeDate) {
+    public void setWriteDate(Date writeDate) {
         this.writeDate = writeDate;
     }
 
-    public String getModifiedDate() {
+    public Date getModifiedDate() {
         return modifiedDate;
     }
 
-    public void setModifiedDate(String modifiedDate) {
+    public void setModifiedDate(Date modifiedDate) {
         this.modifiedDate = modifiedDate;
+    }
+
+    public String getScrapped() {
+        return scrapped;
+    }
+
+    public void setScrapped(String scrapped) {
+        this.scrapped = scrapped;
+    }
+
+    public Map<String, String> getSmallImage() {
+        return smallImage;
+    }
+
+    public void setSmallImage(Map<String, String> smallImage) {
+        this.smallImage = smallImage;
+    }
+
+    public String getUserLevel() {
+        return userLevel;
+    }
+
+    public void setUserLevel(String userLevel) {
+        this.userLevel = userLevel;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getLiked() {
+        return liked;
+    }
+
+    public void setLiked(String liked) {
+        this.liked = liked;
     }
 }
 
