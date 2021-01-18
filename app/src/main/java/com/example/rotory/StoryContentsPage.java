@@ -119,7 +119,7 @@ public class StoryContentsPage extends Fragment {
         scontentsLocText = rootView.findViewById(R.id.scontentsLocText);
 
         //나중에는 해당 글에서 글의 contentsID 넘기는 방식으로 변경할 예정
-        db.collection("story").whereEqualTo("contentsType", 1).get()
+        db.collection("contents").whereEqualTo("contentsType", 1).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -142,7 +142,7 @@ public class StoryContentsPage extends Fragment {
 
     private void loadContents(QueryDocumentSnapshot contentsData, FirebaseUser user) {
         String contentsID = contentsData.getId(); // 해당글의 아이디 -> 해당 글의 정보 받아오려면 아이디로 다시 검색 필요!
-        DocumentReference docRef = db.collection("story").document(contentsID);
+        DocumentReference docRef = db.collection("contents").document(contentsID);
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {

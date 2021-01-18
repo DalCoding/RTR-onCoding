@@ -4,34 +4,28 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.rotory.BigMapPage;
-import com.example.rotory.MainPage;
 import com.example.rotory.MyPage;
 import com.example.rotory.R;
-import com.example.rotory.ThemePage;
+import com.example.rotory.RoadContentsPage;
 import com.example.rotory.VO.AppConstant;
-import com.example.rotory.account.LogInActivity;
-import com.example.rotory.account.SignUpActivity;
+import com.example.rotory.LoadStoryItem;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.appbar.AppBarLayout;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -58,6 +52,8 @@ public class MyScrapActivity extends AppCompatActivity {
     ImageView myScrapPreImg;
     ImageView myScrapLevelImg;
 
+
+    CardView myScrapItem;
     RecyclerView myScrapRecyclerView;
     String userId;
 
@@ -140,6 +136,7 @@ public class MyScrapActivity extends AppCompatActivity {
             @Override
             protected void onBindViewHolder(@NonNull scrapViewHolder holder, int position, @NonNull Scrap model) {
                 holder.setUserItems(model);
+                holder.bind(model.getContentsType(), model.getContentsId());
             }
 
             @NonNull
@@ -157,6 +154,7 @@ public class MyScrapActivity extends AppCompatActivity {
         public scrapViewHolder(@NonNull View itemView) {
             super(itemView);
             view = itemView;
+            myScrapItem = findViewById(R.id.myScrabItem);
 
         }
 
@@ -191,16 +189,33 @@ public class MyScrapActivity extends AppCompatActivity {
                             }
                         }
                     });
-
             myScrapTitle.setText(scrap.getTitle());
             myScrapKind.setText(contentsType);
             myScrapSave.setText(scrap.getSavedDate());
             //myScrapPreImg.setImageResource();
-
-
             //myScr
             // apLevel.setText(scrap.get);
 
         }
+        public void bind(int contentsType, String cDocumentID){
+            myScrapItem = view.findViewById(R.id.myScrabItem);
+            myScrapItem.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (contentsType == 0){
+                        Intent intent = new Intent(MyScrapActivity.this, RoadContentsPage.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent.putExtra("documentID", cDocumentID);
+                        startActivity(intent);
+                    } else if (contentsType == 1){
+                        Intent intent = new Intent(MyScrapActivity.this, LoadStoryItem.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent.putExtra("documentID", cDocumentID);
+                        startActivity(intent);
+                    }
+                }
+            });
+        }
+
     }
 }
