@@ -107,6 +107,7 @@ public class StoryContentsPage extends Fragment {
             listener = (OnUserActItemClickListener) context;
         }
         this.context = context;
+
     }
 
     @Override
@@ -165,12 +166,29 @@ public class StoryContentsPage extends Fragment {
         scontentsTextText = rootView.findViewById(R.id.scontentsTextText);
         scontentsLocText = rootView.findViewById(R.id.scontentsLocText);
 
+        /*Bundle contentsBundle = this.getArguments();
+        String storyDocumentId = contentsBundle.getString("storyDocumentId");
+        Log.d(TAG, "initUi 시작, 번들 전송 잘됐는지 확인, pDocumentId :" + storyDocumentId);*/
+/*
+
+        if (user != null) {
+            getUserActivityIcon(storyDocumentId, "myLike", scontentsHeartImg, R.drawable.heartfilled, R.drawable.heart);
+            getUserActivityIcon(storyDocumentId, "myStar", scontentsStarImg, R.drawable.starfilled, R.drawable.star);
+            getUserActivityIcon(storyDocumentId, "myScrap", scontentsScrapImg, R.drawable.scrabtagfilled, R.drawable.scrabtag);
+        }
+        loadContents(storyDocumentId, user);
+
+
+        db.collection("contents").document(storyDocumentId)
+                .get()
+                .getResult().get("uid")*/
         //나중에는 해당 글에서 글의 contentsID 넘기는 방식으로 변경할 예정
-        db.collection("story").whereEqualTo("contentsType", 1).get()
+       db.collection("contents").whereEqualTo("contentsType", 1).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
+
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d(TAG, "initUI : 스토리에서 받아오기 성공" + document.getId());
                                 if (user != null) {
@@ -179,7 +197,9 @@ public class StoryContentsPage extends Fragment {
                                     getUserActivityIcon(document, "myScrap", scontentsScrapImg, R.drawable.scrabtagfilled, R.drawable.scrabtag);
                                 }
                                 loadContents(document, user);
+
                             }
+
                         } else {
                             Log.d(TAG, "Error getting documents : ", task.getException());
                         }
@@ -187,9 +207,9 @@ public class StoryContentsPage extends Fragment {
                 });
     }
 
-    private void loadContents(QueryDocumentSnapshot contentsData, FirebaseUser user) {
-        String contentsID = contentsData.getId(); // 해당글의 아이디 -> 해당 글의 정보 받아오려면 아이디로 다시 검색 필요!
-        DocumentReference docRef = db.collection("story").document(contentsID);
+    private void loadContents(QueryDocumentSnapshot contentsID, FirebaseUser user) {
+        // 해당글의 아이디 -> 해당 글의 정보 받아오려면 아이디로 다시 검색 필요!
+        DocumentReference docRef = db.collection("contents").document(contentsID.getId());
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -201,7 +221,7 @@ public class StoryContentsPage extends Fragment {
                         ContentsList = document.getData();
                         Log.d(TAG, "title확인" + ContentsList.get("title"));
                         setContents(ContentsList);
-                        clickUserActIcon(contentsID, ContentsList, user);
+                        clickUserActIcon(contentsID.getId(), ContentsList, user);
                     } else {
                         Log.d(TAG, "No such document");
                     }
@@ -212,7 +232,7 @@ public class StoryContentsPage extends Fragment {
         });
     }
 
-    private void getUserActivityIcon(QueryDocumentSnapshot cDocument, String userCollection, ImageView imageView,
+    private void getUserActivityIcon(QueryDocumentSnapshot cDocumentId, String userCollection, ImageView imageView,
                                      int listIn, int listOut) {
         // 해당 글의 아이디 받아오는 방식으로 바꾼 후에 디비 연결문 수정! -> QueryDocumentSnapshot 대신 contentsId(=해당 다큐먼트의 아이디)
         // 받아 cDocument 입력되는 자리에 넣고  contentsId 키와 비교
@@ -225,12 +245,12 @@ public class StoryContentsPage extends Fragment {
                             for (QueryDocumentSnapshot pDocument : task.getResult()) {
                                 String pDocumentId = pDocument.getId();
                                 db.collection("person").document(pDocumentId).collection(userCollection)
-                                        .whereEqualTo("uid", cDocument.get("uid"))
+                                        .whereEqualTo("contentsId", cDocumentId)
                                         .get()
                                         .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                             @Override
                                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                                Log.d(TAG, userCollection + " getUserActivity 사용자의 활동리스트 정보 받아오기 성공" + cDocument.get("uid").toString());
+                                                Log.d(TAG, userCollection + " getUserActivity 사용자의 활동리스트 정보 받아오기 성공" + cDocumentId);
                                                 if (task.isSuccessful()) {
                                                     QuerySnapshot snapshot = task.getResult();
                                                     List userActList = new ArrayList();

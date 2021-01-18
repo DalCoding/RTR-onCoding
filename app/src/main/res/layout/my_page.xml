@@ -87,8 +87,21 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/myRelativeLayout1">
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+
+            <FrameLayout
+                android:id="@+id/scrapListContainer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:visibility="gone" />
+        </androidx.core.widget.NestedScrollView>
 
         <ScrollView
+            android:id="@+id/myPageScrollView"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -200,8 +213,7 @@
                                         android:layout_width="30dp"
                                         android:layout_height="30dp"
                                         android:layout_marginStart="10dp"
-                                        android:layout_marginLeft="10dp"
-                                         />
+                                        android:layout_marginLeft="10dp" />
                                 </LinearLayout>
                             </LinearLayout>
                         </LinearLayout>
@@ -286,7 +298,6 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="20dp"
                             android:orientation="horizontal">
 
                             <TextView
@@ -326,505 +337,18 @@
                         </LinearLayout>
 
 
-                        <LinearLayout
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/myRecyclerView"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="15dp"
-                            android:gravity="center"
-                            android:orientation="horizontal">
-
-                            <FrameLayout
-                                android:id="@+id/myScrabLayout"
-                                android:layout_width="160dp"
-                                android:layout_height="120dp"
-                                android:layout_weight="1">
-
-                                <ImageView
-                                    android:id="@+id/myScrabImg"
-                                    android:layout_width="160dp"
-                                    android:layout_height="120dp"
-                                    android:layout_gravity="center"
-                                    app:srcCompat="@drawable/noimage2" />
-
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:orientation="vertical">
-
-                                    <TextView
-                                        android:id="@+id/myScrabTitle"
-                                        android:layout_width="90dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_gravity="center"
-                                        android:layout_marginTop="20dp"
-                                        android:ellipsize="end"
-                                        android:gravity="center"
-                                        android:maxLines="1"
-                                        android:text="제목"
-                                        android:textColor="#646464"
-                                        android:textSize="16sp" />
-
-                                    <TextView
-                                        android:id="@+id/myScrabSave"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginTop="2dp"
-                                        android:layout_marginEnd="23dp"
-                                        android:layout_marginRight="23dp"
-                                        android:gravity="right"
-                                        android:text="20.12.28 저장"
-                                        android:textColor="#646464"
-                                        android:textSize="10sp" />
-
-                                    <TextView
-                                        android:id="@+id/myScrabPlace"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginTop="20dp"
-                                        android:layout_marginEnd="23dp"
-                                        android:layout_marginRight="23dp"
-                                        android:gravity="right"
-                                        android:text="서울시 양천구"
-                                        android:textColor="#646464"
-                                        android:textSize="12sp" />
-                                </LinearLayout>
-
-                            </FrameLayout>
-
-                            <FrameLayout
-                                android:id="@+id/myScrabLayout1"
-                                android:layout_width="160dp"
-                                android:layout_height="120dp"
-                                android:layout_weight="1">
-
-                                <ImageView
-                                    android:id="@+id/myScrabImg1"
-                                    android:layout_width="160dp"
-                                    android:layout_height="120dp"
-                                    android:layout_gravity="center"
-                                    app:srcCompat="@drawable/noimage2" />
-
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:orientation="vertical">
-
-                                    <TextView
-                                        android:id="@+id/myScrabTitle1"
-                                        android:layout_width="90dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_gravity="center"
-                                        android:layout_marginTop="20dp"
-                                        android:ellipsize="end"
-                                        android:gravity="center"
-                                        android:maxLines="1"
-                                        android:text="제목"
-                                        android:textColor="#646464"
-                                        android:textSize="16sp" />
-
-                                    <TextView
-                                        android:id="@+id/myScrabSave1"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginTop="2dp"
-                                        android:layout_marginEnd="23dp"
-                                        android:layout_marginRight="23dp"
-                                        android:gravity="right"
-                                        android:text="20.12.28 저장"
-                                        android:textColor="#646464"
-                                        android:textSize="10sp" />
-
-                                    <TextView
-                                        android:id="@+id/myScrabPlace1"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginTop="20dp"
-                                        android:layout_marginEnd="23dp"
-                                        android:layout_marginRight="23dp"
-                                        android:gravity="right"
-                                        android:text="서울시 양천구"
-                                        android:textColor="#646464"
-                                        android:textSize="12sp" />
-                                </LinearLayout>
-
-                            </FrameLayout>
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="15dp"
-                            android:gravity="center"
-                            android:orientation="horizontal">
-
-                            <FrameLayout
-                                android:id="@+id/myScrabLayout2"
-                                android:layout_width="160dp"
-                                android:layout_height="120dp"
-                                android:layout_weight="1">
-
-                                <ImageView
-                                    android:id="@+id/myScrabImg2"
-                                    android:layout_width="160dp"
-                                    android:layout_height="120dp"
-                                    android:layout_gravity="center"
-                                    app:srcCompat="@drawable/noimage2" />
-
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:orientation="vertical">
-
-                                    <TextView
-                                        android:id="@+id/myScrabTitle2"
-                                        android:layout_width="90dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_gravity="center"
-                                        android:layout_marginTop="20dp"
-                                        android:ellipsize="end"
-                                        android:gravity="center"
-                                        android:maxLines="1"
-                                        android:text="제목"
-                                        android:textColor="#646464"
-                                        android:textSize="16sp" />
-
-                                    <TextView
-                                        android:id="@+id/myScrabSave2"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginTop="2dp"
-                                        android:layout_marginEnd="23dp"
-                                        android:layout_marginRight="23dp"
-                                        android:gravity="right"
-                                        android:text="20.12.28 저장"
-                                        android:textColor="#646464"
-                                        android:textSize="10sp" />
-
-                                    <TextView
-                                        android:id="@+id/myScrabPlace2"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginTop="20dp"
-                                        android:layout_marginEnd="23dp"
-                                        android:layout_marginRight="23dp"
-                                        android:gravity="right"
-                                        android:text="서울시 양천구"
-                                        android:textColor="#646464"
-                                        android:textSize="12sp" />
-                                </LinearLayout>
-
-                            </FrameLayout>
-
-                            <FrameLayout
-                                android:id="@+id/myScrabLayout3"
-                                android:layout_width="160dp"
-                                android:layout_height="120dp"
-                                android:layout_weight="1">
-
-                                <ImageView
-                                    android:id="@+id/myScrabImg3"
-                                    android:layout_width="160dp"
-                                    android:layout_height="120dp"
-                                    android:layout_gravity="center"
-                                    app:srcCompat="@drawable/noimage2" />
-
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:orientation="vertical">
-
-                                    <TextView
-                                        android:id="@+id/myScrabTitle3"
-                                        android:layout_width="90dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_gravity="center"
-                                        android:layout_marginTop="20dp"
-                                        android:ellipsize="end"
-                                        android:gravity="center"
-                                        android:maxLines="1"
-                                        android:text="제목"
-                                        android:textColor="#646464"
-                                        android:textSize="16sp" />
-
-                                    <TextView
-                                        android:id="@+id/myScrabSave3"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginTop="2dp"
-                                        android:layout_marginEnd="23dp"
-                                        android:layout_marginRight="23dp"
-                                        android:gravity="right"
-                                        android:text="20.12.28 저장"
-                                        android:textColor="#646464"
-                                        android:textSize="10sp" />
-
-                                    <TextView
-                                        android:id="@+id/myScrabPlace3"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginTop="20dp"
-                                        android:layout_marginEnd="23dp"
-                                        android:layout_marginRight="23dp"
-                                        android:gravity="right"
-                                        android:text="서울시 양천구"
-                                        android:textColor="#646464"
-                                        android:textSize="12sp" />
-                                </LinearLayout>
-
-                            </FrameLayout>
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="15dp"
-                            android:gravity="center"
-                            android:orientation="horizontal">
-
-                            <FrameLayout
-                                android:id="@+id/myScrabLayout4"
-                                android:layout_width="160dp"
-                                android:layout_height="120dp"
-                                android:layout_weight="1">
-
-                                <ImageView
-                                    android:id="@+id/myScrabImg4"
-                                    android:layout_width="160dp"
-                                    android:layout_height="120dp"
-                                    android:layout_gravity="center"
-                                    app:srcCompat="@drawable/noimage2" />
-
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:orientation="vertical">
-
-                                    <TextView
-                                        android:id="@+id/myScrabTitle4"
-                                        android:layout_width="90dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_gravity="center"
-                                        android:layout_marginTop="20dp"
-                                        android:ellipsize="end"
-                                        android:gravity="center"
-                                        android:maxLines="1"
-                                        android:text="제목"
-                                        android:textColor="#646464"
-                                        android:textSize="16sp" />
-
-                                    <TextView
-                                        android:id="@+id/myScrabSave4"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginTop="2dp"
-                                        android:layout_marginEnd="23dp"
-                                        android:layout_marginRight="23dp"
-                                        android:gravity="right"
-                                        android:text="20.12.28 저장"
-                                        android:textColor="#646464"
-                                        android:textSize="10sp" />
-
-                                    <TextView
-                                        android:id="@+id/myScrabPlace4"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginTop="20dp"
-                                        android:layout_marginEnd="23dp"
-                                        android:layout_marginRight="23dp"
-                                        android:gravity="right"
-                                        android:text="서울시 양천구"
-                                        android:textColor="#646464"
-                                        android:textSize="12sp" />
-                                </LinearLayout>
-
-                            </FrameLayout>
-
-                            <FrameLayout
-                                android:id="@+id/myScrabLayout5"
-                                android:layout_width="160dp"
-                                android:layout_height="120dp"
-                                android:layout_weight="1">
-
-                                <ImageView
-                                    android:id="@+id/myScrabImg5"
-                                    android:layout_width="160dp"
-                                    android:layout_height="120dp"
-                                    android:layout_gravity="center"
-                                    app:srcCompat="@drawable/noimage2" />
-
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:orientation="vertical">
-
-                                    <TextView
-                                        android:id="@+id/myScrabTitle5"
-                                        android:layout_width="90dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_gravity="center"
-                                        android:layout_marginTop="20dp"
-                                        android:ellipsize="end"
-                                        android:gravity="center"
-                                        android:maxLines="1"
-                                        android:text="제목"
-                                        android:textColor="#646464"
-                                        android:textSize="16sp" />
-
-                                    <TextView
-                                        android:id="@+id/myScrabSave5"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginTop="2dp"
-                                        android:layout_marginEnd="23dp"
-                                        android:layout_marginRight="23dp"
-                                        android:gravity="right"
-                                        android:text="20.12.28 저장"
-                                        android:textColor="#646464"
-                                        android:textSize="10sp" />
-
-                                    <TextView
-                                        android:id="@+id/myScrabPlace5"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginTop="20dp"
-                                        android:layout_marginEnd="23dp"
-                                        android:layout_marginRight="23dp"
-                                        android:gravity="right"
-                                        android:text="서울시 양천구"
-                                        android:textColor="#646464"
-                                        android:textSize="12sp" />
-                                </LinearLayout>
-
-                            </FrameLayout>
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:orientation="horizontal">
-
-                            <FrameLayout
-                                android:id="@+id/myScrabLayout6"
-                                android:layout_width="160dp"
-                                android:layout_height="120dp"
-                                android:layout_weight="1">
-
-                                <ImageView
-                                    android:id="@+id/myScrabImg6"
-                                    android:layout_width="160dp"
-                                    android:layout_height="120dp"
-                                    android:layout_gravity="center"
-                                    app:srcCompat="@drawable/noimage2" />
-
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:orientation="vertical">
-
-                                    <TextView
-                                        android:id="@+id/myScrabTitle6"
-                                        android:layout_width="90dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_gravity="center"
-                                        android:layout_marginTop="20dp"
-                                        android:ellipsize="end"
-                                        android:gravity="center"
-                                        android:maxLines="1"
-                                        android:text="제목"
-                                        android:textColor="#646464"
-                                        android:textSize="16sp" />
-
-                                    <TextView
-                                        android:id="@+id/myScrabSave6"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginTop="2dp"
-                                        android:layout_marginEnd="23dp"
-                                        android:layout_marginRight="23dp"
-                                        android:gravity="right"
-                                        android:text="20.12.28 저장"
-                                        android:textColor="#646464"
-                                        android:textSize="10sp" />
-
-                                    <TextView
-                                        android:id="@+id/myScrabPlace6"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginTop="20dp"
-                                        android:layout_marginEnd="23dp"
-                                        android:layout_marginRight="23dp"
-                                        android:gravity="right"
-                                        android:text="서울시 양천구"
-                                        android:textColor="#646464"
-                                        android:textSize="12sp" />
-                                </LinearLayout>
-
-                            </FrameLayout>
-
-                            <FrameLayout
-                                android:id="@+id/myScrabLayout7"
-                                android:layout_width="160dp"
-                                android:layout_height="120dp"
-                                android:layout_weight="1">
-
-                                <ImageView
-                                    android:id="@+id/myScrabImg7"
-                                    android:layout_width="160dp"
-                                    android:layout_height="120dp"
-                                    android:layout_gravity="center"
-                                    app:srcCompat="@drawable/noimage2" />
-
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:orientation="vertical">
-
-                                    <TextView
-                                        android:id="@+id/myScrabTitle7"
-                                        android:layout_width="90dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_gravity="center"
-                                        android:layout_marginTop="20dp"
-                                        android:ellipsize="end"
-                                        android:gravity="center"
-                                        android:maxLines="1"
-                                        android:text="제목"
-                                        android:textColor="#646464"
-                                        android:textSize="16sp" />
-
-                                    <TextView
-                                        android:id="@+id/myScrabSave7"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginTop="2dp"
-                                        android:layout_marginEnd="23dp"
-                                        android:layout_marginRight="23dp"
-                                        android:gravity="right"
-                                        android:text="20.12.28 저장"
-                                        android:textColor="#646464"
-                                        android:textSize="10sp" />
-
-                                    <TextView
-                                        android:id="@+id/myScrabPlace7"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginTop="20dp"
-                                        android:layout_marginEnd="23dp"
-                                        android:layout_marginRight="23dp"
-                                        android:gravity="right"
-                                        android:text="서울시 양천구"
-                                        android:textColor="#646464"
-                                        android:textSize="12sp" />
-                                </LinearLayout>
-
-                            </FrameLayout>
-
-                        </LinearLayout>
-
+                            android:layout_height="wrap_content" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -854,7 +378,6 @@
                     android:layout_width="310dp"
                     android:layout_height="190dp"
                     android:layout_gravity="center"
-                    android:layout_marginBottom="250dp"
                     android:background="@drawable/mylevelbackimg"
                     android:elevation="50dp"
                     android:orientation="vertical"

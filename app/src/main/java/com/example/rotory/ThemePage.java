@@ -66,14 +66,14 @@ public class ThemePage extends Fragment {
 
         Query query = db.collection("contents").orderBy("theme", Query.Direction.ASCENDING);
 
-        FirestoreRecyclerOptions<Contents> options = new FirestoreRecyclerOptions.Builder<Contents>()
-                .setQuery(query, Contents.class)
+        FirestoreRecyclerOptions<SearchContents> options = new FirestoreRecyclerOptions.Builder<SearchContents>()
+                .setQuery(query, SearchContents.class)
                 .build();
 
         themeRView = findViewById(R.id.themeRView);
         themeRView.setLayoutManager(new LinearLayoutManager(this));
 
-        adapter = new FirestoreRecyclerAdapter<Contents, themeViewHolder>(options);
+        adapter = new FirestoreRecyclerAdapter<SearchContents, themeViewHolder>(options);
 
         @Override
         public void onDataChanged () {
@@ -83,7 +83,7 @@ public class ThemePage extends Fragment {
 
         @Override
         protected void onBindViewHolder (@NonNull themeViewHolder holder,int position,
-        @NonNull Contents model){
+        @NonNull SearchContents model){
             holder.setContentsItems(model);
         }
 

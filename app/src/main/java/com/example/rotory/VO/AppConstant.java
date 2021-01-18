@@ -6,6 +6,7 @@ public class AppConstant {
     public static final int loginCode = 3000;
     public static final int themeCode = 2000;
     public static final int mainCode = 1000;
+    public static final int searchCode = 1100;
     public static final int profileEditCode = 4120;
 
     public static final String REGEX_PATTERN = "^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[$@$!%*#?&])[A-Za-z[0-9]$@$!%*#?&]{8,20}$";

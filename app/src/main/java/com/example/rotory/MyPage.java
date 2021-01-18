@@ -1,14 +1,17 @@
 package com.example.rotory;
 
-import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Base64;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -22,14 +25,20 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.rotory.Interface.OnTabItemSelectedListener;
 import com.example.rotory.VO.AppConstant;
 import com.example.rotory.VO.Person;
 import com.example.rotory.account.ProfileEditPage;
-import com.example.rotory.account.SignUpActivity;
 import com.example.rotory.userActivity.MyFavoriteActivity;
 import com.example.rotory.userActivity.MyLikeActivity;
+import com.example.rotory.userActivity.MyScrapActivity;
+import com.example.rotory.userActivity.Scrap;
+import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.appbar.AppBarLayout;
@@ -37,11 +46,13 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.util.List;
-import java.util.Map;
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 
 public class MyPage extends AppCompatActivity implements OnTabItemSelectedListener {
@@ -66,6 +77,8 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
     TextView userActivityTextView;
     TextView myNickTextView;
     TextView myLevelTextView;
+    TextView myFavoriteTextView;
+    TextView myLikeTextView;
 
     ImageView myProfileImg;
     ImageView myEditImg;
@@ -74,6 +87,8 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
     ImageView myLikeImg;
     Button myScrapBtn;
     TextView myAskTextView;
+    RecyclerView myRecyclerView;
+    CardView myScrapCardView;
 
     MainPage mainPage;
     ThemePage themePage;
@@ -85,6 +100,7 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
     TextView myExpTextView; // 이걸 프로그레스로 적용할땐 나눈값을 반올림하던가 해야할듯
     TextView myFavoriteTextView;
     TextView myLikeTextView; */
+    private FirestoreRecyclerAdapter adapter;
 
     // 하단탭
     RelativeLayout bottomNavUnderbarHome;
@@ -108,10 +124,10 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
         profileEditContainer = findViewById(R.id.profileEditContainer);
 
         FirebaseUser user = mAuth.getCurrentUser();
-        String userEmail = user.getEmail();
+        String userEmail = user.getEmail(); // e-mail 형식
 
-        // 유저 정보 세팅
-         db.collection("person")
+// 유저 정보 세팅
+        db.collection("person")
                 .whereEqualTo("userId", userEmail)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -119,6 +135,10 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
+                                String personId = document.getId();
+
+                                likeCount(personId);
+                                FavoriteCount(personId);
 
                                 String userName1 = String.valueOf(document.get("userName"));
                                 myNickTextView = findViewById(R.id.myNickTextView);
@@ -135,11 +155,7 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
                                         showPWDialog(document, document.getId());
                                     }
                                 });
-
-
-
-
-                            //    Log.d("firebase", document.getId() + " => " + personId);
+                                //    Log.d("firebase", document.getId() + " => " + personId);
 
                             }
                         } else {
@@ -147,7 +163,6 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
                         }
                     }
                 });
-
 
 
 
@@ -227,6 +242,13 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
             }
         });
 
+        // 그리드 설치
+        myRecyclerView = findViewById(R.id.myRecyclerView);
+        GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
+        myRecyclerView.setLayoutManager(layoutManager);
+
+
+
 
 
         loadScrapList();
@@ -285,6 +307,43 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
         });
     }
 
+    private void FavoriteCount(String personId) {
+
+                        db.collection("person").document(personId).collection("myStar")
+                                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    int count = 0;
+                                    for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
+                                        count++;
+                                    }
+                                    myFavoriteTextView = findViewById(R.id.myFavoriteTextView);
+                                    myFavoriteTextView.setText("즐겨찾기 "+count);
+                                }
+                            }
+                        });
+                    }
+
+
+    private void likeCount(String personId) {
+
+        db.collection("person").document(personId).collection("myLike")
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    int count = 0;
+                    for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
+                        count++;
+                    }
+                    myLikeTextView = findViewById(R.id.myLikeTextView);
+                    myLikeTextView.setText("좋아요 "+count);
+                }
+            }
+        });
+    }
+
 
 
     @Override
@@ -321,6 +380,112 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
 
     /* onCreate 이후 기타 메소드들 */
 
+    private void MyAdapter(FirestoreRecyclerOptions<Scrap> options) {
+
+        adapter = new FirestoreRecyclerAdapter<Scrap, MyPage.myViewHolder>(options) {
+
+            @Override
+            public void onDataChanged() {
+                super.onDataChanged();
+                Log.d(TAG, " 어댑터 작동");
+            }
+
+            @Override
+            protected void onBindViewHolder(@NonNull MyPage.myViewHolder holder, int position,
+                                            @NonNull Scrap model) {
+                holder.setScrapItems(model);
+                holder.bind(model.getContentsType(), model.getContentsId());
+            }
+
+            @NonNull
+            @Override
+            public MyPage.myViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.my_page_item, parent,false);
+                return new MyPage.myViewHolder(view);
+            }
+        };
+
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if(adapter != null){
+            adapter.stopListening();
+        }
+    }
+
+
+    public class myViewHolder extends RecyclerView.ViewHolder {
+        private View view;
+
+        public myViewHolder(@NonNull View itemView) {
+            super(itemView);
+            view = itemView;
+         /*   itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    TextView myScrapId1 = itemView.findViewById(R.id.myScrabId);
+                    String Id = myScrapId1.getText().toString();
+                    Toast.makeText(getApplicationContext(), Id, Toast.LENGTH_SHORT).show();
+                }
+            }); */
+
+        }
+
+
+        public void setScrapItems(Scrap item) {
+            TextView myScrapTitle;
+            TextView myScrapPlace;
+            TextView myScrapSave;
+            TextView myScrapId;
+
+
+       //     ImageView myScrapImg = findViewById(R.id.myScrabImg);//myScrapImg.setAlpha(50);
+            myScrapTitle = itemView.findViewById(R.id.myScrabTitle);
+       //     TextView myScrapSave = findViewById(R.id.myScrabSave);
+            myScrapPlace = itemView.findViewById(R.id.myScrabPlace);
+            myScrapId = itemView.findViewById(R.id.myScrabId);
+
+           // myScrapImg.setImageURI(Uri.parse(uri));
+            myScrapTitle.setText(item.getTitle());
+          //  myScrapSave.setText(item.getSavedDate());
+          myScrapPlace.setText(item.getContentsAddress());
+          myScrapId.setText(item.getContentsId());
+
+//Title, Article, ContentsAddress, ContentsType, TitleImage , ContentsId, , SavedDate, Uid
+            // 이중 해결해야할건 이미지, 시간 YY-mm-dd 형식으로 ('20.12.28 저장')
+        }
+        public void bind(int contentsType, String cDocumentID){
+            myScrapCardView = itemView.findViewById(R.id.myScrapCardView);
+            myScrapCardView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (contentsType == 0){
+                        Intent intent = new Intent(MyPage.this, RoadContentsPage.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent.putExtra("documentID", cDocumentID);
+                        startActivity(intent);
+                    } else if (contentsType == 1){
+                        Intent intent = new Intent(MyPage.this, LoadStoryItem.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent.putExtra("documentID", cDocumentID);
+                        startActivity(intent);
+                    }
+                }
+            });
+        }
+
+    }
+
+
     public void showGalleryActivity() {
         Intent intent = new Intent(Intent.ACTION_PICK,
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -331,8 +496,26 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_GALLERY) {
-            Uri selectedImageUri = data.getData();
-            myProfileImg.setImageURI(selectedImageUri);
+            Uri uri = data.getData();
+            Bitmap bitmap = null;
+            try {
+                bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
+            } catch (FileNotFoundException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            myProfileImg.setImageBitmap(bitmap);
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG, 40, baos);
+            byte[] bytes = baos.toByteArray();
+            String temp = Base64.encodeToString(bytes, Base64.DEFAULT);
+
+            Toast.makeText(getApplicationContext(), temp, Toast.LENGTH_SHORT).show();
+            // String DB로 보내기
         }
     }
 
@@ -393,31 +576,37 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
     }
 
     public void loadScrapList(){
+
+        FirebaseUser user = mAuth.getCurrentUser();
+       // String userEmail = user.getEmail(); // e-mail 형식
         //8개 불러와서 최근 순서대로 이미지,제목,저장날짜,장소 담기
-        ImageView myScrapImg = findViewById(R.id.myScrabImg); myScrapImg.setAlpha(50);
-        TextView myScrapTitle = findViewById(R.id.myScrabTitle);
-        TextView myScrapSave = findViewById(R.id.myScrabSave);
-        TextView myScrapPlace = findViewById(R.id.myScrabPlace);
-
-        myScrapImg.setImageResource(R.drawable.acorn);
-        myScrapTitle.setText("스크랩 제목");
-        myScrapSave.setText("21.01.11 저장");
-        myScrapPlace.setText("서울시 화곡동");
-        myScrapLayout = findViewById(R.id.myScrabLayout);
-        myScrapLayout.setOnClickListener(new View.OnClickListener() {
+        db.collection("person")
+                .whereEqualTo("userId", user.getEmail())
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
-            public void onClick(View v) {
-                loadScrapItem();
-                // 파라미터로 int contents_id
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()){
+                    for (QueryDocumentSnapshot document : task.getResult()){
+                        String personId = document.getId();
+
+                        Query query = db.collection("person")
+                                .document(personId).collection("myScrap")
+                                .orderBy("savedDate", Query.Direction.ASCENDING).limit(8);
+
+                        FirestoreRecyclerOptions<Scrap> options = new FirestoreRecyclerOptions.Builder<Scrap>()
+                                .setQuery(query, Scrap.class)
+                                .build();
+                        MyAdapter(options);
+                        adapter.startListening();
+                        myRecyclerView.setAdapter(adapter);
+
+                    }
+                }
             }
-
-
         });
-    }
 
-    public void loadScrapItem(){
-        Toast.makeText(getApplicationContext(), "X번째 레이아웃 선택", Toast.LENGTH_SHORT).show();
-        // 파라미터로 int contents_id
+
+
     }
 
 

@@ -23,6 +23,10 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import java.util.ArrayList;
 import java.util.Locale;
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 64f7814fea943e313351cd2769fbeca6e0da1a46
 
 public class TagRecyclerAdapter extends FirestoreRecyclerAdapter<Tag, TagRecyclerAdapter.TagViewHolder> implements OnTagItemClickListener {
 
