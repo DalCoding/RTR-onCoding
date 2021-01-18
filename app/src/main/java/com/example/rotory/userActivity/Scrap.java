@@ -5,7 +5,7 @@ public class Scrap {
     String title;
     String article;
     String contentsAddress;
-    String contentsType;
+    int contentsType;
     String contentsId;
     String savedDate;
     String titleImage;
@@ -14,7 +14,7 @@ public class Scrap {
     public Scrap() {
     }
 
-    public Scrap(String title, String article, String contentsAddress, String contentsType,
+    public Scrap(String title, String article, String contentsAddress, int contentsType,
                  String contentsId, String savedDate, String titleImage, String uid) {
         this.title = title;
         this.article = article;
@@ -26,11 +26,11 @@ public class Scrap {
         this.uid = uid;
     }
 
-    public String getContentsType() {
+    public int getContentsType() {
         return contentsType;
     }
 
-    public void setContentsType(String contentsType) {
+    public void setContentsType(int contentsType) {
         this.contentsType = contentsType;
     }
 
