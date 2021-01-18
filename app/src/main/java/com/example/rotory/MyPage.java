@@ -1,25 +1,21 @@
 package com.example.rotory;
 
-import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,33 +30,24 @@ import com.example.rotory.Interface.OnTabItemSelectedListener;
 import com.example.rotory.VO.AppConstant;
 import com.example.rotory.VO.Person;
 import com.example.rotory.account.ProfileEditPage;
-import com.example.rotory.account.SignUpActivity;
 import com.example.rotory.userActivity.MyFavoriteActivity;
 import com.example.rotory.userActivity.MyLikeActivity;
-<<<<<<< HEAD
 import com.example.rotory.userActivity.Scrap;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-=======
-import com.example.rotory.userActivity.MyScrapActivity;
->>>>>>> 14e60f3b4c96295dd7aca61800300b0b04cb49e8
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.util.List;
-import java.util.Map;
 
-
-public class MyPage extends AppCompatActivity implements OnTabItemSelectedListener, AdapterView.OnItemClickListener {
+public class MyPage extends AppCompatActivity implements OnTabItemSelectedListener {
 
     AppConstant appConstant = new AppConstant();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -76,17 +63,14 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
     RelativeLayout relativeLayout1;
     RelativeLayout relativeLayout2;
 
-    ScrollView myPageScrollView;
-
     FrameLayout profileEditContainer;
-    FrameLayout scrapListContainer;
     FrameLayout myScrapLayout;
-
     Button myLevelOutBtn;
     TextView userActivityTextView;
     TextView myNickTextView;
     TextView myLevelTextView;
-    TextView profileTextView;
+    TextView myFavoriteTextView;
+    TextView myLikeTextView;
 
     ImageView myProfileImg;
     ImageView myEditImg;
@@ -96,6 +80,7 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
     Button myScrapBtn;
     TextView myAskTextView;
     RecyclerView myRecyclerView;
+    String contentsId;
 
     MainPage mainPage;
     ThemePage themePage;
@@ -129,9 +114,6 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
         relativeLayout1 = findViewById(R.id.myRelativeLayout1);
         relativeLayout2 = findViewById(R.id.myRelativeLayout2);
         profileEditContainer = findViewById(R.id.profileEditContainer);
-        myPageScrollView = findViewById(R.id.myPageScrollView);
-        scrapListContainer = findViewById(R.id.scrapListContainer);
-
 
         FirebaseUser user = mAuth.getCurrentUser();
         String userEmail = user.getEmail(); // e-mail 형식
@@ -170,17 +152,33 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
                     }
                 });
 
-
-
-        profileTextView =findViewById(R.id.profileTextView);
-        profileTextView.setOnClickListener(new View.OnClickListener() {
+        db.collection("person")
+                .whereEqualTo("userId", user.getEmail())
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
-            public void onClick(View v) {
-                Intent profileIntent = new Intent(getApplicationContext(), MyPage.class);
-                profileIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(profileIntent);
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()){
+                    for (QueryDocumentSnapshot document : task.getResult()){
+                        String personId = document.getId();
+
+                        Query query = db.collection("person")
+                                .document(personId).collection("myLike")
+                                .orderBy("savedDate", Query.Direction.ASCENDING).limit(8);
+
+                        FirestoreRecyclerOptions<Scrap> options = new FirestoreRecyclerOptions.Builder<Scrap>()
+                                .setQuery(query, Scrap.class)
+                                .build();
+                        MyAdapter(options);
+                        adapter.startListening();
+                        myRecyclerView.setAdapter(adapter);
+
+                    }
+                }
             }
         });
+
+
+
 
         userActivityTextView = findViewById(R.id.userActivityTextView);
         userActivityTextView.setOnClickListener(new View.OnClickListener() {
@@ -242,10 +240,9 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
         myScrapBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), MyScrapActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-
+                //Intent intent = new Intent(getApplicationContext(), myscrapPage.class);
+                //intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                //startActivity(intent);
             }
         });
 
@@ -266,7 +263,9 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
 
 
 
-       loadScrapList();
+
+
+        loadScrapList();
 
         //하단탭
         appBarLayout = findViewById(R.id.appBarLayout);
@@ -399,10 +398,6 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
         }
     }
 
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        loadScrapItem();
-    }
 
     public class myViewHolder extends RecyclerView.ViewHolder {
         private View view;
@@ -410,23 +405,39 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
         public myViewHolder(@NonNull View itemView) {
             super(itemView);
             view = itemView;
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    TextView myScrapId1 = itemView.findViewById(R.id.myScrabId);
+                    String Id = myScrapId1.getText().toString();
+                    Toast.makeText(getApplicationContext(), Id, Toast.LENGTH_SHORT).show();
+                }
+            });
+
         }
 
 
         public void setScrapItems(Scrap item) {
+            TextView myScrapTitle;
+            TextView myScrapPlace;
+            TextView myScrapSave;
+            TextView myScrapId;
+
 
        //     ImageView myScrapImg = findViewById(R.id.myScrabImg);//myScrapImg.setAlpha(50);
-            TextView myScrapTitle = findViewById(R.id.myScrabTitle);
+            myScrapTitle = itemView.findViewById(R.id.myScrabTitle);
        //     TextView myScrapSave = findViewById(R.id.myScrabSave);
-            TextView myScrapPlace = findViewById(R.id.myScrabPlace);
+            myScrapPlace = itemView.findViewById(R.id.myScrabPlace);
+            myScrapId = itemView.findViewById(R.id.myScrabId);
 
            // myScrapImg.setImageURI(Uri.parse(uri));
             myScrapTitle.setText(item.getTitle());
           //  myScrapSave.setText(item.getSavedDate());
           myScrapPlace.setText(item.getContentsAddress());
-
+          myScrapId.setText(item.getContentsId());
 
 //Title, Article, ContentsAddress, ContentsType, TitleImage , ContentsId, , SavedDate, Uid
+            // 이중 해결해야할건 이미지, 시간 YY-mm-dd 형식으로 ('20.12.28 저장')
         }
 
     }
@@ -464,7 +475,7 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
                   //닫기
 
                 if (PWCheckEditText1.equals(pDocument.get("password").toString())) {
-                    loadPage("profileEdit");
+                    loadPersonInfo();
                     Bundle pDocumentIdBundle = new Bundle();
                     pDocumentIdBundle.putString("pDocumentId", pDocumentId);
 
@@ -480,28 +491,26 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
         PWCheck.show();
     }
     // 설정창으로 이동
-    private void loadPage(String page) {
+    private void loadPersonInfo() {
 
-        if (page.equals("profileEdit")) {
-            relativeLayout1.setVisibility(View.GONE);
-            relativeLayout2.setVisibility(View.GONE);
-            bottomNavigation.setVisibility(View.GONE);
 
-            profileEditContainer.setVisibility(View.VISIBLE);
-            getSupportFragmentManager().beginTransaction().replace(R.id.profileEditContainer, profileEditPage).commit();
-        }
+        relativeLayout1.setVisibility(View.GONE);
+        relativeLayout2.setVisibility(View.GONE);
+        bottomNavigation.setVisibility(View.GONE);
 
+        profileEditContainer.setVisibility(View.VISIBLE);
+        getSupportFragmentManager().beginTransaction().replace(R.id.profileEditContainer, profileEditPage).commit();
 
         // 전체적인인 정보 수정 + 레벨 레이아웃에 exp 도 담기
     }
-    public void closeProfileEditor(String page){
-        if (page.equals("profileEdit")) {
-            relativeLayout1.setVisibility(View.VISIBLE);
-            relativeLayout2.setVisibility(View.VISIBLE);
-            bottomNavigation.setVisibility(View.VISIBLE);
+    public void closeProfileEditor(){
 
-            profileEditContainer.setVisibility(View.GONE);
-        }
+        relativeLayout1.setVisibility(View.VISIBLE);
+        relativeLayout2.setVisibility(View.VISIBLE);
+        bottomNavigation.setVisibility(View.VISIBLE);
+
+        profileEditContainer.setVisibility(View.GONE);
+
     }
 
     public void loadScrapList(){
@@ -509,24 +518,9 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
         FirebaseUser user = mAuth.getCurrentUser();
        // String userEmail = user.getEmail(); // e-mail 형식
         //8개 불러와서 최근 순서대로 이미지,제목,저장날짜,장소 담기
-<<<<<<< HEAD
         db.collection("person")
                 .whereEqualTo("userId", user.getEmail())
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-=======
-        ImageView myScrapImg = findViewById(R.id.myScrabImg); myScrapImg.setAlpha(50);
-        TextView myScrapTitle = findViewById(R.id.myScrabTitle);
-        TextView myScrapSave = findViewById(R.id.myScrabSave);
-        TextView myScrapPlace = findViewById(R.id.myScrabPlace);
-
-
-        myScrapImg.setImageResource(R.drawable.acorn);
-        myScrapTitle.setText("스크랩 제목");
-        myScrapSave.setText("21.01.11 저장");
-        myScrapPlace.setText("서울시 화곡동");
-        myScrapLayout = findViewById(R.id.myScrabLayout);
-        myScrapLayout.setOnClickListener(new View.OnClickListener() {
->>>>>>> 14e60f3b4c96295dd7aca61800300b0b04cb49e8
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()){
@@ -553,10 +547,6 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
 
     }
 
-    public void loadScrapItem(){
-      //  Toast.makeText(getApplicationContext(), "X번째 레이아웃 선택", Toast.LENGTH_SHORT).show();
-        // 파라미터로 int contents_id
-    }
 
 
 }
