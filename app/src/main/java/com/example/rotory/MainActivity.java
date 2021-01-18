@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Adapter;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -58,6 +60,7 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
     MainPage mainPage;
     ThemePage themePage;
     StoryContentsPage storyContentsPage;
+    RoadContentsPage roadContentsPage=new RoadContentsPage();
 
     BigMapPage bigMapPage;
     SignUpActivity signUpActivity;
@@ -81,23 +84,21 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
         //setContentView(R.layout.activity_main);
     }
 
-    TextView commReportText;
-    // report 신고
 
 
     //인텐트 전달 왜안됨?
-   @Override
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == appConstant.themeCode){
-            if (resultCode == RESULT_OK){
+        if (requestCode == appConstant.themeCode) {
+            if (resultCode == RESULT_OK) {
                 getSupportFragmentManager().beginTransaction().replace(R.id.container, themePage).commit();
             }
-        }else if(requestCode == appConstant.mainCode){
-            if (resultCode==RESULT_OK){
+        } else if (requestCode == appConstant.mainCode) {
+            if (resultCode == RESULT_OK) {
                 getSupportFragmentManager().beginTransaction().replace(R.id.container, mainPage).commit();
             }
-        }else {
+        } else {
             getSupportFragmentManager().beginTransaction().replace(R.id.container, mainPage).commit();
         }
     }
@@ -111,6 +112,7 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
         bigMapPage = new BigMapPage();
 
         FirebaseUser user = mAuth.getCurrentUser();
+
 
         if (user != null) {
             String checkLogIN = user.getEmail();
@@ -194,7 +196,7 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
     final Spinner sp = (Spinner)mView.findViewById(R.id.spinner);
 
     ArrayAdapter reportAdapter = ArrayAdapter.createFromResource(this, R.array.location, R.layout.simple_spinner_item);
-    sp.setAdapte r(reportAdapter);
+    sp.setAdapter(reportAdapter);
 
     aBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener(){
         @Override
@@ -235,7 +237,7 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
                         bottomNavigation.setVisibility(View.VISIBLE);
                         return true;
                     case R.id.theme:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.container, storyContentsPage).commit();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.container, roadContentsPage).commit();
                         setTabUnderBar(1);
                         /*if (isSignIn) {
                             getSupportFragmentManager().beginTransaction().replace(R.id.container, storyContentsPage).commit();

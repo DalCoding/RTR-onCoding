@@ -1,6 +1,5 @@
 package com.example.rotory;
 
-import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,16 +10,19 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.rotory.Adapter.SCommAdapter;
+import com.example.rotory.Interface.OnCommItemClickListener;
 import com.example.rotory.Interface.OnUserActItemClickListener;
-import com.example.rotory.VO.Comment;
 import com.example.rotory.account.LogInActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -34,7 +36,6 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -69,6 +70,36 @@ public class StoryContentsPage extends Fragment {
     Context context;
     OnUserActItemClickListener listener;
 
+    TextView commReportText;
+    Spinner reportSpinner;
+
+    RecyclerView sCommRView;
+    SCommAdapter commAdapter;
+
+
+    // 스피너
+/*    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        reportSpinner = findViewById(R.id.reportSpinner);
+
+        ArrayAdapter reportAdapter = ArrayAdapter.createFromResource(this, R.array.reportList, android.R.layout.simple_spinner_dropdown_item);
+        reportAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        reportSpinner.setAdapter(reportAdapter);
+
+        reportSpinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            }
+
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+    }*/
+
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -93,12 +124,28 @@ public class StoryContentsPage extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.story_contents_page, container, false);
 
-/*        ActionBar ab = getSupportActionBar();
+/*      ActionBar ab = getSupportActionBar();
         ab.setTitle("ActionBar Title by setTitle()");*/
         //상단바 제목 바꾸기
 
         initUI(rootView);
         return rootView;
+
+        sCommRView = findViewById(R.id.sCommRView);
+
+        sCommRView.setLayoutManager(layoutManager);
+        commAdapter = new SCommAdapter();
+
+        commAdapter.addItem(new Comment ("", "", "", "", "",));
+
+        sCommRView.setAdapter(commAdapter);
+
+        commAdapter.setOnItemClickListener(new OnCommItemClickListener() {
+            @Override
+            public void onItemClick(SCommAdapter.ViewHolder holder, View view, int position) {
+                Comment item = commAdapter.getItem(position);
+            }
+        });
     }
 
     private void initUI(ViewGroup rootView) {
@@ -343,7 +390,7 @@ public class StoryContentsPage extends Fragment {
                                                         imageView.setImageResource(listIn);
                                                         for (QueryDocumentSnapshot thisLikeDocument : task.getResult()) {
                                                             String userActDocId = thisLikeDocument.getId();
-                                                            Log.d(TAG, "해당다큐먼츠 찾기 => id" + userActDocId);
+                                                            Log.d(TAG, "해당 다큐먼츠 찾기 => id" + userActDocId);
                                                             userCollectionRef.document(userActDocId).delete();
                                                             imageView.setImageResource(listOut);
                                                             Toast.makeText(getContext(), "관심있는 이웃 취소", Toast.LENGTH_SHORT).show();
@@ -378,14 +425,14 @@ public class StoryContentsPage extends Fragment {
                                                                 Log.d(TAG, "해당다큐먼츠 찾기 => id" + userActDocId);
                                                                 userCollectionRef.document(userActDocId).delete();
                                                                 imageView.setImageResource(listOut);
-                                                                Toast.makeText(getContext(), "이 도토리을 버립니다.", Toast.LENGTH_SHORT).show();
+                                                                Toast.makeText(getContext(), "이 도토리를 버립니다.", Toast.LENGTH_SHORT).show();
                                                                 return;
                                                             }
                                                             Log.d(TAG, "사용자 활동리스트 정보 리스트에 넣기");
                                                             imageView.setImageResource(listOut);
                                                             if (userCollection.equals("myLike")) {
                                                                 listener.OnLikeClicked(contentsId, contentsList, user.getEmail());
-                                                                Toast.makeText(getContext(), "이 도토리을 좋아합니다.", Toast.LENGTH_SHORT).show();
+                                                                Toast.makeText(getContext(), "이 도토리를 좋아합니다.", Toast.LENGTH_SHORT).show();
                                                             } else if (userCollection.equals("myScrap")) {
                                                                 //스크랩 구현 아직 안함
                                                                 listener.OnFlagClicked(contentsId, contentsList, user.getEmail());
@@ -404,7 +451,7 @@ public class StoryContentsPage extends Fragment {
                 });
     }
 
-    //다람쥐 레벨용 이미지는 프로그램 내부에 넣어놓고, 유저레벨애 따라 불러서 사용
+    //다람쥐 레벨용 이미지는 프로그램 내부에 넣어놓고, 유저레벨에 따라 불러서 사용
     private int getUserLevelImage(String userLevel) {
         switch (userLevel) {
             case "어린다람쥐":

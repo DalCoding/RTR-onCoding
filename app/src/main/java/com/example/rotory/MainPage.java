@@ -77,7 +77,7 @@ public class MainPage extends Fragment {
     }*/
 
     private void initUI(ViewGroup rootView) {
-        FirebaseUser user = mAuth.getCurrentUser();
+      /*  FirebaseUser user = mAuth.getCurrentUser();
         db.collection("contents")
                 .whereEqualTo("uid", user.getEmail())
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -98,7 +98,7 @@ public class MainPage extends Fragment {
                     }
                 }
             }
-        });
+        });*/
 
         //mainRoadList.setAdapter(adapter);
     }
