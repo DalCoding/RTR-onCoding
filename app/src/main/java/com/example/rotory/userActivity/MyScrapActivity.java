@@ -205,12 +205,12 @@ public class MyScrapActivity extends AppCompatActivity {
                     if (contentsType == 0){
                         Intent intent = new Intent(MyScrapActivity.this, RoadContentsPage.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                        intent.putExtra("documentID", cDocumentID);
+                        intent.putExtra("documentId", cDocumentID);
                         startActivity(intent);
                     } else if (contentsType == 1){
                         Intent intent = new Intent(MyScrapActivity.this, LoadStoryItem.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                        intent.putExtra("documentID", cDocumentID);
+                        intent.putExtra("documentId", cDocumentID);
                         startActivity(intent);
                     }
                 }
