@@ -24,7 +24,7 @@
         android:theme="@style/Theme.Rotory">
         <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />
         <meta-data android:name="com.kakao.sdk.AppKey" android:value="74327a949b44e3526226fb17f890121f"/>
-        <activity android:name=".MainActivity">
+        <activity android:name=".Search.SearchTagResultPage">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -36,8 +36,10 @@
         <activity android:name=".account.LogInActivity"/>
         <activity android:name=".userActivity.MyFavoriteActivity"/>
         <activity android:name=".userActivity.MyLikeActivity" />
-        <!--<activity android:name=".WriteMapPage"/>-->
+        <activity android:name=".WriteMapPage"/>
         <activity android:name=".Search.SearchPage"/>
+        <activity android:name=".Search.SearchResultPage"/>
+        <!--<activity android:name=".Write_Story" />-->
        <activity android:name=".userActivity.MyScrapActivity"/>
         <activity android:name=".LoadStoryItem"/>
 

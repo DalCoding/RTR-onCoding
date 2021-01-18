@@ -28,94 +28,45 @@ import java.net.URI;
 import java.security.Provider;
 import java.util.ArrayList;
 
-public class WriteStoryImageAdapter extends RecyclerView.Adapter<com.example.rotory.Adapter.WriteStoryImageAdapter.writestroyHolder> implements OnContentsItemClickListener {
-    OnContentsItemClickListener listener;
-    private Context context;
-    private static ArrayList<Imagelist>items;
+public class WriteStoryImageAdapter extends RecyclerView.Adapter<WriteStoryImageAdapter.writestroyHolder> {
 
+        public ArrayList<Uri> albumImgList;
+        public Context mContext;
 
-    public WriteStoryImageAdapter(Context context, ArrayList<Imagelist> items) {
-        this.context= context;
-        this.items = items;
-    }
-
-    @NonNull
-    @Override
-    public com.example.rotory.Adapter.WriteStoryImageAdapter.writestroyHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-//        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.write_story_image_list_item, parent, false);
-//
-//        writestroyHolder holder = new writestroyHolder(view);
-//        return holder;
-
-        return new com.example.rotory.Adapter.WriteStoryImageAdapter.writestroyHolder(LayoutInflater.from(context).inflate(R.layout.write_story_image_list_item, parent, false));
-    }
-
-    @Override
-    public void onBindViewHolder(@NonNull com.example.rotory.Adapter.WriteStoryImageAdapter.writestroyHolder holder, int position) {
-//        Uri ImageUri= Uri.parse(items.get(position).getSmallimage());
-        Uri ImageUri= Uri.parse(Uri.decode(items.get(position).getSmallimage()));
-        holder.itemImage.setImageURI(ImageUri);
-        holder.onBind(items.get(position));
-
-    }
-
-    @Override
-    public int getItemCount() {
-        return items.size();
-    }
-
-
-   public void setOnItemClickListener(OnContentsItemClickListener listener) {
-        this.listener = listener;
-   }
-
-    @Override
-    public void onItemClick(writestroyHolder writestroyHolder, View view, int position) {
-        if (listener != null) {
-            listener.onItemClick(writestroyHolder, view, position);
-
-        }
-    }
-
-
-
-    public class writestroyHolder extends RecyclerView.ViewHolder {
-        private ImageView itemImage;
-        private ImageButton mainImage;
-        private int prePosition = -1;
-        private SparseBooleanArray selectedItems = new SparseBooleanArray();
-        Button writeStoryImageAddBtn;
-
-
-        public writestroyHolder(@NonNull View View) {
-            super(View);
-            itemImage = View.findViewById(R.id.writeStroryImageSmall);
-            mainImage = View.findViewById(R.id.writeStoryMainImageView);
-            ((Write_Story)Write_Story.mContext).getContentResolver();
-
-            itemImage.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view ) {
-
-
-
-                }
-
-            });
+        //생성자 정의
+        public WriteStoryImageAdapter(ArrayList<Uri> albumImgList,Context mContext){
+            this.albumImgList = albumImgList;
+            this.mContext = mContext;
         }
 
-
-        public void onBind(Imagelist imagelist) {
-            ((Write_Story)Write_Story.mContext).getContentResolver();
-
+        @NonNull
+        @Override
+        public WriteStoryImageAdapter.writestroyHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            Context context = parent.getContext();
+            LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View view = inflater.inflate(R.layout.write_story_image_list_item,parent,false);
+            WriteStoryImageAdapter.writestroyHolder viewHolder = new WriteStoryImageAdapter.writestroyHolder(view);
+            return viewHolder;
         }
-    }
-    public static void addItem(Imagelist item) {
-        items.add(item);
 
-    }
-    public Imagelist getItem(int position) {
+        @Override
+        public void onBindViewHolder(@NonNull WriteStoryImageAdapter.writestroyHolder holder, int position) {
+            //앨범에서 가져온 이미지 표시
+            holder.imageView.setImageURI(albumImgList.get(position));
+        }
 
-        return items.get(position);
-    }
+        @Override
+        public int getItemCount() {
+            return albumImgList.size();
+        }
+
+        public class writestroyHolder extends RecyclerView.ViewHolder {
+            public ImageView imageView;
+
+            public writestroyHolder(@NonNull View itemView) {
+                super(itemView);
+                imageView = itemView.findViewById(R.id.writeStroryImageSmall);
+            }
+        }
+
 }
