@@ -36,6 +36,7 @@ import com.example.rotory.account.ProfileEditPage;
 import com.example.rotory.account.SignUpActivity;
 import com.example.rotory.userActivity.MyFavoriteActivity;
 import com.example.rotory.userActivity.MyLikeActivity;
+import com.example.rotory.userActivity.Scrap;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -237,7 +238,7 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
 
         // 그리드 설치
         myRecyclerView = findViewById(R.id.myRecyclerView);
-        GridLayoutManager layoutManager=new GridLayoutManager(this, 2);
+        GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
         myRecyclerView.setLayoutManager(layoutManager);
 
 
@@ -334,7 +335,7 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
 
     /* onCreate 이후 기타 메소드들 */
 
-    private void MyAdapter(FirestoreRecyclerOptions<Person> options) {
+    private void MyAdapter(FirestoreRecyclerOptions<Scrap> options) {
 
         adapter = new FirestoreRecyclerAdapter<Scrap, MyPage.myViewHolder>(options) {
 
@@ -357,6 +358,7 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
                 return new MyPage.myViewHolder(view);
             }
         };
+
 
     }
 
@@ -388,24 +390,20 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
         }
 
 
-        public void setScrapItems(Person user) {
+        public void setScrapItems(Scrap item) {
 
-            ImageView myScrapImg = findViewById(R.id.myScrabImg);//myScrapImg.setAlpha(50);
+       //     ImageView myScrapImg = findViewById(R.id.myScrabImg);//myScrapImg.setAlpha(50);
             TextView myScrapTitle = findViewById(R.id.myScrabTitle);
-            TextView myScrapSave = findViewById(R.id.myScrabSave);
+       //     TextView myScrapSave = findViewById(R.id.myScrabSave);
             TextView myScrapPlace = findViewById(R.id.myScrabPlace);
 
-            myScrapImg.setImageURI(Uri.parse(uri));
-            myScrapTitle.setText(user.getTitle());
-            myScrapSave.setText(user.getTime());
-            myScrapPlace.setText(user.getPlace());
-
-            myScrapImg.setImageResource(R.drawable.acorn);
-            myScrapTitle.setText("스크랩 제목");
-            myScrapSave.setText("21.01.11 저장");
-            myScrapPlace.setText("서울시 화곡동");
+           // myScrapImg.setImageURI(Uri.parse(uri));
+            myScrapTitle.setText(item.getTitle());
+          //  myScrapSave.setText(item.getSavedDate());
+          myScrapPlace.setText(item.getContentsAddress());
 
 
+//Title, Article, ContentsAddress, ContentsType, TitleImage , ContentsId, , SavedDate, Uid
         }
 
     }
@@ -484,7 +482,7 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
     public void loadScrapList(){
 
         FirebaseUser user = mAuth.getCurrentUser();
-        String userEmail = user.getEmail(); // e-mail 형식
+       // String userEmail = user.getEmail(); // e-mail 형식
         //8개 불러와서 최근 순서대로 이미지,제목,저장날짜,장소 담기
         db.collection("person")
                 .whereEqualTo("userId", user.getEmail())
@@ -496,7 +494,7 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
                         String personId = document.getId();
 
                         Query query = db.collection("person")
-                                .document(personId).collection("myStar")
+                                .document(personId).collection("myScrap")
                                 .orderBy("savedDate", Query.Direction.ASCENDING).limit(8);
 
                         FirestoreRecyclerOptions<Scrap> options = new FirestoreRecyclerOptions.Builder<Scrap>()
@@ -516,7 +514,7 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
     }
 
     public void loadScrapItem(){
-        Toast.makeText(getApplicationContext(), "X번째 레이아웃 선택", Toast.LENGTH_SHORT).show();
+      //  Toast.makeText(getApplicationContext(), "X번째 레이아웃 선택", Toast.LENGTH_SHORT).show();
         // 파라미터로 int contents_id
     }
 
