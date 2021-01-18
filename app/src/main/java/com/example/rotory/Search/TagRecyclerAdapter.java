@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 
+
 public class TagRecyclerAdapter extends FirestoreRecyclerAdapter<Tag, TagRecyclerAdapter.TagViewHolder> implements OnTagItemClickListener {
 
     OnTagItemClickListener listener;

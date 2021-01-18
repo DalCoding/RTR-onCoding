@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,6 +43,8 @@ public class ProfileEditPage extends Fragment {
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     AppConstant appConstant;
+
+    ImageButton backImageButton;
 
     EditText profileNick;
     EditText profilePwd;
@@ -75,6 +78,15 @@ public class ProfileEditPage extends Fragment {
         profilePwdCheck = rootView.findViewById(R.id.profilePwdEditText1);
         profilePwdCheckNoti = rootView.findViewById(R.id.profilePwdTextView);
         profileNickCheck = rootView.findViewById(R.id.profileNickCheck);
+
+        backImageButton = rootView.findViewById(R.id.backImageButton);
+        backImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MyPage)getActivity()).closeProfileEditor("profileEdit");
+
+            }
+        });
 
         profileTiltleText = rootView.findViewById(R.id.pageTitlewithBtnTextView);
         profileTiltleText.setText("프로필 설정");
@@ -142,7 +154,7 @@ public class ProfileEditPage extends Fragment {
                                 + "/n 해당 다큐먼트 아이디 : " + pDocumentId);
 
                         Toast.makeText(getContext(),"사용자 정보 변경 완료", Toast.LENGTH_SHORT).show();
-                        ((MyPage)getActivity()).closeProfileEditor();
+                        ((MyPage)getActivity()).closeProfileEditor("profileEdit");
 
 
                     }

@@ -63,7 +63,12 @@ public class MainPage extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.main_page, container, false);
         FirebaseUser user = mAuth.getCurrentUser();
+
         if(user != null) {
+
+        }
+        if (user != null) {
+
             initUI(rootView, user);
         }
         return rootView;

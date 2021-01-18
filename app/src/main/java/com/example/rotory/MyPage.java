@@ -15,6 +15,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,6 +31,7 @@ import com.example.rotory.account.ProfileEditPage;
 import com.example.rotory.account.SignUpActivity;
 import com.example.rotory.userActivity.MyFavoriteActivity;
 import com.example.rotory.userActivity.MyLikeActivity;
+import com.example.rotory.userActivity.MyScrapActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.appbar.AppBarLayout;
@@ -60,12 +62,17 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
     RelativeLayout relativeLayout1;
     RelativeLayout relativeLayout2;
 
+    ScrollView myPageScrollView;
+
     FrameLayout profileEditContainer;
+    FrameLayout scrapListContainer;
     FrameLayout myScrapLayout;
+
     Button myLevelOutBtn;
     TextView userActivityTextView;
     TextView myNickTextView;
     TextView myLevelTextView;
+    TextView profileTextView;
 
     ImageView myProfileImg;
     ImageView myEditImg;
@@ -106,6 +113,9 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
         relativeLayout1 = findViewById(R.id.myRelativeLayout1);
         relativeLayout2 = findViewById(R.id.myRelativeLayout2);
         profileEditContainer = findViewById(R.id.profileEditContainer);
+        myPageScrollView = findViewById(R.id.myPageScrollView);
+        scrapListContainer = findViewById(R.id.scrapListContainer);
+
 
         FirebaseUser user = mAuth.getCurrentUser();
         String userEmail = user.getEmail();
@@ -150,6 +160,15 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
 
 
 
+        profileTextView =findViewById(R.id.profileTextView);
+        profileTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent profileIntent = new Intent(getApplicationContext(), MyPage.class);
+                profileIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(profileIntent);
+            }
+        });
 
         userActivityTextView = findViewById(R.id.userActivityTextView);
         userActivityTextView.setOnClickListener(new View.OnClickListener() {
@@ -211,9 +230,10 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
         myScrapBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Intent intent = new Intent(getApplicationContext(), myscrapPage.class);
-                //intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                //startActivity(intent);
+                Intent intent = new Intent(getApplicationContext(), MyScrapActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+
             }
         });
 
@@ -354,7 +374,7 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
                   //닫기
 
                 if (PWCheckEditText1.equals(pDocument.get("password").toString())) {
-                    loadPersonInfo();
+                    loadPage("profileEdit");
                     Bundle pDocumentIdBundle = new Bundle();
                     pDocumentIdBundle.putString("pDocumentId", pDocumentId);
 
@@ -370,26 +390,28 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
         PWCheck.show();
     }
     // 설정창으로 이동
-    private void loadPersonInfo() {
+    private void loadPage(String page) {
 
+        if (page.equals("profileEdit")) {
+            relativeLayout1.setVisibility(View.GONE);
+            relativeLayout2.setVisibility(View.GONE);
+            bottomNavigation.setVisibility(View.GONE);
 
-        relativeLayout1.setVisibility(View.GONE);
-        relativeLayout2.setVisibility(View.GONE);
-        bottomNavigation.setVisibility(View.GONE);
+            profileEditContainer.setVisibility(View.VISIBLE);
+            getSupportFragmentManager().beginTransaction().replace(R.id.profileEditContainer, profileEditPage).commit();
+        }
 
-        profileEditContainer.setVisibility(View.VISIBLE);
-        getSupportFragmentManager().beginTransaction().replace(R.id.profileEditContainer, profileEditPage).commit();
 
         // 전체적인인 정보 수정 + 레벨 레이아웃에 exp 도 담기
     }
-    public void closeProfileEditor(){
+    public void closeProfileEditor(String page){
+        if (page.equals("profileEdit")) {
+            relativeLayout1.setVisibility(View.VISIBLE);
+            relativeLayout2.setVisibility(View.VISIBLE);
+            bottomNavigation.setVisibility(View.VISIBLE);
 
-        relativeLayout1.setVisibility(View.VISIBLE);
-        relativeLayout2.setVisibility(View.VISIBLE);
-        bottomNavigation.setVisibility(View.VISIBLE);
-
-        profileEditContainer.setVisibility(View.GONE);
-
+            profileEditContainer.setVisibility(View.GONE);
+        }
     }
 
     public void loadScrapList(){
@@ -398,6 +420,7 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
         TextView myScrapTitle = findViewById(R.id.myScrabTitle);
         TextView myScrapSave = findViewById(R.id.myScrabSave);
         TextView myScrapPlace = findViewById(R.id.myScrabPlace);
+
 
         myScrapImg.setImageResource(R.drawable.acorn);
         myScrapTitle.setText("스크랩 제목");
