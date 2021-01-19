@@ -42,6 +42,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import retrofit2.http.HEAD;
+
 public class StoryContentsPage extends Fragment {
     final static String TAG = "StoryContentsPage";
     AppConstant appConstant = new AppConstant();
@@ -369,8 +371,6 @@ public class StoryContentsPage extends Fragment {
     //사용자의 아이디와 글쓴이의 아이디를 비교해 같을경우 즐겨찾기를 할수 없도록 설정(자기 자신 즐겨찾기 못함)
     private void setFavoriteAct(Map<String, Object> contentsList, FirebaseUser user) {
         String userId = user.getEmail();
-<<<<<<< HEAD
-<<<<<<< HEAD
 
        Log.d(TAG,"setFavoriteAct : " + contentsList.get("pDocumentId").toString());
         if (contentsList.get("pDocumentId").toString().equals(userId)){
@@ -380,9 +380,7 @@ public class StoryContentsPage extends Fragment {
             isInList(contentsList.get("pDocumentId").toString(), contentsList, "myStar", user,  scontentsStarImg,
                     R.drawable.starfilled, R.drawable.star);
         }
-=======
-=======
->>>>>>> 44d76b7f5d59e6cee94f67743d97ea1ea2187008
+
         db.collection("person").whereEqualTo("uid", contentsList.get("uid")).get() //글쓴이 정보 검색
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -404,7 +402,7 @@ public class StoryContentsPage extends Fragment {
                         }
                     }
                 });
->>>>>>> 44d76b7f5d59e6cee94f67743d97ea1ea2187008
+
     }
 
     //해당 글의 내용을 뿌려줌
