@@ -1,31 +1,18 @@
 package com.example.rotory.Adapter;
 
-import android.app.Notification;
 import android.content.Context;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.rotory.Imagelist;
-import com.example.rotory.Interface.OnContentsItemClickListener;
 import com.example.rotory.R;
-import com.example.rotory.Write_Story;
 
-import java.io.InputStream;
-import java.net.URI;
-import java.security.Provider;
 import java.util.ArrayList;
 
 public class WriteStoryImageAdapter extends RecyclerView.Adapter<WriteStoryImageAdapter.writestroyHolder> {

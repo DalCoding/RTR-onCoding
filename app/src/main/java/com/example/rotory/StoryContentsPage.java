@@ -1,17 +1,12 @@
 package com.example.rotory;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.media.session.PlaybackState;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -22,11 +17,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.rotory.Adapter.SCommAdapter;
-import com.example.rotory.Interface.OnCommItemClickListener;
 import com.example.rotory.Interface.OnUserActItemClickListener;
 import com.example.rotory.VO.AppConstant;
 import com.example.rotory.VO.Person;
@@ -52,8 +45,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import retrofit2.http.HEAD;
 
 public class StoryContentsPage extends Fragment {
     final static String TAG = "StoryContentsPage";
@@ -85,7 +76,6 @@ public class StoryContentsPage extends Fragment {
     Button scontentsCommBtn;
     RecyclerView sCommRView;
 
-    AppConstant appConstant = new AppConstant();
     FirebaseFirestore db = FirebaseFirestore.getInstance(); //db 선언
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseUser user = mAuth.getCurrentUser();
@@ -253,12 +243,10 @@ public class StoryContentsPage extends Fragment {
         /*db.collection("person")
                 .whereEqualTo("userId", userEmail)
                 .get()
-<<<<<<< HEAD
                 .getResult().get("uid")*/
         //나중에는 해당 글에서 글의 contentsID 넘기는 방식으로 변경할 예정
         db.collection("contents").whereEqualTo("contentsType", 1).get()
-=======
->>>>>>> 1e93ad4fcf1ccad9d2d5f756734e804ed2276ceb
+
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -288,7 +276,6 @@ public class StoryContentsPage extends Fragment {
                             }
                         }
 
-<<<<<<< HEAD
         //person db에서 comment 가져오기
 /*        db.collection("person")
                 .whereEqualTo("userId", userEmail)
@@ -341,17 +328,18 @@ public class StoryContentsPage extends Fragment {
         });
 */
 
+
+    });
     }
+
     private void loadContents(QueryDocumentSnapshot contentsID, FirebaseUser user) {
-=======
-                });*/
+
+
     }
 
     private void loadContents(String contentsID, FirebaseUser user) {
->>>>>>> 1e93ad4fcf1ccad9d2d5f756734e804ed2276ceb
+
         // 해당글의 아이디 -> 해당 글의 정보 받아오려면 아이디로 다시 검색 필요!
-
-
         DocumentReference docRef = db.collection("contents").document(contentsID);
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -625,24 +613,6 @@ public class StoryContentsPage extends Fragment {
                 });
     }
 
-<<<<<<< HEAD
-    //다람쥐 레벨용 이미지는 프로그램 내부에 넣어놓고, 유저레벨에 따라 불러서 사용
-    private int getUserLevelImage(String userLevel) {
-        switch (userLevel) {
-            case "어린다람쥐":
-                return R.drawable.level2;
-            case "학생다람쥐":
-                return R.drawable.level3;
-            case "어른다람쥐":
-                return R.drawable.level4;
-            case "박사다람쥐":
-                return R.drawable.level5;
-            case "다람쥐의 신":
-                return R.drawable.level6;
-            default:
-                return R.drawable.level1;
-        }
-    }
 
 
     // comment 시간 표시(n분 전...)    : TextView commTimeText;
@@ -653,6 +623,7 @@ public class StoryContentsPage extends Fragment {
         public static final int DAY = 30;
         public static final int MONTH = 12;
     }
+
     public static String formatTimeString(long regTime) {
         long curTime = System.currentTimeMillis();
         long diffTime = (curTime - regTime) /1000;
@@ -678,11 +649,6 @@ public class StoryContentsPage extends Fragment {
         }*/
 
         }
-
-
-=======
-}
->>>>>>> 1e93ad4fcf1ccad9d2d5f756734e804ed2276ceb
 
     /*
     private void clickLikeImage(String contentsID,String userId) {

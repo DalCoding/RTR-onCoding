@@ -7,15 +7,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.rotory.Comment;
 import com.example.rotory.Interface.OnCommItemClickListener;
 import com.example.rotory.R;
-import com.example.rotory.kakao.Document;
 
 import java.util.ArrayList;
 
@@ -23,8 +20,8 @@ public class SCommAdapter extends RecyclerView.Adapter<SCommAdapter.CommentViewH
 
     private ArrayList<Comment> arrayList;
     private Context context;
-   /* ArrayList<Comment> items = new ArrayList<Comment>();
-    OnCommItemClickListener listener;*/
+    ArrayList<Comment> items = new ArrayList<Comment>();
+    OnCommItemClickListener listener;
 
     public SCommAdapter(ArrayList<Comment> arrayList, Context context) {
         this.arrayList = arrayList;
@@ -35,7 +32,7 @@ public class SCommAdapter extends RecyclerView.Adapter<SCommAdapter.CommentViewH
     @Override
     public CommentViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.comment, viewGroup, false);
-        CommentViewHolder holder = new CommentViewHolder();
+        CommentViewHolder holder = new CommentViewHolder(view,listener);
         return holder;
         /* LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
         View itemView = inflater.inflate(R.layout.comment, viewGroup, false);

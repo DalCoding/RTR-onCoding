@@ -4,7 +4,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -180,44 +179,13 @@ public class FindAccountActivity extends AppCompatActivity implements View.OnCli
         mobileCounter.countDownTimer(findIdMobileCounter);
 
     }
-/*
-    private CountDownTimer countDownTimer() {
 
-        countDownTimer= new CountDownTimer(appConstant.MILLISINFUTURE, appConstant.COUNT_DOWN_INTERVAL){
-
-            @Override
-            public void onTick(long millisUntilFinished) {
-                long phoneAuthCount = millisUntilFinished/1000;
-                Log.d(TAG, phoneAuthCount + "");
-
-                if ((phoneAuthCount - ((phoneAuthCount / 60) * 60)) >= 10){
-                    findIdMobileCounter.setText(((phoneAuthCount)/60) + ":" + (phoneAuthCount - ((phoneAuthCount / 60) * 60))) ;
-                }else {
-                    findIdMobileCounter.setText(((phoneAuthCount)/60) + ":0" + (phoneAuthCount - ((phoneAuthCount / 60) * 60)));
-                }
-
-            }
-
-            @Override
-            public void onFinish() {
-                findIdMobileCounter.setText("3:00");
-            }
-        };
-
-
-        return countDownTimer;
-
-    }
-    public void stopCounter(TextView textView){
-        countDownTimer.cancel();
-        textView.setText("3:00");
-    }*/
     @Override
     public void onClick(View v) {
         switch (v.getId()){
             case  R.id.findpw_pin_button:
                 if (findIdMobileCounter.getText() == "00:00"){
-                    Toast.makeText(this, "인증 시간이 초과되었습니다.",Toast.LENGTH_SHORT);
+                    Toast.makeText(this, "인증 시간이 초과되었습니다.",Toast.LENGTH_SHORT).show();
                 } else {
 
                 }

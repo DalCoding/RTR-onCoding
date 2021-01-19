@@ -1,8 +1,6 @@
 package com.example.rotory;
 
 import android.media.Image;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 public class Comment {
     Image levelImg;

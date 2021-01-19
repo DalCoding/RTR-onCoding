@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.rotory">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -24,11 +25,28 @@
         android:theme="@style/Theme.Rotory">
         <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />
         <meta-data android:name="com.kakao.sdk.AppKey" android:value="74327a949b44e3526226fb17f890121f"/>
-        <activity android:name=".MainActivity">
+        <activity android:name="com.example.rotory.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".account.SetNewPassword">
+            <intent-filter>
+
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+
+             <data android:scheme="http"
+                    android:host="rotory.com"/>
+               <data android:scheme="https"
+                    android:host="rotory.page.link"
+                   />
+               <data android:path="/setPassword"/>
+                 <data android:scheme="https"
+                    android:host="rotory2021.firebaseapp.com/" />
+
             </intent-filter>
         </activity>
         <activity android:name=".MyPage"/>
@@ -42,8 +60,21 @@
         <activity android:name=".Write_Story" />
        <activity android:name=".userActivity.MyScrapActivity"/>
         <activity android:name=".LoadStoryItem"/>
+
 <!--        <activity android:name=".MainActivity"/>-->
-        <activity android:name=".account.FindAccountActivity"/>
+       <!-- <activity android:name=".account.FindAccountActivity"/>-->
+        <!--<activity android:name=".account.SetNewPassword">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+
+                <data android:scheme="https"
+                    android:host="rotory2021.web.app" />
+
+                <data android:path="/setPassword"/>
+            </intent-filter>
+        </activity>-->
 
 
     </application>

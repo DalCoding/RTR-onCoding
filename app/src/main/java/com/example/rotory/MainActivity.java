@@ -23,11 +23,11 @@ import com.example.rotory.Interface.OnTabItemSelectedListener;
 import com.example.rotory.Interface.OnUserActItemClickListener;
 import com.example.rotory.VO.AppConstant;
 
+import com.example.rotory.account.SetNewPassword;
 import com.example.rotory.account.SignUpActivity;
 import com.example.rotory.account.LogInActivity;
 
 
-import com.example.rotory.userActivity.MyScrapActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.appbar.AppBarLayout;
@@ -121,18 +121,8 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
         pageTitleTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // 즐겨찾기 리스트 띄우는 엑티비티 실험(MyFavoriteActivity)
-                //Intent intent;
-                /*
-                if (user != null) {
-                    intent = new Intent(MainActivity.this, MyFavoriteActivity.class);
-                }else{
-                    intent = new Intent(MainActivity.this, LogInActivity.class);
-                }*/
-                Intent intent = new Intent(MainActivity.this, MyScrapActivity.class);
+                Intent intent = new Intent(getApplicationContext(), SetNewPassword.class);
                 startActivity(intent);
-
-
 
             }
         });

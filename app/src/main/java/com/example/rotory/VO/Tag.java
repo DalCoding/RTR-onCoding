@@ -1,10 +1,5 @@
 package com.example.rotory.VO;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
-import java.util.ArrayList;
-
 public class Tag {
     int tag_id;
     String  tag;

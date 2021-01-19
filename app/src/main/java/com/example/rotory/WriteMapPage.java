@@ -1,9 +1,6 @@
 package com.example.rotory;
 
-import android.Manifest;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.pm.PackageManager;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -15,14 +12,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -34,19 +28,15 @@ import com.example.rotory.kakao.BusProvider;
 import com.example.rotory.kakao.CategoryResult;
 import com.example.rotory.kakao.Document;
 import com.squareup.otto.Bus;
-import com.squareup.otto.Subscribe;
 
 import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
 import net.daum.mf.map.api.MapPolyline;
 import net.daum.mf.map.api.MapView;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.Locale;
 
-import okio.Utf8;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

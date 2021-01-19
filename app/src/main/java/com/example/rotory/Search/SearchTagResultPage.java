@@ -11,7 +11,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,7 +24,6 @@ import com.example.rotory.MainPage;
 import com.example.rotory.R;
 import com.example.rotory.ThemePage;
 import com.example.rotory.VO.AppConstant;
-import com.example.rotory.VO.Road;
 import com.example.rotory.account.SignUpActivity;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;

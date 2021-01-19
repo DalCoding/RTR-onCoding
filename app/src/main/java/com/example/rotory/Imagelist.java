@@ -1,7 +1,5 @@
 package com.example.rotory;
 
-import android.net.Uri;
-
 
 public class Imagelist {
     private String smallimage;

@@ -1,0 +1,20 @@
+{
+  "firestore": {
+    "rules": "firestore.rule",
+    "indexes": "firestore.indexes.json"
+  },
+  "hosting": {
+    "public": "public",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
+  },
+  "emulators": {
+    "hosting": {
+      "port": 4000,
+      "host": "0.0.0.0"
+    }
+  }
+}

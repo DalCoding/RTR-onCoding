@@ -1,17 +1,11 @@
 package com.example.rotory.Search;
 
-import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.rotory.Interface.OnTagItemClickListener;
@@ -19,9 +13,6 @@ import com.example.rotory.R;
 import com.example.rotory.VO.Tag;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-
-import java.util.ArrayList;
-import java.util.Locale;
 
 public class TagRecyclerAdapter extends FirestoreRecyclerAdapter<Tag, TagRecyclerAdapter.TagViewHolder> implements OnTagItemClickListener {
 

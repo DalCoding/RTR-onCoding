@@ -1,7 +1,5 @@
 package com.example.rotory.VO;
 
-import android.os.CountDownTimer;
-
 import com.example.rotory.R;
 
 public class AppConstant {
