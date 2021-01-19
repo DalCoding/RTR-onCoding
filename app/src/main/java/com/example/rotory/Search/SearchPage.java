@@ -4,19 +4,16 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-<<<<<<< HEAD
-=======
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
 
->>>>>>> 64f7814fea943e313351cd2769fbeca6e0da1a46
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -29,9 +26,9 @@ import com.example.rotory.R;
 import com.example.rotory.ThemePage;
 import com.example.rotory.VO.Tag;
 import com.example.rotory.account.SignUpActivity;
-<<<<<<< HEAD
+
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-=======
+
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -39,28 +36,19 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
-import com.firebase.ui.firestore.FirestoreRecyclerOptions;
->>>>>>> 64f7814fea943e313351cd2769fbeca6e0da1a46
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
-<<<<<<< HEAD
-=======
-import java.util.HashMap;
-import java.util.Map;
->>>>>>> 64f7814fea943e313351cd2769fbeca6e0da1a46
 
 
 public class SearchPage extends AppCompatActivity {
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 64f7814fea943e313351cd2769fbeca6e0da1a46
     private static final String TAG = "SearchPage";
 
     RecyclerView searchTagList;

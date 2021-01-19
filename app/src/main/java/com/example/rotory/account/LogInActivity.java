@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,11 +19,9 @@ import com.example.rotory.R;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GetTokenResult;
 
 public class LogInActivity extends AppCompatActivity  {
     private final int RC_SIGN_IN = 3000;
@@ -36,6 +33,7 @@ public class LogInActivity extends AppCompatActivity  {
     private EditText login_pw_edittext;
     private Button login_button;
     private TextView login_join;
+    TextView login_find;
 
     CheckBox login_auto;
     String logInId;
@@ -49,11 +47,19 @@ public class LogInActivity extends AppCompatActivity  {
 
         login_id_edittext = findViewById(R.id.login_id_edittext);
         login_pw_edittext = findViewById(R.id.login_pw_edittext);
+        login_find = findViewById(R.id.login_find);
+        login_find.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                movePage(FindAccountActivity.class);
+            }
+        });
         login_join = findViewById(R.id.login_join);
         login_join.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               createAccount();
+
+               movePage(SignUpActivity.class);
             }
         });
 
@@ -105,7 +111,7 @@ public class LogInActivity extends AppCompatActivity  {
                             }
                         }
                     });
-*/                 moveMainPage();
+*/               movePage(MainActivity.class);
 
                 }else {
                     Log.d(TAG,"AuthStateChangeListener, 유저 불러오기 실패");
@@ -155,8 +161,8 @@ public class LogInActivity extends AppCompatActivity  {
         startActivity(intent);
 
     }
-    private  void moveMainPage(){
-        Intent intent = new Intent(LogInActivity.this, MainActivity.class);
+    private  void movePage(Class className){
+        Intent intent = new Intent(LogInActivity.this, className);
         startActivity(intent);
     }
 

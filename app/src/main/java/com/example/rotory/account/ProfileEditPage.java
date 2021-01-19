@@ -27,6 +27,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
@@ -49,7 +50,6 @@ public class ProfileEditPage extends Fragment {
     EditText profileNick;
     EditText profilePwd;
     EditText profilePwdCheck;
-    EditText profileEmail;
     EditText profileMobile;
 
     TextView profileTiltleText;
@@ -72,7 +72,6 @@ public class ProfileEditPage extends Fragment {
         Log.d(TAG, "initUi 시작, 번들 전송 잘됐는지 확인, pDocumentId :" + pDocumentId);
 
         profileNick = rootView.findViewById(R.id.profileNickEditText);
-        profileEmail = rootView.findViewById(R.id.profileEmailEditText);
         profileMobile = rootView.findViewById(R.id.profilePhoneEditText);
         profilePwd = rootView.findViewById(R.id.profilePwdEditText);
         profilePwdCheck = rootView.findViewById(R.id.profilePwdEditText1);
@@ -83,7 +82,7 @@ public class ProfileEditPage extends Fragment {
         backImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((MyPage)getActivity()).closeProfileEditor("profileEdit");
+                ((MyPage)getActivity()).closeProfileEditor();
 
             }
         });
@@ -140,9 +139,9 @@ public class ProfileEditPage extends Fragment {
     }
 
     private void modifiedUserData(String pDocumentId) {
+        FirebaseUser user = mAuth.getCurrentUser();
         Map<String, Object> modifiedData = new HashMap<>();
         modifiedData.put("userName", profileNick.getText().toString());
-        modifiedData.put("email", profileNick.getText().toString());
         modifiedData.put("password",profilePwd.getText().toString());
         modifiedData.put("mobile", profileMobile.getText().toString());
 
@@ -154,7 +153,7 @@ public class ProfileEditPage extends Fragment {
                                 + "/n 해당 다큐먼트 아이디 : " + pDocumentId);
 
                         Toast.makeText(getContext(),"사용자 정보 변경 완료", Toast.LENGTH_SHORT).show();
-                        ((MyPage)getActivity()).closeProfileEditor("profileEdit");
+                        ((MyPage)getActivity()).closeProfileEditor();
 
 
                     }
@@ -164,11 +163,39 @@ public class ProfileEditPage extends Fragment {
                 Log.d(TAG,"사용자 정보 변경 실패");
             }
         });
+
+        Map<String, String> addUserName = new HashMap<>();
+        addUserName.put(user.getEmail(), profileNick.getText().toString());
+        db.collection("person").document("userNameList")
+                .set(addUserName, SetOptions.merge()).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()){
+                    Log.d(TAG,"adduserList Success" + profileNick.getText().toString());
+                }else {
+                    Log.d(TAG,"adduserList Failed");
+                }
+            }
+        });
+
+        Map<String, String> addMobileName = new HashMap<>();
+        addMobileName.put(user.getEmail(), profileMobile.getText().toString());
+        db.collection("person").document("mobileList")
+                .set(addUserName, SetOptions.merge()).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()){
+                    Log.d(TAG,"adduserList Success" +profileMobile.getText().toString());
+                }else {
+                    Log.d(TAG,"adduserList Failed");
+                }
+            }
+        });
+
     }
 
     private void setUserInfo(DocumentSnapshot userDocument, ViewGroup rootView) {
         profileNick.setText(userDocument.get("userName").toString());
-        profileEmail.setText(userDocument.get("email").toString());
         profileMobile.setText(userDocument.get("mobile").toString());
 
     }

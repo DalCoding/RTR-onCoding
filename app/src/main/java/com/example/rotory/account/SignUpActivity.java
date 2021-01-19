@@ -61,10 +61,10 @@ public class SignUpActivity extends AppCompatActivity {
     EditText signin_pwcheck_edittext;
     EditText signin_nicname_edittext;
     EditText signin_mobile;
-    EditText signin_email_edittext;
 
     ImageButton signUpBackImageButton;
     Button signUpCheckBtn;
+
     TextView signUpTitlewithBtnTextView;
     TextView signin_pwcheck_check;
     TextView signin_id_check;
@@ -101,7 +101,6 @@ public class SignUpActivity extends AppCompatActivity {
         signin_pwcheck_edittext = findViewById(R.id.signin_pwcheck_edittext);
         signin_nicname_edittext = findViewById(R.id.signin_nicname_edittext);
         signin_mobile = findViewById(R.id.signin_mobile);
-        signin_email_edittext = findViewById(R.id.signin_email_edittext);
 
         signUpTitlewithBtnTextView = findViewById(R.id.signUpTitlewithBtnTextView);
         signUpBackImageButton = findViewById(R.id.signUpBackImageButton);
@@ -129,7 +128,6 @@ public class SignUpActivity extends AppCompatActivity {
         pwCheck = signin_pwcheck_edittext.getText().toString().trim();
         userName = signin_nicname_edittext.getText().toString().trim();
         mobile = signin_mobile.getText().toString().trim();
-        email = signin_email_edittext.getText().toString().trim();
 
         signUpCheckBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -255,7 +253,6 @@ public class SignUpActivity extends AppCompatActivity {
         pwCheck = signin_pwcheck_edittext.getText().toString().trim();
         userName = signin_nicname_edittext.getText().toString().trim();
         mobile = signin_mobile.getText().toString().trim();
-        email = signin_email_edittext.getText().toString().trim();
 
         boolean mobilePattern = Pattern.matches(REGEX_NUMBER, mobile);
         boolean pwPattern = Pattern.matches(REGEX_PATTERN, pw);
@@ -300,7 +297,6 @@ public class SignUpActivity extends AppCompatActivity {
         persons.setPassword(pw);
         persons.setMobile(mobile);
         persons.setUserImage(userImageUri.toString());
-        persons.setEmail(email);
         persons.setUserLevel("아기다람쥐");
         persons.setUserLevelImage(userLevelImageUri.toString());
         persons.setUserName(userName);
@@ -318,7 +314,7 @@ public class SignUpActivity extends AppCompatActivity {
         persons.setUid(uid);
 
         HashMap<Object, String> person = new HashMap<>();
-        person.put("email", persons.getEmail());
+
         person.put("userId", persons.getUserId());
         person.put("userName", persons.getUserName());
         person.put("password", persons.getPassword());
@@ -330,15 +326,13 @@ public class SignUpActivity extends AppCompatActivity {
         person.put("signUpDate", persons.getSignUpDate());
         //Date (그날날짜) 받아와서 다시저장
 
-       // FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-    db.collection("person")
+        db.collection("person")
                 .add(person)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
                         Log.d(TAG, "Person add with id" + documentReference.getId());
-                        //goMain();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -349,13 +343,27 @@ public class SignUpActivity extends AppCompatActivity {
                 });
 
         Map<String, String> addUserName = new HashMap<>();
-        addUserName.put(userName, userName);
+        addUserName.put(userId, userName);
         db.collection("person").document("userNameList")
                 .set(addUserName, SetOptions.merge()).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()){
                     Log.d(TAG,"adduserList Success" + userName);
+                }else {
+                    Log.d(TAG,"adduserList Failed");
+                }
+            }
+        });
+
+        Map<String, String> addMobileName = new HashMap<>();
+        addMobileName.put(mobile, userId);
+        db.collection("person").document("mobileList")
+                .set(addMobileName, SetOptions.merge()).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()){
+                    Log.d(TAG,"adduserList Success" + mobile);
                 }else {
                     Log.d(TAG,"adduserList Failed");
                 }
@@ -372,9 +380,9 @@ public class SignUpActivity extends AppCompatActivity {
 
     }
 
-    private void checkUser(String userName) {
+    private void checkMobile(String checkMobile) {
 
-        DocumentReference reference = db.collection("person").document("userNameList");
+        DocumentReference reference = db.collection("person").document("mobileList");
         reference
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -383,16 +391,15 @@ public class SignUpActivity extends AppCompatActivity {
                         if(task.isSuccessful()) {
                             DocumentSnapshot snapshot = task.getResult();
                             if (snapshot.exists()) {
-                                Map<String, Object> userNameList = new HashMap<>();
-                                userNameList = snapshot.getData();
-                                if (userNameList.get(userName) != null) {
-                                    String existUserName = userNameList.get(userName).toString();
-                                    if (existUserName.equals(userName)) {
-                                        Log.d(TAG, "Exist userName" + existUserName);
-                                        signin_userName_check.setVisibility(View.VISIBLE);
+                                Map<String, Object> mobileList = new HashMap<>();
+                                mobileList = snapshot.getData();
+                                if (mobileList.containsValue(checkMobile)) {
+                                        Log.d(TAG, "Exist mobile" + checkMobile);
+                                        signin_mobile_check.setText("이미 존재하는 번호입니다.");
+                                        signin_mobile_check.setVisibility(View.VISIBLE);
 
                                     } else {
-                                        Log.d(TAG, "new userName" + userName);
+                                        Log.d(TAG, "new mobile" + checkMobile);
                                         signin_userName_check.setVisibility(View.INVISIBLE);
                                     }
 
@@ -404,7 +411,7 @@ public class SignUpActivity extends AppCompatActivity {
 
                             }
                         }
-                    }
+
                 });
 
     }

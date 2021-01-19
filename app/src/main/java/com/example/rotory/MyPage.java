@@ -226,9 +226,9 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
         myScrapBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Intent intent = new Intent(getApplicationContext(), myscrapPage.class);
-                //intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                //startActivity(intent);
+                Intent intent = new Intent(getApplicationContext(), MyScrapActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
             }
         });
 
@@ -524,6 +524,9 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
         PWCheck.setTitle("비밀번호 확인");       // 제목 설정
         // EditText 삽입하기
         final EditText PWCheckEditText = new EditText(this);
+        PWCheckEditText.setWidth(100);
+        PWCheckEditText.setGravity(View.TEXT_ALIGNMENT_CENTER);
+        PWCheckEditText.setTextSize(18);
         PWCheck.setView(PWCheckEditText);
 
         // 확인 버튼 설정

@@ -53,8 +53,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import retrofit2.http.HEAD;
+
 public class StoryContentsPage extends Fragment {
     final static String TAG = "StoryContentsPage";
+    AppConstant appConstant = new AppConstant();
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
@@ -86,7 +89,7 @@ public class StoryContentsPage extends Fragment {
     FirebaseFirestore db = FirebaseFirestore.getInstance(); //db 선언
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseUser user = mAuth.getCurrentUser();
-    String userEmail = user.getEmail();
+    //String userEmail = user.getEmail();
 
     ArrayList<Comment> commentArrayList;
 
@@ -225,46 +228,67 @@ public class StoryContentsPage extends Fragment {
         scontentsTextText = rootView.findViewById(R.id.scontentsTextText);
         scontentsLocText = rootView.findViewById(R.id.scontentsLocText);
 
-        /*Bundle contentsBundle = this.getArguments();
-        String storyDocumentId = contentsBundle.getString("storyDocumentId");
-        Log.d(TAG, "initUi 시작, 번들 전송 잘됐는지 확인, pDocumentId :" + storyDocumentId);*/
-/*
+        Bundle contentsBundle = this.getArguments();
+        String contentsID = contentsBundle.getString("storyDocumentId");
+       // String contentsID = "LLNVEsSg2hzVa75gEIvw";
+        Log.d(TAG, "initUi 시작, 번들 전송 잘됐는지 확인, pDocumentId :" + contentsID);
+
+
+
+
+        loadContents(contentsID, user);
 
         if (user != null) {
-            getUserActivityIcon(storyDocumentId, "myLike", scontentsHeartImg, R.drawable.heartfilled, R.drawable.heart);
-            getUserActivityIcon(storyDocumentId, "myStar", scontentsStarImg, R.drawable.starfilled, R.drawable.star);
-            getUserActivityIcon(storyDocumentId, "myScrap", scontentsScrapImg, R.drawable.scrabtagfilled, R.drawable.scrabtag);
+            getUserActivityIcon(contentsID, "myLike", scontentsHeartImg,
+                    R.drawable.heartfilled, R.drawable.heart);
+            getUserActivityIcon(contentsID, "myScrap", scontentsScrapImg,
+                    R.drawable.scrabtagfilled, R.drawable.scrabtag);
         }
-        loadContents(storyDocumentId, user);
+      
+        getUserActivityIcon(contentsID, "myStar", scontentsStarImg,
+                R.drawable.starfilled, R.drawable.star);
 
 
-        db.collection("contents").document(storyDocumentId)
+        //person db에서 comment 가져오기
+        /*db.collection("person")
+                .whereEqualTo("userId", userEmail)
                 .get()
+<<<<<<< HEAD
                 .getResult().get("uid")*/
         //나중에는 해당 글에서 글의 contentsID 넘기는 방식으로 변경할 예정
         db.collection("contents").whereEqualTo("contentsType", 1).get()
+=======
+>>>>>>> 1e93ad4fcf1ccad9d2d5f756734e804ed2276ceb
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d(TAG, "initUI : 스토리에서 받아오기 성공" + document.getId());
-                                if (user != null) {
-                                    getUserActivityIcon(document, "myLike", scontentsHeartImg, R.drawable.heartfilled, R.drawable.heart);
-                                    getUserActivityIcon(document, "myStar", scontentsStarImg, R.drawable.starfilled, R.drawable.star);
-                                    getUserActivityIcon(document, "myScrap", scontentsScrapImg, R.drawable.scrabtagfilled, R.drawable.scrabtag);
-                                }
-                                loadContents(document, user);
+                                String personId = document.getId();
 
+                                //Comment(personId);
+
+                                String userName1 = String.valueOf(document.get("userName"));
+                                //commUsernameText = findViewById(R.id.commUsernameText);
+                                commUsernameText.setText(userName1);
+                                //String userText = // ...
+
+                                //불러올 내용 채우기
+
+                                commReportText.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        //showReportDialog(document, document.getId());
+                                        //신고창 띄우기
+                                    }
+                                });
                             }
-
-                        } else {
-                            Log.d(TAG, "Error getting documents : ", task.getException());
+                        }else{
+                                Log.d("firebase", "Error getting documents: ", task.getException());
+                            }
                         }
-                    }
-                });
 
+<<<<<<< HEAD
         //person db에서 comment 가져오기
 /*        db.collection("person")
                 .whereEqualTo("userId", userEmail)
@@ -319,8 +343,16 @@ public class StoryContentsPage extends Fragment {
 
     }
     private void loadContents(QueryDocumentSnapshot contentsID, FirebaseUser user) {
+=======
+                });*/
+    }
+
+    private void loadContents(String contentsID, FirebaseUser user) {
+>>>>>>> 1e93ad4fcf1ccad9d2d5f756734e804ed2276ceb
         // 해당글의 아이디 -> 해당 글의 정보 받아오려면 아이디로 다시 검색 필요!
-        DocumentReference docRef = db.collection("contents").document(contentsID.getId());
+
+
+        DocumentReference docRef = db.collection("contents").document(contentsID);
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -332,7 +364,7 @@ public class StoryContentsPage extends Fragment {
                         ContentsList = document.getData();
                         Log.d(TAG, "title확인" + ContentsList.get("title"));
                         setContents(ContentsList);
-                        clickUserActIcon(contentsID.getId(), ContentsList, user);
+                        clickUserActIcon(contentsID, ContentsList, user);
                     } else {
                         Log.d(TAG, "No such document");
                     }
@@ -343,7 +375,7 @@ public class StoryContentsPage extends Fragment {
         });
     }
 
-    private void getUserActivityIcon(QueryDocumentSnapshot cDocumentId, String userCollection, ImageView imageView,
+    private void getUserActivityIcon(String cDocumentId, String userCollection, ImageView imageView,
                                      int listIn, int listOut) {
         // 해당 글의 아이디 받아오는 방식으로 바꾼 후에 디비 연결문 수정! -> QueryDocumentSnapshot 대신 contentsId(=해당 다큐먼트의 아이디)
         // 받아 cDocument 입력되는 자리에 넣고  contentsId 키와 비교
@@ -453,6 +485,16 @@ public class StoryContentsPage extends Fragment {
     //사용자의 아이디와 글쓴이의 아이디를 비교해 같을경우 즐겨찾기를 할 수 없도록 설정(자기 자신 즐겨찾기 못함)
     private void setFavoriteAct(Map<String, Object> contentsList, FirebaseUser user) {
         String userId = user.getEmail();
+
+       Log.d(TAG,"setFavoriteAct : " + contentsList.get("pDocumentId").toString());
+        if (contentsList.get("pDocumentId").toString().equals(userId)){
+            Toast.makeText(getContext(), "자신을 관심 목록에 넣을 수 없습니다.", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            isInList(contentsList.get("pDocumentId").toString(), contentsList, "myStar", user,  scontentsStarImg,
+                    R.drawable.starfilled, R.drawable.star);
+        }
+
         db.collection("person").whereEqualTo("uid", contentsList.get("uid")).get() //글쓴이 정보 검색
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -474,6 +516,7 @@ public class StoryContentsPage extends Fragment {
                         }
                     }
                 });
+
     }
 
     //해당 글의 내용을 뿌려줌
@@ -487,7 +530,7 @@ public class StoryContentsPage extends Fragment {
         scontentsTextText.setText(contentsList.get("article").toString());
         scontentsLocText.setText(contentsList.get("address").toString());
         scontentsUsernameText.setText(contentsList.get("userName").toString());
-        scontentsLevelImg.setImageResource(getUserLevelImage(userLevel));
+        scontentsLevelImg.setImageResource(appConstant.getUserLevelImage(userLevel));
 
     }
 
@@ -582,6 +625,7 @@ public class StoryContentsPage extends Fragment {
                 });
     }
 
+<<<<<<< HEAD
     //다람쥐 레벨용 이미지는 프로그램 내부에 넣어놓고, 유저레벨에 따라 불러서 사용
     private int getUserLevelImage(String userLevel) {
         switch (userLevel) {
@@ -636,7 +680,9 @@ public class StoryContentsPage extends Fragment {
         }
 
 
-
+=======
+}
+>>>>>>> 1e93ad4fcf1ccad9d2d5f756734e804ed2276ceb
 
     /*
     private void clickLikeImage(String contentsID,String userId) {

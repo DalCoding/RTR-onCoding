@@ -1,6 +1,5 @@
 package com.example.rotory.userActivity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,7 +14,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,8 +22,6 @@ import com.example.rotory.MainPage;
 import com.example.rotory.MyPage;
 import com.example.rotory.R;
 import com.example.rotory.ThemePage;
-import com.example.rotory.VO.Contents;
-import com.example.rotory.VO.Person;
 import com.example.rotory.account.LogInActivity;
 import com.example.rotory.account.SignUpActivity;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
