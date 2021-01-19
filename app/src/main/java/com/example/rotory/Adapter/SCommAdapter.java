@@ -1,9 +1,13 @@
 package com.example.rotory.Adapter;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -11,31 +15,47 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.rotory.Comment;
 import com.example.rotory.Interface.OnCommItemClickListener;
 import com.example.rotory.R;
+import com.example.rotory.kakao.Document;
 
 import java.util.ArrayList;
 
-public class SCommAdapter extends RecyclerView.Adapter<SCommAdapter.ViewHolder>
-                            implements OnCommItemClickListener {
-    ArrayList<Comment> items = new ArrayList<Comment>();
+public class SCommAdapter extends RecyclerView.Adapter<SCommAdapter.CommentViewHolder>{
 
-    OnCommItemClickListener listener;
+    private ArrayList<Comment> arrayList;
+    private Context context;
+   /* ArrayList<Comment> items = new ArrayList<Comment>();
+    OnCommItemClickListener listener;*/
+
+    public SCommAdapter(ArrayList<Comment> arrayList, Context context) {
+        this.arrayList = arrayList;
+        this.context = context;
+    }
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
-        LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
+    public CommentViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.comment, viewGroup, false);
+        CommentViewHolder holder = new CommentViewHolder();
+        return holder;
+        /* LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
         View itemView = inflater.inflate(R.layout.comment, viewGroup, false);
 
-        return new ViewHolder(itemView, this);
+        return new CommentViewHolder(itemView, this);*/
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
-        Comment item = items.get(position);
-        viewHolder.setItem(item);
+    public void onBindViewHolder(@NonNull CommentViewHolder holder, int position) {
+/*        Glide.with(holder.itemView)
+                .load(arrayList.get(position).getLevelImage())
+                .into(holder.commLevelImg);
+        holder.commUsernameText.setText(arrayList.get(position).getUsername());
+        holder.commTimeText.setText(arrayList.get(position).getTimeText());
+        holder.commConText.setText(arrayList.get(position).getConText());*/
+        /*Comment item = items.get(position);
+        viewHolder.setItem(item);*/
     }
 
-    @Override
+/*    @Override
     public int getItemCount() {
         return items.size();
     }
@@ -61,35 +81,36 @@ public class SCommAdapter extends RecyclerView.Adapter<SCommAdapter.ViewHolder>
     }
 
     @Override
-    public void onItemClick(ViewHolder holder, View view, int position) {
+    public void onItemClick(CommentViewHolder holder, View view, int position) {
         if (listener != null) {
             listener.onItemClick(holder, view, position);
         }
-    }
+    }*/
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        //ImageView commLevelImg;
+    public class CommentViewHolder extends RecyclerView.ViewHolder {
+        ImageView commLevelImg;
         TextView commUsernameText;
         TextView commTimeText;
         TextView commConText;
         TextView commReportText;
 
-        public ViewHolder(View itemView, final OnCommItemClickListener listener) {
+        public CommentViewHolder(View itemView, final OnCommItemClickListener listener) {
             super(itemView);
-
-            //commLevelImg = itemView.findViewById(R.id.commLevelImage);
-            commUsernameText = itemView.findViewById(R.id.commUsernameText);
-            commTimeText = itemView.findViewById(R.id.commTimeText);
-            commConText = itemView.findViewById(R.id.commConText);
-            commReportText = itemView.findViewById(R.id.commReportText);
-
+            //this.commLevelImg = itemView.findViewById(R.id.commLevelImage);
+            this.commUsernameText = itemView.findViewById(R.id.commUsernameText);
+            this.commTimeText = itemView.findViewById(R.id.commTimeText);
+            this.commConText = itemView.findViewById(R.id.commConText);
+            this.commReportText = itemView.findViewById(R.id.commReportText);
+        }
+    }
+/*
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view){
                     int position = getAdapterPosition();
 
                     if (listener != null) {
-                        listener.onItemClick(ViewHolder.this, view, position);
+                        listener.onItemClick(CommentViewHolder.this, view, position);
                     }
                 }
             });
@@ -101,6 +122,10 @@ public class SCommAdapter extends RecyclerView.Adapter<SCommAdapter.ViewHolder>
             commTimeText.setText(item.getTime());
             commConText.setText(item.getCommCon());
             commReportText.setText(item.getReport());
+        }*/
+        @Override
+        public int getItemCount() {
+            return(arrayList != null ? arrayList.size() : 0);
         }
     }
-}
+

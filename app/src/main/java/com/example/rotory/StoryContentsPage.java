@@ -1,12 +1,17 @@
 package com.example.rotory;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.media.session.PlaybackState;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -23,6 +28,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.rotory.Adapter.SCommAdapter;
 import com.example.rotory.Interface.OnCommItemClickListener;
 import com.example.rotory.Interface.OnUserActItemClickListener;
+import com.example.rotory.VO.AppConstant;
 import com.example.rotory.VO.Person;
 import com.example.rotory.account.LogInActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -35,6 +41,12 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+/*
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;*/
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,6 +55,14 @@ import java.util.Map;
 
 public class StoryContentsPage extends Fragment {
     final static String TAG = "StoryContentsPage";
+
+    private RecyclerView recyclerView;
+    private RecyclerView.Adapter adapter;
+    private RecyclerView.LayoutManager layoutManager;
+    /*
+    private FirebaseDatabase database;
+    private DatabaseReference databaseReference;*/
+    private View view;
 
     TextView scontentsGroupText;
     ImageView scontentsLinkImg;
@@ -62,6 +82,7 @@ public class StoryContentsPage extends Fragment {
     Button scontentsCommBtn;
     RecyclerView sCommRView;
 
+    AppConstant appConstant = new AppConstant();
     FirebaseFirestore db = FirebaseFirestore.getInstance(); //db 선언
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseUser user = mAuth.getCurrentUser();
@@ -82,15 +103,16 @@ public class StoryContentsPage extends Fragment {
     TextView commUsernameText;
     TextView commConText;
     TextView commTimeText;
+    ImageView userLevelImg;
 
 
     // 스피너
 /*    @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        reportSpinner = findViewById(R.id.reportSpinner);
+        reportSpinner = getView().findViewById(R.id.reportSpinner);
 
         ArrayAdapter reportAdapter = ArrayAdapter.createFromResource(this, R.array.reportList, android.R.layout.simple_spinner_dropdown_item);
         reportAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -106,7 +128,6 @@ public class StoryContentsPage extends Fragment {
         });
     }*/
 
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -114,7 +135,6 @@ public class StoryContentsPage extends Fragment {
             listener = (OnUserActItemClickListener) context;
         }
         this.context = context;
-
     }
 
     @Override
@@ -132,6 +152,38 @@ public class StoryContentsPage extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.story_contents_page, container, false);
 
+/*
+        view = inflater.inflate(R.layout.StoryContentsPage, container, false);
+        sCommRView = (RecyclerView) view.findViewById(R.id.sCommRView);
+        layoutManager = new LinearLayoutManager(getContext());
+        sCommRView.setLayoutManager(layoutManager);
+        commentArrayList = new ArrayList<>();
+
+        database = FirebaseDatabase.getInsteance();
+        databaseReference = database.getReference("COMMENT");
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChanged(@NonNull DataSnapshot dataSnapshot) {
+                commentArrayList.clear();
+                for (DataSnapshot snapshot : dataSnapshot.getChilden()) {
+                    Comment Comment = snapshot.getValue(Comment.class);
+
+                    commentArrayList.add(Comment);
+                }
+                commAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e("COMMENT", String.valueOf(databaseError.toException()));
+            }
+        });
+        commAdapter = new SCommAdapter(commentArrayList, getContext());
+        sCommRView.setAdapter(commAdapter);
+
+        return view;
+    }
+*/
 /*      ActionBar ab = getSupportActionBar();
         ab.setTitle("ActionBar Title by setTitle()");*/
         //상단바 제목 바꾸기
@@ -190,7 +242,7 @@ public class StoryContentsPage extends Fragment {
                 .get()
                 .getResult().get("uid")*/
         //나중에는 해당 글에서 글의 contentsID 넘기는 방식으로 변경할 예정
-       db.collection("contents").whereEqualTo("contentsType", 1).get()
+        db.collection("contents").whereEqualTo("contentsType", 1).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -214,38 +266,58 @@ public class StoryContentsPage extends Fragment {
                 });
 
         //person db에서 comment 가져오기
-       db.collection("Person")
-               .whereEqualTo("userId", userEmail)
-               .get()
-               .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                   @Override
-                   public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                       if (task.isSuccessful()) {
-                           for (QueryDocumentSnapshot document : task.getResult()) {
-                               String personId = document.getId();
+/*        db.collection("person")
+                .whereEqualTo("userId", userEmail)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                String personId = document.getId();
 
                                Comment(personId);
 
-                               String userName1 = String.valueOf(document.get("userName"));
-                               commUsernameText = findViewById(R.id.commUsernameText);
-                               commUsernameText.setText(userName1);
-                               String userText = // ...
+                                String userName1 = String.valueOf(document.get("userName"));
+                                commUsernameText = getView().findViewById(R.id.commUsernameText);
+                                commUsernameText.setText(userName1);
+                                String userText = String.valueOf(document.get("userText"));
+                                commConText = getView().findViewById(R.id.commConText);
+                                commConText.setText(userText);
+                                userLevelImg = getView().findViewById(R.id.userLevelImg);
+                                userLevelImg.setImageResource(appConstant.getUserLevelImage(userLevelImg));
+                                commReportText = getView().findViewById(R.id.commReportText);
+                                commReportText.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        showReportDialog(document, document.getId());
+                                        //신고창 띄우기
+                                    }
+                                });
+                            }
+                        } else {
+                            Log.d("firebase", "Error getting documents: ", task.getException());
+                        }
+                    }
+                });*/
 
-                                       //불러올 내용 채우기
+/*
+        FirebaseUser user = mAuth.getCurrentUser();
+        db.collection("person")
+                .whereEqualTo("userId", user.getEmail())
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSussessful()){
+                    for(QueryDocumentSnapshot document : task.getResult()){
+                        String personId = document.getId();
 
-                               commReportText.setOnClickListener(new View.OnClickListener(){
-                                   @Override
-                                   public void onClick(View v) {
-                                       showReportDialog(document, document.getId());
-                                       //신고창 띄우기
-                               });
-                           } else {
-                               Log.d("firebase", "Error getting documents: ", task.getException());
-                           }
-                       }
-                   }
-               });
+                    }
+            }
+        });
+*/
 
+    }
     private void loadContents(QueryDocumentSnapshot contentsID, FirebaseUser user) {
         // 해당글의 아이디 -> 해당 글의 정보 받아오려면 아이디로 다시 검색 필요!
         DocumentReference docRef = db.collection("contents").document(contentsID.getId());
@@ -378,7 +450,7 @@ public class StoryContentsPage extends Fragment {
             });
         }
     }
-    //사용자의 아이디와 글쓴이의 아이디를 비교해 같을경우 즐겨찾기를 할수 없도록 설정(자기 자신 즐겨찾기 못함)
+    //사용자의 아이디와 글쓴이의 아이디를 비교해 같을경우 즐겨찾기를 할 수 없도록 설정(자기 자신 즐겨찾기 못함)
     private void setFavoriteAct(Map<String, Object> contentsList, FirebaseUser user) {
         String userId = user.getEmail();
         db.collection("person").whereEqualTo("uid", contentsList.get("uid")).get() //글쓴이 정보 검색
@@ -527,7 +599,43 @@ public class StoryContentsPage extends Fragment {
                 return R.drawable.level1;
         }
     }
-}
+
+
+    // comment 시간 표시(n분 전...)    : TextView commTimeText;
+    private static class TIME_MAXIMUM {
+        public static final int SEC = 60;
+        public static final int MIN = 60;
+        public static final int HOUR = 24;
+        public static final int DAY = 30;
+        public static final int MONTH = 12;
+    }
+    public static String formatTimeString(long regTime) {
+        long curTime = System.currentTimeMillis();
+        long diffTime = (curTime - regTime) /1000;
+        String msg = null;
+        if (diffTime < TIME_MAXIMUM.SEC) {
+            msg = "방금 전";
+        } else if ((diffTime /= TIME_MAXIMUM.SEC) < TIME_MAXIMUM.MIN) {
+            msg = diffTime + "분 전";
+        } else if ((diffTime /= TIME_MAXIMUM.MIN) < TIME_MAXIMUM.HOUR) {
+            msg = (diffTime) + "시간 전";
+        } else if ((diffTime /= TIME_MAXIMUM.HOUR) < TIME_MAXIMUM.DAY) {
+            msg = (diffTime) + "일 전";
+        } else if ((diffTime /= TIME_MAXIMUM.DAY) < TIME_MAXIMUM.MONTH) {
+            msg = (diffTime) + "년 전";
+        }
+        return msg;
+    }
+
+
+/*    public void showReportDialog(QueryDocumentSnapshot pDocument, String pDocumentId){
+        reportReport.setAdmitButton("확인", new Dialog)
+            //report 제출 버튼
+        }*/
+
+        }
+
+
 
 
     /*
