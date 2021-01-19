@@ -370,6 +370,7 @@ public class StoryContentsPage extends Fragment {
     private void setFavoriteAct(Map<String, Object> contentsList, FirebaseUser user) {
         String userId = user.getEmail();
 <<<<<<< HEAD
+<<<<<<< HEAD
 
        Log.d(TAG,"setFavoriteAct : " + contentsList.get("pDocumentId").toString());
         if (contentsList.get("pDocumentId").toString().equals(userId)){
@@ -380,6 +381,8 @@ public class StoryContentsPage extends Fragment {
                     R.drawable.starfilled, R.drawable.star);
         }
 =======
+=======
+>>>>>>> 44d76b7f5d59e6cee94f67743d97ea1ea2187008
         db.collection("person").whereEqualTo("uid", contentsList.get("uid")).get() //글쓴이 정보 검색
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
