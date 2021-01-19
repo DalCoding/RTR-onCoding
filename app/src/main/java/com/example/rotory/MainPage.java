@@ -69,7 +69,7 @@ public class MainPage extends Fragment {
         }
         if (user != null) {
 
-            initUI(rootView, user);
+            initUI(rootView);
         }
         return rootView;
 
@@ -84,7 +84,7 @@ public class MainPage extends Fragment {
         }
     }*/
 
-<<<<<<< HEAD
+
     private void initUI(ViewGroup rootView) {
       /*  FirebaseUser user = mAuth.getCurrentUser();
 =======

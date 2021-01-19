@@ -5,12 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-<<<<<<< HEAD
-import android.widget.Adapter;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-=======
->>>>>>> 64f7814fea943e313351cd2769fbeca6e0da1a46
+
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
@@ -84,24 +79,6 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
         //setContentView(R.layout.activity_main);
     }
 
-
-
-    //인텐트 전달 왜안됨?
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == appConstant.themeCode) {
-            if (resultCode == RESULT_OK) {
-                getSupportFragmentManager().beginTransaction().replace(R.id.container, themePage).commit();
-            }
-        } else if (requestCode == appConstant.mainCode) {
-            if (resultCode == RESULT_OK) {
-                getSupportFragmentManager().beginTransaction().replace(R.id.container, mainPage).commit();
-            }
-        } else {
-            getSupportFragmentManager().beginTransaction().replace(R.id.container, mainPage).commit();
-        }
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -240,7 +217,7 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
                         bottomNavigation.setVisibility(View.VISIBLE);
                         return true;
                     case R.id.theme:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.container, roadContentsPage).commit();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.container, storyContentsPage).commit();
                         setTabUnderBar(1);
                         /*if (isSignIn) {
                             getSupportFragmentManager().beginTransaction().replace(R.id.container, storyContentsPage).commit();
