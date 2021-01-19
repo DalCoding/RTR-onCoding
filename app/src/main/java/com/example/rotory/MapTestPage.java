@@ -32,6 +32,7 @@ import net.daum.mf.map.api.MapView;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -89,6 +90,7 @@ public class MapTestPage extends AppCompatActivity implements MapView.CurrentLoc
     }
 
     public void setManyPins(MapView mapView) {
+        // 표본넣기
         ArrayList<MapPoint> manyPins = new ArrayList<MapPoint>();
         manyPins.add(MapPoint.mapPointWithGeoCoord(37.54238496760114, 126.85109815011367));
         manyPins.add(MapPoint.mapPointWithGeoCoord(37.53890481231618, 126.82940817621092));
@@ -98,6 +100,7 @@ public class MapTestPage extends AppCompatActivity implements MapView.CurrentLoc
         manyPins.add(MapPoint.mapPointWithGeoCoord(37.536914917126545, 126.8488438436127));
         manyPins.add(MapPoint.mapPointWithGeoCoord(37.53885740124661, 126.84935419593981));
 
+        ArrayList<NearPin> nearPin = new ArrayList<NearPin>();
         // 근사값 배열 구하기
         for (int j = 0; j < manyPins.size(); j++) {
 
@@ -115,7 +118,7 @@ public class MapTestPage extends AppCompatActivity implements MapView.CurrentLoc
             mapView.addPOIItem(customMarker4);    // 여기까진 확인 OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO */
 
 
-           MapPoint.GeoCoordinate latLng = manyPins.get(j).getMapPointGeoCoord();
+            MapPoint.GeoCoordinate latLng = manyPins.get(j).getMapPointGeoCoord();
             double latlat = latLng.latitude;
             double longlong = latLng.longitude;
 
@@ -134,44 +137,64 @@ public class MapTestPage extends AppCompatActivity implements MapView.CurrentLoc
             double dist = (double) (earthRadius * c);
             String dist1 = Double.toString(dist);
 
-            Log.d ("배열", dist1);  // 여기까진 확인 OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
-
-       /*     ArrayList<NearPin> nearPin = new ArrayList<NearPin>(); // double + MapPoint형 배열
+            //  Log.d ("배열", dist1);  // 여기까진 확인 OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+            // double + MapPoint형 배열
             nearPin.add(new NearPin(dist, manyPins.get(j)));
-            Collections.sort(nearPin);
+        }
+        Collections.sort(nearPin, new Comparator<NearPin>() {
+            @Override
+            public int compare(NearPin o1, NearPin o2) {
+                if (o1.getDistance() == o2.getDistance()) {
+                    return 0;
+                } else if (o1.getDistance() < o2.getDistance()) {
+                    return -1;
+                } else {
+                    return 1;
+                }
 
-            MapPoint Pin111 =  nearPin.get(0).getPoint();  String Pin22 = String.valueOf(Pin111);
-            double Pin11 = nearPin.get(0).getDistance(); String Pin12 = Double.toString(Pin11);
+            }
+        });
+        // String dist2 = nearPin.getKey();
+        double dis111 = nearPin.get(0).getDistance();
+        String dis1111 = Double.toString(dis111);
+        double dis222 = nearPin.get(1).getDistance();
+        String dis2222 = Double.toString(dis222);
+        double dis333 = nearPin.get(2).getDistance();
+        String dis3333 = Double.toString(dis333);
+        double dis444 = nearPin.get(3).getDistance();
+        String dis4444 = Double.toString(dis444);
 
-            Log.d ("배열", Pin22 + "+" + Pin12 );
-
-
-            MapPoint Pin1 =  nearPin.get(0).getPoint();
-            MapPOIItem customMarker3 = new MapPOIItem();
-            customMarker3.setItemName("가까운핀"); // 이게 필수로 들어가야하는데 => 말풍선 안보이게 가능할듯
-            customMarker3.setTag(7);
-            customMarker3.setMapPoint(Pin1);
-            customMarker3.setMarkerType(MapPOIItem.MarkerType.CustomImage); // 마커타입을 커스텀 마커로 지정.
-            customMarker3.setCustomImageResourceId(R.drawable.acorn2); // 마커 이미지.
-            customMarker3.setCustomImageAutoscale(false); // hdpi, xhdpi 등 안드로이드 플랫폼의 스케일을 사용할 경우 지도 라이브러리의 스케일 기능을 꺼줌.
-            customMarker3.setCustomImageAnchor(0.5f, 1.0f); // 마커 이미지중 기준이 되는 위치(앵커포인트) 지정 - 마커 이미지 좌측 상단 기준 x(0.0f ~ 1.0f), y(0.0f ~ 1.0f) 값.
-            customMarker3.setShowCalloutBalloonOnTouch(false);
-            mapView.addPOIItem(customMarker3);
-
-            MapPoint Pin2 = nearPin.get(1).getPoint();
-            MapPOIItem customMarker4 = new MapPOIItem();
-            customMarker4.setItemName("가까운핀1"); // 이게 필수로 들어가야하는데 => 말풍선 안보이게 가능할듯
-            customMarker4.setTag(7);
-            customMarker4.setMapPoint(Pin2);
-            customMarker4.setMarkerType(MapPOIItem.MarkerType.CustomImage); // 마커타입을 커스텀 마커로 지정.
-            customMarker4.setCustomImageResourceId(R.drawable.acorn2); // 마커 이미지.
-            customMarker4.setCustomImageAutoscale(false); // hdpi, xhdpi 등 안드로이드 플랫폼의 스케일을 사용할 경우 지도 라이브러리의 스케일 기능을 꺼줌.
-            customMarker4.setCustomImageAnchor(0.5f, 1.0f); // 마커 이미지중 기준이 되는 위치(앵커포인트) 지정 - 마커 이미지 좌측 상단 기준 x(0.0f ~ 1.0f), y(0.0f ~ 1.0f) 값.
-            customMarker4.setShowCalloutBalloonOnTouch(false);
-            mapView.addPOIItem(customMarker4); */
+        Log.d("배열", dis1111 + " / " + dis2222 + " / " + dis3333 + " / " + dis4444);
 
 
-            //NearPin nearPin1 = new NearPin(dist, manyPins.get(j));
+        //표본 2개만 핀 박기
+
+        MapPoint Pin1 = nearPin.get(0).getPoint();
+        MapPOIItem customMarker3 = new MapPOIItem();
+        customMarker3.setItemName("가까운핀"); // 이게 필수로 들어가야하는데 => 말풍선 안보이게 가능할듯
+        customMarker3.setTag(7);
+        customMarker3.setMapPoint(Pin1);
+        customMarker3.setMarkerType(MapPOIItem.MarkerType.CustomImage); // 마커타입을 커스텀 마커로 지정.
+        customMarker3.setCustomImageResourceId(R.drawable.acorn2); // 마커 이미지.
+        customMarker3.setCustomImageAutoscale(false); // hdpi, xhdpi 등 안드로이드 플랫폼의 스케일을 사용할 경우 지도 라이브러리의 스케일 기능을 꺼줌.
+        customMarker3.setCustomImageAnchor(0.5f, 1.0f); // 마커 이미지중 기준이 되는 위치(앵커포인트) 지정 - 마커 이미지 좌측 상단 기준 x(0.0f ~ 1.0f), y(0.0f ~ 1.0f) 값.
+        customMarker3.setShowCalloutBalloonOnTouch(false);
+        mapView.addPOIItem(customMarker3);
+
+        MapPoint Pin2 = nearPin.get(1).getPoint();
+        MapPOIItem customMarker4 = new MapPOIItem();
+        customMarker4.setItemName("가까운핀1"); // 이게 필수로 들어가야하는데 => 말풍선 안보이게 가능할듯
+        customMarker4.setTag(7);
+        customMarker4.setMapPoint(Pin2);
+        customMarker4.setMarkerType(MapPOIItem.MarkerType.CustomImage); // 마커타입을 커스텀 마커로 지정.
+        customMarker4.setCustomImageResourceId(R.drawable.acorn2); // 마커 이미지.
+        customMarker4.setCustomImageAutoscale(false); // hdpi, xhdpi 등 안드로이드 플랫폼의 스케일을 사용할 경우 지도 라이브러리의 스케일 기능을 꺼줌.
+        customMarker4.setCustomImageAnchor(0.5f, 1.0f); // 마커 이미지중 기준이 되는 위치(앵커포인트) 지정 - 마커 이미지 좌측 상단 기준 x(0.0f ~ 1.0f), y(0.0f ~ 1.0f) 값.
+        customMarker4.setShowCalloutBalloonOnTouch(false);
+        mapView.addPOIItem(customMarker4);
+
+
+        //NearPin nearPin1 = new NearPin(dist, manyPins.get(j));
 
             /* LinkedHashMap<Double, MapPoint> selectPin = new LinkedHashMap<Double, MapPoint>();
             selectPin.put(dist, manyPins.get(j));  // 해시맵에 (거리, MapPoint) 넣었음
@@ -192,11 +215,7 @@ public class MapTestPage extends AppCompatActivity implements MapView.CurrentLoc
 
                 } */
 
-
-
-        }
     }
-
 
         public void moveMyLocation (MapView mapView){
 

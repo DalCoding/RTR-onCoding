@@ -11,6 +11,145 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/topToolBar2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/brown"
+            android:elevation="1dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <RelativeLayout
+                    android:id="@+id/withBackBtnContainer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:visibility="visible">
+
+                    <ImageButton
+                        android:id="@+id/backImageButton"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/backbuttonwhite"
+                        app:srcCompat="@drawable/backbuttonwhite" />
+
+                    <TextView
+                        android:id="@+id/pageTitlewithBtnTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_toRightOf="@id/backImageButton"
+                        android:text="회원정보 찾기"
+                        android:textAppearance="@style/Base.TextAppearance.Widget.AppCompat.Toolbar.Title"
+                        android:textColor="@color/white" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rightIconContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <Button
+                        android:id="@+id/mainAlarmBtn"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="20dp"
+                        android:layout_marginRight="20dp"
+                        android:background="@drawable/notificationwhite"
+                        android:visibility="visible"
+                        app:backgroundTint="@empty" />
+
+                    <Button
+                        android:id="@+id/mainAlarmOnBtn"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="20dp"
+                        android:layout_marginRight="20dp"
+                        android:background="@drawable/notificationonwhite"
+                        android:visibility="gone"
+                        app:backgroundTint="@empty" />
+
+                    <Button
+                        android:id="@+id/checkmarkBtn"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="20dp"
+                        android:layout_marginRight="20dp"
+                        android:background="@drawable/checkmarkwhite"
+                        android:visibility="gone"
+                        app:backgroundTint="@empty" />
+
+                    <Button
+                        android:id="@+id/checkBtn"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="20dp"
+                        android:layout_marginRight="20dp"
+                        android:background="@drawable/checkwhite"
+                        android:visibility="gone"
+                        app:backgroundTint="@empty" />
+
+                    <Button
+                        android:id="@+id/appBarSettingBtn"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="20dp"
+                        android:layout_marginRight="20dp"
+                        android:background="@drawable/settingwhite"
+                        android:visibility="gone"
+                        app:backgroundTint="@empty" />
+
+                    <RelativeLayout
+                        android:id="@+id/userAppbarContainer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:visibility="gone">
+
+                        <Button
+                            android:id="@+id/appBarModifyBtn"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:layout_alignParentRight="false"
+                            android:layout_marginEnd="20dp"
+                            android:layout_marginRight="20dp"
+                            android:layout_toLeftOf="@id/appBarDeleteBtn"
+                            android:background="@drawable/modifystrorywhite"
+                            android:visibility="visible"
+                            app:backgroundTint="@empty" />
+
+                        <Button
+                            android:id="@+id/appBarDeleteBtn"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginEnd="20dp"
+                            android:layout_marginRight="20dp"
+                            android:background="@drawable/deletewhite"
+                            android:visibility="visible"
+                            app:backgroundTint="@empty" />
+                    </RelativeLayout>
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+        </androidx.appcompat.widget.Toolbar>
+
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/findAccountTabs"
             android:layout_width="match_parent"
@@ -19,8 +158,6 @@
             app:tabIndicatorColor="#442C2E"
             app:tabIndicatorHeight="7dp"
             app:tabMode="auto"
-            app:tabPaddingEnd="35dp"
-            app:tabPaddingStart="35dp"
             app:tabTextAppearance="@style/tab_text"
             app:tabTextColor="#442C2E">
 
@@ -50,138 +187,60 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <RadioGroup
-                android:id="@+id/radioGroup"
+            <FrameLayout
+                android:id="@+id/phone_pramelayout"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content">
 
-                <RadioButton
-                    android:id="@+id/findid_phone_radiobutton"
-                    android:layout_width="303dp"
-                    android:layout_height="28dp"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="50dp"
-                    android:text="회원정보에 등록한 휴대전화로 인증"
-                    android:textSize="18sp" />
-
-                <FrameLayout
-                    android:id="@+id/phone_pramelayout"
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="200dp">
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="200dp"
-                        android:visibility="visible">
+                    <TextView
+                        android:id="@+id/findid_phone"
+                        android:layout_width="100dp"
+                        android:layout_height="25dp"
+                        android:layout_marginStart="40dp"
+                        android:layout_marginLeft="40dp"
+                        android:layout_marginTop="40dp"
+                        android:text="휴대전화"
+                        android:textColor="#000000"
+                        android:textSize="18sp"
+                        app:layout_constraintEnd_toStartOf="@+id/button4"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-                        <TextView
-                            android:id="@+id/findid_phone"
-                            android:layout_width="100dp"
-                            android:layout_height="25dp"
-                            android:layout_marginStart="40dp"
-                            android:layout_marginLeft="40dp"
-                            android:layout_marginTop="40dp"
-                            android:text="휴대전화"
-                            android:textColor="#000000"
-                            android:textSize="18sp"
-                            app:layout_constraintEnd_toStartOf="@+id/button4"
-                            app:layout_constraintHorizontal_bias="0.0"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                    <Button
+                        android:id="@+id/findid_phonebutton"
+                        android:layout_width="80dp"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="92dp"
+                        android:layout_marginEnd="20dp"
+                        android:layout_marginRight="20dp"
+                        android:background="@drawable/button_drawable"
+                        android:text="확인"
+                        android:textSize="12sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-                        <Button
-                            android:id="@+id/findid_phonebutton"
-                            android:layout_width="80dp"
-                            android:layout_height="40dp"
-                            android:layout_marginTop="92dp"
-                            android:layout_marginEnd="20dp"
-                            android:layout_marginRight="20dp"
-                            android:background="@drawable/button_drawable"
-                            android:text="확인"
-                            android:textSize="12sp"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                    <EditText
+                        android:id="@+id/findid_phone_edittext"
+                        android:layout_width="255dp"
+                        android:layout_height="40dp"
+                        android:layout_marginStart="40dp"
+                        android:layout_marginLeft="40dp"
+                        android:layout_marginTop="92dp"
+                        android:background="@drawable/edge_white_item"
+                        android:ems="10"
+                        android:hint="   휴대전화 번호"
+                        android:inputType="textPersonName"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-                        <EditText
-                            android:id="@+id/findid_phone_edittext"
-                            android:layout_width="255dp"
-                            android:layout_height="40dp"
-                            android:layout_marginStart="40dp"
-                            android:layout_marginLeft="40dp"
-                            android:layout_marginTop="92dp"
-                            android:background="@drawable/edge_white_item"
-                            android:ems="10"
-                            android:hint="   휴대전화 번호"
-                            android:inputType="textPersonName"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </FrameLayout>
 
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-                </FrameLayout>
-
-                <RadioButton
-                    android:id="@+id/findid_emill_radiobutton"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginLeft="20dp"
-                    android:text="회원정보에 등록한 이메일로 인증"
-                    android:textSize="18sp" />
-
-                <FrameLayout
-                    android:id="@+id/email_pramelayour"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="250dp"
-                        android:visibility="gone">
-
-                        <TextView
-                            android:id="@+id/findid_email"
-                            android:layout_width="wrap_content"
-                            android:layout_height="40dp"
-                            android:layout_marginStart="40dp"
-                            android:layout_marginLeft="40dp"
-                            android:layout_marginTop="40dp"
-                            android:text="이메일"
-                            android:textColor="#000000"
-                            android:textSize="18sp"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <Button
-                            android:id="@+id/findid_emailbutton"
-                            android:layout_width="80dp"
-                            android:layout_height="40dp"
-                            android:layout_marginTop="80dp"
-                            android:layout_marginEnd="20dp"
-                            android:layout_marginRight="20dp"
-                            android:background="@drawable/button_drawable"
-                            android:text="확인"
-                            android:textSize="12sp"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <EditText
-                            android:id="@+id/findid_email_edittext"
-                            android:layout_width="255dp"
-                            android:layout_height="40dp"
-                            android:layout_marginStart="40dp"
-                            android:layout_marginLeft="40dp"
-                            android:layout_marginTop="80dp"
-                            android:background="@drawable/edge_white_item"
-                            android:ems="10"
-                            android:hint="   이메일 주소 입력"
-                            android:inputType="textPersonName"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-                </FrameLayout>
-
-            </RadioGroup>
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>

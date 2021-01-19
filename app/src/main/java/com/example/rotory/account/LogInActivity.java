@@ -36,6 +36,7 @@ public class LogInActivity extends AppCompatActivity  {
     private EditText login_pw_edittext;
     private Button login_button;
     private TextView login_join;
+    TextView login_find;
 
     CheckBox login_auto;
     String logInId;
@@ -49,11 +50,19 @@ public class LogInActivity extends AppCompatActivity  {
 
         login_id_edittext = findViewById(R.id.login_id_edittext);
         login_pw_edittext = findViewById(R.id.login_pw_edittext);
+        login_find = findViewById(R.id.login_find);
+        login_find.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                movePage(FindIdActivity.class);
+            }
+        });
         login_join = findViewById(R.id.login_join);
         login_join.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               createAccount();
+
+               movePage(SignUpActivity.class);
             }
         });
 
@@ -105,7 +114,7 @@ public class LogInActivity extends AppCompatActivity  {
                             }
                         }
                     });
-*/                 moveMainPage();
+*/               movePage(MainActivity.class);
 
                 }else {
                     Log.d(TAG,"AuthStateChangeListener, 유저 불러오기 실패");
@@ -155,8 +164,8 @@ public class LogInActivity extends AppCompatActivity  {
         startActivity(intent);
 
     }
-    private  void moveMainPage(){
-        Intent intent = new Intent(LogInActivity.this, MainActivity.class);
+    private  void movePage(Class className){
+        Intent intent = new Intent(LogInActivity.this, className);
         startActivity(intent);
     }
 
