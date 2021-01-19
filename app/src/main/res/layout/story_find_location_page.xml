@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/searchTabs"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:clipToPadding="true"
+        app:tabIndicatorColor="#442C2E"
+        app:tabIndicatorGravity="bottom"
+        app:tabIndicatorHeight="7dp"
+        app:tabMode="auto"
+        app:tabPaddingEnd="20dp"
+        app:tabPaddingStart="20dp"
+        app:tabTextAppearance="@style/tab_text"
+        app:tabTextColor="#442C2E">
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/searchOnMapTab"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="지도에서 찾기" />
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/searchOnMyRoadTab"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="나의 길에서 찾기" />
+
+    </com.google.android.material.tabs.TabLayout>
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"/>
+
+
+</LinearLayout>

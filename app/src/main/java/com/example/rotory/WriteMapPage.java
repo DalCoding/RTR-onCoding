@@ -112,7 +112,7 @@ public class WriteMapPage extends AppCompatActivity implements MapView.CurrentLo
                 if (s.length() >= 1){
                     documentArrayList.clear();
                     locationAdapter.clear();
-                    locationAdapter.notifyDataSetChanged();;
+                    locationAdapter.notifyDataSetChanged();
                     ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
                     Call<CategoryResult> call = null;
 
