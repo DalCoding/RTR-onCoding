@@ -524,6 +524,9 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
         PWCheck.setTitle("비밀번호 확인");       // 제목 설정
         // EditText 삽입하기
         final EditText PWCheckEditText = new EditText(this);
+        PWCheckEditText.setWidth(100);
+        PWCheckEditText.setGravity(View.TEXT_ALIGNMENT_CENTER);
+        PWCheckEditText.setTextSize(18);
         PWCheck.setView(PWCheckEditText);
 
         // 확인 버튼 설정

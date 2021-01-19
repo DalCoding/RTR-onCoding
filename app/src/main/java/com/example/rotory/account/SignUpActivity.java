@@ -359,7 +359,7 @@ public class SignUpActivity extends AppCompatActivity {
         Map<String, String> addMobileName = new HashMap<>();
         addMobileName.put(mobile, userId);
         db.collection("person").document("mobileList")
-                .set(addUserName, SetOptions.merge()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                .set(addMobileName, SetOptions.merge()).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()){

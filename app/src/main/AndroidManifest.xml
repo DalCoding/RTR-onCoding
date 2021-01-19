@@ -43,8 +43,7 @@
        <activity android:name=".userActivity.MyScrapActivity"/>
         <activity android:name=".LoadStoryItem"/>
 <!--        <activity android:name=".MainActivity"/>-->
-        <activity android:name=".account.FindPWActivity" />
-        <activity android:name=".account.FindIdActivity"/>
+        <activity android:name=".account.FindAccountActivity"/>
 
 
     </application>
