@@ -69,7 +69,7 @@ public class MainPage extends Fragment {
         }
         if (user != null) {
 
-            initUI(rootView, user);
+            initUI(rootView);
         }
         return rootView;
 
@@ -84,8 +84,13 @@ public class MainPage extends Fragment {
         }
     }*/
 
+
+    private void initUI(ViewGroup rootView) {
+      /*  FirebaseUser user = mAuth.getCurrentUser();
+=======
     private void initUI(ViewGroup rootView, FirebaseUser user) {
 
+>>>>>>> 64f7814fea943e313351cd2769fbeca6e0da1a46
         db.collection("contents")
                 .whereEqualTo("uid", user.getEmail())
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -106,7 +111,7 @@ public class MainPage extends Fragment {
                     }
                 }
             }
-        });
+        });*/
 
         //mainRoadList.setAdapter(adapter);
     }
