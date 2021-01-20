@@ -79,6 +79,7 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
     TextView myLevelTextView;
     TextView myFavoriteTextView;
     TextView myLikeTextView;
+    TextView personIDText;
 
     ImageView myProfileImg;
     ImageView myEditImg;
@@ -126,6 +127,7 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
         FirebaseUser user = mAuth.getCurrentUser();
         String userEmail = user.getEmail(); // e-mail 형식
 
+        loadScrapList();
 // 유저 정보 세팅
         db.collection("person")
                 .whereEqualTo("userId", userEmail)
@@ -139,6 +141,7 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
 
                                 likeCount(personId);
                                 FavoriteCount(personId);
+
 
                                 String userName1 = String.valueOf(document.get("userName"));
                                 myNickTextView = findViewById(R.id.myNickTextView);
@@ -251,7 +254,6 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
 
 
 
-        loadScrapList();
 
         //하단탭
         appBarLayout = findViewById(R.id.appBarLayout);
@@ -306,6 +308,8 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
             }
         });
     }
+
+
 
     private void FavoriteCount(String personId) {
 
@@ -395,6 +399,7 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
                                             @NonNull Scrap model) {
                 holder.setScrapItems(model);
                 holder.bind(model.getContentsType(), model.getContentsId());
+
             }
 
             @NonNull
@@ -448,32 +453,35 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
             TextView myScrapId;
 
 
-       //     ImageView myScrapImg = findViewById(R.id.myScrabImg);//myScrapImg.setAlpha(50);
+            //     ImageView myScrapImg = findViewById(R.id.myScrabImg);//myScrapImg.setAlpha(50);
             myScrapTitle = itemView.findViewById(R.id.myScrabTitle);
-       //     TextView myScrapSave = findViewById(R.id.myScrabSave);
+            //     TextView myScrapSave = findViewById(R.id.myScrabSave);
             myScrapPlace = itemView.findViewById(R.id.myScrabPlace);
             myScrapId = itemView.findViewById(R.id.myScrabId);
 
-           // myScrapImg.setImageURI(Uri.parse(uri));
+            // myScrapImg.setImageURI(Uri.parse(uri));
             myScrapTitle.setText(item.getTitle());
-          //  myScrapSave.setText(item.getSavedDate());
-          myScrapPlace.setText(item.getContentsAddress());
-          myScrapId.setText(item.getContentsId());
+            //  myScrapSave.setText(item.getSavedDate());
+            myScrapPlace.setText(item.getContentsAddress());
+            myScrapId.setText(item.getContentsId());
+
 
 //Title, Article, ContentsAddress, ContentsType, TitleImage , ContentsId, , SavedDate, Uid
             // 이중 해결해야할건 이미지, 시간 YY-mm-dd 형식으로 ('20.12.28 저장')
         }
-        public void bind(int contentsType, String cDocumentID){
+
+
+        public void bind(int contentsType, String cDocumentID) {
             myScrapCardView = itemView.findViewById(R.id.myScrapCardView);
             myScrapCardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (contentsType == 0){
+                    if (contentsType == 0) {
                         Intent intent = new Intent(MyPage.this, RoadContentsPage.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                         intent.putExtra("documentID", cDocumentID);
                         startActivity(intent);
-                    } else if (contentsType == 1){
+                    } else if (contentsType == 1) {
                         Intent intent = new Intent(MyPage.this, LoadStoryItem.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                         intent.putExtra("documentID", cDocumentID);
@@ -483,9 +491,55 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
             });
         }
 
+
     }
 
+/*    public void setScrapItems2() {
 
+        FirebaseUser user = mAuth.getCurrentUser();
+        // String userEmail = user.getEmail(); // e-mail 형식
+        //8개 불러와서 최근 순서대로 이미지,제목,저장날짜,장소 담기
+        db.collection("person")
+                .whereEqualTo("userId", user.getEmail())
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        String personId = document.getId();
+
+
+                        db.collection("person").document(personId).collection("myScrap")
+                                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    int count = 0;
+                                    for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
+                                        count++;
+
+                                    }
+                                    //  String count1 = Integer.toString(count);
+                                    // Log.d("count 횟수", count1);
+
+                                    if (count < 8) {
+                                        int count1 = 8 - count; //실행횟수
+                                        String resName = "@drawable/noimage2";
+                                        for (int j = 0; j < count1; j++) {
+
+
+                                        }
+                                    }
+                                }
+                            }
+                        });
+                    }
+                }
+            }
+        });
+    }
+
+*/
     public void showGalleryActivity() {
         Intent intent = new Intent(Intent.ACTION_PICK,
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -609,8 +663,8 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
         });
 
 
-
     }
+
 
 
 }
