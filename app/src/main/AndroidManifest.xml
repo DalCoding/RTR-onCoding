@@ -66,6 +66,8 @@
         <activity android:name=".Write_Story" />
        <activity android:name=".userActivity.MyScrapActivity"/>
         <activity android:name=".LoadStoryItem"/>
+        <activity android:name=".AskPage"/>
+        <activity android:name=".BigMapPage"/>
 
 <!--        <activity android:name=".MainActivity"/>-->
        <!-- <activity android:name=".account.FindAccountActivity"/>-->

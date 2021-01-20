@@ -3,20 +3,30 @@ package com.example.rotory;
 
 
 import android.os.Bundle;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import net.daum.mf.map.api.MapView;
 
 
 public class BigMapPage extends AppCompatActivity {
     private static final String TAG = "BigMapPage";
 
+ /*   public static BigMapPage newInstance() {
+        return new BigMapPage();
+    }*/
 
     @Override
     protected void onCreate(@NonNull Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.write_map_page);
+        setContentView(R.layout.big_map_page);
 
+        MapView mapView = new MapView(this);
+
+        ViewGroup mapViewContainer = (ViewGroup) findViewById(R.id.bigMapLayout);
+        mapViewContainer.addView(mapView);
 
 /*
         //MapView mapView = new MapView(this);
