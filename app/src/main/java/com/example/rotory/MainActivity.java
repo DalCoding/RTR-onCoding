@@ -78,7 +78,6 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
         //setContentView(R.layout.activity_main);
     }
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -141,7 +140,7 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
         storyContentsPage = new StoryContentsPage();
 
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.container, mainPage).commit();
+      //  getSupportFragmentManager().beginTransaction().replace(R.id.container, mainPage).commit();
 
 
         bottomNavigation = findViewById(R.id.bottom_appBar);

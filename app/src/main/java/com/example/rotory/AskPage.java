@@ -26,6 +26,8 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -129,16 +131,21 @@ public class AskPage extends AppCompatActivity {
                 askEditText = findViewById(R.id.askEditText);
                 String askContents = askEditText.getText().toString();
 
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yy-MM-dd HH:mm");
+                Date currentDate = new Date();
+                String asked_date = dateFormat.format(currentDate);
+
                 Map<String, Object> AskData = new HashMap<>();
                 AskData.put("userId", userEmail);
                 AskData.put("askContents", askContents);
+                AskData.put("checked", "0");
+                AskData.put("checked_date", "");
+                AskData.put("asked_date", asked_date);
 
                 db.collection("ask").add(AskData)
                         .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                             @Override
                             public void onSuccess(DocumentReference documentReference) {
-                                Log.d(TAG,"문의 작성자 " + AskData.get("userId")
-                                        + "문의 내용 " + AskData.get("askContents"));
 
                                 Toast.makeText(getApplicationContext(), "문의를 남겼습니다.", Toast.LENGTH_SHORT).show();
 

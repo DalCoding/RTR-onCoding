@@ -40,10 +40,18 @@ public class MainPage extends Fragment {
     private FirestoreRecyclerAdapter adapter;
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
+    //MapView mapView;
+
+    @Override
+    public void onStop() {
+        super.onStop();
 
 
-    public static MainPage newInstance() {
-        return new MainPage();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
     }
 
     @Nullable
@@ -52,9 +60,6 @@ public class MainPage extends Fragment {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.main_page, container, false);
         FirebaseUser user = mAuth.getCurrentUser();
 
-        if(user != null) {
-
-        }
         if (user != null) {
 
             initUI(rootView);
@@ -85,8 +90,10 @@ public class MainPage extends Fragment {
             @Override
             public void onClick(View v) {
                 //((MainActivity)getActivity()).replaceFragment(BigMapPage.newInstance());
+                mapViewContainer.removeView(mapView);
                 Intent intent = new Intent(getActivity(), BigMapPage.class);
                 startActivity(intent);
+
             }
         });
 
