@@ -218,10 +218,10 @@
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="match_parent"
-                            android:layout_height="250dp">
+                            android:layout_height="wrap_content">
 
                             <TextView
-                                android:id="@+id/findId_phone_check"
+                                android:id="@+id/findpw_phone_check"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="10dp"
@@ -294,12 +294,13 @@
 
                             <TextView
                                 android:id="@+id/findIdMobileCount"
-                                android:layout_width="wrap_content"
+                                android:layout_width="55dp"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="10dp"
                                 android:layout_marginTop="30dp"
                                 android:layout_marginEnd="10dp"
-                                android:text="03:00"
+                                android:gravity="center_horizontal|center_vertical"
+                                android:text="02:00"
                                 android:textColor="@color/orange"
                                 android:textSize="18sp"
                                 app:layout_constraintBottom_toBottomOf="parent"
@@ -315,6 +316,7 @@
                                 android:layout_marginTop="20dp"
                                 android:background="@drawable/edge_white_item"
                                 android:ems="10"
+                                android:enabled="false"
                                 android:hint="인증번호 입력"
                                 android:inputType="textPersonName"
                                 android:paddingLeft="10dp"
@@ -324,6 +326,19 @@
                                 app:layout_constraintStart_toStartOf="@+id/findpw_phone_edittext"
                                 app:layout_constraintTop_toBottomOf="@+id/findpw_phone_edittext"
                                 app:layout_constraintVertical_bias="0.0" />
+
+                            <TextView
+                                android:id="@+id/findpw_pin_check"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginBottom="10dp"
+                                android:text="인증번호가 틀렸습니다."
+                                android:textColor="#FF002E"
+                                android:visibility="invisible"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="@+id/findpw_phone_pin"
+                                app:layout_constraintTop_toBottomOf="@+id/findpw_phone_pin" />
 
                             <EditText
                                 android:id="@+id/findpw_phone_edittext"
@@ -370,14 +385,14 @@
                         android:id="@+id/findpw_email_pramelayout"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:visibility="visible">
+                        android:visibility="gone">
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="match_parent"
                             android:layout_height="250dp">
 
                             <TextView
-                                android:id="@+id/findId_id_check"
+                                android:id="@+id/findpw_id_check"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="10dp"

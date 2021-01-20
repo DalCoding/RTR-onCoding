@@ -17,6 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.rotory.MainActivity;
+import com.example.rotory.MyPage;
 import com.example.rotory.R;
 import com.example.rotory.VO.AppConstant;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -127,8 +128,8 @@ public class SetNewPassword extends AppCompatActivity {
 
                                              showToast("비밀번호가 변경되었습니다.");
 
-                                             Intent mainIntent = new Intent(SetNewPassword.this, MainActivity.class);
-                                             mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                                             Intent mainIntent = new Intent(SetNewPassword.this, MyPage.class);
+                                             mainIntent.addFlags( Intent.FLAG_ACTIVITY_SINGLE_TOP);
                                              startActivity(mainIntent);
 
 
