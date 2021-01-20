@@ -266,7 +266,7 @@ public class SignUpActivity extends AppCompatActivity {
             signin_id_check.setVisibility(View.VISIBLE);
             return false;
         } else if (!pwPattern) {
-            signin_pwcheck_check.setText("비밀번호를 확인해주세요");
+            signin_pwcheck_check.setText("비밀번호 양식을 확인해주세요");
             signin_pwcheck_check.setVisibility(View.VISIBLE);
             return false;
 
