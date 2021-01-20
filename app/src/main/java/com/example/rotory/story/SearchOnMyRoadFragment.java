@@ -1,50 +1,148 @@
 package com.example.rotory.story;
 
+import android.content.Context;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import com.example.rotory.MyPage;
 import com.example.rotory.R;
+import com.example.rotory.Search.SearchContents;
+import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import org.w3c.dom.Text;
 
 
 public class SearchOnMyRoadFragment extends Fragment {
+    private static final String TAG = "SearchOnMyRoadFragment";
 
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    Context context;
+    TextView textView;
+    RecyclerView recyclerView;
 
-    private String mParam1;
-    private String mParam2;
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    FirestoreRecyclerAdapter adapter;
 
-    public SearchOnMyRoadFragment() {
-        // Required empty public constructor
-    }
+    public SearchOnMyRoadFragment() {}
 
-    public static SearchOnMyRoadFragment newInstance(String param1, String param2) {
-        SearchOnMyRoadFragment fragment = new SearchOnMyRoadFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        this.context = context;
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+    public void onDetach() {
+        super.onDetach();
+
+        if (context != null) {
+            context = null;
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_search_on_my_road, container, false);
+        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_search_on_my_road, container, false);
+
+        initUI(rootView);
+
+        return rootView;
+    }
+
+    private void initUI(ViewGroup rootView) {
+
+        textView = rootView.findViewById(R.id.textView3);
+        recyclerView = rootView.findViewById(R.id.writeStoryMyRoadsSearchRecyclerView);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        recyclerView.setLayoutManager(layoutManager);
+
+        db.collection("contents")
+                .orderBy("writeDate", Query.Direction.DESCENDING)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult());
+
+                            Query query = db.collection("contents")
+                                    .whereEqualTo("contentsType", 0);
+
+                            FirestoreRecyclerOptions<MyRoad> options = new FirestoreRecyclerOptions.Builder<MyRoad>()
+                                    .setQuery(query, MyRoad.class)
+                                    .build();
+                            setAdapter(options);
+                            adapter.startListening();
+                            recyclerView.setAdapter(adapter);
+                        }
+                    }
+                });
+    }
+
+    public void setAdapter(FirestoreRecyclerOptions options) {
+        adapter = new FirestoreRecyclerAdapter<MyRoad, MyRoadViewHolder>(options) {
+            @Override
+            protected void onBindViewHolder(@NonNull MyRoadViewHolder holder, int position, @NonNull MyRoad model) {
+                holder.setMyRoadItems(model);
+            }
+
+            @NonNull
+            @Override
+            public MyRoadViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.story_myroad_search_item, parent, false);
+                return new MyRoadViewHolder(view);
+            }
+        };
+    }
+
+    public class MyRoadViewHolder extends RecyclerView.ViewHolder {
+        View view;
+
+        public MyRoadViewHolder(@NonNull View itemView) {
+            super(itemView);
+            view = itemView;
+        }
+
+        public void setMyRoadItems(MyRoad items) {
+
+            TextView dtrName = itemView.findViewById(R.id.myRoadSearchItemDtrTitle);
+            TextView title = itemView.findViewById(R.id.myRoadSearchItemRoadTitle);
+            TextView address = itemView.findViewById(R.id.myRoadSearchItemAddress);
+
+            dtrName.setText(items.getDtrName());
+            title.setText(items.getTitle());
+            address.setText(items.getAddress());
+        }
+    }
+
+    @Override
+    public void onStart() {
+        Log.d(TAG, "어댑터 작동 시작");
+        super.onStart();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if(adapter != null){
+            adapter.stopListening();
+        }
     }
 }

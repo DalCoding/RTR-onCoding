@@ -11,6 +11,9 @@ import androidx.appcompat.app.AppCompatActivity;
 public class BigMapPage extends AppCompatActivity {
     private static final String TAG = "BigMapPage";
 
+ /*   public static BigMapPage newInstance() {
+        return new BigMapPage();
+    }*/
 
     @Override
     protected void onCreate(@NonNull Bundle savedInstanceState) {

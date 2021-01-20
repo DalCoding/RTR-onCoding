@@ -1,5 +1,6 @@
 package com.example.rotory;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,6 +21,8 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import net.daum.mf.map.api.MapView;
 
 public class MainPage extends Fragment {
     Button mainFloatingBtn;
@@ -70,11 +74,27 @@ public class MainPage extends Fragment {
 
 
     private void initUI(ViewGroup rootView) {
+
+        MapView mapView = new MapView(getContext());
+        ViewGroup mapViewContainer = (ViewGroup) rootView.findViewById(R.id.mainMapLayout);
+        mapViewContainer.addView(mapView);
+
+        ImageButton mainMapExtendBtn = rootView.findViewById(R.id.mainMapExtendBtn);
+        mainMapExtendBtn.bringToFront();
+        mainMapExtendBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //((MainActivity)getActivity()).replaceFragment(BigMapPage.newInstance());
+                Intent intent = new Intent(getActivity(), BigMapPage.class);
+                startActivity(intent);
+            }
+        });
+
+
       /*  FirebaseUser user = mAuth.getCurrentUser();
-=======
+
     private void initUI(ViewGroup rootView, FirebaseUser user) {
 
->>>>>>> 64f7814fea943e313351cd2769fbeca6e0da1a46
         db.collection("contents")
                 .whereEqualTo("uid", user.getEmail())
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -132,11 +152,7 @@ public class MainPage extends Fragment {
         }
 
 
-      /*  MapView mapView = new MapView(getContext());
-        ViewGroup mapViewContainer = (ViewGroup) rootView.findViewById(R.id.mainMapLayout);
-        mapViewContainer.addView(mapView);
 
-       */
         /*MapView mapView = new MapView(getContext());
         ViewGroup mapViewContainer = (ViewGroup) rootView.findViewById(R.id.mainMapLayout);
         mapViewContainer.addView(mapView);
@@ -157,16 +173,9 @@ public class MainPage extends Fragment {
                 startActivity(intent);
             }
         });
-
-        ImageButton mainMapExtendBtn = rootView.findViewById(R.id.mainMapExtendBtn);
-        mainMapExtendBtn.bringToFront();
-        mainMapExtendBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((MainActivity)getActivity()).replaceFragment(BigMapPage.newInstance());
-            }
-        });
 */
+
+
 
         // 디버그 키 해시 구하기 (카카오 맵 API 연동 시 필요), 맵 코드 주석 처리 후 실행! (애뮬에서 돌리면 실행 오류 날 수 있음)
         /*try {
