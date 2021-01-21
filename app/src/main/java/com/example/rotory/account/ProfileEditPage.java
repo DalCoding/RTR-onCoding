@@ -115,7 +115,7 @@ public class ProfileEditPage extends Fragment {
         boolean pwPattern = Pattern.matches(appConstant.REGEX_PATTERN, newPw);
 
         if (!pwPattern) {
-           profilePwdCheckNoti.setText("비밀번호를 확인해주세요");
+           profilePwdCheckNoti.setText("비밀번호 양식을 확인해주세요");
            profilePwdCheckNoti.setVisibility(View.VISIBLE);
             return false;
         } else if (!newPwCheck.equals(newPw)) {

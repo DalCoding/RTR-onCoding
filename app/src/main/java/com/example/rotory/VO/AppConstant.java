@@ -2,18 +2,22 @@ package com.example.rotory.VO;
 
 import com.example.rotory.R;
 
+import java.text.SimpleDateFormat;
+
 public class AppConstant {
     public static final int loginCode = 3000;
     public static final int themeCode = 2000;
     public static final int mainCode = 1000;
     public static final int searchCode = 1100;
     public static final int profileEditCode = 4120;
+    public static final int findWithPhoneCode = 3221;
 
-    public static final int MILLISINFUTURE = 180 * 1000; //총 시간 (300초 = 5분)
+    public static final int MILLISINFUTURE = 120 * 1000; //총 시간
     public static final int COUNT_DOWN_INTERVAL = 1000; //onTick 메소드를 호출할 간격 (1초)
 
     public static final String REGEX_PATTERN = "^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[$@$!%*#?&])[A-Za-z[0-9]$@$!%*#?&]{8,20}$";
     public static final String REGEX_NUMBER = "^(?=.*[0-9])[0-9]{9,12}$";
+    public static final SimpleDateFormat dateFormat = new SimpleDateFormat("yy-MM-dd HH:mm");
 
     public AppConstant() {
     }

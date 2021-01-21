@@ -8,7 +8,7 @@ import com.example.rotory.VO.AppConstant;
 
 public class Counter{
     private static CountDownTimer countDownTimer;
-    static AppConstant appConstant;
+    static AppConstant appConstant = new AppConstant();
     private final static String TAG = "counter";
 
     public Counter() {
@@ -33,7 +33,7 @@ public class Counter{
 
             @Override
             public void onFinish() {
-                counter.setText("3:00");
+                counter.setText("2:00");
             }
         };
 
@@ -43,6 +43,6 @@ public class Counter{
     }
     public static void stopCounter(TextView textView){
         countDownTimer.cancel();
-        textView.setText("3:00");
+        textView.setText("2:00");
     }
 }

@@ -2,58 +2,153 @@ package com.example.rotory;
 
 import android.media.Image;
 
+import java.util.Map;
+
 public class Comment {
-    Image levelImg;
-    String userName;
-    String time;
-    String commCon;
-    String report;
+<<<<<<< HEAD
+   String comment;
+    String contentsId;
+    String commentType;
+    String personId;
+    String savedDate;
+    String uid;
 
-    public Image getLevelImg() {
-        return levelImg;
+    public Comment() {
     }
 
-    public void setLevelImg(Image levelImg) {
-        this.levelImg = levelImg;
+    public Comment(String comment, String contentsId,String commentType, String personId, String savedDate, String uid) {
+        this.comment = comment;
+        this.contentsId = contentsId;
+        this.commentType = commentType;
+        this.personId = personId;
+        this.savedDate = savedDate;
+        this.uid = uid;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getCommentType() {
+        return commentType;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setCommentType(String commentType) {
+        this.commentType = commentType;
     }
 
-    public String getTime() {
-        return time;
+    public String getComment() {
+        return comment;
     }
 
-    public void setTime(String time) {
-        this.time = time;
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
-    public String getCommCon() {
-        return commCon;
+    public String getContentsId() {
+        return contentsId;
     }
 
-    public void setCommCon(String commCon) {
-        this.commCon = commCon;
+    public void setContentsId(String contentsId) {
+        this.contentsId = contentsId;
     }
 
-    public String getReport() {
+
+    public String getPersonId() {
+        return personId;
+    }
+
+    public void setPersonId(String personId) {
+        this.personId = personId;
+    }
+
+    public String getSavedDate() {
+        return savedDate;
+    }
+
+    public void setSavedDate(String savedDate) {
+        this.savedDate = savedDate;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+=======
+    String comment;
+    String contentsId;
+    int contentsType;
+    String personId;
+    String uid;
+    String savedDate;
+    Map<String, Object> report;
+
+    public Comment(String comment, String contentsId, int contentsType, String personId, String uid, String savedDate, Map<String, Object> report) {
+        this.comment = comment;
+        this.contentsId = contentsId;
+        this.contentsType = contentsType;
+        this.personId = personId;
+        this.uid = uid;
+        this.savedDate = savedDate;
+        this.report = report;
+    }
+
+    public Comment() {
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public String getContentsId() {
+        return contentsId;
+    }
+
+    public void setContentsId(String contentsId) {
+        this.contentsId = contentsId;
+    }
+
+    public int getContentsType() {
+        return contentsType;
+    }
+
+    public void setContentsType(int contentsType) {
+        this.contentsType = contentsType;
+    }
+
+    public String getPersonId() {
+        return personId;
+    }
+
+    public void setPersonId(String personId) {
+        this.personId = personId;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+
+    public String getSavedDate() {
+        return savedDate;
+    }
+
+    public void setSavedDate(String savedDate) {
+        this.savedDate = savedDate;
+    }
+
+    public Map<String, Object> getReport() {
         return report;
     }
 
-    public void setReport(String report) {
+    public void setReport(Map<String, Object> report) {
         this.report = report;
-    }
-
-    public Comment(Image levelImg, String userName, String time, String commCon, String report) {
-        this.levelImg = levelImg;
-        this.userName = userName;
-        this.time = time;
-        this.commCon = commCon;
-        this.report = report;
+>>>>>>> 83654c0608186a4fff9b69c5755bf58dd89ff20b
     }
 }
+

@@ -4,11 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 public class PreferenceManager {
-   /**
 
-           * 데이터 저장 및 로드 클래스
-
- */
         public static final String PREFERENCES_NAME = "firebase Data";
         private static final String DEFAULT_VALUE_STRING = "";
         private static final boolean DEFAULT_VALUE_BOOLEAN = false;
@@ -22,18 +18,6 @@ public class PreferenceManager {
         }
 
 
-        /**
-
-         * String 값 저장
-
-         * @param context
-
-         * @param key
-
-         * @param value
-
-         */
-
         public static void setString(Context context, String key, String value) {
             SharedPreferences prefs = getPreferences(context);
             SharedPreferences.Editor editor = prefs.edit();
@@ -41,18 +25,6 @@ public class PreferenceManager {
             editor.commit();
 
         }
-
-        /**
-
-         * boolean 값 저장
-
-         * @param context
-
-         * @param key
-
-         * @param value
-
-         */
 
         public static void setBoolean(Context context, String key, boolean value) {
 
@@ -67,17 +39,6 @@ public class PreferenceManager {
         }
 
 
-        /**
-
-         * int 값 저장
-
-         * @param context
-
-         * @param key
-
-         * @param value
-
-         */
 
         public static void setInt(Context context, String key, int value) {
 
@@ -93,18 +54,6 @@ public class PreferenceManager {
 
 
 
-        /**
-
-         * long 값 저장
-
-         * @param context
-
-         * @param key
-
-         * @param value
-
-         */
-
         public static void setLong(Context context, String key, long value) {
 
             SharedPreferences prefs = getPreferences(context);
@@ -117,19 +66,6 @@ public class PreferenceManager {
 
         }
 
-
-
-        /**
-
-         * float 값 저장
-
-         * @param context
-
-         * @param key
-
-         * @param value
-
-         */
 
         public static void setFloat(Context context, String key, float value) {
 
@@ -145,18 +81,6 @@ public class PreferenceManager {
 
 
 
-        /**
-
-         * String 값 로드
-
-         * @param context
-
-         * @param key
-
-         * @return
-
-         */
-
         public static String getString(Context context, String key) {
 
             SharedPreferences prefs = getPreferences(context);
@@ -167,19 +91,6 @@ public class PreferenceManager {
 
         }
 
-
-
-        /**
-
-         * boolean 값 로드
-
-         * @param context
-
-         * @param key
-
-         * @return
-
-         */
 
         public static boolean getBoolean(Context context, String key) {
 
@@ -193,18 +104,6 @@ public class PreferenceManager {
 
 
 
-        /**
-
-         * int 값 로드
-
-         * @param context
-
-         * @param key
-
-         * @return
-
-         */
-
         public static int getInt(Context context, String key) {
 
             SharedPreferences prefs = getPreferences(context);
@@ -215,19 +114,6 @@ public class PreferenceManager {
 
         }
 
-
-
-        /**
-
-         * long 값 로드
-
-         * @param context
-
-         * @param key
-
-         * @return
-
-         */
 
         public static long getLong(Context context, String key) {
 
@@ -240,19 +126,6 @@ public class PreferenceManager {
         }
 
 
-
-        /**
-
-         * float 값 로드
-
-         * @param context
-
-         * @param key
-
-         * @return
-
-         */
-
         public static float getFloat(Context context, String key) {
 
             SharedPreferences prefs = getPreferences(context);
@@ -263,17 +136,6 @@ public class PreferenceManager {
 
         }
 
-
-
-        /**
-
-         * 키 값 삭제
-
-         * @param context
-
-         * @param key
-
-         */
 
         public static void removeKey(Context context, String key) {
 
@@ -287,15 +149,6 @@ public class PreferenceManager {
 
         }
 
-
-
-        /**
-
-         * 모든 저장 데이터 삭제
-
-         * @param context
-
-         */
 
         public static void clear(Context context) {
 

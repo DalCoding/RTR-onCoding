@@ -18,10 +18,13 @@ import com.example.rotory.MainActivity;
 import com.example.rotory.R;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.PhoneAuthCredential;
+import com.google.firebase.ktx.Firebase;
 
 public class LogInActivity extends AppCompatActivity  {
     private final int RC_SIGN_IN = 3000;
@@ -75,8 +78,7 @@ public class LogInActivity extends AppCompatActivity  {
 
        
         firebaseAuth = FirebaseAuth.getInstance();
-        
-        
+
         
         login_button = findViewById(R.id.login_button);
         login_button.setOnClickListener(new View.OnClickListener() {
@@ -174,5 +176,57 @@ public class LogInActivity extends AppCompatActivity  {
         return false;
     }
 
+    public FirebaseUser LogInWithAccount(FirebaseAuth mAuth, FirebaseUser user,String emailUrl, String userId) {
 
+        if (mAuth.isSignInWithEmailLink(emailUrl)){
+            mAuth.signInWithEmailLink(userId, emailUrl).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    Log.d(TAG,"받아온 계정으로 로그인 성공");
+                }
+            });
+        }else{
+            Log.d(TAG,"로그인 실패");
+        }
+        if (user != null) {
+            user = mAuth.getCurrentUser();
+            Log.d(TAG,"사용자 받아옴 " + user.getEmail());
+
+        }else{
+            Log.d(TAG,"사용자 여전히 null");
+        }
+        return user;
+
+    }
+    public void LogInWithPhoneAuthCredential(FirebaseAuth mAuth, FirebaseUser user, PhoneAuthCredential authCredential) {
+        final FirebaseUser[] userFind = {user};
+        mAuth.signInWithCredential(authCredential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            Log.d(TAG, "휴대폰인증 완료 후 로그인 성공");
+                            userFind[0] = task.getResult().getUser();
+                           Log.d(TAG,"유저정보확인" + userFind[0].getEmail());
+                        } else {
+
+                        }
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d(TAG, "휴대폰 인증 후 로그인 실패");
+                Log.d(TAG, "실패 이유? " + e.toString());
+            }
+        });
+     //Log.d(TAG, "밖에서 확인 " + userFind[0].getEmail());
+        if (user != null) {
+            user = mAuth.getCurrentUser();
+            Log.d(TAG,"사용자 받아옴 " + user.getEmail());
+
+        }else{
+            Log.d(TAG,"사용자 여전히 null");
+        }
+        //return user;
+    }
 }
