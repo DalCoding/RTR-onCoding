@@ -2,6 +2,8 @@ package com.example.rotory.VO;
 
 import com.example.rotory.R;
 
+import java.text.SimpleDateFormat;
+
 public class AppConstant {
     public static final int loginCode = 3000;
     public static final int themeCode = 2000;
@@ -15,6 +17,7 @@ public class AppConstant {
 
     public static final String REGEX_PATTERN = "^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[$@$!%*#?&])[A-Za-z[0-9]$@$!%*#?&]{8,20}$";
     public static final String REGEX_NUMBER = "^(?=.*[0-9])[0-9]{9,12}$";
+    public static final SimpleDateFormat dateFormat = new SimpleDateFormat("yy-MM-dd HH:mm");
 
     public AppConstant() {
     }

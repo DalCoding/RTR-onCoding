@@ -8,6 +8,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -22,7 +24,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.rotory.Adapter.LocationAdapter;
-import com.example.rotory.Adapter.SCommAdapter;
 import com.example.rotory.Interface.OnUserActItemClickListener;
 import com.example.rotory.VO.AppConstant;
 import com.example.rotory.VO.Person;
@@ -133,6 +134,7 @@ public class StoryContentsPage extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        FirebaseUser user = mAuth.getCurrentUser();
         if (context instanceof OnUserActItemClickListener) {
             listener = (OnUserActItemClickListener) context;
         }
@@ -188,7 +190,7 @@ public class StoryContentsPage extends Fragment {
         scontentsLevelImg = rootView.findViewById(R.id.scontentsLevelImg);
         scontentsUsernameText = rootView.findViewById(R.id.scontentsUsernameText);
         scontentsStarImg = rootView.findViewById(R.id.scontentsStarImg);
-        scontentsCommEdit = rootView.findViewById(R.id.rcontentsCommEdit);
+        scontentsCommEdit = rootView.findViewById(R.id.scontentsCommEdit);
         sCommRView = rootView.findViewById(R.id.sCommRView);
         scontentsBigImg = rootView.findViewById(R.id.scontentsBigImg);
         scontentsMentText = rootView.findViewById(R.id.scontentsMentText);
@@ -211,6 +213,19 @@ public class StoryContentsPage extends Fragment {
                     R.drawable.scrabtagfilled, R.drawable.scrabtag);
 
         }
+
+        scontentsCommBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "클릭 눌림");
+                if (user != null) {
+                    saveComment(contentsID, view);
+                    Log.d(TAG, "유저 정보 존재");
+                } else {
+                    showToast("로그인이 필요한 서비스입니다.");
+                }
+            }
+        });
 
         getUserActivityIcon(contentsID, "myStar", scontentsStarImg,
                 R.drawable.starfilled, R.drawable.star);
@@ -325,7 +340,7 @@ public class StoryContentsPage extends Fragment {
             commTimeText = view.findViewById(R.id.commTimeText);
             commReportText = view.findViewById(R.id.commReportText);
             commLevelImg = view.findViewById(R.id.commLevelImg);
-            Log.d(TAG,"컨텐츠 확인" + comment.getPersonId() + ":" + user.getEmail());
+            //Log.d(TAG,"컨텐츠 확인" + comment.getPersonId() + ":" + user.getEmail());
             db.collection("person")
                     .whereEqualTo("userId", user.getEmail())
                     .get()
@@ -339,9 +354,10 @@ public class StoryContentsPage extends Fragment {
                             }
                         }
                     });
-            String pDocumentId =
-                    "32RlqqiGlefRWRXSA16c";
- //String.valueOf(comment.getPersonId());
+
+ //
+            String pDocumentId=String.valueOf(comment.getPersonId());
+            Log.d(TAG, "pDocumentID 확인" + pDocumentId);
 
 
             db.collection("person").document(pDocumentId)
@@ -349,6 +365,48 @@ public class StoryContentsPage extends Fragment {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                     Log.d(TAG, "자료불러옴" + task.getResult().getId());
+<<<<<<< HEAD
+                    HashMap<String, Object> document = (HashMap<String, Object>) task.getResult().getData();
+                    if (document != null) {
+                        Log.d(TAG, String.valueOf(document));
+                    }else{
+                        Log.d(TAG, String.valueOf(document) + "값없음");
+                    }
+                    String userName = document.get("userName").toString();
+                    String userLevel = document.get("userLevel").toString();
+                    commUsernameText.setText(userName);
+                    commLevelImg.setImageResource(appConstant.getUserLevelImage(userLevel));
+                    String commentedUser = task.getResult().get("userId").toString();
+                    Log.d(TAG,"댓글단사람" + commentedUser);
+                    Log.d(TAG, "현재 사용자 확인" + user.getEmail());
+                    if (user != null){
+                        if (user.getEmail().equals(commentedUser)){
+                            commReportText.setText("삭제");
+                            commReportText.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    //deleteComment();
+                                    showToast("댓글을 삭제하셨습니다.");
+
+                                }
+                            });
+                        }else{
+                            commReportText.setText("신고");
+                            commReportText.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    openReportDialog();
+                                    showToast("댓글을 신고하셨습니다.");
+                                }
+                            });
+                        }
+                    }else {
+                        commReportText.setText("신고");
+                        commReportText.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                showToast("로그인이 필요한 서비스입니다.");
+=======
 
                   HashMap<String, Object> document = (HashMap<String, Object>) task.getResult().getData();
                    if (document != null) {
@@ -380,11 +438,11 @@ public class StoryContentsPage extends Fragment {
                                         showToast("댓글을 신고하셨습니다.");
                                     }
                                 });
+>>>>>>> 83654c0608186a4fff9b69c5755bf58dd89ff20b
                             }
                         }
                 }
             });
-
             commConText.setText(comment.getComment().toString());
             commTimeText.setText(comment.getSavedDate().toString());
             Log.d(TAG, "정보 입력 확인" + commConText.getText().toString()+
@@ -392,14 +450,37 @@ public class StoryContentsPage extends Fragment {
         }
     }
 
-    private void openReportDialog() {
+    private void openReportDialog(QueryDocumentSnapshot pDocument, String pDocumentId) {
+         reportSpinner = getView().findViewById(R.id.reportSpinner);
+
+           ArrayAdapter reportAdapter = ArrayAdapter.createFromResource(this, R.array.reportList, android.R.layout.simple_spinner_dropdown_item);
+            reportAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            reportSpinner.setAdapter(reportAdapter);
+
+            reportSpinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                }
+
+                public void onNothingSelected(AdapterView<?> parent) {
+                }
+            });
+}
+
+            //다이얼로그 만들기+띄우기
+        //다이얼로그 메세지 누르면 받아오기 String report...
+        //report 콜렉션에 들어갈 정보 만들기 Map.put....(reportText, personId, reportedId, reported_Date)
+
     }
 
     private void showToast(String s) {
         Toast.makeText(getContext(), s, Toast.LENGTH_SHORT).show();
     }
 
-    private void deleteComment() {
+    private void deleteComment(String documentId) {
+       // db.collection("contents").document(documentId).collection("comment")
+                //.whereEqualTo("comment",scontentsCommEdit.getText().toString() )
+
     }
 
     private void loadContents(String contentsID, FirebaseUser user) {
@@ -479,7 +560,7 @@ public class StoryContentsPage extends Fragment {
                 @Override
                 public void onClick(View v) {
                     if (writerUid.equals(user.getUid())) {
-                        showToast(user.getDisplayName() +"님의 도토리! 자신의 도토리는 담을 수 없습니다.");
+                        showToast(user.getDisplayName() + "님의 도토리! 자신의 도토리는 담을 수 없습니다.");
                     } else {
                         Log.d(TAG, "하트아이콘 클릭");
                         isInList(contentsId, contentsList, "myLike", user,
@@ -490,9 +571,9 @@ public class StoryContentsPage extends Fragment {
             scontentsStarImg.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (writerUid.equals(user.getUid())){
-                        Toast.makeText(getContext(), user.getDisplayName() +"님의 도토리! 자신의 도토리는 담을 수 없습니다.", Toast.LENGTH_SHORT).show();
-                    }else {
+                    if (writerUid.equals(user.getUid())) {
+                        Toast.makeText(getContext(), user.getDisplayName() + "님의 도토리! 자신의 도토리는 담을 수 없습니다.", Toast.LENGTH_SHORT).show();
+                    } else {
                         setFavoriteAct(contentsList, user);
                         Log.d(TAG, "스타아이콘 클릭");
                     }
@@ -502,7 +583,7 @@ public class StoryContentsPage extends Fragment {
                 @Override
                 public void onClick(View v) {
                     if (writerUid.equals(user.getUid())) {
-                        Toast.makeText(getContext(), user.getDisplayName() +"님의 도토리! 자신의 도토리는 담을 수 없습니다.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), user.getDisplayName() + "님의 도토리! 자신의 도토리는 담을 수 없습니다.", Toast.LENGTH_SHORT).show();
                     } else {
                         isInList(contentsId, contentsList, "myScrap", user,
                                 scontentsScrapImg, R.drawable.scrabtagfilled, R.drawable.scrabtag);
@@ -536,6 +617,8 @@ public class StoryContentsPage extends Fragment {
             });
 
             //댓글 저장 버튼 누르면 저장되도록
+<<<<<<< HEAD
+=======
             scontentsCommBtn.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v) {
@@ -550,25 +633,68 @@ public class StoryContentsPage extends Fragment {
                    /* String getUserName  = ;
                     String getUserLevel = ;
                     String getTime= ;
-
-                    HashMap<String, Object> result = new HashMap<>();
-                    result.put("comment", gettext()); //EditText 적힌 내용 가져오기
-                    result.put("contentsId", contentsId);
-                    result.put("contentsType","댓글");
-                    //result.put("personId", "아이디 넣기!" _) // db. collection person , whereEqualto "userId", user,getEmail . get task.getresult -> getid
-
-                    //person collection db 한번 돌리고 onSuccess  안에서 result.put"personId"
+>>>>>>> 83654c0608186a4fff9b69c5755bf58dd89ff20b
 
 
+        }
+    }
+
+    private void saveComment(String contentsId, View v) {
+                //FirebaseUser user = mAuth.getCurrentUser();
+                String userEmail = user.getEmail();
+                String comment = scontentsCommEdit.getText().toString();
+                Log.d(TAG, "saveComment"+comment);
+/*
+                    String userName = personId;
+                    String userLevel = ;
+                    Date getTime= savedDate;
+*/
+                HashMap<String, Object> result = new HashMap<>();
+                result.put("comment", comment); //EditText 적힌 내용 가져오기
+                result.put("contentsId", contentsId);
+                result.put("commentType", "댓글");
+                result.put("uid", user.getUid());
+                result.put("savedDate",appConstant.dateFormat.format(new Date()));
+                // db. collection person , whereEqualto "userId", user,getEmail . get task.getresult -> getid
+
+                Log.d(TAG,"UserEmail받아옴"+userEmail);
+
+                db.collection("person").whereEqualTo("userId", userEmail)
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()){
+                                    for (QueryDocumentSnapshot documentSnapshot : task.getResult()){
+                                        String personId = documentSnapshot.getId();
+                                        Log.d(TAG,"personId 정보? " + personId);
+                                        result.put("personId", personId);
+                                        writerNewUser(contentsId,result);
+                                    }
+                                }
+                            }
+                        }).addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        Log.d(TAG, "saveCommnet onsuccessListener 확인 " + queryDocumentSnapshots.toString());
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d(TAG, "saveCommnet 유저 정보 불러오기 실패 : " +e.toString());
+                    }
+                });
+
+
+<<<<<<< HEAD
+=======
                      result.put("savedDate", new Date().toString());
                      result.put("uid", user.getUid());
 
 
                     writerNewUser(contentsId,result);*/
+>>>>>>> 83654c0608186a4fff9b69c5755bf58dd89ff20b
 
-                }
-            });
-        }
     }
 
     //댓글 달면 데이터 추가
@@ -581,13 +707,14 @@ public class StoryContentsPage extends Fragment {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
                         Log.d(TAG,"데이터저장성공");
+                        Log.d(TAG, "코멘트 정보 => " + documentReference);
                         showToast("글이 추가되었습니다");
                     }
                 })
                 .addOnFailureListener(new OnFailureListener(){
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.d(TAG, "저장 실패...");
+                        Log.d(TAG, "저장 실패..." + e.toString());
                     }
                 });
     }
@@ -747,6 +874,8 @@ public class StoryContentsPage extends Fragment {
         public static final int MONTH = 12;
     }
 
+
+    //마지막에 적용하기...!
     public static String formatTimeString(long regTime) {
         long curTime = System.currentTimeMillis();
         long diffTime = (curTime - regTime) /1000;
@@ -764,12 +893,6 @@ public class StoryContentsPage extends Fragment {
         }
         return msg;
     }
-
-
-/*    public void showReportDialog(QueryDocumentSnapshot pDocument, String pDocumentId){
-        reportReport.setAdmitButton("확인", new Dialog)
-            //report 제출 버튼
-        }*/
 
 }
 
@@ -844,16 +967,7 @@ public class StoryContentsPage extends Fragment {
                 });
     }
 
-        scontentsCommBtn.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                if (listener != null) {
-                    saveComment();
-                } else if() {
-                    modifyComment();
-                }
-            }
-        });
+
         scontentsScrapImg.setOnUserActItemClickListener(new View.OnUserActItemClickListener(){
             @Override
             public void onFlagClicked(View v) {
