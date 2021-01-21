@@ -7,6 +7,9 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.telephony.PhoneNumberUtils;
+import android.text.Editable;
+import android.text.LoginFilter;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -61,24 +64,28 @@ public class FindAccountActivity extends AppCompatActivity implements View.OnCli
     SharedPreferences.Editor editor;
     Counter mobileCounter = new Counter();
     AppConstant appConstant = new AppConstant();
-    RequestSms requestSms;
+    //RequestSms requestSms;
     String authNum;
+    PhoneAuthCredential credential;
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
-    //FirebaseAuthSettings firebaseAuthSettings = mAuth.getFirebaseAuthSettings();
+    FirebaseAuthSettings firebaseAuthSettings = mAuth.getFirebaseAuthSettings();
     FirebaseUser user;
 
     TextView findAccountTextView;
     TextView findPwTextView;
     TextView findIdMobileCounter;
+    TextView findpw_phone_check;
     TextView findPw_id_check;
     TextView findpw_pin_check;
+
 
     EditText mobile;
     EditText findpw_phone_pin;
     EditText findpw_phone_edittext;
     EditText findpw_id_email_edittext;
+    EditText findpw_id_phone_edittext;
 
     Button checkMobileButton;
     Button findpw_phone_button;
@@ -125,6 +132,8 @@ public class FindAccountActivity extends AppCompatActivity implements View.OnCli
         findpw_pin_button = findViewById(R.id.findpw_pin_button);
         findpw_phone_edittext = findViewById(R.id.findpw_phone_edittext);
         findpw_id_email_edittext = findViewById(R.id.findpw_id_email_edittext);
+        findpw_id_phone_edittext = findViewById(R.id.findpw_id_phone_edittext);
+        findpw_phone_check = findViewById(R.id.findpw_phone_check);
         findpw_pin_check = findViewById(R.id.findpw_pin_check);
         findPwWithMobile = findViewById(R.id.findpw_phone_pramelayout);
         findPwWithEmail = findViewById(R.id.findpw_email_pramelayout);
@@ -191,7 +200,6 @@ public class FindAccountActivity extends AppCompatActivity implements View.OnCli
             }
         });
 
-
         withMobile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -210,12 +218,12 @@ public class FindAccountActivity extends AppCompatActivity implements View.OnCli
             }
         });
 
-
-        requestSms = new RequestSms(mContext,findIdMobileCounter);
+        //requestSms = new RequestSms(mContext,findIdMobileCounter);
 
         findpw_phone_button.setOnClickListener(this);
         findpw_pin_button.setOnClickListener(this);
         findpw_email_button.setOnClickListener(this);
+
 
     }
 
@@ -225,7 +233,7 @@ public class FindAccountActivity extends AppCompatActivity implements View.OnCli
 
         findpw_phone_pin.setEnabled(true);
 
-        //firebaseAuthSettings.setAutoRetrievedSmsCodeForPhoneNumber(phoneNum,"123456");
+        firebaseAuthSettings.setAutoRetrievedSmsCodeForPhoneNumber(phoneNum,"123456");
 
         Log.d(TAG, "입력한 핸드폰 번호 " + phoneNum);
 
@@ -234,6 +242,7 @@ public class FindAccountActivity extends AppCompatActivity implements View.OnCli
             public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
                 Log.d(TAG, "인증코드 전송 성공");
                 showToast("인증번호가 발송되었습니다. 60초 이내에 입력해주세요");
+                credential = phoneAuthCredential;
                 authNum = phoneAuthCredential.getSmsCode();
                 Log.d(TAG,"onVerificationCode에서 나오는  phoneAuthCredential" + authNum);
                 //안드로이드 핸드폰 가지신분으로 확인하기!
@@ -252,6 +261,7 @@ public class FindAccountActivity extends AppCompatActivity implements View.OnCli
                 Log.d(TAG, "onCodeSent의 authnum : forceResendingToken" + authNum + " : " + forceResendingToken);
 
                 mobileCounter.countDownTimer(findIdMobileCounter);
+                //findpw_pin_button.setEnabled(true);
 
             }
         };
@@ -270,10 +280,14 @@ public class FindAccountActivity extends AppCompatActivity implements View.OnCli
     @Override
     public void onClick(View v) {
         switch (v.getId()){
+           case R.id.findpw_phone_edittext:
+
+               break;
            case  R.id.findpw_pin_button:
                 if (findIdMobileCounter.getText() == "00:00"){
                     Toast.makeText(this, "인증 시간이 초과되었습니다.",Toast.LENGTH_SHORT).show();
                 } else {
+
                     findpw_pin_check.setVisibility(View.INVISIBLE);
                     Log.d(TAG,"인증번호 : " + authNum );
                     String userCode = findpw_phone_pin.getText().toString();
@@ -284,10 +298,27 @@ public class FindAccountActivity extends AppCompatActivity implements View.OnCli
                         findpw_pin_check.setVisibility(View.VISIBLE);
                     }else {
                         showToast("인증 성공");
+
+                        LogInActivity logInActivity = new LogInActivity();
+                        logInActivity.LogInWithPhoneAuthCredential(mAuth,user,credential);
+                        user = mAuth.getCurrentUser();
+/*
+                        if (user!=null){
+                            Log.d(TAG,"credential로 로그인 성공" + user.getEmail());*/
+                            Intent setNewPWIntent = new Intent(FindAccountActivity.this, SetNewPassword.class);
+                            setNewPWIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(setNewPWIntent);
+                      /*  }else{
+                            Log.d(TAG,"credential로 로그인 실패");
+                        }*/
+
                     }
                 }
                 break;
             case R.id.findpw_phone_button:
+                String checkedPhone = findpw_id_phone_edittext.getText().toString();
+                Log.d(TAG, "휴대전화로 찾기 아이디 입력 " + checkedPhone);
+                checkExistEmail(checkedPhone, 0,findpw_phone_check);
                 String number = PhoneNumberUtils.formatNumber(findpw_phone_edittext.getText().toString(),
                         Locale.getDefault().getCountry());
                 if (number == null ||number.length()<8){
@@ -296,19 +327,21 @@ public class FindAccountActivity extends AppCompatActivity implements View.OnCli
                     String phoneNum = "+82 " + number.substring(1);
                     Log.d(TAG, "인증번호 보낼 핸드폰 번호 확인 : " + phoneNum);
                     getPwWithMobile(phoneNum);
+                    findpw_pin_button.setEnabled(true);
                     mobileCounter.countDownTimer(findIdMobileCounter).start();
 
                 }
                 break;
             case R.id.findpw_email_button :
                 String checkedEmail = findpw_id_email_edittext.getText().toString();
-                checkExistEmail(checkedEmail);
+                checkExistEmail(checkedEmail, 1,findPw_id_check); /*0은 휴대폰인증 1은 이메일 인증*/
         }
 
     }
 
-    private void checkExistEmail(String checkedEmail) {
-        findPw_id_check.setVisibility(View.INVISIBLE);
+    private void checkExistEmail(String checkedEmail, int findType, TextView errorMsg) {/* findType 0은 휴대폰인증 1은 이메일 인증*/
+        errorMsg.setVisibility(View.INVISIBLE);
+        Log.d(TAG, "CHECKEEXISTEMAIL : 아이디 찾기 시작" );
         db.collection("person").whereEqualTo("userId", checkedEmail)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -320,12 +353,14 @@ public class FindAccountActivity extends AppCompatActivity implements View.OnCli
                                 count++;
                             }
                             Log.d(TAG, "비밀번호 찾기 다큐먼트 수" + count);
+
                             if (count == 0){
-                                findPw_id_check.setVisibility(View.VISIBLE);
+                                errorMsg.setVisibility(View.VISIBLE);
                                 Log.d(TAG,checkedEmail +"없음 그대로 유지");
                             } else {
                                 Log.d(TAG,checkedEmail + "존재, 메일 전송 시작");
-                                sendVerifyEmail(checkedEmail);
+
+                                //내부저장소에 입력된 계정 저장 -> 이후 비밀번호 변경 페이지로 전송하기 위한 과정
                                 userIdShared = getSharedPreferences("FindAccountUserId", Context.MODE_PRIVATE);
                                 editor  = userIdShared.edit();
                                editor.remove("userId");
@@ -334,6 +369,15 @@ public class FindAccountActivity extends AppCompatActivity implements View.OnCli
                                 Log.d(TAG, checkedEmail+"내부 저장소에 저장");
                                 editor.commit();
                                 Log.d(TAG, "내부 저장소 확인" + PreferenceManager.getString(mContext,"userId"));
+
+                                //저장 이후 비밀번호 찾기 유형에 따라 다른 행동으로 이어짐 0은 휴대폰 찾기 1을 이메일 찾기
+                                if (findType == 1){
+                                    sendVerifyEmail(checkedEmail);
+                                }else if(findType == 0){
+                                    findpw_phone_button.setEnabled(true);
+                                    mobileCounter.countDownTimer(findIdMobileCounter);
+
+                                }
                             }
                         }
                     }

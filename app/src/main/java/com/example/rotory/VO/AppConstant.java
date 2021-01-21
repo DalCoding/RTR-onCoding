@@ -8,6 +8,7 @@ public class AppConstant {
     public static final int mainCode = 1000;
     public static final int searchCode = 1100;
     public static final int profileEditCode = 4120;
+    public static final int findWithPhoneCode = 3221;
 
     public static final int MILLISINFUTURE = 120 * 1000; //총 시간
     public static final int COUNT_DOWN_INTERVAL = 1000; //onTick 메소드를 호출할 간격 (1초)
