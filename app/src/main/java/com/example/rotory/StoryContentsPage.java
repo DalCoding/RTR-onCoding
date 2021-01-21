@@ -201,8 +201,6 @@ public class StoryContentsPage extends Fragment {
         Bundle contentsBundle = this.getArguments();
         String contentsID = contentsBundle.getString("storyDocumentId");
 
-        //String contentsID = "LLNVEsSg2hzVa75gEIvw";
-
         Log.d(TAG, "initUi 시작, 번들 전송 잘됐는지 확인, pDocumentId :" + contentsID);
         loadContents(contentsID, user);
 
@@ -365,7 +363,6 @@ public class StoryContentsPage extends Fragment {
                     Log.d(TAG, "자료불러옴" + task.getResult().getId());
                     Map<String, Object> document = new HashMap<>();
                     document = task.getResult().getData();
-
                     if (document != null) {
                         Log.d(TAG, String.valueOf(document));
                     } else {
@@ -409,39 +406,46 @@ public class StoryContentsPage extends Fragment {
                             }
                         });
                     }
-
                     commConText.setText(comment.getComment());
                     commTimeText.setText(comment.getSavedDate());
                     Log.d(TAG, "정보 입력 확인" + commConText.getText().toString() +
                             "=>" + comment.getComment());
-                            }
-                        });
-                    }
+                }
+            });
+        }
 
 
         private void openReportDialog(QueryDocumentSnapshot pDocument, String pDocumentId) {
             reportSpinner = getView().findViewById(R.id.reportSpinner);
 
-           ArrayAdapter reportAdapter = ArrayAdapter.createFromResource(context, R.array.reportList, android.R.layout.simple_spinner_dropdown_item);
+            ArrayAdapter reportAdapter = ArrayAdapter.createFromResource(context, R.array.reportList, android.R.layout.simple_spinner_dropdown_item);
 
-            reportAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            reportSpinner.setAdapter(reportAdapter);
-
-            reportSpinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                }
-
-                public void onNothingSelected(AdapterView<?> parent) {
-                }
-            });
         }
 
-        //다이얼로그 만들기+띄우기
-        //다이얼로그 메세지 누르면 받아오기 String report...
-        //report 콜렉션에 들어갈 정보 만들기 Map.put....(reportText, personId, reportedId, reported_Date)
-
     }
+
+    private void openReportDialog(QueryDocumentSnapshot pDocument, String pDocumentId) {
+        reportSpinner = getView().findViewById(R.id.reportSpinner);
+
+        ArrayAdapter reportAdapter = ArrayAdapter.createFromResource(getContext(), R.array.reportList, android.R.layout.simple_spinner_dropdown_item);
+
+        reportAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        reportSpinner.setAdapter(reportAdapter);
+
+        reportSpinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            }
+
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+    }
+
+    //다이얼로그 만들기+띄우기
+    //다이얼로그 메세지 누르면 받아오기 String report...
+    //report 콜렉션에 들어갈 정보 만들기 Map.put....(reportText, personId, reportedId, reported_Date)
+
 
     private void showToast(String s) {
         Toast.makeText(getContext(), s, Toast.LENGTH_SHORT).show();
@@ -589,52 +593,53 @@ public class StoryContentsPage extends Fragment {
         }
     }
 
+
     private void saveComment(String contentsId, View v) {
-                //FirebaseUser user = mAuth.getCurrentUser();
-                String userEmail = user.getEmail();
-                String comment = scontentsCommEdit.getText().toString();
-                Log.d(TAG, "saveComment"+comment);
+        //FirebaseUser user = mAuth.getCurrentUser();
+        String userEmail = user.getEmail();
+        String comment = scontentsCommEdit.getText().toString();
+        Log.d(TAG, "saveComment" + comment);
 
-                HashMap<String, Object> result = new HashMap<>();
-                result.put("comment", comment); //EditText 적힌 내용 가져오기
-                result.put("contentsId", contentsId);
-                result.put("commentType", "댓글");
-                result.put("uid", user.getUid());
-                result.put("savedDate",appConstant.dateFormat.format(new Date()));
-                // db. collection person , whereEqualto "userId", user,getEmail . get task.getresult -> getid
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("comment", comment); //EditText 적힌 내용 가져오기
+        result.put("contentsId", contentsId);
+        result.put("commentType", "댓글");
+        result.put("uid", user.getUid());
+        result.put("savedDate", appConstant.dateFormat.format(new Date()));
+        // db. collection person , whereEqualto "userId", user,getEmail . get task.getresult -> getid
 
-                Log.d(TAG,"UserEmail받아옴" + userEmail);
+        Log.d(TAG, "UserEmail받아옴" + userEmail);
 
-                db.collection("person").whereEqualTo("userId", userEmail)
-                        .get()
-                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                if (task.isSuccessful()){
-                                    for (QueryDocumentSnapshot documentSnapshot : task.getResult()){
-                                        String personId = documentSnapshot.getId();
-                                        Log.d(TAG,"personId 정보? " + personId);
-                                        result.put("personId", personId);
-                                        writerNewUser(contentsId,result);
-                                    }
-                                }
+        db.collection("person").whereEqualTo("userId", userEmail)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
+                                String personId = documentSnapshot.getId();
+                                Log.d(TAG, "personId 정보? " + personId);
+                                result.put("personId", personId);
+                                writerNewUser(contentsId, result);
                             }
-                        }).addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        Log.d(TAG, "saveCommnet onsuccessListener 확인 " + queryDocumentSnapshots.toString());
+                        }
                     }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d(TAG, "saveCommnet 유저 정보 불러오기 실패 : " +e.toString());
-                    }
-                });
-
+                }).addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                Log.d(TAG, "saveCommnet onsuccessListener 확인 " + queryDocumentSnapshots.toString());
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d(TAG, "saveCommnet 유저 정보 불러오기 실패 : " + e.toString());
+            }
+        });
     }
 
+
     //댓글 달면 데이터 추가
-    private void writerNewUser(String documentId, HashMap<String,Object> commentData) {
+    private void writerNewUser(String documentId, HashMap<String, Object> commentData) {
         //User user = new User(name, email);
 
         db.collection("contents").document(documentId).collection("comment")
@@ -642,12 +647,12 @@ public class StoryContentsPage extends Fragment {
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
-                        Log.d(TAG,"데이터저장성공");
+                        Log.d(TAG, "데이터저장성공");
                         Log.d(TAG, "코멘트 정보 => " + documentReference);
                         showToast("글이 추가되었습니다");
                     }
                 })
-                .addOnFailureListener(new OnFailureListener(){
+                .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Log.d(TAG, "저장 실패..." + e.toString());
@@ -687,6 +692,7 @@ public class StoryContentsPage extends Fragment {
                         }
                     }
                 });
+
     }
 
 
@@ -694,7 +700,7 @@ public class StoryContentsPage extends Fragment {
     private void setContents(Map<String, Object> contentsList) {
         Log.d(TAG, "title확인" + contentsList.get("title"));
         Map<String, Object> imageCommentList = (Map<String, Object>) contentsList.get("imageComment");
-        String userLevel =contentsList.get("userLevel").toString();
+        String userLevel = contentsList.get("userLevel").toString();
         scontentsTitleText.setText(contentsList.get("title").toString());
         //scontentsBigImg.setImage(contentsList.get("titleImage").toString());
         scontentsMentText.setText(imageCommentList.get("image1").toString());
@@ -723,7 +729,7 @@ public class StoryContentsPage extends Fragment {
                                 String pDocumentId = pDocument.getId();
                                 Log.d(TAG, "isInList : 해당 유저 고유번호 받아옴" + pDocumentId);
                                 CollectionReference userCollectionRef = db.collection("person").document(pDocumentId).collection(userCollection);
-                                if (userCollection.equals("myStar")){
+                                if (userCollection.equals("myStar")) {
                                     userCollectionRef
                                             .whereEqualTo("personId", contentsId)
                                             .get()
@@ -752,8 +758,7 @@ public class StoryContentsPage extends Fragment {
                                                 }
                                             });
 
-                                }
-                                else {
+                                } else {
                                     if (userCollection.contains(userCollection)) {
                                         Log.d(TAG, "isInList " + userCollection + " 호출 성공");
                                         userCollectionRef
@@ -795,7 +800,9 @@ public class StoryContentsPage extends Fragment {
                         }
                     }
                 });
-    }}
+    }
+}
+
 
 
     // comment 시간 표시(n분 전...)    : TextView commTimeText;
@@ -827,6 +834,79 @@ public class StoryContentsPage extends Fragment {
     }*/
 
 
+    /*
+    private void clickLikeImage(String contentsID,String userId) {
+        //좋아요 버튼 누르면 해당 글 정보 받아가기
+                Log.d(TAG, "user에서 아이디 잘 받아옴?" + userId);
+
+                db.collection("contents")
+                        .document(contentsID)
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    Log.d(TAG, "콘텐츠 페이지에서 해당 다큐먼트 받아오기 성공");
+                                    Map<String, Object> contents = new HashMap<>();
+                                    contents = task.getResult().getData();
+                                    Map<String, Object> myLike = new HashMap<>();
+                                    myLike.put("contentsId",contentsID);
+                                    myLike.put("contentsType", contents.get("contentsType"));
+                                    myLike.put("title", contents.get("title").toString());
+                                    myLike.put("titleImage", contents.get("titleImage").toString());
+                                    myLike.put("likedDate", new Date().toString());
+                                    Log.d(TAG, "맵에 잘 들어갔니?" + myLike.get("title"));
+                                    saveMyLike(userId, myLike);
+
+                                }
+                            }
+                        });
+            }
 
 
 
+    private void saveMyLike(String userId, Map<String, Object> myLike) {
+        //1. userId-> 현재사용자에게서 받아온 사용자아이디로 사용자의 고유번호 찾기
+        //2. 해당 고유번호 이용해서 사용자 자료 아래에 좋아요 폴더 생성
+        db.collection("person")
+                .whereEqualTo("userId", userId)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            Log.d(TAG, "유저 아이디로 사용자 찾기 성공");
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                String userDId = document.getId();
+                                Log.d(TAG, "아이디 확인" + document.getId() + "==>" + userDId);
+                                if (userDId != null) {
+                                    db.collection("person").document(userDId)
+                                            .collection("myLike").document()
+                                            .set(myLike)
+                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+                                                    if (task.isSuccessful()) {
+                                                        Log.d(TAG, "myLike 목록에 저장 성공");
+
+                                                    } else {
+                                                        Log.d(TAG, "테이블에 저장 실패");
+                                                    }
+                                                }
+
+                                            });
+                                } else {
+                                    Log.d(TAG, "userId 없음" + userDId);
+                                }
+                            }
+
+                        }
+                    }
+                });
+    }
+
+
+
+
+
+*/
