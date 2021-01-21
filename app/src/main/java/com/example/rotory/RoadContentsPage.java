@@ -38,6 +38,8 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import net.daum.mf.map.api.MapView;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -79,6 +81,9 @@ public class RoadContentsPage extends Fragment {
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseUser user = mAuth.getCurrentUser();
     FirebaseFirestore db;
+
+    MapView mapView;
+    ViewGroup mapContainer;
 
     @Override
     public void onAttach(Context context) {
@@ -203,6 +208,10 @@ public class RoadContentsPage extends Fragment {
         rcontentsTaketimeText = rootView.findViewById(R.id.rcontentsTaketimeText);
         rcontentsTakewhoText = rootView.findViewById(R.id.rcontentsTakewhoText);
         rCommRView = rootView.findViewById(R.id.rCommRView);
+        mapContainer = rootView.findViewById(R.id.rcontentsMap);
+
+        mapView = new MapView(getActivity());
+        mapContainer.addView(mapView);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         rCommRView.setLayoutManager(layoutManager);

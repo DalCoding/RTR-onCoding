@@ -71,7 +71,7 @@
             android:orientation="vertical">
 
             <Button
-                android:id="@+id/dinfoMoveBtm"
+                android:id="@+id/dinfoMoveBtn"
                 android:layout_width="80dp"
                 android:layout_height="50dp"
                 android:layout_gravity="center"
@@ -79,8 +79,7 @@
                 android:gravity="center"
                 android:text="이야기로 이동"
                 android:textColor="#442C2E"
-                android:textSize="10sp"
-                app:backgroundTint="@empty"
+                android:textSize="12sp"
                 app:iconPadding="2sp" />
         </LinearLayout>
 

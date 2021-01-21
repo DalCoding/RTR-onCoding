@@ -70,6 +70,8 @@
         android:layout_below="@id/writeMapSearchBox"
         android:layout_centerHorizontal="true"
         android:background="@color/white"
-        android:visibility="invisible" />
+        android:visibility="invisible" >
+
+    </androidx.recyclerview.widget.RecyclerView>
 
 </RelativeLayout>
