@@ -279,7 +279,7 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
 
                     case R.id.theme:
                        // if(isSignIn) {
-                            Intent ThemeIntent= new Intent(getApplicationContext(), MainActivity.class);
+                            Intent ThemeIntent= new Intent(getApplicationContext(), ThemePage.class);
                             startActivityForResult(ThemeIntent, ThemeCode);
                             bottomNavigation.setVisibility(View.VISIBLE);
                              setTabUnderBar(1);
