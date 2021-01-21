@@ -542,12 +542,12 @@ public class StoryContentsPage extends Fragment {
             scontentsCommBtn.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v) {
-                    String getUserName  = ;
+                    /*String getUserName  = ;
                     String getUserLevel = ;
-                    String getTime= ;
+                    String getTime= ;*/
 
                     HashMap<String, Object> result = new HashMap<>();
-                    result.put("comment", gettext()); //EditText 적힌 내용 가져오기
+                    result.put("comment", ""/*gettext()*/); //EditText 적힌 내용 가져오기
                     result.put("contentsId", contentsId);
                     result.put("contentsType","댓글");
                     //result.put("personId", "아이디 넣기!" _) // db. collection person , whereEqualto "userId", user,getEmail . get task.getresult -> getid
