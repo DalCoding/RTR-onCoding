@@ -174,5 +174,26 @@ public class LogInActivity extends AppCompatActivity  {
         return false;
     }
 
+    public FirebaseUser LogInWithAccount(FirebaseAuth mAuth, FirebaseUser user,String emailUrl, String userId) {
 
+        if (mAuth.isSignInWithEmailLink(emailUrl)){
+            mAuth.signInWithEmailLink(userId, emailUrl).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    Log.d(TAG,"받아온 계정으로 로그인 성공");
+                }
+            });
+        }else{
+            Log.d(TAG,"로그인 실패");
+        }
+        if (user != null) {
+            user = mAuth.getCurrentUser();
+            Log.d(TAG,"사용자 받아옴 " + user.getEmail());
+
+        }else{
+            Log.d(TAG,"사용자 여전히 null");
+        }
+        return user;
+
+    }
 }
