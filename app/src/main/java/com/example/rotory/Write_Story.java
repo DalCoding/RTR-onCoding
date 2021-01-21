@@ -1,12 +1,6 @@
 package com.example.rotory;
 
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-
 import android.content.ClipData;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -15,35 +9,73 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
-
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.rotory.Adapter.WriteStoryImageAdapter;
+import com.example.rotory.Interface.OnContentsItemClickListener;
 
 import java.io.InputStream;
 import java.util.ArrayList;
 
-public class Write_Story extends AppCompatActivity {
+public class Write_Story extends AppCompatActivity  {
+    private final String TAG = "Write_Story";
     Button addbtn;
     ImageButton DeleteBtn;
     RecyclerView recyclerView;
     ImageView titleImage;
     int CODE_ALBUM_REQUEST = 111;
+    OnContentsItemClickListener listener;
+    Spinner spinner;
+    private ArrayAdapter spinnerAdapter;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.write_story_page);
         titleImage = findViewById(R.id.writeStoryMainImageView);
         DeleteBtn = findViewById(R.id.writeStorySetDeleteImageBtn);
+        spinner = findViewById(R.id.writeStoryPreFixSpinner);
         addbtn= findViewById(R.id.writeStoryImageAddBtn);
         recyclerView= findViewById(R.id.writeStoryImageListRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 
+//        Spinner spinner =findViewById(R.id.writeStoryPreFixSpinner);
+//        spinnerAdapter = new ArrayAdapter(this,R.layout.support_simple_spinner_dropdown_item, );
+//        ArrayList<String> spinnerList = new ArrayList<>();
+//        spinner.setAdapter(spinnerAdapter);
+//
+//        spinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                Toast.makeText( Write_Story.this,"선택 " + spinner.getItemAtPosition(position),Toast.LENGTH_SHORT).show();
+//            }
+//        });
 
+//        Spinner spinner = findViewById(R.id.writeStoryPreFixSpinner);
+//        try {
+//            Field popup = Spinner.class.getDeclaredField("mPopup");
+//            ListPopupWindow popupWindow = (ListPopupWindow) popup.get(spinner);
+//            popupWindow.setHeight(500);
+//        } catch (IllegalAccessException e) {
+//            e.printStackTrace();
+//        } catch (NoSuchFieldException e) {
+//            e.printStackTrace();
+//        }
 
+        //String prefixId = spinner.getSelectedItemPosition().toString();  //말머리 String
+        String prefixId = spinner.getSelectedItem().toString(); //말머리 String
 
         //버튼 클릭했을 때 갤러리 연다
         addbtn.setOnClickListener(new View.OnClickListener() {
@@ -64,8 +96,14 @@ public class Write_Story extends AppCompatActivity {
                 titleImage.setImageResource(0); //-삭제 버튼 자동 생성
             }
         });
+        
+        // changeUritoBITmap();
 
     } //end of onCreate()
+
+//    private Map<String, Bitmap> changeUritoBITmap() {
+//        Bitmap titleimagebitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), Uri);
+//    }
 
 
     //앨범 이미지 가져오기
@@ -73,8 +111,9 @@ public class Write_Story extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         //갤러리 이미지 가져오기
+        ArrayList<Uri> uriList = null;
         if (requestCode == CODE_ALBUM_REQUEST && resultCode == RESULT_OK && data != null) {
-            ArrayList<Uri> uriList = new ArrayList<>();
+            uriList = new ArrayList<>();
             if (data.getClipData() != null) {
                 ClipData clipData = data.getClipData();
                 if (clipData.getItemCount() > 10) { // 10개 초과하여 이미지를 선택한 경우
@@ -90,8 +129,18 @@ public class Write_Story extends AppCompatActivity {
                 }
             }
             //리사이클러뷰에 보여주기
-            WriteStoryImageAdapter adapter = new WriteStoryImageAdapter(uriList, Write_Story.this);
+            WriteStoryImageAdapter adapter = new WriteStoryImageAdapter(uriList, Write_Story.this, listener);
             recyclerView.setAdapter(adapter);
+
+//           adapter.setOnItemClickListener(new OnContentsItemClickListener() {
+//            @Override
+//            public void onItemClick(WriteStoryImageAdapter.writestroyHolder writestroyHolder, View view, int position) {
+//               Log.d(TAG, "사진 URI확인");
+//                Uri uri = adapter.getItem(position);
+//                titleImage.setImageURI(uri);
+//                
+//            }
+//        });
 
             if (requestCode == CODE_ALBUM_REQUEST) {
                 if (resultCode == RESULT_OK) {
@@ -113,6 +162,8 @@ public class Write_Story extends AppCompatActivity {
         } //end of onActivityResult
 
     }
-    }
+
+
+}
 
 

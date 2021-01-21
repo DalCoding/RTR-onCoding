@@ -240,7 +240,8 @@
                         android:layout_centerVertical="true"
                         android:layout_marginStart="10dp"
                         android:layout_marginLeft="10dp"
-                        android:background="@drawable/spinnerbox" />
+                        android:background="@drawable/spinnerbox"
+                        android:dropDownHeight="100dp"/>
 
                     <TextView
                         android:id="@+id/writeStoryHourTitle"
