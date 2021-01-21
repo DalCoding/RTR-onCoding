@@ -3,6 +3,7 @@ package com.example.rotory;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.DocumentsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,14 +18,20 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.rotory.Adapter.LocationAdapter;
 import com.example.rotory.Adapter.SCommAdapter;
 import com.example.rotory.Interface.OnUserActItemClickListener;
 import com.example.rotory.VO.AppConstant;
 import com.example.rotory.VO.Person;
 import com.example.rotory.account.LogInActivity;
+import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -32,6 +39,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 /*
@@ -42,6 +50,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;*/
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,13 +59,9 @@ public class StoryContentsPage extends Fragment {
     final static String TAG = "StoryContentsPage";
     AppConstant appConstant = new AppConstant();
 
-    private RecyclerView recyclerView;
-    private RecyclerView.Adapter adapter;
-    private RecyclerView.LayoutManager layoutManager;
     /*
     private FirebaseDatabase database;
     private DatabaseReference databaseReference;*/
-    private View view;
 
     TextView scontentsGroupText;
     ImageView scontentsLinkImg;
@@ -78,7 +83,8 @@ public class StoryContentsPage extends Fragment {
 
     FirebaseFirestore db = FirebaseFirestore.getInstance(); //db 선언
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
-    FirebaseUser user = mAuth.getCurrentUser();
+    FirebaseUser user = mAuth.getCurrentUser();  //로그인하고있는유저
+    private FirestoreRecyclerAdapter commentAdapter;
     //String userEmail = user.getEmail();
 
     ArrayList<Comment> commentArrayList;
@@ -89,14 +95,15 @@ public class StoryContentsPage extends Fragment {
     TextView commReportText;
     Spinner reportSpinner;
 
-    SCommAdapter commAdapter;
     //Comment comments = new Comment();
     Person persons = new Person();
 
     TextView commUsernameText;
     TextView commConText;
     TextView commTimeText;
-    ImageView userLevelImg;
+    ImageView commLevelImg;
+
+    EditText comment;
 
 
     // 스피너
@@ -145,60 +152,29 @@ public class StoryContentsPage extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.story_contents_page, container, false);
 
-/*
-        view = inflater.inflate(R.layout.StoryContentsPage, container, false);
-        sCommRView = (RecyclerView) view.findViewById(R.id.sCommRView);
-        layoutManager = new LinearLayoutManager(getContext());
-        sCommRView.setLayoutManager(layoutManager);
-        commentArrayList = new ArrayList<>();
-
-        database = FirebaseDatabase.getInsteance();
-        databaseReference = database.getReference("COMMENT");
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChanged(@NonNull DataSnapshot dataSnapshot) {
-                commentArrayList.clear();
-                for (DataSnapshot snapshot : dataSnapshot.getChilden()) {
-                    Comment Comment = snapshot.getValue(Comment.class);
-
-                    commentArrayList.add(Comment);
-                }
-                commAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.e("COMMENT", String.valueOf(databaseError.toException()));
-            }
-        });
-        commAdapter = new SCommAdapter(commentArrayList, getContext());
-        sCommRView.setAdapter(commAdapter);
-
-        return view;
-    }
-*/
 /*      ActionBar ab = getSupportActionBar();
         ab.setTitle("ActionBar Title by setTitle()");*/
         //상단바 제목 바꾸기
 
-        initUI(rootView);
+        FirebaseUser user = mAuth.getCurrentUser();
+
+        if (user != null) {
+            initUI(rootView);
+        }
         return rootView;
 
-/*        sCommRView = findViewById(R.id.sCommRView);
+    }
 
-        sCommRView.setLayoutManager(layoutManager);
-        commAdapter = new SCommAdapter();
+    @Override
+    public void onStart() {
+        super.onStart();
+        commentAdapter.startListening();
+    }
 
-        commAdapter.addItem(new Comment ("", "", "", "", "",));
-
-        sCommRView.setAdapter(commAdapter);
-
-        commAdapter.setOnItemClickListener(new OnCommItemClickListener() {
-            @Override
-            public void onItemClick(SCommAdapter.ViewHolder holder, View view, int position) {
-                Comment item = commAdapter.getItem(position);
-            }
-        });*/
+    @Override
+    public void onStop() {
+        super.onStop();
+        commentAdapter.stopListening();
     }
 
     private void initUI(ViewGroup rootView) {
@@ -219,13 +195,9 @@ public class StoryContentsPage extends Fragment {
         scontentsLocText = rootView.findViewById(R.id.scontentsLocText);
 
         Bundle contentsBundle = this.getArguments();
-        String contentsID = contentsBundle.getString("storyDocumentId");
-       // String contentsID = "LLNVEsSg2hzVa75gEIvw";
+        //String contentsID = contentsBundle.getString("storyDocumentId");
+        String contentsID = "LLNVEsSg2hzVa75gEIvw";
         Log.d(TAG, "initUi 시작, 번들 전송 잘됐는지 확인, pDocumentId :" + contentsID);
-
-
-
-
         loadContents(contentsID, user);
 
         if (user != null) {
@@ -233,50 +205,29 @@ public class StoryContentsPage extends Fragment {
                     R.drawable.heartfilled, R.drawable.heart);
             getUserActivityIcon(contentsID, "myScrap", scontentsScrapImg,
                     R.drawable.scrabtagfilled, R.drawable.scrabtag);
+
         }
-      
+
         getUserActivityIcon(contentsID, "myStar", scontentsStarImg,
                 R.drawable.starfilled, R.drawable.star);
 
+        sCommRView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        //person db에서 comment 가져오기
-        /*db.collection("person")
-                .whereEqualTo("userId", userEmail)
-                .get()
-                .getResult().get("uid")*/
-        //나중에는 해당 글에서 글의 contentsID 넘기는 방식으로 변경할 예정
-        db.collection("contents").whereEqualTo("contentsType", 1).get()
+        Query query = db.collection("contents")
+                .document(contentsID).collection("comment")
+                .orderBy("savedDate", Query.Direction.DESCENDING);
+        Log.d(TAG, "쿼리문 확인" + query);
 
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                String personId = document.getId();
+        FirestoreRecyclerOptions<Comment> options = new FirestoreRecyclerOptions.Builder<Comment>()
+                .setQuery(query, Comment.class)
+                .build();
 
-                                //Comment(personId);
+        Log.d(TAG, "recyclerView options 확인" + options);
 
-                                String userName1 = String.valueOf(document.get("userName"));
-                                //commUsernameText = findViewById(R.id.commUsernameText);
-                                commUsernameText.setText(userName1);
-                                //String userText = // ...
+        makeCommentAdapter(options);
+        //commentAdapter.startListening();
+        sCommRView.setAdapter(commentAdapter);
 
-                                //불러올 내용 채우기
-
-                                commReportText.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        //showReportDialog(document, document.getId());
-                                        //신고창 띄우기
-                                    }
-                                });
-                            }
-                        }else{
-                                Log.d("firebase", "Error getting documents: ", task.getException());
-                            }
-                        }
-
-        //person db에서 comment 가져오기
 /*        db.collection("person")
                 .whereEqualTo("userId", userEmail)
                 .get()
@@ -328,13 +279,132 @@ public class StoryContentsPage extends Fragment {
         });
 */
 
-
-    });
     }
 
-    private void loadContents(QueryDocumentSnapshot contentsID, FirebaseUser user) {
+    private void makeCommentAdapter(FirestoreRecyclerOptions<Comment> options) {
+        commentAdapter = new FirestoreRecyclerAdapter<Comment, CommentViewHolder>(options) {
+
+            @Override
+            public void onDataChanged() {
+                super.onDataChanged();
+                Log.d(TAG, " 어댑터 작동");
+            }
+
+            @NonNull
+            @Override
+            public CommentViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.comment, parent, false);
+                return new CommentViewHolder(view);
+            }
+
+            @Override
+            protected void onBindViewHolder(@NonNull CommentViewHolder holder, int position, @NonNull Comment model) {
+                Log.d(TAG, "onBindViewHolder 작동" + holder.itemView.toString());
+                holder.setCommentItems(model);
+            }
+        };
+    }
+
+    public class CommentViewHolder extends RecyclerView.ViewHolder {
+        private View view;
+
+        public CommentViewHolder(@NonNull View itemView) {
+            super(itemView);
+            view = itemView;
+            //comment = itemView.findViewById(R.id.commConText);
+        }
+
+        public void setCommentItems(Comment comment) {
+            Log.d(TAG,"set CommentItems 시작");
+            commUsernameText = view.findViewById(R.id.commUsernameText);
+            commConText = view.findViewById(R.id.commConText);
+            commTimeText = view.findViewById(R.id.commTimeText);
+            commReportText = view.findViewById(R.id.commReportText);
+            commLevelImg = view.findViewById(R.id.commLevelImg);
+            Log.d(TAG,"컨텐츠 확인" + comment.getPersonId() + ":" + user.getEmail());
+            db.collection("person")
+                    .whereEqualTo("userId", user.getEmail())
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                String userLevel = String.valueOf(document.get("userLevel"));
+                                Log.d(TAG, userLevel);
+                                commLevelImg.setImageResource(appConstant.getUserLevelImage(userLevel));
+                            }
+                        }
+                    });
+            String pDocumentId =
+                    "32RlqqiGlefRWRXSA16c";
+ //String.valueOf(comment.getPersonId());
 
 
+            db.collection("person").document(pDocumentId)
+                    .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    Log.d(TAG, "자료불러옴" + task.getResult().getId());
+                    HashMap<String, Object> document = (HashMap<String, Object>) task.getResult().getData();
+                    if (document != null) {
+                        Log.d(TAG, String.valueOf(document));
+                    }else{
+                        Log.d(TAG, String.valueOf(document) + "값없음");
+                    }
+                    String userName = document.get("userName").toString();
+                    String userLevel = document.get("userLevel").toString();
+                    commUsernameText.setText(userName);
+                    commLevelImg.setImageResource(appConstant.getUserLevelImage(userLevel));
+                    String commentedUser = task.getResult().get("userId").toString();
+                    if (user != null){
+                        if (user.getEmail().equals(commentedUser)){
+                            commReportText.setText("삭제");
+                            commReportText.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    deleteComment();
+                                    showToast("댓글을 삭제하셨습니다.");
+                                }
+                            });
+
+                        }else{
+                            commReportText.setText("신고");
+                            commReportText.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    openReportDialog();
+                                    showToast("댓글을 신고하셨습니다.");
+                                }
+                            });
+                        }
+                        
+                    }else {
+                        commReportText.setText("신고");
+                        commReportText.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                showToast("로그인이 필요한 서비스입니다.");
+                            }
+                        });
+                    }
+                }
+            });
+
+            commConText.setText(comment.getComment().toString());
+            commTimeText.setText(comment.getSavedDate().toString());
+            Log.d(TAG, "정보 입력 확인" + commConText.getText().toString()+
+                    "=>" + comment.getComment());
+        }
+    }
+
+    private void openReportDialog() {
+    }
+
+    private void showToast(String s) {
+        Toast.makeText(getContext(), s, Toast.LENGTH_SHORT).show();
+    }
+
+    private void deleteComment() {
     }
 
     private void loadContents(String contentsID, FirebaseUser user) {
@@ -353,6 +423,7 @@ public class StoryContentsPage extends Fragment {
                         Log.d(TAG, "title확인" + ContentsList.get("title"));
                         setContents(ContentsList);
                         clickUserActIcon(contentsID, ContentsList, user);
+
                     } else {
                         Log.d(TAG, "No such document");
                     }
@@ -413,7 +484,7 @@ public class StoryContentsPage extends Fragment {
                 @Override
                 public void onClick(View v) {
                     if (writerUid.equals(user.getUid())) {
-                        Toast.makeText(getContext(), user.getDisplayName() +"님의 도토리! 자신의 도토리는 담을 수 없습니다.", Toast.LENGTH_SHORT).show();
+                        showToast(user.getDisplayName() +"님의 도토리! 자신의 도토리는 담을 수 없습니다.");
                     } else {
                         Log.d(TAG, "하트아이콘 클릭");
                         isInList(contentsId, contentsList, "myLike", user,
@@ -468,13 +539,60 @@ public class StoryContentsPage extends Fragment {
                     startActivity(logInIntent);
                 }
             });
+
+            //댓글 저장 버튼 누르면 저장되도록
+            scontentsCommBtn.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v) {
+                    String getUserName  = ;
+                    String getUserLevel = ;
+                    String getTime= ;
+
+                    HashMap<String, Object> result = new HashMap<>();
+                    result.put("comment", gettext()); //EditText 적힌 내용 가져오기
+                    result.put("contentsId", contentsId);
+                    result.put("contentsType","댓글");
+                    //result.put("personId", "아이디 넣기!" _) // db. collection person , whereEqualto "userId", user,getEmail . get task.getresult -> getid
+
+                    //person collection db 한번 돌리고 onSuccess  안에서 result.put"personId"
+
+                    result.put("savedDate", new Date().toString());
+                    result.put("uid", user.getUid());
+
+                    writerNewUser(contentsId,result);
+
+                }
+            });
         }
     }
+
+    //댓글 달면 데이터 추가
+    private void writerNewUser(String documentId, HashMap<String,Object> commentData) {
+        //User user = new User(name, email);
+
+        db.collection("contents").document(documentId).collection("comment")
+                .add(commentData)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Log.d(TAG,"데이터저장성공");
+                        showToast("글이 추가되었습니다");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener(){
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d(TAG, "저장 실패...");
+                    }
+                });
+    }
+
+
     //사용자의 아이디와 글쓴이의 아이디를 비교해 같을경우 즐겨찾기를 할 수 없도록 설정(자기 자신 즐겨찾기 못함)
     private void setFavoriteAct(Map<String, Object> contentsList, FirebaseUser user) {
         String userId = user.getEmail();
 
-       Log.d(TAG,"setFavoriteAct : " + contentsList.get("pDocumentId").toString());
+        Log.d(TAG,"setFavoriteAct : " + contentsList.get("pDocumentId").toString());
         if (contentsList.get("pDocumentId").toString().equals(userId)){
             Toast.makeText(getContext(), "자신을 관심 목록에 넣을 수 없습니다.", Toast.LENGTH_SHORT).show();
         }
@@ -510,8 +628,8 @@ public class StoryContentsPage extends Fragment {
     //해당 글의 내용을 뿌려줌
     private void setContents(Map<String, Object> contentsList) {
         Log.d(TAG, "title확인" + contentsList.get("title"));
-          Map<String, Object> imageCommentList = (Map<String, Object>) contentsList.get("imageComment");
-          String userLevel =contentsList.get("userLevel").toString();
+        Map<String, Object> imageCommentList = (Map<String, Object>) contentsList.get("imageComment");
+        String userLevel =contentsList.get("userLevel").toString();
         scontentsTitleText.setText(contentsList.get("title").toString());
         //scontentsBigImg.setImage(contentsList.get("titleImage").toString());
         scontentsMentText.setText(imageCommentList.get("image1").toString());
@@ -648,7 +766,7 @@ public class StoryContentsPage extends Fragment {
             //report 제출 버튼
         }*/
 
-        }
+}
 
     /*
     private void clickLikeImage(String contentsID,String userId) {
@@ -667,7 +785,7 @@ public class StoryContentsPage extends Fragment {
                                     contents = task.getResult().getData();
                                     Map<String, Object> myLike = new HashMap<>();
                                     myLike.put("contentsId",contentsID);
-                                    myLike.put("contentsType", contents.get("contentsType").toString());
+                                    myLike.put("contentsType", contents.get("contentsType"));
                                     myLike.put("title", contents.get("title").toString());
                                     myLike.put("titleImage", contents.get("titleImage").toString());
                                     myLike.put("likedDate", new Date().toString());
