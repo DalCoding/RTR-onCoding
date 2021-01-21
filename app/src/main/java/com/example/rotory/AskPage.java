@@ -16,6 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.rotory.VO.AppConstant;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -33,6 +34,7 @@ import java.util.Map;
 
 
 public class AskPage extends AppCompatActivity {
+    AppConstant appConstant = new AppConstant();
 
     private static final String TAG = "AskPage";
     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -131,9 +133,8 @@ public class AskPage extends AppCompatActivity {
                 askEditText = findViewById(R.id.askEditText);
                 String askContents = askEditText.getText().toString();
 
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yy-MM-dd HH:mm");
                 Date currentDate = new Date();
-                String asked_date = dateFormat.format(currentDate);
+                String asked_date = appConstant.dateFormat.format(currentDate);
 
                 Map<String, Object> AskData = new HashMap<>();
                 AskData.put("userId", userEmail);

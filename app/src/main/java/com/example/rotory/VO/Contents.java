@@ -1,5 +1,6 @@
 package com.example.rotory.VO;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Map;
@@ -23,9 +24,10 @@ public class Contents {
     String isPartner;
     int dtrRating;
     String ratingComment;
-    Map<String, String> dtrRoadLine;
+    ArrayList dtrName;
+    ArrayList dtrLatLng;
     String prefix;
-    String address;
+    ArrayList address;
     String titleImage;
     ArrayList<String> imageComment;
     String article;
@@ -53,8 +55,8 @@ public class Contents {
 
     public Contents(int contentsType, String uid, String title, String tag1, String tag2, String tag3, String tag4,
                     String tag5, String tag6, String tag7, String tag8, String tag9, String tag10, String hour, String min,
-                    String isPartner, int dtrRating, String ratingComment, Map<String, String> dtrRoadLine, String prefix,
-                    String address, String titleImage, ArrayList<String> imageComment, String article, int isPublic, Date writeDate,
+                    String isPartner, int dtrRating, String ratingComment, ArrayList dtrName, ArrayList dtrLatLng, String prefix,
+                    ArrayList address, String titleImage, ArrayList<String> imageComment, String article, int isPublic, Date writeDate,
                     Date modifiedDate, String scrapped, Map<String, String> smallImage, String userLevel, String userName, String liked) {
 
         this.contentsType = contentsType;
@@ -75,7 +77,8 @@ public class Contents {
         this.isPartner = isPartner;
         this.dtrRating = dtrRating;
         this.ratingComment = ratingComment;
-        this.dtrRoadLine = dtrRoadLine;
+        this.dtrName = dtrName;
+        this.dtrLatLng = dtrLatLng;
         this.prefix = prefix;
         this.address = address;
         this.titleImage = titleImage;
@@ -236,14 +239,21 @@ public class Contents {
         this.ratingComment = ratingComment;
     }
 
-    public Map<String, String> getDtrRoadLine() {
-        return dtrRoadLine;
+    public ArrayList getDtrName() {
+        return dtrName;
     }
 
-    public void setDtrRoadLine(Map<String, String> dtrRoadLine) {
-        this.dtrRoadLine = dtrRoadLine;
+    public void setDtrName(ArrayList dtrName) {
+        this.dtrName = dtrName;
     }
 
+    public ArrayList getDtrLatLng() {
+        return dtrLatLng;
+    }
+
+    public void setDtrLatLng(ArrayList dtrName) {
+        this.dtrLatLng = dtrLatLng;
+    }
     public String getPrefix() {
         return prefix;
     }
@@ -252,11 +262,11 @@ public class Contents {
         this.prefix = prefix;
     }
 
-    public String getAddress() {
+    public ArrayList getAddress() {
         return address;
     }
 
-    public void setAddress(String address) {
+    public void setAddress(ArrayList address) {
         this.address = address;
     }
 

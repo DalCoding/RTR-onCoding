@@ -16,7 +16,7 @@ import com.example.rotory.R;
 
 import java.util.ArrayList;
 
-public class SCommAdapter extends RecyclerView.Adapter<SCommAdapter.CommentViewHolder>{
+public class SCommAdapter{} /*extends RecyclerView.Adapter<SCommAdapter.CommentViewHolder>{
 
     private ArrayList<Comment> arrayList;
     private Context context;
@@ -34,25 +34,25 @@ public class SCommAdapter extends RecyclerView.Adapter<SCommAdapter.CommentViewH
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.comment, viewGroup, false);
         CommentViewHolder holder = new CommentViewHolder(view,listener);
         return holder;
-        /* LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
+        *//* LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
         View itemView = inflater.inflate(R.layout.comment, viewGroup, false);
 
-        return new CommentViewHolder(itemView, this);*/
+        return new CommentViewHolder(itemView, this);*//*
     }
 
     @Override
     public void onBindViewHolder(@NonNull CommentViewHolder holder, int position) {
-/*        Glide.with(holder.itemView)
+*//*        Glide.with(holder.itemView)
                 .load(arrayList.get(position).getLevelImage())
                 .into(holder.commLevelImg);
         holder.commUsernameText.setText(arrayList.get(position).getUsername());
         holder.commTimeText.setText(arrayList.get(position).getTimeText());
-        holder.commConText.setText(arrayList.get(position).getConText());*/
-        /*Comment item = items.get(position);
-        viewHolder.setItem(item);*/
+        holder.commConText.setText(arrayList.get(position).getConText());*//*
+        *//*Comment item = items.get(position);
+        viewHolder.setItem(item);*//*
     }
 
-/*    @Override
+*//*    @Override
     public int getItemCount() {
         return items.size();
     }
@@ -82,7 +82,7 @@ public class SCommAdapter extends RecyclerView.Adapter<SCommAdapter.CommentViewH
         if (listener != null) {
             listener.onItemClick(holder, view, position);
         }
-    }*/
+    }*//*
 
     public class CommentViewHolder extends RecyclerView.ViewHolder {
         ImageView commLevelImg;
@@ -100,7 +100,7 @@ public class SCommAdapter extends RecyclerView.Adapter<SCommAdapter.CommentViewH
             this.commReportText = itemView.findViewById(R.id.commReportText);
         }
     }
-/*
+*//*
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view){
@@ -119,10 +119,10 @@ public class SCommAdapter extends RecyclerView.Adapter<SCommAdapter.CommentViewH
             commTimeText.setText(item.getTime());
             commConText.setText(item.getCommCon());
             commReportText.setText(item.getReport());
-        }*/
-        @Override
-        public int getItemCount() {
-            return(arrayList != null ? arrayList.size() : 0);
-        }
-    }
+        }*//*
+@Override
+public int getItemCount() {
+    return items.size();
+}
+    }*/
 

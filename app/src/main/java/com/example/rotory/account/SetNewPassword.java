@@ -25,6 +25,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.ActionCodeSettings;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -57,6 +58,8 @@ public class SetNewPassword extends AppCompatActivity {
     Button newPwSubmitBtn;
 
     Context mContext;
+    Intent intent;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -64,21 +67,24 @@ public class SetNewPassword extends AppCompatActivity {
         setContentView(R.layout.find_pw_new_pw_page);
         mContext = this;
         String emailUrl;
-        Intent intent =getIntent();
-        if (intent != null) {
-            emailUrl = intent.getData().toString();
-        }else{
-            emailUrl = null;
-        }
 
 
-        sharedPreferences =getSharedPreferences("FindAccountUserId", Context.MODE_PRIVATE);
+             intent =getIntent();
 
-        String userId =sharedPreferences.getString("userId",null);
+             if (intent.getData() != null) {
+                 emailUrl = intent.getData().toString();
+                 Log.d(TAG, "intent에 들어있는 url확인!" + emailUrl);
+                 sharedPreferences = getSharedPreferences("FindAccountUserId", Context.MODE_PRIVATE);
+                 String userId = sharedPreferences.getString("userId", null);
 
-        Log.d(TAG,"유알엘 정보 잘 받아왔나요?" + emailUrl);
-        Log.d(TAG,"아이디 정보 잘 받아왔나요?" + userId);
-        logInActivity.LogInWithAccount(mAuth,user,emailUrl,userId);
+                 Log.d(TAG, "유알엘 정보 잘 받아왔나요?" + emailUrl);
+                 Log.d(TAG, "아이디 정보 잘 받아왔나요?" + userId);
+
+                 logInActivity.LogInWithAccount(mAuth, user, emailUrl, userId);
+             }
+
+
+             Log.d(TAG, "유저존재여부 확인" + user);
 
         findPwNewPw = findViewById(R.id.findpw_check_edittext1);
         findPwNewPwCheck = findViewById(R.id.findpw_check_edittext2);
@@ -147,6 +153,11 @@ public class SetNewPassword extends AppCompatActivity {
 
              }
 
+          }
+      }).addOnFailureListener(new OnFailureListener() {
+          @Override
+          public void onFailure(@NonNull Exception e) {
+              showToast("계정정보를 받아올 수 없습니다. 인증여부를 확인해 주세요");
           }
       });
 

@@ -1,5 +1,6 @@
 package com.example.rotory;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -41,17 +42,33 @@ public class MainPage extends Fragment {
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     //MapView mapView;
+   // ViewGroup rootView;
+
+
 
     @Override
     public void onStop() {
         super.onStop();
-
+        getActivity().finish();
 
     }
+/*
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        getActivity().finish();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        getActivity().finish();
+    } */
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+        getActivity().finish();
     }
 
     @Nullable
@@ -61,8 +78,7 @@ public class MainPage extends Fragment {
         FirebaseUser user = mAuth.getCurrentUser();
 
         if (user != null) {
-
-            initUI(rootView);
+           initUI(rootView);
         }
         return rootView;
 
@@ -80,7 +96,7 @@ public class MainPage extends Fragment {
 
     private void initUI(ViewGroup rootView) {
 
-        MapView mapView = new MapView(getContext());
+        MapView mapView = new MapView(getActivity());
         ViewGroup mapViewContainer = (ViewGroup) rootView.findViewById(R.id.mainMapLayout);
         mapViewContainer.addView(mapView);
 
@@ -93,6 +109,7 @@ public class MainPage extends Fragment {
                 mapViewContainer.removeView(mapView);
                 Intent intent = new Intent(getActivity(), BigMapPage.class);
                 startActivity(intent);
+               // getActivity().finish();
 
             }
         });
