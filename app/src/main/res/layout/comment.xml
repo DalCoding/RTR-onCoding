@@ -37,17 +37,17 @@
 
             <TextView
                 android:id="@+id/commUsernameText"
-                android:layout_width="match_parent"
+                android:layout_width="299dp"
                 android:layout_height="21dp"
                 android:layout_weight="1"
                 android:text="user name" />
 
             <TextView
                 android:id="@+id/commTimeText"
-                android:layout_width="35dp"
-                android:layout_height="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="right"
-                android:text="2 분전"
+                android:text="20000 분전"
                 android:textSize="12sp" />
 
         </LinearLayout>
