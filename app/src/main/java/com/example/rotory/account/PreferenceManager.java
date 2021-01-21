@@ -5,7 +5,7 @@ import android.content.SharedPreferences;
 
 public class PreferenceManager {
 
-        public static final String PREFERENCES_NAME = "firebase Data";
+      /*  public static final String PREFERENCES_NAME = "firebase Data";
         private static final String DEFAULT_VALUE_STRING = "";
         private static final boolean DEFAULT_VALUE_BOOLEAN = false;
         private static final int DEFAULT_VALUE_INT = -1;
@@ -161,6 +161,6 @@ public class PreferenceManager {
             edit.commit();
 
         }
-
+*/
     }
 

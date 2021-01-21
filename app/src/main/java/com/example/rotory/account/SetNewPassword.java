@@ -67,16 +67,14 @@ public class SetNewPassword extends AppCompatActivity {
         setContentView(R.layout.find_pw_new_pw_page);
         mContext = this;
         String emailUrl;
-
+        sharedPreferences = getSharedPreferences("FindAccountUserId", Context.MODE_PRIVATE);
+        String userId = sharedPreferences.getString("userId", null);
 
              intent =getIntent();
 
              if (intent.getData() != null) {
                  emailUrl = intent.getData().toString();
                  Log.d(TAG, "intent에 들어있는 url확인!" + emailUrl);
-                 sharedPreferences = getSharedPreferences("FindAccountUserId", Context.MODE_PRIVATE);
-                 String userId = sharedPreferences.getString("userId", null);
-
                  Log.d(TAG, "유알엘 정보 잘 받아왔나요?" + emailUrl);
                  Log.d(TAG, "아이디 정보 잘 받아왔나요?" + userId);
 
@@ -100,8 +98,8 @@ public class SetNewPassword extends AppCompatActivity {
             public void onClick(View v) {
                 Log.d(TAG, findPwNewPw.getText().toString() + "  => " + findPwNewPwCheck.getText().toString());
                 if (checkValidation(findPwNewPw.getText().toString(),findPwNewPwCheck.getText().toString())){
-                    user = mAuth.getCurrentUser();
-                    reNewPasswordInfo(user.getEmail(),findPwNewPw.getText().toString());
+                    reNewPasswordInfo(userId,findPwNewPw.getText().toString());
+
 
                 }
             }
@@ -137,7 +135,6 @@ public class SetNewPassword extends AppCompatActivity {
                                              Intent mainIntent = new Intent(SetNewPassword.this, MyPage.class);
                                              mainIntent.addFlags( Intent.FLAG_ACTIVITY_SINGLE_TOP);
                                              startActivity(mainIntent);
-
 
                                          }
                                      }

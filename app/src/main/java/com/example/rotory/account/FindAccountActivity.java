@@ -28,6 +28,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.rotory.MainActivity;
 import com.example.rotory.R;
 import com.example.rotory.VO.AppConstant;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -36,6 +37,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.ActionCodeSettings;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthSettings;
 import com.google.firebase.auth.FirebaseUser;
@@ -59,18 +61,18 @@ import java.util.concurrent.TimeUnit;
 public class FindAccountActivity extends AppCompatActivity implements View.OnClickListener {
     private final static String TAG = "FindIdActivity";
     Context mContext;
-    View view;
     SharedPreferences userIdShared;
     SharedPreferences.Editor editor;
     Counter mobileCounter = new Counter();
     AppConstant appConstant = new AppConstant();
-    //RequestSms requestSms;
+
     String authNum;
     PhoneAuthCredential credential;
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseAuthSettings firebaseAuthSettings = mAuth.getFirebaseAuthSettings();
+    private FirebaseAuth.AuthStateListener firebaseAuthListener;
     FirebaseUser user;
 
     TextView findAccountTextView;
@@ -245,7 +247,7 @@ public class FindAccountActivity extends AppCompatActivity implements View.OnCli
                 credential = phoneAuthCredential;
                 authNum = phoneAuthCredential.getSmsCode();
                 Log.d(TAG,"onVerificationCode에서 나오는  phoneAuthCredential" + authNum);
-                //안드로이드 핸드폰 가지신분으로 확인하기!
+
             }
 
             @Override
@@ -260,8 +262,7 @@ public class FindAccountActivity extends AppCompatActivity implements View.OnCli
 
                 Log.d(TAG, "onCodeSent의 authnum : forceResendingToken" + authNum + " : " + forceResendingToken);
 
-                mobileCounter.countDownTimer(findIdMobileCounter);
-                //findpw_pin_button.setEnabled(true);
+                //mobileCounter.countDownTimer(findIdMobileCounter);
 
             }
         };
@@ -279,6 +280,7 @@ public class FindAccountActivity extends AppCompatActivity implements View.OnCli
 
     @Override
     public void onClick(View v) {
+        String checkedPhone = findpw_id_phone_edittext.getText().toString();
         switch (v.getId()){
            case R.id.findpw_phone_edittext:
 
@@ -287,7 +289,6 @@ public class FindAccountActivity extends AppCompatActivity implements View.OnCli
                 if (findIdMobileCounter.getText() == "00:00"){
                     Toast.makeText(this, "인증 시간이 초과되었습니다.",Toast.LENGTH_SHORT).show();
                 } else {
-
                     findpw_pin_check.setVisibility(View.INVISIBLE);
                     Log.d(TAG,"인증번호 : " + authNum );
                     String userCode = findpw_phone_pin.getText().toString();
@@ -298,25 +299,13 @@ public class FindAccountActivity extends AppCompatActivity implements View.OnCli
                         findpw_pin_check.setVisibility(View.VISIBLE);
                     }else {
                         showToast("인증 성공");
-
-                        LogInActivity logInActivity = new LogInActivity();
-                        logInActivity.LogInWithPhoneAuthCredential(mAuth,user,credential);
-                        user = mAuth.getCurrentUser();
-/*
-                        if (user!=null){
-                            Log.d(TAG,"credential로 로그인 성공" + user.getEmail());*/
-                            Intent setNewPWIntent = new Intent(FindAccountActivity.this, SetNewPassword.class);
-                            setNewPWIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            startActivity(setNewPWIntent);
-                      /*  }else{
-                            Log.d(TAG,"credential로 로그인 실패");
-                        }*/
-
+                        LogInAfterPhoneAuth(checkedPhone);
+                       //LogInWithPhoneAuthCredential(mAuth,mContext,credential);
                     }
                 }
                 break;
             case R.id.findpw_phone_button:
-                String checkedPhone = findpw_id_phone_edittext.getText().toString();
+
                 Log.d(TAG, "휴대전화로 찾기 아이디 입력 " + checkedPhone);
                 checkExistEmail(checkedPhone, 0,findpw_phone_check);
                 String number = PhoneNumberUtils.formatNumber(findpw_phone_edittext.getText().toString(),
@@ -368,7 +357,7 @@ public class FindAccountActivity extends AppCompatActivity implements View.OnCli
                                 editor.putString("userId", checkedEmail);
                                 Log.d(TAG, checkedEmail+"내부 저장소에 저장");
                                 editor.commit();
-                                Log.d(TAG, "내부 저장소 확인" + PreferenceManager.getString(mContext,"userId"));
+                                Log.d(TAG, "내부 저장소 확인" + userIdShared.getString("userId",null));
 
                                 //저장 이후 비밀번호 찾기 유형에 따라 다른 행동으로 이어짐 0은 휴대폰 찾기 1을 이메일 찾기
                                 if (findType == 1){
@@ -384,10 +373,66 @@ public class FindAccountActivity extends AppCompatActivity implements View.OnCli
                 });
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
+  public void LogInAfterPhoneAuth(String userId) {
+        Log.d(TAG, "휴대폰 인증 이후 유저아이디 확인" + userId);
+        db.collection("person").whereEqualTo("userId", userId)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()){
+                            Log.d(TAG,"인증정보 유무 확인 " + task.getResult().getDocuments());
+                            for (QueryDocumentSnapshot pDocument : task.getResult()){
+                                String password = pDocument.get("password").toString();
+                                Log.d(TAG,"인증 넘기기 전 비밀번호 확인" + password);
+                                logInUser(userId, password, mAuth);
+                            }
+                        }else{
+                         Log.d(TAG,"휴대폰 인증 후 인증정보 확인 실패");
+                        }
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d(TAG,"휴대폰 인증 후 로그인 실패 : " + e.toString());
+                showToast("계정정보를 찾지 못했습니다. \n 잠시후 다시 시도해주세요");
+            }
+        });
+
     }
+    public void logInUser(String userId, String password,FirebaseAuth firebaseAuth){
+        firebaseAuth.signInWithEmailAndPassword(userId, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(getApplicationContext(), "로그인 성공", Toast.LENGTH_SHORT).show();
+                            firebaseAuth.addAuthStateListener(firebaseAuthListener);
+
+                        } else{
+                            showToast("아이디 혹은 비밀 번호가 일치하지 않습니다");
+                        }
+
+                        if (!task.isSuccessful()){
+                            showToast( "로그인 요청 실패");
+                        }
+                    }
+                });
+        firebaseAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null){
+                    Intent setNewPWIntent = new Intent(getApplicationContext(), SetNewPassword.class);
+                    setNewPWIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    startActivity(setNewPWIntent);
+                }else {
+                    Log.d(TAG,"AuthStateChangeListener, 유저 불러오기 실패");
+                }
+            }
+        };
+    }
+
 
     private void sendVerifyEmail(String checkEmail) {
         FirebaseDynamicLinks.getInstance();
@@ -460,6 +505,7 @@ public class FindAccountActivity extends AppCompatActivity implements View.OnCli
         }
         mobileCounter.stopCounter(findIdMobileCounter);
     }
+
 
     private void showToast(String s) {
         Toast.makeText(getApplicationContext(),s,Toast.LENGTH_SHORT).show();

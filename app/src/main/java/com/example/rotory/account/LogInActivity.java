@@ -1,6 +1,8 @@
 package com.example.rotory.account;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -31,6 +33,8 @@ public class LogInActivity extends AppCompatActivity  {
     private static final String TAG = "LoginAcitivity";
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener firebaseAuthListener;
+    SharedPreferences userIdShared;
+    SharedPreferences.Editor editor;
 
     private EditText login_id_edittext;
     private EditText login_pw_edittext;
@@ -65,20 +69,8 @@ public class LogInActivity extends AppCompatActivity  {
                movePage(SignUpActivity.class);
             }
         });
-
-        login_button = findViewById(R.id.login_button);
-        login_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                logInUser(login_id_edittext.getText().toString(),
-                        login_pw_edittext.getText().toString());
-            }
-        });
-
-
        
         firebaseAuth = FirebaseAuth.getInstance();
-
         
         login_button = findViewById(R.id.login_button);
         login_button.setOnClickListener(new View.OnClickListener() {
@@ -89,7 +81,7 @@ public class LogInActivity extends AppCompatActivity  {
                if (checkValidation(logInId, logInPw)){
                    Toast.makeText(LogInActivity.this, "계정과 비밀번호를 입력하세요", Toast.LENGTH_SHORT).show();
                }else {
-                   logInUser(logInId, logInPw);
+                   logInUser(logInId, logInPw,firebaseAuth);
                }
 
             }
@@ -100,21 +92,9 @@ public class LogInActivity extends AppCompatActivity  {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null){
-                    /*user.getIdToken(true).addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<GetTokenResult> task) {
-                            if (task.isSuccessful()) {
-                                String idToken = task.getResult().getToken();
-                                Intent intent = new Intent(LogInActivity.this, MainActivity.class);
-                                intent.putExtra("token", idToken);
-                                startActivityForResult(intent, RC_SIGN_IN);
-                            } else {
-                                    Log.d(TAG, "Fail to get Token");
-                            }
-                        }
-                    });
-*/               movePage(MainActivity.class);
-
+                    Intent intent = new Intent(LogInActivity.this, MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
                 }else {
                     Log.d(TAG,"AuthStateChangeListener, 유저 불러오기 실패");
                 }
@@ -126,19 +106,9 @@ public class LogInActivity extends AppCompatActivity  {
     @Override
     protected void onStart() {
         super.onStart();
-        
-        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
-        updateUI(currentUser);
     }
 
-    private void updateUI(FirebaseUser user) {
-        if (user != null){
-
-        }
-    }
-
-
-    public void logInUser(String userId, String password){
+    public void logInUser(String userId, String password,FirebaseAuth firebaseAuth){
         firebaseAuth.signInWithEmailAndPassword(userId, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -158,13 +128,9 @@ public class LogInActivity extends AppCompatActivity  {
                 });
     }
 
-    private void createAccount() {
-        Intent intent = new Intent(LogInActivity.this, SignUpActivity.class);
-        startActivity(intent);
-
-    }
     private  void movePage(Class className){
         Intent intent = new Intent(LogInActivity.this, className);
+        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
 
@@ -176,7 +142,7 @@ public class LogInActivity extends AppCompatActivity  {
         return false;
     }
 
-    public FirebaseUser LogInWithAccount(FirebaseAuth mAuth, FirebaseUser user,String emailUrl, String userId) {
+    public FirebaseUser LogInWithAccount(FirebaseAuth mAuth, FirebaseUser user, String emailUrl, String userId) {
 
         if (mAuth.isSignInWithEmailLink(emailUrl)){
             mAuth.signInWithEmailLink(userId, emailUrl).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -197,36 +163,5 @@ public class LogInActivity extends AppCompatActivity  {
         }
         return user;
 
-    }
-    public void LogInWithPhoneAuthCredential(FirebaseAuth mAuth, FirebaseUser user, PhoneAuthCredential authCredential) {
-        final FirebaseUser[] userFind = {user};
-        mAuth.signInWithCredential(authCredential)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            Log.d(TAG, "휴대폰인증 완료 후 로그인 성공");
-                            userFind[0] = task.getResult().getUser();
-                           Log.d(TAG,"유저정보확인" + userFind[0].getEmail());
-                        } else {
-
-                        }
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.d(TAG, "휴대폰 인증 후 로그인 실패");
-                Log.d(TAG, "실패 이유? " + e.toString());
-            }
-        });
-     //Log.d(TAG, "밖에서 확인 " + userFind[0].getEmail());
-        if (user != null) {
-            user = mAuth.getCurrentUser();
-            Log.d(TAG,"사용자 받아옴 " + user.getEmail());
-
-        }else{
-            Log.d(TAG,"사용자 여전히 null");
-        }
-        //return user;
     }
 }

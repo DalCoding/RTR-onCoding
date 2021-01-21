@@ -6,7 +6,9 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.util.Log;
 
-public abstract class TokenReceiver extends BroadcastReceiver {
+public abstract class TokenReceiver {
+
+/* extends BroadcastReceiver {
     private static final String TAG = "TokenReceiver";
     private static final String ACTION_TOKEN = "com.example.ACTION_TOKEN";
     //확인하기
@@ -27,6 +29,6 @@ public abstract class TokenReceiver extends BroadcastReceiver {
         return filter;
     }
 
-    public abstract void onNewToken(String token);
+    public abstract void onNewToken(String token);*/
 
 }

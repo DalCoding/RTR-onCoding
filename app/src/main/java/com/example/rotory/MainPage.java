@@ -41,7 +41,7 @@ public class MainPage extends Fragment {
     private FirestoreRecyclerAdapter adapter;
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
-    //MapView mapView;
+    MapView mapView;
    // ViewGroup rootView;
 
 
@@ -96,7 +96,7 @@ public class MainPage extends Fragment {
 
     private void initUI(ViewGroup rootView) {
 
-        MapView mapView = new MapView(getActivity());
+       mapView = new MapView(getActivity());
         ViewGroup mapViewContainer = (ViewGroup) rootView.findViewById(R.id.mainMapLayout);
         mapViewContainer.addView(mapView);
 

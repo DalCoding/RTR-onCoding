@@ -30,6 +30,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.rotory.Interface.OnTabItemSelectedListener;
+import com.example.rotory.Theme.ThemePage;
 import com.example.rotory.VO.AppConstant;
 import com.example.rotory.VO.Person;
 import com.example.rotory.account.ProfileEditPage;
@@ -60,6 +61,7 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
     AppConstant appConstant = new AppConstant();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    FirebaseUser user;
     Person persons = new Person();
     final static String TAG = "MyPage";
 
@@ -124,7 +126,10 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
         relativeLayout2 = findViewById(R.id.myRelativeLayout2);
         profileEditContainer = findViewById(R.id.profileEditContainer);
 
-        FirebaseUser user = mAuth.getCurrentUser();
+        myNickTextView = findViewById(R.id.myNickTextView);
+
+
+        user=mAuth.getCurrentUser();
         String userEmail = user.getEmail(); // e-mail 형식
 
         loadScrapList();
@@ -136,15 +141,15 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
+                            Log.d(TAG,"userId check" + userEmail);
+                            Log.d(TAG,"userDocument check" + task.getResult());
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 String personId = document.getId();
-
                                 likeCount(personId);
                                 FavoriteCount(personId);
 
-
                                 String userName1 = String.valueOf(document.get("userName"));
-                                myNickTextView = findViewById(R.id.myNickTextView);
+
                                 myNickTextView.setText(userName1);
                                 String userLevel = String.valueOf(document.get("userLevel"));
                                 myLevelTextView = findViewById(R.id.myLevelTextView);
@@ -249,9 +254,6 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
         myRecyclerView = findViewById(R.id.myRecyclerView);
         GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
         myRecyclerView.setLayoutManager(layoutManager);
-
-
-
 
 
 

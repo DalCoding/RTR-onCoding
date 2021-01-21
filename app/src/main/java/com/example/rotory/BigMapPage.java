@@ -21,9 +21,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.rotory.Interface.LoadMapDtrListener;
 import com.example.rotory.Interface.OnTabItemSelectedListener;
+import com.example.rotory.Theme.ThemePage;
 import com.example.rotory.VO.NearPin;
 import com.example.rotory.account.SignUpActivity;
-import com.example.rotory.userActivity.MyScrapActivity;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;

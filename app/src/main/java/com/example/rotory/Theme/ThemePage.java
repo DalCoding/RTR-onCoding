@@ -1,4 +1,4 @@
-package com.example.rotory;
+package com.example.rotory.Theme;
 
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.rotory.R;
 import com.example.rotory.VO.Information;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
@@ -35,17 +36,16 @@ public class ThemePage extends Fragment {
     Information information;
 
     Boolean isSignIn = false;
-    private FirestoreRecyclerAdapter adapter;
+    private FirestoreRecyclerAdapter themeAdapter;
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
-    FirebaseFirestore db;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.theme_page, container, false);
 
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+
         FirebaseUser user = mAuth.getCurrentUser();
 
         if (user != null) {

@@ -22,7 +22,7 @@ import com.example.rotory.BigMapPage;
 import com.example.rotory.Interface.LoadMoreContentsListener;
 import com.example.rotory.MainPage;
 import com.example.rotory.R;
-import com.example.rotory.ThemePage;
+import com.example.rotory.Theme.ThemePage;
 import com.example.rotory.VO.AppConstant;
 import com.example.rotory.account.SignUpActivity;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;

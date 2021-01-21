@@ -12,7 +12,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.rotory.MyPage;
 import com.example.rotory.R;
@@ -21,6 +23,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -38,6 +41,7 @@ public class SearchOnMyRoadFragment extends Fragment {
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirestoreRecyclerAdapter adapter;
+    OnItemClickListener listener;
 
     public SearchOnMyRoadFragment() {}
 
@@ -98,6 +102,9 @@ public class SearchOnMyRoadFragment extends Fragment {
 
     public void setAdapter(FirestoreRecyclerOptions options) {
         adapter = new FirestoreRecyclerAdapter<MyRoad, MyRoadViewHolder>(options) {
+            private OnItemClickListener listener;
+
+
             @Override
             protected void onBindViewHolder(@NonNull MyRoadViewHolder holder, int position, @NonNull MyRoad model) {
                 holder.setMyRoadItems(model);
@@ -107,17 +114,25 @@ public class SearchOnMyRoadFragment extends Fragment {
             @Override
             public MyRoadViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
                 View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.story_myroad_search_item, parent, false);
+
                 return new MyRoadViewHolder(view);
             }
         };
     }
 
-    public class MyRoadViewHolder extends RecyclerView.ViewHolder {
+    public static class MyRoadViewHolder extends RecyclerView.ViewHolder {
         View view;
 
         public MyRoadViewHolder(@NonNull View itemView) {
             super(itemView);
             view = itemView;
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int position = getAdapterPosition();
+                }
+            });
         }
 
         public void setMyRoadItems(MyRoad items) {
@@ -130,6 +145,14 @@ public class SearchOnMyRoadFragment extends Fragment {
             title.setText(items.getTitle());
             address.setText(items.getAddress());
         }
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(DocumentSnapshot documentSnapshot, int position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
     }
 
     @Override

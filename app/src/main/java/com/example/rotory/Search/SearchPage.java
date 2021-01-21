@@ -23,7 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 //import com.example.rotory.Interface.OnTagItemClickListener;
 import com.example.rotory.MainPage;
 import com.example.rotory.R;
-import com.example.rotory.ThemePage;
+import com.example.rotory.Theme.ThemePage;
 import com.example.rotory.VO.Tag;
 import com.example.rotory.account.SignUpActivity;
 

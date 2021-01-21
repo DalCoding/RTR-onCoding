@@ -22,7 +22,7 @@ import com.example.rotory.MainActivity;
 import com.example.rotory.MainPage;
 import com.example.rotory.MyPage;
 import com.example.rotory.R;
-import com.example.rotory.ThemePage;
+import com.example.rotory.Theme.ThemePage;
 import com.example.rotory.VO.AppConstant;
 import com.example.rotory.VO.Person;
 import com.example.rotory.account.LogInActivity;

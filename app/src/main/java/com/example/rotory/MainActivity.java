@@ -21,6 +21,8 @@ import com.example.rotory.Interface.OnTabItemSelectedListener;
 
 
 import com.example.rotory.Interface.OnUserActItemClickListener;
+import com.example.rotory.Theme.ThemePage;
+import com.example.rotory.Theme.ThemePickPage;
 import com.example.rotory.VO.AppConstant;
 
 import com.example.rotory.account.SetNewPassword;
@@ -50,6 +52,8 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
     AppConstant appConstant;
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
+    FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    FirebaseUser user;
 
     MainPage mainPage;
     ThemePage themePage;
@@ -70,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
     AppBarLayout appBarLayout;
     BottomNavigationView bottomNavigation;
     Boolean isSignIn = false;
-    FirebaseAuth mAuth = FirebaseAuth.getInstance();
+
 
     @Override
     protected void onStart() {
@@ -86,7 +90,7 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
         themePage = new ThemePage();
         bigMapPage = new BigMapPage();
 
-        FirebaseUser user = mAuth.getCurrentUser();
+        user = mAuth.getCurrentUser();
 
 
         if (user != null) {
@@ -107,8 +111,11 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
                 if (user != null){
                     mAuth.signOut();
                     Log.d(TAG, "로그아웃");
+                    finish();
                     Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
+
                 }
                 else {
 
@@ -200,31 +207,36 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.home:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.container, mainPage).commit();
+                        Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
                         setTabUnderBar(0);
                         bottomNavigation.setVisibility(View.VISIBLE);
                         return true;
                     case R.id.theme:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.container, storyContentsPage).commit();
-                        setTabUnderBar(1);
-                        /*if (isSignIn) {
-                            getSupportFragmentManager().beginTransaction().replace(R.id.container, storyContentsPage).commit();
+                        if(isSignIn) {
+                            Intent myPageIntent = new Intent(MainActivity.this, ThemePickPage.class);
+                            myPageIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(myPageIntent);
                             setTabUnderBar(1);
                         } else {
                             Intent LogInIntent = new Intent(getApplicationContext(), LogInActivity.class);
                             startActivityForResult(LogInIntent, loginCode);
                             bottomNavigation.setVisibility(View.GONE);
-                        }*/
+                        }
                         return true;
                     case R.id.user:
-                        if (isSignIn) {
+                        if (user != null) {
                             Intent myPageIntent = new Intent(MainActivity.this, MyPage.class);
+                            myPageIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(myPageIntent);
                             setTabUnderBar(2);
                         } else {
                             Intent LogInIntent = new Intent(getApplicationContext(), LogInActivity.class);
+                            LogInIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivityForResult(LogInIntent, loginCode);
                             bottomNavigation.setVisibility(View.GONE);
+                            finish();
                         }
                         return true;
                 }

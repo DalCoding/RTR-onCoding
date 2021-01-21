@@ -21,7 +21,7 @@ import com.example.rotory.BigMapPage;
 import com.example.rotory.MainPage;
 import com.example.rotory.MyPage;
 import com.example.rotory.R;
-import com.example.rotory.ThemePage;
+import com.example.rotory.Theme.ThemePage;
 import com.example.rotory.account.LogInActivity;
 import com.example.rotory.account.SignUpActivity;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
