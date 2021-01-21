@@ -56,6 +56,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import retrofit2.http.HEAD;
+
 public class StoryContentsPage extends Fragment {
     final static String TAG = "StoryContentsPage";
     AppConstant appConstant = new AppConstant();
@@ -198,7 +200,9 @@ public class StoryContentsPage extends Fragment {
 
         Bundle contentsBundle = this.getArguments();
         //String contentsID = contentsBundle.getString("storyDocumentId");
-        String contentsID = "LLNVEsSg2hzVa75gEIvw";
+
+       String contentsID = "LLNVEsSg2hzVa75gEIvw";
+
         Log.d(TAG, "initUi 시작, 번들 전송 잘됐는지 확인, pDocumentId :" + contentsID);
         loadContents(contentsID, user);
 
@@ -304,7 +308,6 @@ public class StoryContentsPage extends Fragment {
                 super.onDataChanged();
                 Log.d(TAG, " 어댑터 작동");
             }
-
             @NonNull
             @Override
             public CommentViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -322,6 +325,7 @@ public class StoryContentsPage extends Fragment {
 
     public class CommentViewHolder extends RecyclerView.ViewHolder {
         private View view;
+
 
         public CommentViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -361,6 +365,7 @@ public class StoryContentsPage extends Fragment {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                     Log.d(TAG, "자료불러옴" + task.getResult().getId());
+<<<<<<< HEAD
                     HashMap<String, Object> document = (HashMap<String, Object>) task.getResult().getData();
                     if (document != null) {
                         Log.d(TAG, String.valueOf(document));
@@ -401,9 +406,41 @@ public class StoryContentsPage extends Fragment {
                             @Override
                             public void onClick(View view) {
                                 showToast("로그인이 필요한 서비스입니다.");
+=======
+
+                  HashMap<String, Object> document = (HashMap<String, Object>) task.getResult().getData();
+                   if (document != null) {
+                       Log.d(TAG, String.valueOf(document));
+                   }else{
+                       Log.d(TAG, String.valueOf(document) + "값없음");
+                   }
+                        String userName = document.get("userName").toString();
+                        String userLevel = document.get("userLevel").toString();
+                        commUsernameText.setText(userName);
+                        commLevelImg.setImageResource(appConstant.getUserLevelImage(userLevel));
+                        String commentedUser = task.getResult().get("userId").toString();
+                        if (user != null){
+                            if (user.getEmail().equals(commentedUser)){
+                                commReportText.setText("삭제");
+                                commReportText.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        deleteComment();
+                                        showToast("댓글을 삭제하셨습니다.");
+                                    }
+                                });
+                            }else{
+                                commReportText.setText("신고");
+                                commReportText.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        openReportDialog();
+                                        showToast("댓글을 신고하셨습니다.");
+                                    }
+                                });
+>>>>>>> 83654c0608186a4fff9b69c5755bf58dd89ff20b
                             }
-                        });
-                    }
+                        }
                 }
             });
             commConText.setText(comment.getComment().toString());
@@ -580,6 +617,23 @@ public class StoryContentsPage extends Fragment {
             });
 
             //댓글 저장 버튼 누르면 저장되도록
+<<<<<<< HEAD
+=======
+            scontentsCommBtn.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v) {
+
+                    /*String getUserName  = ;
+                    String getUserLevel = ;
+                    String getTime= ;*/
+
+                    HashMap<String, Object> result = new HashMap<>();
+                    result.put("comment", ""/*gettext()*/); //EditText 적힌 내용 가져오기
+
+                   /* String getUserName  = ;
+                    String getUserLevel = ;
+                    String getTime= ;
+>>>>>>> 83654c0608186a4fff9b69c5755bf58dd89ff20b
 
 
         }
@@ -632,6 +686,14 @@ public class StoryContentsPage extends Fragment {
                 });
 
 
+<<<<<<< HEAD
+=======
+                     result.put("savedDate", new Date().toString());
+                     result.put("uid", user.getUid());
+
+
+                    writerNewUser(contentsId,result);*/
+>>>>>>> 83654c0608186a4fff9b69c5755bf58dd89ff20b
 
     }
 

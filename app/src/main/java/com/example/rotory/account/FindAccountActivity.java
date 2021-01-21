@@ -66,7 +66,7 @@ public class FindAccountActivity extends AppCompatActivity implements View.OnCli
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
-    FirebaseAuthSettings firebaseAuthSettings = mAuth.getFirebaseAuthSettings();
+    //FirebaseAuthSettings firebaseAuthSettings = mAuth.getFirebaseAuthSettings();
     FirebaseUser user;
 
     TextView findAccountTextView;
@@ -225,7 +225,7 @@ public class FindAccountActivity extends AppCompatActivity implements View.OnCli
 
         findpw_phone_pin.setEnabled(true);
 
-        firebaseAuthSettings.setAutoRetrievedSmsCodeForPhoneNumber(phoneNum,"123456");
+        //firebaseAuthSettings.setAutoRetrievedSmsCodeForPhoneNumber(phoneNum,"123456");
 
         Log.d(TAG, "입력한 핸드폰 번호 " + phoneNum);
 
