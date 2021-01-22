@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.rotory.Interface.OnTagItemClickListener;
 import com.example.rotory.R;
 import com.example.rotory.VO.Tag;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
@@ -56,6 +57,9 @@ public class ThemePickPage extends AppCompatActivity {
     TextView place;
     TextView season;
     TextView time;
+    TextView tagListSize;
+
+    ArrayList<String> tagSelecteList = new ArrayList<>();
 
     RecyclerView activityTagRecyclerView;
     RecyclerView feelTagRecyclerView;
@@ -77,38 +81,46 @@ public class ThemePickPage extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.theme_pick_card);
+        tagListSize = findViewById(R.id.tagListSize);
 
         activity = findViewById(R.id.tpickGroupText);
         activity.setText("활동");
         activityTagRecyclerView = findViewById(R.id.activityTagRecyclerView);
         themePicker.getTagList("activity",
-                activityTagRecyclerView, getApplicationContext());
+                activityTagRecyclerView,ThemePickPage.this,
+                tagListSize);
 
         feel = findViewById(R.id.tpickGroupText2);
         feel.setText("기분");
         feelTagRecyclerView = findViewById(R.id.feelTagRecyclerView);
-        themePicker.getTagList("feel", feelTagRecyclerView, getApplicationContext());
+        themePicker.getTagList("feel", feelTagRecyclerView, ThemePickPage.this
+                         , tagListSize);
 
 
         mood = findViewById(R.id.tpickGroupText3);
         mood.setText("분위기");
         moodTagRecyclerView = findViewById(R.id.moodTagRecyclerView);
-        themePicker.getTagList("mood", moodTagRecyclerView, getApplicationContext());
+        themePicker.getTagList("mood", moodTagRecyclerView, ThemePickPage.this,
+                tagListSize);
 
         place = findViewById(R.id.tpickGroupText4);
         place.setText("장소");
         placeTagRecyclerView = findViewById(R.id.placeTagRecyclerView);
-        themePicker.getTagList("place", placeTagRecyclerView, getApplicationContext());
+        themePicker.getTagList("place", placeTagRecyclerView, ThemePickPage.this
+                , tagListSize);
 
         season = findViewById(R.id.tpickGroupText5);
         season.setText("계절");
         seasonTagRecyclerView = findViewById(R.id.seasonTagRecyclerView);
-        themePicker.getTagList("season", seasonTagRecyclerView, getApplicationContext());
+        themePicker.getTagList("season", seasonTagRecyclerView, ThemePickPage.this
+                , tagListSize);
 
         time = findViewById(R.id.tpickGroupText6);
         time.setText("시간");
         timeTagRecyclerView = findViewById(R.id.timeTagRecyclerView);
-        themePicker.getTagList("time", timeTagRecyclerView, getApplicationContext());
+        themePicker.getTagList("time", timeTagRecyclerView, ThemePickPage.this
+                , tagListSize);
+
 
 
 

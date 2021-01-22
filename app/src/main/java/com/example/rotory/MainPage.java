@@ -53,7 +53,7 @@ public class MainPage extends Fragment implements MapView.MapViewEventListener {
     private FirestoreRecyclerAdapter adapter;
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
-    MapView mapView;
+    //MapView mapView;
    // ViewGroup rootView;
 
 
@@ -107,14 +107,14 @@ public class MainPage extends Fragment implements MapView.MapViewEventListener {
 
     private void initUI(ViewGroup rootView) {
 
-       mapView = new MapView(getActivity());
+       //mapView = new MapView(getActivity());
         ViewGroup mapViewContainer = (ViewGroup) rootView.findViewById(R.id.mainMapLayout);
-        mapViewContainer.addView(mapView);
+        //mapViewContainer.addView(mapView);
 
        // mapView.setPOIItemEventListener(this);
-        mapView.setMapViewEventListener(this);
+        //mapView.setMapViewEventListener(this);
 
-        moveMyLocation(mapView);
+       // moveMyLocation(mapView);
 
       /*  Button button = rootView.findViewById(R.id.mainFloatingBtn);
         button.setOnClickListener(new View.OnClickListener(){
@@ -130,7 +130,7 @@ public class MainPage extends Fragment implements MapView.MapViewEventListener {
             @Override
             public void onClick(View v) {
                 //((MainActivity)getActivity()).replaceFragment(BigMapPage.newInstance());
-                mapViewContainer.removeView(mapView);
+               // mapViewContainer.removeView(mapView);
                 Intent intent = new Intent(getActivity(), BigMapPage.class);
                 startActivity(intent);
                // getActivity().finish();

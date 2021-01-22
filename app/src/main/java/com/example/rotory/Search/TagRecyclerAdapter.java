@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.rotory.Interface.OnTagItemClickListener;
 import com.example.rotory.R;
+import com.example.rotory.Theme.TagItemAdapter;
 import com.example.rotory.VO.Tag;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -27,7 +28,7 @@ public class TagRecyclerAdapter extends FirestoreRecyclerAdapter<Tag, TagRecycle
     }
 
     @Override
-    public void onItemClick(TagViewHolder holder, View view, int position) {
+    public void onItemClick(TagItemAdapter.tagItemViewHolder holder, View view, int position) {
         if (listener != null) {
             listener.onItemClick(holder, view, position);
         }

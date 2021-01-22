@@ -2,9 +2,9 @@ package com.example.rotory.Interface;
 
 import android.view.View;
 
-import com.example.rotory.Search.TagRecyclerAdapter;
+import com.example.rotory.Theme.TagItemAdapter;
 
 
 public interface OnTagItemClickListener {
-    public void onItemClick(TagRecyclerAdapter.TagViewHolder holder, View view, int position);
+    public void onItemClick(TagItemAdapter.tagItemViewHolder holder, View view, int position);
 }

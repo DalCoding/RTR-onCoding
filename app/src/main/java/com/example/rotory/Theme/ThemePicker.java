@@ -1,21 +1,17 @@
 package com.example.rotory.Theme;
 
 import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.os.Bundle;
-import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
-import android.widget.Adapter;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.rotory.R;
+import com.example.rotory.Interface.OnTagItemClickListener;
+import com.example.rotory.VO.Tag;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -36,10 +32,12 @@ public class ThemePicker {
     ThemePickPage themePickPage;
     TagItemAdapter tagItemAdapter;
 
-    void getTagList(String tagList, RecyclerView recyclerView, Context context) {
+    OnTagItemClickListener listener;
+
+    void getTagList(String tagList, RecyclerView recyclerView, Context context, TextView  tagListSize) {
         themePickPage = new ThemePickPage();
 
-        GridLayoutManager tagLayoutManager = new GridLayoutManager(context, 3);
+        GridLayoutManager tagLayoutManager = new GridLayoutManager(context, 4);
         recyclerView.setLayoutManager(tagLayoutManager);
 
 
@@ -58,14 +56,30 @@ public class ThemePicker {
                     }
 
                     Log.d(TAG,"태그 아이템 리스트 뽑은거 확인" + tagsItemList);
-                    tagItemAdapter = new TagItemAdapter(context,tagsItemList);
+                    tagItemAdapter = new TagItemAdapter(context,tagsItemList,listener, tagListSize);
                     recyclerView.setAdapter(tagItemAdapter);
+                    Log.d(TAG,"리스너 작동 전");
+
+                   /* tagItemAdapter.setOnTagItemClickListener(new OnTagItemClickListener() {
+                        @Override
+                        public void onItemClick(TagItemAdapter.tagItemViewHolder holder, View view, int position) {
+                            Log.d(TAG,"리스너 확인");
+                            Tags item = tagItemAdapter.getItem(position);
+                            Log.d(TAG,"아이템 글귀부터 확인" + item.getTag().toLowerCase());
+                            Toast.makeText(context, "아이템 선택 : " + item.getTag(),Toast.LENGTH_SHORT).show();
+                        }
+                    });*/
+
 
                     Log.d(TAG,"list 확인" + tagItemList);
 
                 }
             }
         });
+
+
     }
+
+
 
 }

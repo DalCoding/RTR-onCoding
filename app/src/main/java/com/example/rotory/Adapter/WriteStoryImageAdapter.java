@@ -22,7 +22,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class WriteStoryImageAdapter extends RecyclerView.Adapter<WriteStoryImageAdapter.writestroyHolder> implements OnContentsItemClickListener{
+public class WriteStoryImageAdapter extends RecyclerView.Adapter<WriteStoryImageAdapter.writestroyHolder>
+        implements OnContentsItemClickListener{
     private final String TAG = "Write_Story";
     public ArrayList<Uri> albumImgList;
     public Context mContext;
