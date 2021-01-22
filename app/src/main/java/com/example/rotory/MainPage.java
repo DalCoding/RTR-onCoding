@@ -25,6 +25,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import net.daum.mf.map.api.MapView;
 
+import retrofit2.http.HEAD;
+
 public class MainPage extends Fragment {
     Button mainFloatingBtn;
     Button mainSearchBtn;
@@ -96,7 +98,9 @@ public class MainPage extends Fragment {
 
     private void initUI(ViewGroup rootView) {
 
+
      /*  mapView = new MapView(getActivity());
+
         ViewGroup mapViewContainer = (ViewGroup) rootView.findViewById(R.id.mainMapLayout);
         mapViewContainer.addView(mapView);*/
 
