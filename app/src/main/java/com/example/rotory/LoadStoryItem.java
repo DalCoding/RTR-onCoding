@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.rotory.Contents.StoryContentsPage;
 import com.example.rotory.Interface.OnUserActItemClickListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -35,8 +36,18 @@ public class LoadStoryItem extends AppCompatActivity implements OnUserActItemCli
         super.onCreate(savedInstanceState);
         setContentView(R.layout.load_story_contents);
 
-        onStart();
-
+        Intent intent = getIntent();
+      if (intent != null) {
+          String documentID = intent.getStringExtra("documentId");
+          Log.d(TAG, documentID);
+          Bundle pDocumentIdBundle = new Bundle();
+          pDocumentIdBundle.putString("storyDocumentId", documentID);
+          Log.d(TAG, pDocumentIdBundle.getString("storyDocumentId"));
+          storyContentsPage.setArguments(pDocumentIdBundle);
+      }
+      else{
+          Log.d(TAG, "intent는 비어있음");
+      }
 
         getSupportFragmentManager().beginTransaction().replace(R.id.storyContainer, storyContentsPage).commit();
         backImageButton = findViewById(R.id.backImageButton);
@@ -44,6 +55,7 @@ public class LoadStoryItem extends AppCompatActivity implements OnUserActItemCli
             @Override
             public void onClick(View v) {
                 finish();
+
             }
         });
 
@@ -53,14 +65,7 @@ public class LoadStoryItem extends AppCompatActivity implements OnUserActItemCli
     protected void onStart() {
         super.onStart();
 
-        Intent intent = getIntent();
-        String documentID = intent.getStringExtra("documentId");
-        Log.d(TAG, documentID);
 
-        Bundle pDocumentIdBundle = new Bundle();
-        pDocumentIdBundle.putString("storyDocumentId", documentID);
-        Log.d(TAG, pDocumentIdBundle.getString("storyDocumentId"));
-        storyContentsPage.setArguments(pDocumentIdBundle);
     }
 
 

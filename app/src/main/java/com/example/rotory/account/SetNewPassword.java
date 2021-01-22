@@ -88,9 +88,6 @@ public class SetNewPassword extends AppCompatActivity {
         findPwNewPwCheck = findViewById(R.id.findpw_check_edittext2);
 
         pwCheckMsg = findViewById(R.id.findpw_check_check);
-/*
-        String newPw = findPwNewPw.getText().toString();
-        String newPwCheck = findPwNewPwCheck.getText().toString();*/
 
         newPwSubmitBtn = findViewById(R.id.findpw_check_button);
         newPwSubmitBtn.setOnClickListener(new View.OnClickListener() {

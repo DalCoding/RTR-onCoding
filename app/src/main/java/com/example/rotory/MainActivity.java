@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import androidx.fragment.app.Fragment;
 
+import com.example.rotory.Contents.StoryContentsPage;
 import com.example.rotory.Interface.OnTabItemSelectedListener;
 
 
