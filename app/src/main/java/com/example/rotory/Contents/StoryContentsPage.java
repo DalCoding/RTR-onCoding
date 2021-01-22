@@ -329,6 +329,7 @@ public class StoryContentsPage extends Fragment  {
             view = itemView;
         }
 
+
         public void setCommentItems(Comment comment) {
             Log.d(TAG, "set CommentItems 시작");
             String pDocumentId = String.valueOf(comment.getPersonId());
@@ -452,7 +453,6 @@ public class StoryContentsPage extends Fragment  {
             }
         });
     }
-
 
 
     private void clickUserActIcon(String contentsId, Map<String, Object> contentsList,

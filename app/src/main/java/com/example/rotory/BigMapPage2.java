@@ -1,15 +1,20 @@
-
 package com.example.rotory;
 
 
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
@@ -18,12 +23,23 @@ import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import com.example.rotory.Interface.LoadMapDtrListener;
 import com.example.rotory.Interface.OnTabItemSelectedListener;
 import com.example.rotory.Theme.ThemePage;
 import com.example.rotory.VO.NearPin;
 import com.example.rotory.account.SignUpActivity;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -40,8 +56,7 @@ import java.util.Collections;
 import java.util.Comparator;
 
 
-public class BigMapPage extends AppCompatActivity implements OnTabItemSelectedListener, MapView.CurrentLocationEventListener, MapView.MapViewEventListener, MapView.POIItemEventListener {
-
+public class BigMapPage2 extends AppCompatActivity implements OnTabItemSelectedListener, LoadMapDtrListener {
 
 
     private static final String TAG = "BigMapPage";
@@ -61,6 +76,16 @@ public class BigMapPage extends AppCompatActivity implements OnTabItemSelectedLi
     Animation tranlateDownAnim;
     boolean isPageOpen = false;
     Button bigMapBackBtn;
+
+    GoogleMap map;
+    LocationManager manager;
+   // GPSListener gpsListener;
+
+    SupportMapFragment mapFragment;
+
+    Marker myMarker;
+    MarkerOptions myLocationMarker;
+    MarkerOptions myLocationMarker1;
 
     // 하단탭
     RelativeLayout bottomNavUnderbarHome;
@@ -94,7 +119,6 @@ public class BigMapPage extends AppCompatActivity implements OnTabItemSelectedLi
 
         FirebaseUser user = mAuth.getCurrentUser();
 
-
         if (user != null) {
             String checkLogIN = user.getEmail();
             Log.d(TAG, "로그인 정보 유저네임 : " + checkLogIN);
@@ -104,21 +128,61 @@ public class BigMapPage extends AppCompatActivity implements OnTabItemSelectedLi
             isSignIn = false;
         }
 
-        MapView mapView = new MapView(this);
 
-        ViewGroup mapViewContainer = (ViewGroup) findViewById(R.id.bigMapLayout);
-        mapViewContainer.addView(mapView);
-        mapView.setPOIItemEventListener(this);
-        mapView.setMapViewEventListener(this);
+        try {
+            MapsInitializer.initialize(this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-        moveMyLocation(mapView);
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.googleMap);
+        mapFragment.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(GoogleMap googleMap) {
+                Log.d("Map", "지도준비됨.");
+                map = googleMap;
+                if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    // TODO: Consider calling
+                    //    ActivityCompat#requestPermissions
+                    // here to request the missing permissions, and then overriding
+                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                    //                                          int[] grantResults)
+                    // to handle the case where the user grants the permission. See the documentation
+                    // for ActivityCompat#requestPermissions for more details.
+                    return;
+                }
+              //  map.setMyLocationEnabled(true);
+                LatLng SeoulPoint = new LatLng(37.55626036672879, 126.97217466067063);
+                map.moveCamera(CameraUpdateFactory.newLatLngZoom(SeoulPoint, 12));
+            }
+        });
+
+       LocationManager manager = (LocationManager)
+                getSystemService(Context.LOCATION_SERVICE);// LocationManager 객체 참조하기
+        // 이전에 확인햿던 위치 정보 가져오기
+
+        Location location = manager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            if (location != null) {
+                double latitude = location.getLatitude();
+                double longitude = location.getLongitude();
+                //  String message = "최근 위치-> Latitude : " + latitude + "\nLongitude:" + longitude;
+              //  LatLng curPoint = new LatLng(latitude, longitude);
+             //   CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLng(curPoint);
+             //   map.moveCamera(cameraUpdate);
+            }
+
+        GPSListener gpsListener = new GPSListener(); // 10초마다위치갱신되게끔
+         long minTime = 10000000;
+         float minDistance = 0;
+         manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, minTime, minDistance, gpsListener);
+
 
        bigMapBackBtn = findViewById(R.id.bigMapBackBtn);
        bigMapBackBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                // this.removeAllViews();
-                mapViewContainer.removeView(mapView);
                 finish();
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -133,29 +197,15 @@ public class BigMapPage extends AppCompatActivity implements OnTabItemSelectedLi
         bigMapMyLocationBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading);
-                MapPoint centerPoint = mapView.getMapCenterPoint();
-                loadDtr(mapView, centerPoint);
-
-                Handler mHandler = new Handler();
-                mHandler.postDelayed(new Runnable() {
-                    public void run() {
-                        // 3초 후에 현재위치를 받아오도록 설정 , 바로 시작 시 에러납니다.
-
-                        mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOff);
-                    }
-                }, 2000); // 1000 = 1초
+                gpsListener.onLocationChanged(location);
             }
         });
 
-        // '이 지도에서 찾기' 기능
+        // '이 지도에서 찾기' 기능  => 없어질것같음
         thisBigMapBtn = findViewById(R.id.thisBigMapBtn);
         thisBigMapBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MapPoint centerPoint = mapView.getMapCenterPoint();
-                loadDtr(mapView, centerPoint);
-
             }
         });
 
@@ -218,6 +268,39 @@ public class BigMapPage extends AppCompatActivity implements OnTabItemSelectedLi
         });
     }
 
+    class GPSListener implements LocationListener { // 변화감지(위도, 경도)
+        public void onLocationChanged(Location location) {
+            Double latitude = location.getLatitude();
+            Double longitude = location.getLongitude();
+            String message = "내위치-> Latitude : "+ latitude + "\nLongitude:"+ longitude;
+            Log.d("Map", message);
+            showCurrentLocation(latitude, longitude); // 카메라움직여지도에띄우기
+            LatLng curPoint = new LatLng(latitude, longitude);
+            showMyLocationMarker(curPoint);
+            loadDtr(curPoint);
+            }
+
+        private void showMyLocationMarker(LatLng curPoint) {
+            if (myLocationMarker == null) {
+                myLocationMarker = new MarkerOptions();
+                myLocationMarker.position(curPoint);
+            //    myLocationMarker.title("●내위치\n");
+            //    myLocationMarker.snippet("●GPS로확인한위치");
+                myLocationMarker.icon(BitmapDescriptorFactory.fromResource(R.drawable.squirrel3));
+                map.addMarker(myLocationMarker);
+            } else {
+                myLocationMarker.position(curPoint);}
+
+        }
+
+        public void onProviderDisabled(String provider) { }
+            public void onProviderEnabled(String provider) { }
+            public void onStatusChanged(String provider, int status, Bundle extras) { }}
+            private void showCurrentLocation(Double latitude, Double longitude) {
+                LatLng curPoint = new LatLng(latitude, longitude); // 현재위치의좌표로LatLng 객체생성하기
+                map.moveCamera(CameraUpdateFactory.newLatLngZoom(curPoint, 15));
+            }
+        // 지정한위치의지도영역보여주기(최대19~21까지자세히보여줄수있음)// showMyLocationMarker(curPoint);}
     @Override
     public void OnTabSelected(int position) {
         if(position == 0){
@@ -253,242 +336,40 @@ public class BigMapPage extends AppCompatActivity implements OnTabItemSelectedLi
     // 구현 기능 : 1. 이지도에서찾기  2. 내위치에서 찾기  3. 줌레벨변경시 경로보이기  4. 도토리클릭시 하단팝업
 
 
-    public void loadDtr(MapView mapView, MapPoint point) {
-        int zoomLevel = mapView.getZoomLevel();
-        if (zoomLevel <= 0){
 
-            // 모든 경로 표시
 
-      //  } else {
-            ArrayList<MapPoint> manyPins = new ArrayList<MapPoint>();
-            //DB의 MapPoint 다 넣기
-            manyPins.add(MapPoint.mapPointWithGeoCoord(37.73512333583128, 127.06135012282921));
-            manyPins.add(MapPoint.mapPointWithGeoCoord(37.73651945074978, 127.0612405606333));
-            manyPins.add(MapPoint.mapPointWithGeoCoord(37.73617747243228, 127.06364545969836));
-            // manyPins.add(MapPoint.mapPointWithGeoCoord(37.734617832068224, 127.06367895894984));
 
-            ArrayList<NearPin> nearPin = new ArrayList<NearPin>();
-            // 근사값 배열 구하기
-            for (int j = 0; j < manyPins.size(); j++) {
-                //DB의 MapPoint를 위경도로 반환
-                MapPoint.GeoCoordinate latLng = manyPins.get(j).getMapPointGeoCoord();
-                double latlat = latLng.latitude;
-                double longlong = latLng.longitude;
+    @Override
+    public void loadDtr(LatLng point) {
 
-                //기준값
-                MapPoint.GeoCoordinate latLng1 = point.getMapPointGeoCoord();
-                double latlat1 = latLng1.latitude;
-                double longlong1 = latLng1.longitude;
 
-                double earthRadius = 6371000; //meters
-                double dLat = Math.toRadians(latlat - latlat1);
-                double dLng = Math.toRadians(longlong - longlong1);
-                double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                        Math.cos(Math.toRadians(latlat1)) * Math.cos(Math.toRadians(latlat)) *
-                                Math.sin(dLng / 2) * Math.sin(dLng / 2);
-                double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-                double dist = (double) (earthRadius * c);
-                // String dist1 = Double.toString(dist);
-                //  Log.d ("배열", dist1);  // 여기까진 확인 OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
-                // double + MapPoint형 배열
-                nearPin.add(new NearPin(dist, manyPins.get(j)));
-            }
+        ArrayList<LatLng> manyPins = new ArrayList<LatLng>();
+        //DB의 MapPoint 다 넣기 LatLng(latitude, longitude)
+        manyPins.add(new LatLng(37.73512333583128, 127.06135012282921));
+        manyPins.add(new LatLng(37.73651945074978, 127.0612405606333));
+        manyPins.add(new LatLng(37.73617747243228, 127.06364545969836));
 
-            Collections.sort(nearPin, new Comparator<NearPin>() {
-                @Override
-                public int compare(NearPin o1, NearPin o2) {
-                    if (o1.getDistance() == o2.getDistance()) {
-                        return 0;
-                    } else if (o1.getDistance() < o2.getDistance()) {
-                        return -1;
-                    } else {
-                        return 1;
-                    }
 
-                }
-            });
-            ArrayList<MapPoint> PolyPoints = new ArrayList<>();
-
-            // 가까운 핀들 맵뷰에 박기
-               for (int k=0; k<2; k++) {
+        for (int k=0; k<3; k++) {
             // DB에서 핀들의 정보 (이름, 하단팝업정보 등) 가져와야함)
-            MapPoint Pin = nearPin.get(k).getPoint();
-            MapPOIItem customMarker3 = new MapPOIItem();
-            customMarker3.setItemName("DB정보"); // 이게 필수로 들어가야하는데 => 말풍선 안보이게 가능할듯
-            customMarker3.setTag(3);
-            customMarker3.setMapPoint(Pin);
-            customMarker3.setMarkerType(MapPOIItem.MarkerType.CustomImage); // 마커타입을 커스텀 마커로 지정.
-            customMarker3.setCustomImageResourceId(R.drawable.acorn2); // 마커 이미지.
-            customMarker3.setCustomImageAutoscale(false); // hdpi, xhdpi 등 안드로이드 플랫폼의 스케일을 사용할 경우 지도 라이브러리의 스케일 기능을 꺼줌.
-            customMarker3.setCustomImageAnchor(0.5f, 1.0f); // 마커 이미지중 기준이 되는 위치(앵커포인트) 지정 - 마커 이미지 좌측 상단 기준 x(0.0f ~ 1.0f), y(0.0f ~ 1.0f) 값.
-            customMarker3.setShowCalloutBalloonOnTouch(false);
-            mapView.addPOIItem(customMarker3);
-            PolyPoints.add(Pin);
+            LatLng point1 = manyPins.get(k);
+            myLocationMarker1 = new MarkerOptions();
+            myLocationMarker1.position(point1);
+            //    myLocationMarker.title("●내위치\n");
+            //    myLocationMarker.snippet("●GPS로확인한위치");
+            myLocationMarker1.icon(BitmapDescriptorFactory.fromResource(R.drawable.acorn2));
+            map.addMarker(myLocationMarker1);
 
-              }
-
-               loadDtrLine(mapView, PolyPoints);
-        } else {
-            mapView.removeAllPOIItems();
-            mapView.removeAllPolylines();
         }
     }
 
-
-    public void loadDtrLine(MapView mapView, ArrayList<MapPoint> PolyPoints) {
-
-        MapPolyline polyline = new MapPolyline();
-        polyline.setTag(1000);
-        polyline.setLineColor(Color.argb(128, 255, 51, 0)); // Polyline 컬러 지정.
-
-        // Polyline 좌표 지정.
-        for (int i=0; i < PolyPoints.size(); i++) {
-            MapPoint PolyPoint = PolyPoints.get(i);
-            polyline.addPoint(PolyPoint);
-        }
-
-// Polyline 지도에 올리기.
-        mapView.addPolyline(polyline);
-    }
-
-
-
-    public void moveMyLocation (MapView mapView){
-
-        mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading);
-
-        Handler mHandler = new Handler();
-        mHandler.postDelayed(new Runnable() {
-            public void run() {
-                // 3초 후에 현재위치를 받아오도록 설정 , 바로 시작 시 에러납니다.
-
-                mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOff);
-            }
-        }, 2000); // 1000 = 1초
-        // lm = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
-    }
-
     @Override
-    public void onCurrentLocationUpdate(MapView mapView, MapPoint mapPoint, float v) {
+    public void loadDtrLine(MapView mapView, ArrayList<MapPoint> Points) {
 
     }
 
-    @Override
-    public void onCurrentLocationDeviceHeadingUpdate(MapView mapView, float v) {
 
-    }
-
-    @Override
-    public void onCurrentLocationUpdateFailed(MapView mapView) {
-
-    }
-
-    @Override
-    public void onCurrentLocationUpdateCancelled(MapView mapView) {
-
-    }
-
-    @Override
-    public void onMapViewInitialized(MapView mapView) {
-
-    }
-
-    @Override
-    public void onMapViewCenterPointMoved(MapView mapView, MapPoint mapPoint) {
-
-    }
-
-    @Override
-    public void onMapViewZoomLevelChanged(MapView mapView, int i) {
-
-        MapPoint centerPoint = mapView.getMapCenterPoint();
-        loadDtr(mapView, centerPoint);
-
-    }
-
-    @Override
-    public void onMapViewSingleTapped(MapView mapView, MapPoint mapPoint) {
-
-        tranlateUpAnim = AnimationUtils.loadAnimation(this,R.anim.translate_up);
-        tranlateDownAnim = AnimationUtils.loadAnimation(this,R.anim.translate_down);
-
-        SlidingPageAnimationListener animListener = new SlidingPageAnimationListener();
-        tranlateUpAnim.setAnimationListener(animListener);
-        tranlateDownAnim.setAnimationListener(animListener);
-
-        container = findViewById(R.id.container);
-        container.startAnimation(tranlateDownAnim);
-    }
-
-    @Override
-    public void onMapViewDoubleTapped(MapView mapView, MapPoint mapPoint) {
-
-    }
-
-    @Override
-    public void onMapViewLongPressed(MapView mapView, MapPoint mapPoint) {
-
-    }
-
-    @Override
-    public void onMapViewDragStarted(MapView mapView, MapPoint mapPoint) {
-
-    }
-
-    @Override
-    public void onMapViewDragEnded(MapView mapView, MapPoint mapPoint) {
-
-    }
-
-    @Override
-    public void onMapViewMoveFinished(MapView mapView, MapPoint mapPoint) {
-
-    }
-
-    @Override
-    public void onPOIItemSelected(MapView mapView, MapPOIItem mapPOIItem) {
-
-        // DB에서 도토리 정보 받아서 넣기
-
-        tranlateUpAnim = AnimationUtils.loadAnimation(this,R.anim.translate_up);
-        tranlateDownAnim = AnimationUtils.loadAnimation(this,R.anim.translate_down);
-
-        SlidingPageAnimationListener animListener = new SlidingPageAnimationListener();
-        tranlateUpAnim.setAnimationListener(animListener);
-        tranlateDownAnim.setAnimationListener(animListener);
-
-        container = findViewById(R.id.container);
-        container.startAnimation(tranlateUpAnim);
-        container.setVisibility(View.VISIBLE);
-
-        mapPickThisRoadBtn = findViewById(R.id.mapPickThisRoadBtn);
-        mapPickThisRoadBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), RoadContentsPage.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-            }
-        });
-
-    }
-
-    @Override
-    public void onCalloutBalloonOfPOIItemTouched(MapView mapView, MapPOIItem mapPOIItem) {
-
-    }
-
-    @Override
-    public void onCalloutBalloonOfPOIItemTouched(MapView mapView, MapPOIItem mapPOIItem, MapPOIItem.CalloutBalloonButtonType calloutBalloonButtonType) {
-
-    }
-
-    @Override
-    public void onDraggablePOIItemMoved(MapView mapView, MapPOIItem mapPOIItem, MapPoint mapPoint) {
-
-    }
-
-    private class SlidingPageAnimationListener implements Animation.AnimationListener{
+        private class SlidingPageAnimationListener implements Animation.AnimationListener{
         @Override
         public void onAnimationStart(Animation animation) {
 

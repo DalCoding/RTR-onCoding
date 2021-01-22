@@ -58,7 +58,6 @@ public class ThemePage extends Fragment {
         }
 
 /*
-
         Query query = db.collection("contents").orderBy("theme", Query.Direction.ASCENDING);
 
         FirestoreRecyclerOptions<SearchContents> options = new FirestoreRecyclerOptions.Builder<SearchContents>()
@@ -104,7 +103,7 @@ protected void onStart() {
 protected void onStop() {
     super.onStop();
     if (adapter != null) {
-        adapter.stopListenig();
+        adapter.stopListening();
     }
 }
 

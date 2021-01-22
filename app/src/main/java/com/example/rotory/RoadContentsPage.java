@@ -21,7 +21,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-//import com.example.rotory.Adapter.RCommAdapter;
 import com.example.rotory.Interface.OnUserActItemClickListener;
 import com.example.rotory.VO.AppConstant;
 import com.example.rotory.VO.Contents;
@@ -239,11 +238,12 @@ public class RoadContentsPage extends Fragment {
         rCommRView = rootView.findViewById(R.id.rCommRView);
         mapContainer = rootView.findViewById(R.id.rcontentsMap);
 
-        mapView = new MapView(getActivity());
+       /* mapView = new MapView(getActivity());
         mapContainer.addView(mapView);
-
+*/
         Bundle contentsBundle = this.getArguments();
         String contentsID = contentsBundle.getString("storyDocumentId");
+        //String contentsID = "kWgSA53rxrk5bMMemdVd";
 
         Log.d(TAG, "initUI 시작, 번들 전송 잘 됐는지, pDocumentId:" + contentsID);
         loadContents(contentsID, user);
@@ -359,28 +359,31 @@ public class RoadContentsPage extends Fragment {
                     Log.d(TAG, "댓글단사람" + commentedUser);
                     Log.d(TAG, "현재 사용자 확인" + user.getEmail());
                     if (user != null) {
-                        if (user.getEmail().equals(commentedUser)){
-                            commReportText.setText("삭제");
-                            commReportText.setOnClickListener(new View.OnClickListener(){
+                        if (user.getEmail().equals(commentedUser)) {
+                            commReportText.setVisibility(View.INVISIBLE);
+                            commReportText.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
-                                    showToast("댓글을 삭제하셨습니다.");
+                                //    deleteComment();
+                                    //showToast("댓글을 삭제하셨습니다.");
                                 }
                             });
                         } else {
                             commReportText.setText("신고");
-                            commReportText.setOnClickListener(new View.OnClickListener(){
+                            commReportText.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
+                                    //openReportDialog();
                                     showToast("댓글을 신고하셨습니다.");
                                 }
+                                //ReportDialog.java에서 따로 작업
                             });
                         }
                     } else {
                         commReportText.setText("신고");
-                        commReportText.setOnClickListener(new View.OnClickListener(){
+                        commReportText.setOnClickListener(new View.OnClickListener() {
                             @Override
-                            public void onClick(View view){
+                            public void onClick(View view) {
                                 showToast("로그인이 필요한 서비스입니다");
                             }
                         });
@@ -391,25 +394,18 @@ public class RoadContentsPage extends Fragment {
                             comment.getComment());
                 }
             });
+
+        }
+
     }
-    }
+
+
+/*
     private void openReportDialog(QueryDocumentSnapshot pDocument, String pDocumentId) {
         reportSpinner = getView().findViewById(R.id.reportSpinner);
 
         ArrayAdapter reportAdapter = ArrayAdapter.createFromResource(getContext(), R.array.reportList, android.R.layout.simple_spinner_dropdown_item);
-
-        reportAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        reportSpinner.setAdapter(reportAdapter);
-
-        reportSpinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            }
-
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
-    }
+*/
 
 /*        db.collection("road")
                 .whereEqualTo("contentsType", 0)
@@ -438,9 +434,12 @@ public class RoadContentsPage extends Fragment {
         Toast.makeText(getContext(), s, Toast.LENGTH_SHORT).show();
     }
 
+/*
     private void deleteComment(String documentId) {
-
+        comment.remove(CommentViewHolder.getAdapterPosition());                // 해당 항목 삭제
+        commentAdapter.notifyItemRemoved(CommentViewHolder.getAdapterPosition());    // Adapter에 알려주기.
     }
+*/
 
     private void loadContents(String contentsID, FirebaseUser user) {
         // 해당글의 아이디 -> 해당 글의 정보 받아오려면 아이디로 다시 검색 필요!

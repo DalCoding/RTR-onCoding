@@ -216,7 +216,7 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
                         return true;
                     case R.id.theme:
                         if(isSignIn) {
-                            Intent myPageIntent = new Intent(MainActivity.this, ThemePickPage.class);
+                            Intent myPageIntent = new Intent(MainActivity.this, LoadRoadItem.class);
                             myPageIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(myPageIntent);
                             setTabUnderBar(1);
