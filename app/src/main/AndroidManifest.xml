@@ -25,6 +25,7 @@
         android:theme="@style/Theme.Rotory">
         <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyAf5Zp2t2IQyKHlMtWpkaKvsRsOEBDnVIs"/>
         <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />
+        <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyAf5Zp2t2IQyKHlMtWpkaKvsRsOEBDnVIs"/>
         <meta-data android:name="com.kakao.sdk.AppKey" android:value="74327a949b44e3526226fb17f890121f"/>
         <activity android:name=".BigMapPage2">
             <intent-filter>
@@ -71,7 +72,7 @@
         <activity android:name=".BigMapPage"/>
         <activity android:name=".Theme.ThemePickPage"/>
 
-<!--        <activity android:name=".MainActivity"/>-->
+        <!--        <activity android:name=".MainActivity"/>-->
        <!-- <activity android:name=".account.FindAccountActivity"/>-->
         <!--<activity android:name=".account.SetNewPassword">
             <intent-filter>

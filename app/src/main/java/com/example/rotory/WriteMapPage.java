@@ -30,6 +30,7 @@ import com.example.rotory.kakao.BusProvider;
 import com.example.rotory.kakao.CategoryResult;
 import com.example.rotory.kakao.Document;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.protobuf.Api;
 import com.squareup.otto.Bus;
 
 import net.daum.mf.map.api.MapPOIItem;
@@ -118,7 +119,7 @@ public class WriteMapPage extends AppCompatActivity implements MapView.CurrentLo
                                 Log.d(TAG,"응답 받기 성공");
                                 Log.d(TAG, response.body().getDocuments().toString());
                                 assert response.body() != null;
-                                for (Document document : response.body().getDocuments()){
+                                for (Document document : response.body().getDocuments()) {
                                     locationAdapter.addItem(document);
                                     searchName = document.getPlaceName();
                                     searchLng = Double.parseDouble(document.getX());
@@ -159,8 +160,6 @@ public class WriteMapPage extends AppCompatActivity implements MapView.CurrentLo
         mapView.setPOIItemEventListener(this);
         mapView.setMapViewEventListener(this);
         moveMyLocation(mapView);
-
-
 
     }
 
@@ -382,10 +381,8 @@ public class WriteMapPage extends AppCompatActivity implements MapView.CurrentLo
     public void onBackPressed() {
         Toast.makeText(this, "경로가 저장 되었습니다.", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(WriteMapPage.this, WriteRoadPage.class);
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("dtrName", dtrName);
-        bundle.putSerializable("dtrLatLng", dtrLatLng);
-        intent.putExtras(bundle);
+        intent.putStringArrayListExtra("dtrName", dtrName);
+        intent.putStringArrayListExtra("dtrLatLng", dtrLatLng);
         startActivityForResult(intent, 0);
     }
 }

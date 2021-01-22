@@ -10,9 +10,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapView;
 
 import java.io.Serializable;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
 
 public class WriteRoadPage extends AppCompatActivity {
     private static final String TAG = "WriteRoadPage";
@@ -23,14 +27,30 @@ public class WriteRoadPage extends AppCompatActivity {
     MapView mapView;
     ViewGroup mapContainer;
 
+    ArrayList<String> dtrName;
+    ArrayList<String> dtrLatLng;
+
+    MapPOIItem dtrMarker;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.write_road_page);
 
+        Intent mapIntent = getIntent();
+        mapIntent.getStringArrayListExtra("dtrName");
+        mapIntent.getStringArrayListExtra("dtrLatLng");
+
+        /*List<String> mapItem = new ArrayList<>(dtrName);
+        mapItem.addAll(dtrLatLng);*/
+
         mapView = new MapView(this);
         mapContainer = findViewById(R.id.writeRoadMap);
         mapContainer.addView(mapView);
+
+        mapView.addPOIItem(dtrMarker);
+        mapView.getPOIItems();
+
 
         mapView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -39,11 +59,5 @@ public class WriteRoadPage extends AppCompatActivity {
                 startActivityForResult(intent, REQUEST_CODE);
             }
         });
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
     }
 }
