@@ -327,76 +327,77 @@ public class StoryContentsPage extends Fragment  {
             view = itemView;
         }
 
-        public void setCommentItems(Comment comment) {
-            Log.d(TAG, "set CommentItems 시작");
-            String pDocumentId = String.valueOf(comment.getPersonId());
-            Log.d(TAG, "pDocumentID 확인" + pDocumentId);
-            Log.d(TAG,"set CommentItems 시작");
-            commUsernameText = view.findViewById(R.id.commUsernameText);
-            commConText = view.findViewById(R.id.commConText);
-            commTimeText = view.findViewById(R.id.commTimeText);
-            commReportText = view.findViewById(R.id.commReportText);
-            commLevelImg = view.findViewById(R.id.commLevelImg);
+         public void setCommentItems(Comment comment) {
+             Log.d(TAG, "set CommentItems 시작");
+             String pDocumentId = String.valueOf(comment.getPersonId());
+             Log.d(TAG, "pDocumentID 확인" + pDocumentId);
+             Log.d(TAG,"set CommentItems 시작");
+             commUsernameText = view.findViewById(R.id.commUsernameText);
+             commConText = view.findViewById(R.id.commConText);
+             commTimeText = view.findViewById(R.id.commTimeText);
+             commReportText = view.findViewById(R.id.commReportText);
+             commLevelImg = view.findViewById(R.id.commLevelImg);
+             //Log.d(TAG,"컨텐츠 확인" + comment.getPersonId() + ":" + user.getEmail());
 
-            //Log.d(TAG,"컨텐츠 확인" + comment.getPersonId() + ":" + user.getEmail());
+             commConText.setText(comment.getComment());
+             commTimeText.setText(comment.getSavedDate());
 
-            commConText.setText(comment.getComment());
-            commTimeText.setText(comment.getSavedDate());
+             db.collection("person").document(pDocumentId)
+                     .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                 @Override
+                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                     Log.d(TAG, "자료불러옴" + task.getResult().getId());
+                     HashMap<String, Object> document = (HashMap<String, Object>) task.getResult().getData();
+                     if (document != null) {
+                         Log.d(TAG, String.valueOf(document));
+                         String userName = document.get("userName").toString();
+                         Log.d(TAG,"userNameCheck : " + userName);
+                         String userLevel = document.get("userLevel").toString();
+                         commUsernameText.setText(userName);
+                         commLevelImg.setImageResource(appConstant.getUserLevelImage(userLevel));
+                     }else{
+                         Log.d(TAG, "값없음");
 
-            db.collection("person").document(pDocumentId)
-                    .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                     @Override
-                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        Log.d(TAG, "자료불러옴" + task.getResult().getId());
-                         HashMap<String, Object> document = (HashMap<String, Object>) task.getResult().getData();
-                       if (document != null) {
-                           Log.d(TAG, String.valueOf(document));
-                       }else{
-                           Log.d(TAG, "값없음");
-                           String userName = document.get("userName").toString();
-                           String userLevel = document.get("userLevel").toString();
-                           commUsernameText.setText(userName);
-                           commLevelImg.setImageResource(appConstant.getUserLevelImage(userLevel));
-                       }
+                     }
 
-                        String commentedUser = document.get("userId").toString();
-                        Log.d(TAG, "댓글단사람" + commentedUser);
-                        Log.d(TAG, "현재 사용자 확인" + user.getEmail());
-                        if (user != null) {
-                            if (user.getEmail().equals(commentedUser)) {
-                                commReportText.setText("삭제");
-                                commReportText.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-                                        //deleteComment();
-                                        showToast("댓글을 삭제하셨습니다.");
+                     String commentedUser = document.get("userId").toString();
+                     Log.d(TAG, "댓글단사람" + commentedUser);
+                     Log.d(TAG, "현재 사용자 확인" + user.getEmail());
+                     if (user != null) {
+                         if (user.getEmail().equals(commentedUser)) {
+                             commReportText.setText("삭제");
+                             commReportText.setOnClickListener(new View.OnClickListener() {
+                                 @Override
+                                 public void onClick(View view) {
+                                     //deleteComment();
+                                     showToast("댓글을 삭제하셨습니다.");
 
-                                    }
-                                });
-                            } else {
-                                commReportText.setText("신고");
-                                commReportText.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-                                        //openReportDialog();
-                                        showToast("댓글을 신고하셨습니다.");
-                                    }
-                                });
-                            }
-                        } else {
-                            commReportText.setText("신고");
-                            commReportText.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    showToast("로그인이 필요한 서비스입니다.");
-                                }
-                            });
-                        }
+                                 }
+                             });
+                         } else {
+                             commReportText.setText("신고");
+                             commReportText.setOnClickListener(new View.OnClickListener() {
+                                 @Override
+                                 public void onClick(View view) {
+                                     //openReportDialog();
+                                     showToast("댓글을 신고하셨습니다.");
+                                 }
+                             });
+                         }
+                     } else {
+                         commReportText.setText("신고");
+                         commReportText.setOnClickListener(new View.OnClickListener() {
+                             @Override
+                             public void onClick(View view) {
+                                 showToast("로그인이 필요한 서비스입니다.");
+                             }
+                         });
+                     }
 
-                    }
-            });
+                 }
+             });
 
-        }
+         }
 
 
        /* private void openReportDialog(QueryDocumentSnapshot pDocument, String pDocumentId) {
@@ -450,7 +451,6 @@ public class StoryContentsPage extends Fragment  {
             }
         });
     }
-
 
 
     private void clickUserActIcon(String contentsId, Map<String, Object> contentsList,

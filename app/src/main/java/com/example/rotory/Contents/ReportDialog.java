@@ -26,5 +26,23 @@ public class ReportDialog {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });*/
+
+          /*private void openReportDialog (QueryDocumentSnapshot pDocument, String pDocumentId){
+                                    reportSpinner = getView().findViewById(R.id.reportSpinner);
+
+                                    ArrayAdapter reportAdapter = ArrayAdapter.createFromResource(context, R.array.reportList, android.R.layout.simple_spinner_dropdown_item);
+
+                                    reportAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                    reportSpinner.setAdapter(reportAdapter);
+
+                                    reportSpinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                        @Override
+                                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                        }
+
+                                        public void onNothingSelected(AdapterView<?> parent) {
+                                        }
+                                    });
+                                }*/
     }
 }
