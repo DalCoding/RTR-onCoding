@@ -239,11 +239,12 @@ public class RoadContentsPage extends Fragment {
         rCommRView = rootView.findViewById(R.id.rCommRView);
         mapContainer = rootView.findViewById(R.id.rcontentsMap);
 
-        mapView = new MapView(getActivity());
+       /* mapView = new MapView(getActivity());
         mapContainer.addView(mapView);
-
+*/
         Bundle contentsBundle = this.getArguments();
         String contentsID = contentsBundle.getString("storyDocumentId");
+        //String contentsID = "kWgSA53rxrk5bMMemdVd";
 
         Log.d(TAG, "initUI 시작, 번들 전송 잘 됐는지, pDocumentId:" + contentsID);
         loadContents(contentsID, user);

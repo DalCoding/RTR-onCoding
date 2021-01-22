@@ -338,6 +338,7 @@ public class StoryContentsPage extends Fragment {
             commTimeText = view.findViewById(R.id.commTimeText);
             commReportText = view.findViewById(R.id.commReportText);
             commLevelImg = view.findViewById(R.id.commLevelImg);
+
             //Log.d(TAG,"컨텐츠 확인" + comment.getPersonId() + ":" + user.getEmail());
             /*db.collection("person")
                     .whereEqualTo("userId", user.getEmail())

@@ -69,6 +69,7 @@
         <activity android:name=".AskPage"/>
         <activity android:name=".BigMapPage"/>
         <activity android:name=".Theme.ThemePickPage"/>
+        <activity android:name=".LoadRoadItem"/>
 
 <!--        <activity android:name=".MainActivity"/>-->
        <!-- <activity android:name=".account.FindAccountActivity"/>-->
