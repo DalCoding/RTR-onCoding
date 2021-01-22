@@ -103,6 +103,7 @@ public class LogInActivity extends AppCompatActivity  {
     }
 
 
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -122,7 +123,7 @@ public class LogInActivity extends AppCompatActivity  {
                         }
 
                         if (!task.isSuccessful()){
-                            Toast.makeText(LogInActivity.this, "로그인 요청 실패", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LogInActivity.this, "인터넷 연결을 확인해주세요", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

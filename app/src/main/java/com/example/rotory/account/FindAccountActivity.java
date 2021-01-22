@@ -207,7 +207,7 @@ public class FindAccountActivity extends AppCompatActivity implements View.OnCli
             public void onClick(View v) {
                 findPwWithEmail.setVisibility(View.GONE);
                 findPwWithMobile.setVisibility(View.VISIBLE);
-                mobileCounter.stopCounter(findIdMobileCounter);
+                //mobileCounter.stopCounter(findIdMobileCounter);
 
             }
         });
@@ -216,7 +216,7 @@ public class FindAccountActivity extends AppCompatActivity implements View.OnCli
             public void onClick(View v) {
                 findPwWithMobile.setVisibility(View.GONE);
                 findPwWithEmail.setVisibility(View.VISIBLE);
-                mobileCounter.stopCounter(findIdMobileCounter);
+                //mobileCounter.stopCounter(findIdMobileCounter);
             }
         });
 
