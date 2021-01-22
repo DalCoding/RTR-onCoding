@@ -96,7 +96,7 @@ public class MainPage extends Fragment {
 
     private void initUI(ViewGroup rootView) {
 
-       mapView = new MapView(getActivity());
+/*       mapView = new MapView(getActivity());
         ViewGroup mapViewContainer = (ViewGroup) rootView.findViewById(R.id.mainMapLayout);
         mapViewContainer.addView(mapView);
 
@@ -112,7 +112,7 @@ public class MainPage extends Fragment {
                // getActivity().finish();
 
             }
-        });
+        });*/
 
 
       /*  FirebaseUser user = mAuth.getCurrentUser();
