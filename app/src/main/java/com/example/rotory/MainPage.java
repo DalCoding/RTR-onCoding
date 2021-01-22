@@ -96,9 +96,9 @@ public class MainPage extends Fragment {
 
     private void initUI(ViewGroup rootView) {
 
-       mapView = new MapView(getActivity());
+     /*  mapView = new MapView(getActivity());
         ViewGroup mapViewContainer = (ViewGroup) rootView.findViewById(R.id.mainMapLayout);
-        mapViewContainer.addView(mapView);
+        mapViewContainer.addView(mapView);*/
 
         ImageButton mainMapExtendBtn = rootView.findViewById(R.id.mainMapExtendBtn);
         mainMapExtendBtn.bringToFront();
@@ -106,7 +106,7 @@ public class MainPage extends Fragment {
             @Override
             public void onClick(View v) {
                 //((MainActivity)getActivity()).replaceFragment(BigMapPage.newInstance());
-                mapViewContainer.removeView(mapView);
+               // mapViewContainer.removeView(mapView);
                 Intent intent = new Intent(getActivity(), BigMapPage.class);
                 startActivity(intent);
                // getActivity().finish();
