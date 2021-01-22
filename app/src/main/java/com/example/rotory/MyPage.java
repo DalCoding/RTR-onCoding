@@ -311,7 +311,11 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
         });
     }
 
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadScrapList();
+    }
 
     private void FavoriteCount(String personId) {
 
@@ -481,13 +485,17 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
                     if (contentsType == 0) {
                         Intent intent = new Intent(MyPage.this, RoadContentsPage.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                        intent.putExtra("documentID", cDocumentID);
+                        intent.putExtra("documentId", cDocumentID);
                         startActivity(intent);
+
+                        //Log.d("인텐트", cDocumentID);
                     } else if (contentsType == 1) {
                         Intent intent = new Intent(MyPage.this, LoadStoryItem.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                        intent.putExtra("documentID", cDocumentID);
+                        intent.putExtra("documentId", cDocumentID);
                         startActivity(intent);
+
+                       // Log.d("인텐트", cDocumentID);
                     }
                 }
             });

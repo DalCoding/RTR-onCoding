@@ -2,7 +2,9 @@ package com.example.rotory;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,22 +12,32 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.rotory.Interface.LoadMapDtrListener;
 import com.example.rotory.VO.Contents;
+import com.example.rotory.VO.NearPin;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import net.daum.mf.map.api.MapPOIItem;
+import net.daum.mf.map.api.MapPoint;
+import net.daum.mf.map.api.MapPolyline;
 import net.daum.mf.map.api.MapView;
 
-public class MainPage extends Fragment {
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+
+public class MainPage extends Fragment implements LoadMapDtrListener, MapView.MapViewEventListener {
     Button mainFloatingBtn;
     Button mainSearchBtn;
     EditText mainSearchEdit;
@@ -77,9 +89,8 @@ public class MainPage extends Fragment {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.main_page, container, false);
         FirebaseUser user = mAuth.getCurrentUser();
 
-        if (user != null) {
            initUI(rootView);
-        }
+
         return rootView;
 
     }
@@ -100,6 +111,19 @@ public class MainPage extends Fragment {
         ViewGroup mapViewContainer = (ViewGroup) rootView.findViewById(R.id.mainMapLayout);
         mapViewContainer.addView(mapView);
 
+       // mapView.setPOIItemEventListener(this);
+        mapView.setMapViewEventListener(this);
+
+        moveMyLocation(mapView);
+
+      /*  Button button = rootView.findViewById(R.id.mainFloatingBtn);
+        button.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                //showWrite();
+                 }
+        }); */
+
         ImageButton mainMapExtendBtn = rootView.findViewById(R.id.mainMapExtendBtn);
         mainMapExtendBtn.bringToFront();
         mainMapExtendBtn.setOnClickListener(new View.OnClickListener() {
@@ -113,6 +137,7 @@ public class MainPage extends Fragment {
 
             }
         });
+
 
 
       /*  FirebaseUser user = mAuth.getCurrentUser();
@@ -144,6 +169,24 @@ public class MainPage extends Fragment {
         //mainRoadList.setAdapter(adapter);
     }
 
+    private void moveMyLocation(MapView mapView) {
+
+            mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading);
+            MapPoint centerPoint = mapView.getMapCenterPoint();
+            loadDtr(mapView, centerPoint);
+
+            Handler mHandler = new Handler();
+            mHandler.postDelayed(new Runnable() {
+                public void run() {
+                    // 3초 후에 현재위치를 받아오도록 설정 , 바로 시작 시 에러납니다.
+
+                    mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOff);
+                }
+            }, 2000); // 1000 = 1초
+            // lm = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
+
+    }
+
     private void makeAdapter(FirestoreRecyclerOptions<Contents> options) {
       /*  adapter = new FirestoreRecyclerOptions<SearchContents>(options) {
 
@@ -162,7 +205,180 @@ public class MainPage extends Fragment {
         }*/
     }
 
-        public class contentsViewHolder extends RecyclerView.ViewHolder {
+    @Override
+    public void loadDtr(MapView mapView, MapPoint point) {
+        int zoomLevel = mapView.getZoomLevel();
+        if (zoomLevel <= 0){
+
+            // 모든 경로 표시
+
+            //  } else {
+            ArrayList<MapPoint> manyPins = new ArrayList<MapPoint>();
+            //DB의 MapPoint 다 넣기
+            manyPins.add(MapPoint.mapPointWithGeoCoord(37.54238496760114, 126.85109815011367));
+            manyPins.add(MapPoint.mapPointWithGeoCoord(37.53890481231618, 126.82940817621092));
+            manyPins.add(MapPoint.mapPointWithGeoCoord(37.540725844063566, 126.83696139065235));
+            // manyPins.add(MapPoint.mapPointWithGeoCoord(37.734617832068224, 127.06367895894984));
+
+            ArrayList<NearPin> nearPin = new ArrayList<NearPin>();
+            // 근사값 배열 구하기
+            for (int j = 0; j < manyPins.size(); j++) {
+                //DB의 MapPoint를 위경도로 반환
+                MapPoint.GeoCoordinate latLng = manyPins.get(j).getMapPointGeoCoord();
+                double latlat = latLng.latitude;
+                double longlong = latLng.longitude;
+
+                //기준값
+                MapPoint.GeoCoordinate latLng1 = point.getMapPointGeoCoord();
+                double latlat1 = latLng1.latitude;
+                double longlong1 = latLng1.longitude;
+
+                double earthRadius = 6371000; //meters
+                double dLat = Math.toRadians(latlat - latlat1);
+                double dLng = Math.toRadians(longlong - longlong1);
+                double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                        Math.cos(Math.toRadians(latlat1)) * Math.cos(Math.toRadians(latlat)) *
+                                Math.sin(dLng / 2) * Math.sin(dLng / 2);
+                double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+                double dist = (double) (earthRadius * c);
+                // String dist1 = Double.toString(dist);
+                //  Log.d ("배열", dist1);  // 여기까진 확인 OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+                // double + MapPoint형 배열
+                nearPin.add(new NearPin(dist, manyPins.get(j)));
+            }
+
+            Collections.sort(nearPin, new Comparator<NearPin>() {
+                @Override
+                public int compare(NearPin o1, NearPin o2) {
+                    if (o1.getDistance() == o2.getDistance()) {
+                        return 0;
+                    } else if (o1.getDistance() < o2.getDistance()) {
+                        return -1;
+                    } else {
+                        return 1;
+                    }
+
+                }
+            });
+            ArrayList<MapPoint> PolyPoints = new ArrayList<>();
+
+            // 가까운 핀들 맵뷰에 박기
+            for (int k=0; k<2; k++) {
+                // DB에서 핀들의 정보 (이름, 하단팝업정보 등) 가져와야함)
+                MapPoint Pin = nearPin.get(k).getPoint();
+                MapPOIItem customMarker3 = new MapPOIItem();
+                customMarker3.setItemName("DB정보"); // 이게 필수로 들어가야하는데 => 말풍선 안보이게 가능할듯
+                customMarker3.setTag(2);
+                customMarker3.setMapPoint(Pin);
+                customMarker3.setMarkerType(MapPOIItem.MarkerType.CustomImage); // 마커타입을 커스텀 마커로 지정.
+                customMarker3.setCustomImageResourceId(R.drawable.acorn2); // 마커 이미지.
+                customMarker3.setCustomImageAutoscale(false); // hdpi, xhdpi 등 안드로이드 플랫폼의 스케일을 사용할 경우 지도 라이브러리의 스케일 기능을 꺼줌.
+                customMarker3.setCustomImageAnchor(0.5f, 1.0f); // 마커 이미지중 기준이 되는 위치(앵커포인트) 지정 - 마커 이미지 좌측 상단 기준 x(0.0f ~ 1.0f), y(0.0f ~ 1.0f) 값.
+                customMarker3.setShowCalloutBalloonOnTouch(false);
+                mapView.addPOIItem(customMarker3);
+                PolyPoints.add(Pin);
+
+            }
+
+            loadDtrLine(mapView, PolyPoints);
+        } else {
+            mapView.removeAllPOIItems();
+            mapView.removeAllPolylines();
+        }
+    }
+
+    @Override
+    public void loadDtrLine(MapView mapView, ArrayList<MapPoint> PolyPoints) {
+
+        MapPolyline polyline = new MapPolyline();
+        polyline.setTag(500);
+        polyline.setLineColor(Color.argb(128, 255, 51, 0)); // Polyline 컬러 지정.
+
+        // Polyline 좌표 지정.
+        for (int i=0; i < PolyPoints.size(); i++) {
+            MapPoint PolyPoint = PolyPoints.get(i);
+            polyline.addPoint(PolyPoint);
+        }
+
+// Polyline 지도에 올리기.
+        mapView.addPolyline(polyline);
+
+    }
+
+
+
+    @Override
+    public void onMapViewInitialized(MapView mapView) {
+
+    }
+
+    @Override
+    public void onMapViewCenterPointMoved(MapView mapView, MapPoint mapPoint) {
+
+    }
+
+    @Override
+    public void onMapViewZoomLevelChanged(MapView mapView, int i) {
+
+        MapPoint centerPoint = mapView.getMapCenterPoint();
+        loadDtr(mapView, centerPoint);
+
+
+    }
+
+    @Override
+    public void onMapViewSingleTapped(MapView mapView, MapPoint mapPoint) {
+
+    }
+
+    @Override
+    public void onMapViewDoubleTapped(MapView mapView, MapPoint mapPoint) {
+
+    }
+
+    @Override
+    public void onMapViewLongPressed(MapView mapView, MapPoint mapPoint) {
+
+    }
+
+    @Override
+    public void onMapViewDragStarted(MapView mapView, MapPoint mapPoint) {
+
+    }
+
+    @Override
+    public void onMapViewDragEnded(MapView mapView, MapPoint mapPoint) {
+
+    }
+
+    @Override
+    public void onMapViewMoveFinished(MapView mapView, MapPoint mapPoint) {
+
+    }
+/*
+    @Override
+    public void onPOIItemSelected(MapView mapView, MapPOIItem mapPOIItem) {
+
+        String DtrName = mapPOIItem.getItemName();
+        Toast.makeText(getContext(), DtrName, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onCalloutBalloonOfPOIItemTouched(MapView mapView, MapPOIItem mapPOIItem) {
+
+    }
+
+    @Override
+    public void onCalloutBalloonOfPOIItemTouched(MapView mapView, MapPOIItem mapPOIItem, MapPOIItem.CalloutBalloonButtonType calloutBalloonButtonType) {
+
+    }
+
+    @Override
+    public void onDraggablePOIItemMoved(MapView mapView, MapPOIItem mapPOIItem, MapPoint mapPoint) {
+
+    }  */
+
+    public class contentsViewHolder extends RecyclerView.ViewHolder {
             private View view;
 
             public contentsViewHolder(@NonNull View itemView) {
@@ -174,30 +390,6 @@ public class MainPage extends Fragment {
                 view = itemView;
             }*/
         }
-
-
-
-        /*MapView mapView = new MapView(getContext());
-        ViewGroup mapViewContainer = (ViewGroup) rootView.findViewById(R.id.mainMapLayout);
-        mapViewContainer.addView(mapView);
-
-        mapView.setMapCenterPointAndZoomLevel(MapPoint.mapPointWithGeoCoord(37.541258, 126.838193), 2, true);*/
-/*
-  Button button = rootView.findViewById(R.id.mainFloatingBtn);
-        button.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) { showWrite(); }
-        });
-        ImageButton mainMapExtendBtn = rootView.findViewById(R.id.mainMapExtendBtn);
-        mainMapExtendBtn.bringToFront();
-        mainMapExtendBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent (getActivity(), BigMapPage.class);
-                startActivity(intent);
-            }
-        });
-*/
 
 
 
