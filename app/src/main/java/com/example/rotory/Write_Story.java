@@ -3,12 +3,15 @@ package com.example.rotory;
 
 import android.content.ClipData;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -24,8 +27,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.rotory.Adapter.WriteStoryImageAdapter;
 import com.example.rotory.Interface.OnContentsItemClickListener;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URI;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.Queue;
 
 public class Write_Story extends AppCompatActivity  {
     private final String TAG = "Write_Story";
@@ -36,8 +45,8 @@ public class Write_Story extends AppCompatActivity  {
     int CODE_ALBUM_REQUEST = 111;
     OnContentsItemClickListener listener;
     Spinner spinner;
+    WriteStoryImageAdapter adapter;
     private ArrayAdapter spinnerAdapter;
-
 
 
     @Override
@@ -75,7 +84,26 @@ public class Write_Story extends AppCompatActivity  {
 //        }
 
         //String prefixId = spinner.getSelectedItemPosition().toString();  //말머리 String
+
         String prefixId = spinner.getSelectedItem().toString(); //말머리 String
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View arg1,
+                                       int position, long id) {
+                Log.d(TAG, "SELECT");
+                // TODO Auto-generated method stub
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                Log.d(TAG, "NOSELECT");
+                // TODO Auto-generated method stub
+
+            }
+        });
+
+
 
         //버튼 클릭했을 때 갤러리 연다
         addbtn.setOnClickListener(new View.OnClickListener() {
@@ -91,9 +119,14 @@ public class Write_Story extends AppCompatActivity  {
 
         DeleteBtn.setClickable(true);
         DeleteBtn.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
-                titleImage.setImageResource(0); //-삭제 버튼 자동 생성
+                Log.d(TAG, "사진 삭제");
+               titleImage.setImageResource(0); //-삭제 버튼 자동 생성
+                 //adapter.albumImgList.get(postion)
+
+
             }
         });
         
@@ -101,8 +134,13 @@ public class Write_Story extends AppCompatActivity  {
 
     } //end of onCreate()
 
+
+
+
+
 //    private Map<String, Bitmap> changeUritoBITmap() {
 //        Bitmap titleimagebitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), Uri);
+//        titleImage.setImageBitmap(titleimagebitmap);
 //    }
 
 
@@ -121,28 +159,16 @@ public class Write_Story extends AppCompatActivity  {
                     return;
                 } else if (clipData.getItemCount() == 1) { //멀티선택에서 하나만 선택한 경우
                     Uri filePath = clipData.getItemAt(0).getUri();
-                    uriList.add(filePath);
+                    uriList.add(0, filePath);
                 } else if (clipData.getItemCount() > 1 && clipData.getItemCount() <= 10) { //1개초과  10개 이하의 이미지선택한 경우
                     for (int i = 0; i < clipData.getItemCount(); i++) {
-                        uriList.add(clipData.getItemAt(i).getUri());
+                        uriList.add(0, clipData.getItemAt(i).getUri());
                     }
                 }
+
             }
-            //리사이클러뷰에 보여주기
-            WriteStoryImageAdapter adapter = new WriteStoryImageAdapter(uriList, Write_Story.this, listener);
-            recyclerView.setAdapter(adapter);
 
-//           adapter.setOnItemClickListener(new OnContentsItemClickListener() {
-//            @Override
-//            public void onItemClick(WriteStoryImageAdapter.writestroyHolder writestroyHolder, View view, int position) {
-//               Log.d(TAG, "사진 URI확인");
-//                Uri uri = adapter.getItem(position);
-//                titleImage.setImageURI(uri);
-//                
-//            }
-//        });
-
-            if (requestCode == CODE_ALBUM_REQUEST) {
+             if (requestCode == CODE_ALBUM_REQUEST) {
                 if (resultCode == RESULT_OK) {
                     try {
                         InputStream in = getContentResolver().openInputStream(data.getData());
@@ -159,11 +185,33 @@ public class Write_Story extends AppCompatActivity  {
                 }
 
             }
+
+
+            //리사이클러뷰에 보여주기
+
         } //end of onActivityResult
+        WriteStoryImageAdapter adapter = new WriteStoryImageAdapter(uriList, Write_Story.this, listener);
+        recyclerView.setAdapter(adapter);
+        adapter.setOnItemClickListener(new OnContentsItemClickListener() {
 
+            @Override
+            public void onItemClick(WriteStoryImageAdapter.writestroyHolder writestroyHolder, View view, int position) {
+                Log.d(TAG, "사진 URI확인");
+                Uri uri = adapter.getItem(position);
+                Bitmap bitmap = null;
+                try {
+//                            uri 주소를 Bitmap으로 변환한다.
+                    bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                    titleImage.setImageBitmap(bitmap);
+
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
-
-
-}
+    }
 
 

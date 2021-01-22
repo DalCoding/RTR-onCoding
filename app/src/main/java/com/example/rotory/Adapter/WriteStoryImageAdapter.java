@@ -1,8 +1,11 @@
 package com.example.rotory.Adapter;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,14 +18,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.rotory.Interface.OnContentsItemClickListener;
 import com.example.rotory.R;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 
-public class WriteStoryImageAdapter extends RecyclerView.Adapter<WriteStoryImageAdapter.writestroyHolder>{
-
+public class WriteStoryImageAdapter extends RecyclerView.Adapter<WriteStoryImageAdapter.writestroyHolder> implements OnContentsItemClickListener{
+    private final String TAG = "Write_Story";
     public ArrayList<Uri> albumImgList;
     public Context mContext;
     Bitmap bitmap = null;
-   // OnContentsItemClickListener listener;
+    OnContentsItemClickListener listener;
 
     //생성자 정의
     public WriteStoryImageAdapter(ArrayList<Uri> albumImgList, Context mContext, OnContentsItemClickListener listener){
@@ -46,6 +51,7 @@ public class WriteStoryImageAdapter extends RecyclerView.Adapter<WriteStoryImage
         //앨범에서 가져온 이미지 표시
         holder.imageView.setImageURI(albumImgList.get(position));
 
+
     }
 
     @Override
@@ -55,45 +61,51 @@ public class WriteStoryImageAdapter extends RecyclerView.Adapter<WriteStoryImage
     }
 
 
+
+
     public class writestroyHolder extends RecyclerView.ViewHolder {
+
         public ImageView imageView;
         public ImageView mainimageView;
+        public ImageView titleImage;
         public EditText  comment; // 이미지 코멘트
-        OnContentsItemClickListener listener;
 
 
-        public writestroyHolder(@NonNull View itemView) {
-            super(itemView);
+
+        public writestroyHolder(@NonNull View view) {
+            super(view);
             imageView = itemView.findViewById(R.id.writeStroryImageSmall);
-
-
+            titleImage = imageView.findViewById(R.id.writeStoryMainImageView);
 
             itemView.setOnClickListener(new View.OnClickListener() {
+                Uri uri;
+
                 @Override
                 public void onClick(View view) {
                     int position = getAdapterPosition();
-                    //uri를 이용해 이미지를 비트맵으로 변환한다.
-
-
-//                    if (listener != null) {
-//                        listener.onItemClick(writestroyHolder.this, view, position);
-//                    }try {
-//                        bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri);
-//                    } catch (FileNotFoundException e) {
-//                        // TODO Auto-generated catch block
-//                        e.printStackTrace();
-//                    } catch (IOException e) {
-//                        // TODO Auto-generated catch block
-//                        e.printStackTrace();
-//                    }
-
-
+                    if (listener != null) {
+                        listener.onItemClick(writestroyHolder.this,view,position);
+                    }
                 }
             });
         }
 
     }
 
+
+
+
+    public void setOnItemClickListener(OnContentsItemClickListener listener) {
+        this.listener = listener;
+    }
+
+
+@Override
+public void onItemClick(writestroyHolder writestroyHolder, View view, int position) {
+    if (listener != null) {
+        listener.onItemClick(writestroyHolder, view, position);
+    }
+}
 
 
     public Uri getItem(int position) {
