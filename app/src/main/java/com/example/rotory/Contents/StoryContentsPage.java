@@ -2,6 +2,7 @@ package com.example.rotory.Contents;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 
 import android.util.Log;
@@ -41,6 +42,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
@@ -331,7 +333,7 @@ public class StoryContentsPage extends Fragment  {
             Log.d(TAG, "set CommentItems 시작");
             String pDocumentId = String.valueOf(comment.getPersonId());
             Log.d(TAG, "pDocumentID 확인" + pDocumentId);
-            Log.d(TAG,"set CommentItems 시작");
+            Log.d(TAG, "set CommentItems 시작");
             commUsernameText = view.findViewById(R.id.commUsernameText);
             commConText = view.findViewById(R.id.commConText);
             commTimeText = view.findViewById(R.id.commTimeText);
@@ -342,21 +344,21 @@ public class StoryContentsPage extends Fragment  {
             commConText.setText(comment.getComment());
             commTimeText.setText(comment.getSavedDate());
 
-            db.collection("person").document(pDocumentId)
-                    .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                     @Override
-                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        Log.d(TAG, "자료불러옴" + task.getResult().getId());
-                         HashMap<String, Object> document = (HashMap<String, Object>) task.getResult().getData();
-                       if (document != null) {
-                           Log.d(TAG, String.valueOf(document));
-                       }else{
-                           Log.d(TAG, "값없음");
-                           String userName = document.get("userName").toString();
-                           String userLevel = document.get("userLevel").toString();
-                           commUsernameText.setText(userName);
-                           commLevelImg.setImageResource(appConstant.getUserLevelImage(userLevel));
-                       }
+            db.collection("person").whereEqualTo(FieldPath.documentId(), comment.getPersonId())
+                    .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        Log.d(TAG, "자료불러옴" + document.getId());
+                        if (document != null) {
+                            Log.d(TAG, String.valueOf(document));
+                            String userName = document.get("userName").toString();
+                            String userLevel = document.get("userLevel").toString();
+                            commUsernameText.setText(userName);
+                            commLevelImg.setImageResource(appConstant.getUserLevelImage(userLevel));
+                        } else {
+                            Log.d(TAG, "값없음");
+                        }
 
                         String commentedUser = document.get("userId").toString();
                         Log.d(TAG, "댓글단사람" + commentedUser);
@@ -391,10 +393,11 @@ public class StoryContentsPage extends Fragment  {
                                 }
                             });
                         }
-
                     }
-            });
 
+                }
+
+            });
         }
 
 

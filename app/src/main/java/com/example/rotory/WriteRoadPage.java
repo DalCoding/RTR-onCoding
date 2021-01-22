@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,6 +24,10 @@ public class WriteRoadPage extends AppCompatActivity {
     MapView mapView;
     ViewGroup mapContainer;
 
+    EditText writeRoadTitleEditText;
+    EditText writeRoadReviewEditText;
+    EditText writeRoadTagEditText;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +44,11 @@ public class WriteRoadPage extends AppCompatActivity {
                 startActivityForResult(intent, REQUEST_CODE);
             }
         });
+        
+        getTime();
+    }
+
+    private void getTime() {
     }
 
     @Override

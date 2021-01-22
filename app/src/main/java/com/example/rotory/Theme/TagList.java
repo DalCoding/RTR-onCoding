@@ -4,17 +4,25 @@ import java.util.ArrayList;
 import java.util.Map;
 
 public class TagList {
-    public Map<String, Object> tagList;
+    public String tagListTitle;
     public ArrayList<Tags> tags;
 
     public TagList() {
     }
 
-    public Map<String, Object> getTagList() {
-        return tagList;
+    public String getTagListTitle() {
+        return tagListTitle;
     }
 
-    public void setTagList(Map<String, Object> tagList) {
-        this.tagList = tagList;
+    public void setTagListTitle(String tagListTitle) {
+        this.tagListTitle = tagListTitle;
+    }
+
+    public ArrayList<Tags> getTags() {
+        return tags;
+    }
+
+    public void setTags(ArrayList<Tags> tags) {
+        this.tags = tags;
     }
 }
