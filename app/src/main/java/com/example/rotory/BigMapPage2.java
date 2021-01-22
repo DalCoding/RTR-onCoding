@@ -1,9 +1,15 @@
-
 package com.example.rotory;
 
 
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -17,15 +23,23 @@ import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import com.example.rotory.Interface.LoadMapDtrListener;
 import com.example.rotory.Interface.OnTabItemSelectedListener;
 import com.example.rotory.Theme.ThemePage;
 import com.example.rotory.VO.NearPin;
 import com.example.rotory.account.SignUpActivity;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -42,8 +56,7 @@ import java.util.Collections;
 import java.util.Comparator;
 
 
-public class BigMapPage2 extends AppCompatActivity implements OnTabItemSelectedListener, LoadMapDtrListener, OnMapReadyCallback {
-
+public class BigMapPage2 extends AppCompatActivity implements OnTabItemSelectedListener, LoadMapDtrListener {
 
 
     private static final String TAG = "BigMapPage";
@@ -65,6 +78,14 @@ public class BigMapPage2 extends AppCompatActivity implements OnTabItemSelectedL
     Button bigMapBackBtn;
 
     GoogleMap map;
+    LocationManager manager;
+   // GPSListener gpsListener;
+
+    SupportMapFragment mapFragment;
+
+    Marker myMarker;
+    MarkerOptions myLocationMarker;
+    MarkerOptions myLocationMarker1;
 
     // 하단탭
     RelativeLayout bottomNavUnderbarHome;
@@ -98,7 +119,6 @@ public class BigMapPage2 extends AppCompatActivity implements OnTabItemSelectedL
 
         FirebaseUser user = mAuth.getCurrentUser();
 
-
         if (user != null) {
             String checkLogIN = user.getEmail();
             Log.d(TAG, "로그인 정보 유저네임 : " + checkLogIN);
@@ -108,9 +128,54 @@ public class BigMapPage2 extends AppCompatActivity implements OnTabItemSelectedL
             isSignIn = false;
         }
 
+
+        try {
+            MapsInitializer.initialize(this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.googleMap);
-        mapFragment.getMapAsync(this);
+        mapFragment.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(GoogleMap googleMap) {
+                Log.d("Map", "지도준비됨.");
+                map = googleMap;
+                if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    // TODO: Consider calling
+                    //    ActivityCompat#requestPermissions
+                    // here to request the missing permissions, and then overriding
+                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                    //                                          int[] grantResults)
+                    // to handle the case where the user grants the permission. See the documentation
+                    // for ActivityCompat#requestPermissions for more details.
+                    return;
+                }
+              //  map.setMyLocationEnabled(true);
+                LatLng SeoulPoint = new LatLng(37.55626036672879, 126.97217466067063);
+                map.moveCamera(CameraUpdateFactory.newLatLngZoom(SeoulPoint, 12));
+            }
+        });
+
+       LocationManager manager = (LocationManager)
+                getSystemService(Context.LOCATION_SERVICE);// LocationManager 객체 참조하기
+        // 이전에 확인햿던 위치 정보 가져오기
+
+        Location location = manager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            if (location != null) {
+                double latitude = location.getLatitude();
+                double longitude = location.getLongitude();
+                //  String message = "최근 위치-> Latitude : " + latitude + "\nLongitude:" + longitude;
+              //  LatLng curPoint = new LatLng(latitude, longitude);
+             //   CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLng(curPoint);
+             //   map.moveCamera(cameraUpdate);
+            }
+
+        GPSListener gpsListener = new GPSListener(); // 10초마다위치갱신되게끔
+         long minTime = 10000000;
+         float minDistance = 0;
+         manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, minTime, minDistance, gpsListener);
 
 
        bigMapBackBtn = findViewById(R.id.bigMapBackBtn);
@@ -132,17 +197,15 @@ public class BigMapPage2 extends AppCompatActivity implements OnTabItemSelectedL
         bigMapMyLocationBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                gpsListener.onLocationChanged(location);
             }
         });
 
-        // '이 지도에서 찾기' 기능
+        // '이 지도에서 찾기' 기능  => 없어질것같음
         thisBigMapBtn = findViewById(R.id.thisBigMapBtn);
         thisBigMapBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
             }
         });
 
@@ -205,6 +268,39 @@ public class BigMapPage2 extends AppCompatActivity implements OnTabItemSelectedL
         });
     }
 
+    class GPSListener implements LocationListener { // 변화감지(위도, 경도)
+        public void onLocationChanged(Location location) {
+            Double latitude = location.getLatitude();
+            Double longitude = location.getLongitude();
+            String message = "내위치-> Latitude : "+ latitude + "\nLongitude:"+ longitude;
+            Log.d("Map", message);
+            showCurrentLocation(latitude, longitude); // 카메라움직여지도에띄우기
+            LatLng curPoint = new LatLng(latitude, longitude);
+            showMyLocationMarker(curPoint);
+            loadDtr(curPoint);
+            }
+
+        private void showMyLocationMarker(LatLng curPoint) {
+            if (myLocationMarker == null) {
+                myLocationMarker = new MarkerOptions();
+                myLocationMarker.position(curPoint);
+            //    myLocationMarker.title("●내위치\n");
+            //    myLocationMarker.snippet("●GPS로확인한위치");
+                myLocationMarker.icon(BitmapDescriptorFactory.fromResource(R.drawable.squirrel3));
+                map.addMarker(myLocationMarker);
+            } else {
+                myLocationMarker.position(curPoint);}
+
+        }
+
+        public void onProviderDisabled(String provider) { }
+            public void onProviderEnabled(String provider) { }
+            public void onStatusChanged(String provider, int status, Bundle extras) { }}
+            private void showCurrentLocation(Double latitude, Double longitude) {
+                LatLng curPoint = new LatLng(latitude, longitude); // 현재위치의좌표로LatLng 객체생성하기
+                map.moveCamera(CameraUpdateFactory.newLatLngZoom(curPoint, 15));
+            }
+        // 지정한위치의지도영역보여주기(최대19~21까지자세히보여줄수있음)// showMyLocationMarker(curPoint);}
     @Override
     public void OnTabSelected(int position) {
         if(position == 0){
@@ -244,15 +340,27 @@ public class BigMapPage2 extends AppCompatActivity implements OnTabItemSelectedL
 
 
     @Override
-    public void onMapReady(GoogleMap googleMap) {
-        map = googleMap;
+    public void loadDtr(LatLng point) {
 
 
-    }
+        ArrayList<LatLng> manyPins = new ArrayList<LatLng>();
+        //DB의 MapPoint 다 넣기 LatLng(latitude, longitude)
+        manyPins.add(new LatLng(37.73512333583128, 127.06135012282921));
+        manyPins.add(new LatLng(37.73651945074978, 127.0612405606333));
+        manyPins.add(new LatLng(37.73617747243228, 127.06364545969836));
 
-    @Override
-    public void loadDtr(MapView mapView, MapPoint point) {
 
+        for (int k=0; k<3; k++) {
+            // DB에서 핀들의 정보 (이름, 하단팝업정보 등) 가져와야함)
+            LatLng point1 = manyPins.get(k);
+            myLocationMarker1 = new MarkerOptions();
+            myLocationMarker1.position(point1);
+            //    myLocationMarker.title("●내위치\n");
+            //    myLocationMarker.snippet("●GPS로확인한위치");
+            myLocationMarker1.icon(BitmapDescriptorFactory.fromResource(R.drawable.acorn2));
+            map.addMarker(myLocationMarker1);
+
+        }
     }
 
     @Override
@@ -260,7 +368,8 @@ public class BigMapPage2 extends AppCompatActivity implements OnTabItemSelectedL
 
     }
 
-    private class SlidingPageAnimationListener implements Animation.AnimationListener{
+
+        private class SlidingPageAnimationListener implements Animation.AnimationListener{
         @Override
         public void onAnimationStart(Animation animation) {
 

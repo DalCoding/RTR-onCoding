@@ -37,7 +37,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-public class MainPage extends Fragment implements LoadMapDtrListener, MapView.MapViewEventListener {
+public class MainPage extends Fragment implements MapView.MapViewEventListener {
     Button mainFloatingBtn;
     Button mainSearchBtn;
     EditText mainSearchEdit;
@@ -205,7 +205,7 @@ public class MainPage extends Fragment implements LoadMapDtrListener, MapView.Ma
         }*/
     }
 
-    @Override
+
     public void loadDtr(MapView mapView, MapPoint point) {
         int zoomLevel = mapView.getZoomLevel();
         if (zoomLevel <= 0){
@@ -287,7 +287,7 @@ public class MainPage extends Fragment implements LoadMapDtrListener, MapView.Ma
         }
     }
 
-    @Override
+
     public void loadDtrLine(MapView mapView, ArrayList<MapPoint> PolyPoints) {
 
         MapPolyline polyline = new MapPolyline();

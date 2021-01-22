@@ -40,7 +40,7 @@ import java.util.Collections;
 import java.util.Comparator;
 
 
-public class BigMapPage extends AppCompatActivity implements OnTabItemSelectedListener, LoadMapDtrListener, MapView.CurrentLocationEventListener, MapView.MapViewEventListener, MapView.POIItemEventListener {
+public class BigMapPage extends AppCompatActivity implements OnTabItemSelectedListener, MapView.CurrentLocationEventListener, MapView.MapViewEventListener, MapView.POIItemEventListener {
 
 
 
@@ -252,7 +252,7 @@ public class BigMapPage extends AppCompatActivity implements OnTabItemSelectedLi
 
     // 구현 기능 : 1. 이지도에서찾기  2. 내위치에서 찾기  3. 줌레벨변경시 경로보이기  4. 도토리클릭시 하단팝업
 
-    @Override
+
     public void loadDtr(MapView mapView, MapPoint point) {
         int zoomLevel = mapView.getZoomLevel();
         if (zoomLevel <= 0){
@@ -334,7 +334,7 @@ public class BigMapPage extends AppCompatActivity implements OnTabItemSelectedLi
         }
     }
 
-    @Override
+
     public void loadDtrLine(MapView mapView, ArrayList<MapPoint> PolyPoints) {
 
         MapPolyline polyline = new MapPolyline();
