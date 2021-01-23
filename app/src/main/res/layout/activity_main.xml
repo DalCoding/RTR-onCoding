@@ -65,7 +65,7 @@
                     android:layout_height="match_parent">
 
                     <Button
-                        android:id="@+id/mainAlarmBtn"
+                        android:id="@+id/tagSelectBtn"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:layout_alignParentRight="true"
@@ -230,9 +230,7 @@
                 android:layout_height="7dp"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentBottom="true"
-                android:layout_marginStart="35dp"
                 android:layout_marginLeft="35dp"
-                android:layout_marginEnd="35dp"
                 android:layout_marginRight="35dp"
                 android:background="@color/white"
                 android:visibility="gone">
