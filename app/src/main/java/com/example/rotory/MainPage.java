@@ -1,10 +1,12 @@
 package com.example.rotory;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +26,7 @@ import com.example.rotory.VO.Contents;
 import com.example.rotory.VO.NearPin;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -37,7 +40,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-public class MainPage extends Fragment implements MapView.MapViewEventListener {
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+
+
+public class MainPage extends Fragment
+        //implements MapView.MapViewEventListener
+{
+    final static String TAG = "MainPage";
+
     Button mainFloatingBtn;
     Button mainSearchBtn;
     EditText mainSearchEdit;
@@ -50,13 +61,18 @@ public class MainPage extends Fragment implements MapView.MapViewEventListener {
     FrameLayout mainMapLayout;
     Button mainMapExtendBtn;
 
+    private Context mContext;
+    private Animation fab_open, fab_close;
+    private boolean isFabOpen = false;
+
+    Button popFloatingBtn;
+    Button pop2FloatingBtn;
+
     private FirestoreRecyclerAdapter adapter;
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     //MapView mapView;
    // ViewGroup rootView;
-
-
 
     @Override
     public void onStop() {
@@ -83,6 +99,7 @@ public class MainPage extends Fragment implements MapView.MapViewEventListener {
         getActivity().finish();
     }
 
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -95,6 +112,8 @@ public class MainPage extends Fragment implements MapView.MapViewEventListener {
 
     }
 
+    private void setContentView(int main_page) {
+    }
 
     // public void showWrite(){}
 
@@ -107,24 +126,81 @@ public class MainPage extends Fragment implements MapView.MapViewEventListener {
 
     private void initUI(ViewGroup rootView) {
 
-       //mapView = new MapView(getActivity());
+        //mapView = new MapView(getActivity());
         ViewGroup mapViewContainer = (ViewGroup) rootView.findViewById(R.id.mainMapLayout);
         //mapViewContainer.addView(mapView);
 
-       // mapView.setPOIItemEventListener(this);
+        // mapView.setPOIItemEventListener(this);
         //mapView.setMapViewEventListener(this);
 
-       // moveMyLocation(mapView);
+        // moveMyLocation(mapView);
 
-      /*  Button button = rootView.findViewById(R.id.mainFloatingBtn);
-        button.setOnClickListener(new View.OnClickListener(){
+        setContentView(R.layout.main_page);
+
+
+        // 플로팅버튼 참고 https://re-build.tistory.com/31
+
+        mContext = mContext.getApplicationContext();
+
+        fab_open = AnimationUtils.loadAnimation(mContext, R.anim.fab_open);
+        fab_close = AnimationUtils.loadAnimation(mContext, R.anim.fab_open);
+
+        mainFloatingBtn = rootView.findViewById(R.id.mainFloatingBtn);
+        popFloatingBtn = rootView.findViewById(R.id.popFloatingBtn);
+        pop2FloatingBtn = rootView.findViewById(R.id.pop2FloatingBtn);
+
+        mainFloatingBtn.setOnClickListener(new View.OnClickListener(){
             @Override
-            public void onClick(View v) {
-                //showWrite();
-                 }
-        }); */
+            public void onClick(View view) {
+            toggleFab();
+            }
+        });
+        popFloatingBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                toggleFab();
+                showToast("이야기 작성 페이지로 이동합니다.");
+                }
+        });
 
-        ImageButton mainMapExtendBtn = rootView.findViewById(R.id.mainMapExtendBtn);
+        pop2FloatingBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                toggleFab();
+                showToast("이야기 작성 페이지로 이동합니다.");
+            }
+
+        });
+
+        /*Button button = rootView.findViewById(R.id.mainFloatingBtn);
+        button.setOnClickListener(new View.OnClickListener(){*/
+/*            @Override
+            public void onClick(View v) {
+                switch (v.getId()){
+                    case R.id.mainFloatingBtn:
+                        toggleFab();
+                        break;
+
+                    case R.id.popFloatingBtn:
+                    toggleFab();
+                        showToast("길 작성 페이지로 이동합니다.");
+                    break;
+
+                    case R.id.pop2FloatingBtn:
+                    toggleFab();
+                        showToast("이야기 작성 페이지로 이동합니다.");
+                    break;
+                }
+
+            }*/
+/*            private void showWrite() {
+            }
+            private void showToast(String s) {
+                Toast.makeText(getContext(), s, Toast.LENGTH_SHORT).show();
+            }
+        });*/
+
+/*        ImageButton mainMapExtendBtn = rootView.findViewById(R.id.mainMapExtendBtn);
         mainMapExtendBtn.bringToFront();
         mainMapExtendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -136,8 +212,7 @@ public class MainPage extends Fragment implements MapView.MapViewEventListener {
                // getActivity().finish();
 
             }
-        });
-
+        });*/
 
 
       /*  FirebaseUser user = mAuth.getCurrentUser();
@@ -169,6 +244,28 @@ public class MainPage extends Fragment implements MapView.MapViewEventListener {
         //mainRoadList.setAdapter(adapter);
     }
 
+    private void showToast(String s) {
+        Toast.makeText(getContext(), s, Toast.LENGTH_SHORT).show();
+    }
+    private void toggleFab(){
+        if (isFabOpen) {
+            //mainFloatingBtn.setImageResource(R.drawable.ic_add);
+            popFloatingBtn.startAnimation(fab_close);
+            pop2FloatingBtn.startAnimation(fab_close);
+            popFloatingBtn.setClickable(false);
+            pop2FloatingBtn.setClickable(false);
+            isFabOpen = false;
+
+        } else {
+            //mainFloatingBtn.setImageResource(R.drawable.ic_close);
+            popFloatingBtn.startAnimation(fab_open);
+            pop2FloatingBtn.startAnimation(fab_open);
+            popFloatingBtn.setClickable(true);
+            pop2FloatingBtn.setClickable(true);
+            isFabOpen = true;
+        }
+    }
+/*
     private void moveMyLocation(MapView mapView) {
 
             mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading);
@@ -185,7 +282,7 @@ public class MainPage extends Fragment implements MapView.MapViewEventListener {
             }, 2000); // 1000 = 1초
             // lm = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
 
-    }
+    }*/
 
     private void makeAdapter(FirestoreRecyclerOptions<Contents> options) {
       /*  adapter = new FirestoreRecyclerOptions<SearchContents>(options) {
@@ -206,7 +303,7 @@ public class MainPage extends Fragment implements MapView.MapViewEventListener {
     }
 
 
-    public void loadDtr(MapView mapView, MapPoint point) {
+/*    public void loadDtr(MapView mapView, MapPoint point) {
         int zoomLevel = mapView.getZoomLevel();
         if (zoomLevel <= 0){
 
@@ -303,11 +400,11 @@ public class MainPage extends Fragment implements MapView.MapViewEventListener {
 // Polyline 지도에 올리기.
         mapView.addPolyline(polyline);
 
-    }
+    }*/
 
 
 
-    @Override
+    /*@Override
     public void onMapViewInitialized(MapView mapView) {
 
     }
@@ -321,7 +418,7 @@ public class MainPage extends Fragment implements MapView.MapViewEventListener {
     public void onMapViewZoomLevelChanged(MapView mapView, int i) {
 
         MapPoint centerPoint = mapView.getMapCenterPoint();
-        loadDtr(mapView, centerPoint);
+        //loadDtr(mapView, centerPoint);
 
 
     }
@@ -354,7 +451,7 @@ public class MainPage extends Fragment implements MapView.MapViewEventListener {
     @Override
     public void onMapViewMoveFinished(MapView mapView, MapPoint mapPoint) {
 
-    }
+    }*/
 /*
     @Override
     public void onPOIItemSelected(MapView mapView, MapPOIItem mapPOIItem) {
