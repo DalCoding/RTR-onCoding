@@ -61,7 +61,7 @@ public class MainPage extends Fragment
     FrameLayout mainMapLayout;
     Button mainMapExtendBtn;
 
-    private Context mContext;
+    private Context context;
     private Animation fab_open, fab_close;
     private boolean isFabOpen = false;
 
@@ -80,6 +80,9 @@ public class MainPage extends Fragment
         getActivity().finish();
 
     }
+
+
+
 /*
     @Override
     public void onDetach() {
@@ -97,6 +100,14 @@ public class MainPage extends Fragment
     public void onDestroy() {
         super.onDestroy();
         getActivity().finish();
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        if (context instanceof Activity)
+            context = (Activity)context;
     }
 
 
@@ -139,11 +150,10 @@ public class MainPage extends Fragment
 
 
         // 플로팅버튼 참고 https://re-build.tistory.com/31
+        Context = new context(getActivity());
 
-        mContext = mContext.getApplicationContext();
-
-        fab_open = AnimationUtils.loadAnimation(mContext, R.anim.fab_open);
-        fab_close = AnimationUtils.loadAnimation(mContext, R.anim.fab_open);
+        fab_open = AnimationUtils.loadAnimation(Context, R.anim.fab_open);
+        fab_close = AnimationUtils.loadAnimation(Context, R.anim.fab_open);
 
         mainFloatingBtn = rootView.findViewById(R.id.mainFloatingBtn);
         popFloatingBtn = rootView.findViewById(R.id.popFloatingBtn);
