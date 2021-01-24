@@ -11,6 +11,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -116,6 +117,7 @@ public class BigMapPage extends AppCompatActivity implements OnTabItemSelectedLi
         startActivity(intent);
     }
 
+    @SuppressLint("MissingPermission")
     @Override
     protected void onCreate(@NonNull Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -201,21 +203,42 @@ public class BigMapPage extends AppCompatActivity implements OnTabItemSelectedLi
         LocationManager manager = (LocationManager)
                 getSystemService(Context.LOCATION_SERVICE);// LocationManager 객체 참조하기
         // 이전에 확인햿던 위치 정보 가져오기
+        String locationProvider = LocationManager.NETWORK_PROVIDER;
+     //   Location location = manager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
-        Location location = manager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        if (location != null) {
+     /*   if (location != null) {
             double latitude = location.getLatitude();
             double longitude = location.getLongitude();
             //  String message = "최근 위치-> Latitude : " + latitude + "\nLongitude:" + longitude;
             //  LatLng curPoint = new LatLng(latitude, longitude);
             //   CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLng(curPoint);
             //   map.moveCamera(cameraUpdate);
-        }
+        } */
 
         GPSListener gpsListener = new GPSListener(); // 10초마다위치갱신되게끔
-        long minTime = 10000000;
+        long minTime = 1000;
         float minDistance = 0;
-        manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, minTime, minDistance, gpsListener);
+        manager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, minTime, minDistance, gpsListener);
+       // manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, minTime, minDistance, gpsListener);
+
+        Handler mHandler = new Handler();
+        mHandler.postDelayed(new Runnable() {
+            public void run() {
+                // 3초 후에 현재위치를 받아오도록 설정 , 바로 시작 시 에러납니다.
+
+                Location location = manager.getLastKnownLocation(locationProvider);
+
+                Double latitude = location.getLatitude();
+                Double longitude = location.getLongitude();
+                String message = "내위치-> Latitude : "+ latitude + "\nLongitude:"+ longitude;
+                Log.d("Map", message);
+
+                showCurrentLocation(latitude, longitude); // 카메라움직여지도에띄우기
+                LatLng curPoint = new LatLng(latitude, longitude);
+                showMyLocationMarker(); // 현재위치 보여주기
+                loadDtr(curPoint); // 도토리 보여주기
+            }
+        }, 2000); // 1000 = 1초
 
 
         bigMapBackBtn = findViewById(R.id.bigMapBackBtn);
@@ -237,7 +260,10 @@ public class BigMapPage extends AppCompatActivity implements OnTabItemSelectedLi
         bigMapMyLocationBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                gpsListener.onLocationChanged(location);
+                Location location = manager.getLastKnownLocation(locationProvider);
+                Double latitude = location.getLatitude();
+                Double longitude = location.getLongitude();
+                showCurrentLocation(latitude, longitude);
             }
         });
 
@@ -348,9 +374,10 @@ public class BigMapPage extends AppCompatActivity implements OnTabItemSelectedLi
 
     public void showMyLocationMarker() {
         LocationManager manager = (LocationManager)
-                getSystemService(Context.LOCATION_SERVICE);
-        @SuppressLint("MissingPermission") Location location = manager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        if (location != null) {
+                getSystemService(Context.LOCATION_SERVICE);// LocationManager 객체 참조하기
+        // 이전에 확인햿던 위치 정보 가져오기
+        String locationProvider = LocationManager.NETWORK_PROVIDER;
+        @SuppressLint("MissingPermission") Location location = manager.getLastKnownLocation(locationProvider);
             double latitude = location.getLatitude();
             double longitude = location.getLongitude();
             //  String message = "최근 위치-> Latitude : " + latitude + "\nLongitude:" + longitude;
@@ -366,21 +393,20 @@ public class BigMapPage extends AppCompatActivity implements OnTabItemSelectedLi
                 myLocationMarker.icon(BitmapDescriptorFactory.fromResource(R.drawable.squirrel3));
                 map.addMarker(myLocationMarker);
 
-        }
     }
 
 
 
     class GPSListener implements LocationListener { // 변화감지(위도, 경도)
         public void onLocationChanged(Location location) {
-            Double latitude = location.getLatitude();
+           /* Double latitude = location.getLatitude();
             Double longitude = location.getLongitude();
             String message = "내위치-> Latitude : "+ latitude + "\nLongitude:"+ longitude;
             Log.d("Map", message);
             showCurrentLocation(latitude, longitude); // 카메라움직여지도에띄우기
             LatLng curPoint = new LatLng(latitude, longitude);
             showMyLocationMarker(); // 현재위치 보여주기
-            loadDtr(curPoint); // 도토리 보여주기
+            loadDtr(curPoint); // 도토리 보여주기 */
             }
 
         public void onProviderDisabled(String provider) { }
