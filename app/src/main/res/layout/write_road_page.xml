@@ -191,8 +191,9 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
+                        android:layout_marginTop="10dp"
                         android:layout_marginBottom="5dp"
+                        android:background="#FFFFFF"
                         android:orientation="horizontal">
 
                         <TextView
@@ -208,13 +209,13 @@
 
                         <Button
                             android:id="@+id/writeRoadChooseTagBtn"
-                            android:layout_width="100dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="40dp"
                             android:layout_gravity="center_vertical"
+                            android:layout_margin="5dp"
                             android:background="@drawable/button_drawable"
                             android:text="태그선택"
-                            android:textSize="16sp"
-                            app:backgroundTint="@empty" />
+                            android:textSize="16sp" />
 
                         <FrameLayout
                             android:layout_width="match_parent"
@@ -235,6 +236,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:background="#FFFFFF"
                         android:orientation="horizontal">
 
                         <TextView
@@ -256,7 +258,7 @@
                             android:layout_marginEnd="10dp"
                             android:layout_marginRight="10dp"
                             android:layout_marginBottom="5dp"
-                            android:background="#ffffff"
+                            android:background="@drawable/box"
                             android:ems="10"
                             android:gravity="center_horizontal|center_vertical"
                             android:hint="태그를 직접 입력해주세요"
@@ -265,7 +267,7 @@
 
                         <Button
                             android:id="@+id/writeRoadTagTextInputBtn"
-                            android:layout_width="60dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="40dp"
                             android:layout_gravity="center_vertical"
                             android:background="@drawable/button_drawable"
@@ -276,8 +278,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
-                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="10dp"
                         android:orientation="vertical">
 
                         <LinearLayout
@@ -305,63 +306,73 @@
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal|center_vertical"
+                            android:layout_marginBottom="10dp"
                             android:orientation="horizontal">
 
                             <RelativeLayout
-                                android:layout_width="150dp"
-                                android:layout_height="35dp"
-                                android:layout_marginLeft="5dp"
-                                android:layout_marginEnd="5dp"
-                                android:layout_marginRight="5dp"
-                                android:layout_weight="1"
-                                android:background="@drawable/box">
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginEnd="10dp"
+                                android:layout_weight="1">
 
-                                <Spinner
-                                    android:id="@+id/writeRoadHourSetSpinner"
-                                    android:layout_width="50dp"
-                                    android:layout_height="30dp"
-                                    android:layout_centerVertical="true"
-                                    android:layout_marginStart="10dp"
-                                    android:layout_marginLeft="10dp"
-                                    android:background="@drawable/spinnerbox"
-                                    android:dropDownHeight="100dp" />
-
-                                <TextView
-                                    android:id="@+id/writeStoryHourTitle"
+                                <RelativeLayout
+                                    android:id="@+id/timeSelectLayout"
                                     android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_alignParentLeft="false"
+                                    android:layout_height="40dp"
                                     android:layout_centerInParent="true"
-                                    android:layout_marginStart="5dp"
+                                    android:layout_gravity="center_horizontal"
                                     android:layout_marginLeft="5dp"
-                                    android:layout_toRightOf="@id/writeRoadHourSetSpinner"
-                                    android:text="시간"
-                                    android:textSize="14sp" />
+                                    android:layout_marginEnd="5dp"
+                                    android:layout_marginRight="5dp"
+                                    android:layout_weight="1">
 
-                                <Spinner
-                                    android:id="@+id/writeRoadMinSetSpinner"
-                                    android:layout_width="50dp"
-                                    android:layout_height="30dp"
-                                    android:layout_centerVertical="true"
-                                    android:layout_marginStart="10dp"
-                                    android:layout_marginLeft="10dp"
-                                    android:layout_toRightOf="@id/writeStoryHourTitle"
-                                    android:background="@drawable/spinnerbox" />
+                                    <TextView
+                                        android:id="@+id/writeRoadHour"
+                                        android:layout_width="40dp"
+                                        android:layout_height="35dp"
+                                        android:layout_centerVertical="true"
+                                        android:layout_marginStart="5dp"
+                                        android:gravity="center_horizontal|center_vertical"
+                                        android:textSize="18sp" />
 
-                                <TextView
-                                    android:id="@+id/writeStoryMinTitle"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_alignParentLeft="false"
-                                    android:layout_centerInParent="true"
-                                    android:layout_marginStart="5dp"
-                                    android:layout_marginLeft="5dp"
-                                    android:layout_toRightOf="@id/writeRoadMinSetSpinner"
-                                    android:text="분"
-                                    android:textSize="14sp" />
+                                    <TextView
+                                        android:id="@+id/writeStoryHourTitle"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentLeft="false"
+                                        android:layout_centerVertical="true"
+                                        android:layout_marginLeft="5dp"
+                                        android:layout_toRightOf="@id/writeRoadHour"
+                                        android:text="시간"
+                                        android:textSize="16sp" />
 
-                                <!--
+                                    <TextView
+                                        android:id="@+id/writeRoadMin"
+                                        android:layout_width="40dp"
+                                        android:layout_height="35dp"
+                                        android:layout_centerVertical="true"
+                                        android:layout_marginLeft="10dp"
+                                        android:layout_toRightOf="@id/writeStoryHourTitle"
+                                        android:gravity="center_horizontal|center_vertical"
+                                        android:textSize="18sp" />
+
+                                    <TextView
+                                        android:id="@+id/writeStoryMinTitle"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentLeft="false"
+                                        android:layout_centerVertical="true"
+                                        android:layout_marginStart="5dp"
+                                        android:layout_marginLeft="5dp"
+                                        android:layout_marginEnd="10dp"
+                                        android:layout_toRightOf="@id/writeRoadMin"
+                                        android:text="분"
+                                        android:textSize="16sp" />
+
+                                    <!--
                 <Spinner
                     android:id="@+id/hourSpinner"
                     android:layout_width="40dp"
@@ -412,17 +423,15 @@
                     android:gravity="center_horizontal|center_vertical"
                     android:text="분"
                     android:textSize="14sp" /> -->
+                                </RelativeLayout>
                             </RelativeLayout>
 
                             <Spinner
                                 android:id="@+id/companySpinner"
-                                android:layout_width="150dp"
-                                android:layout_height="35dp"
-                                android:layout_marginStart="5dp"
-                                android:layout_marginLeft="5dp"
-                                android:layout_marginEnd="10dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="10dp"
                                 android:layout_marginRight="10dp"
-                                android:layout_marginBottom="5dp"
                                 android:layout_weight="1"
                                 android:background="@drawable/spinnerbox"
                                 android:entries="@array/companyList"
@@ -435,7 +444,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
+                        android:layout_marginTop="10dp"
                         android:layout_marginBottom="5dp"
                         android:orientation="horizontal">
 
@@ -443,6 +452,7 @@
                             android:id="@+id/setReviewScoreBtn"
                             android:layout_width="wrap_content"
                             android:layout_height="40dp"
+                            android:layout_gravity="center_vertical"
                             android:layout_marginStart="5dp"
                             android:layout_marginLeft="5dp"
                             android:background="@drawable/button_drawable"
@@ -488,8 +498,8 @@
                                 android:id="@+id/publicRadioButton"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginEnd="20sp"
-                                android:layout_marginRight="20sp"
+                                android:layout_marginEnd="20dp"
+                                android:layout_marginRight="20dp"
                                 android:text="  사람들과 보기" />
 
                             <RadioButton
