@@ -11,14 +11,13 @@ import android.view.Window;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.GridView;
-import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
 
 import com.example.rotory.Interface.OnTagItemClickListener;
 import com.example.rotory.R;
 
-public class TagSelectDialog extends Activity {
+public class TagSelectedDialog extends Activity {
     private static final String TAG = "tagSelectDialog";
     GridView gridView;
     Button plusBtn;
@@ -26,7 +25,7 @@ public class TagSelectDialog extends Activity {
 
     public static OnTagItemClickListener listener;
 
-    public TagSelectDialog() {
+    public void TagSelectDialog() {
 
     }
 
@@ -120,8 +119,8 @@ public class TagSelectDialog extends Activity {
             tagItem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (TagSelectDialog.listener != null) {
-                        TagSelectDialog.listener.onItemSelected(v.getTag().toString());
+                    if (TagSelectedDialog.listener != null) {
+                        TagSelectedDialog.listener.onItemSelected(v.getTag().toString());
                     }
                 }
             });

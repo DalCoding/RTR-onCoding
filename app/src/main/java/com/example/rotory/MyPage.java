@@ -274,8 +274,7 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
                 switch (item.getItemId()){
                     case R.id.home:
                         Intent MainIntent= new Intent(getApplicationContext(), MainActivity.class);
-                        MainIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP|Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(MainIntent);
+                        startActivityForResult(MainIntent, MainCode);
                         bottomNavigation.setVisibility(View.VISIBLE);
                         setTabUnderBar(0);
                         return  true;
