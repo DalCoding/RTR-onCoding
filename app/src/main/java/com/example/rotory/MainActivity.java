@@ -23,9 +23,10 @@ import com.example.rotory.Interface.OnTabItemSelectedListener;
 
 import com.example.rotory.Interface.OnUserActItemClickListener;
 import com.example.rotory.Theme.ThemePage;
+import com.example.rotory.Theme.ThemePickPage;
 import com.example.rotory.VO.AppConstant;
 
-import com.example.rotory.WriteContents.WriteRoadPage;
+import com.example.rotory.account.SetNewPassword;
 import com.example.rotory.account.SignUpActivity;
 import com.example.rotory.account.LogInActivity;
 
@@ -104,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
         getSupportFragmentManager().beginTransaction().replace(R.id.container, mainPage).commit();
 
         // 아래부분 이후 옮김 -> 로그아웃 여부 실험!
-        Button mainAlarmBtn = findViewById(R.id.tagSelectBtn);
+        Button mainAlarmBtn = findViewById(R.id.mainAlarmBtn);
         mainAlarmBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

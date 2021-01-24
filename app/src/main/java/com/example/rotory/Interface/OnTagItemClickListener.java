@@ -7,5 +7,6 @@ import com.example.rotory.Theme.TagItemAdapter;
 
 public interface OnTagItemClickListener {
     public void onItemClick(TagItemAdapter.tagItemViewHolder holder, View view, int position);
-    public void onItemSelected(String tag);
+
+    void onItemSelected(String toString);
 }

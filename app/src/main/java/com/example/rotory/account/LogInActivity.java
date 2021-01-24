@@ -29,9 +29,12 @@ import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.ktx.Firebase;
 
 public class LogInActivity extends AppCompatActivity  {
+    private final int RC_SIGN_IN = 3000;
     private static final String TAG = "LoginAcitivity";
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener firebaseAuthListener;
+    SharedPreferences userIdShared;
+    SharedPreferences.Editor editor;
 
     private EditText login_id_edittext;
     private EditText login_pw_edittext;
@@ -39,7 +42,7 @@ public class LogInActivity extends AppCompatActivity  {
     private TextView login_join;
     TextView login_find;
 
-
+    CheckBox login_auto;
     String logInId;
     String logInPw;
 

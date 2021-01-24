@@ -13,4 +13,9 @@
     <style name="tab_text" parent="TextAppearance.Design.Tab">
         <item name="android:textSize">18sp</item>
     </style>
+    <style name="dtrRatingBar" parent="@android:style/Widget.RatingBar">
+        <item name="android:progressDrawable">@drawable/custom_ratingbar</item>
+        <item name="minHeight">25dp</item>
+        <item name="maxWidth">40dp</item>
+    </style>
 </resources>

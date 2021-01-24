@@ -74,6 +74,7 @@ public class MainPage extends Fragment
     Button popFloatingBtn;
     Button pop2FloatingBtn;
 
+
     private FirestoreRecyclerAdapter adapter;
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -153,15 +154,23 @@ public class MainPage extends Fragment
         setContentView(R.layout.main_page);
 
 
+<<<<<<< HEAD
         // 플로팅버튼은 https://re-build.tistory.com/31 참고하여 fragment 형식에 맞춰 코드 작성
         // 실행시 Activity Null point Exception 문제가 발생
 
         Context = new context(getActivity());
+=======
+        // 플로팅버튼 참고 https://re-build.tistory.com/31
+
+        /*Context = new Context(getActivity());
+>>>>>>> ac8357873cc8383065b1b168374a3e26e9d271c4
 
         fab_open = AnimationUtils.loadAnimation(Context, R.anim.fab_open);
-        fab_close = AnimationUtils.loadAnimation(Context, R.anim.fab_open);
+        fab_close = AnimationUtils.loadAnimation(Context, R.anim.fab_open);*/
 
-        mainFloatingBtn = rootView.findViewById(R.id.mainFloatingBtn);
+
+
+      /*  mainFloatingBtn = rootView.findViewById(R.id.mainFloatingBtn);
         popFloatingBtn = rootView.findViewById(R.id.popFloatingBtn);
         pop2FloatingBtn = rootView.findViewById(R.id.pop2FloatingBtn);
 
@@ -175,7 +184,11 @@ public class MainPage extends Fragment
             @Override
             public void onClick(View view) {
                 toggleFab();
+<<<<<<< HEAD
                 showToast("길 작성 페이지로 이동합니다.");
+=======
+                showToast("이야기 작성 페이지로 이동합니다.");
+>>>>>>> ac8357873cc8383065b1b168374a3e26e9d271c4
             }
         });
 
@@ -187,27 +200,36 @@ public class MainPage extends Fragment
             }
 
         });
+<<<<<<< HEAD
 
 /*        Button button = rootView.findViewById(R.id.mainFloatingBtn);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
+=======
+*/
+        /*Button button = rootView.findViewById(R.id.mainFloatingBtn);
+        button.setOnClickListener(new View.OnClickListener(){*/
+/*            @Override
+>>>>>>> ac8357873cc8383065b1b168374a3e26e9d271c4
             public void onClick(View v) {
                 switch (v.getId()) {
                     case R.id.mainFloatingBtn:
                         toggleFab();
                         break;
-
                     case R.id.popFloatingBtn:
                         toggleFab();
                         showToast("길 작성 페이지로 이동합니다.");
+<<<<<<< HEAD
                         break;
 
+=======
+                    break;
+>>>>>>> ac8357873cc8383065b1b168374a3e26e9d271c4
                     case R.id.pop2FloatingBtn:
                         toggleFab();
                         showToast("이야기 작성 페이지로 이동합니다.");
                         break;
                 }
-
             }*/
 
 
@@ -227,13 +249,18 @@ public class MainPage extends Fragment
                 // mapViewContainer.removeView(mapView);
                 Intent intent = new Intent(getActivity(), BigMapPage.class);
                 startActivity(intent);
+<<<<<<< HEAD
                 // getActivity().finish();
 
+=======
+               // getActivity().finish();
+>>>>>>> ac8357873cc8383065b1b168374a3e26e9d271c4
             }
         });*/
 
         FirebaseUser user = mAuth.getCurrentUser();
 
+<<<<<<< HEAD
         private void initUI (ViewGroup rootView, FirebaseUser user){
 
             db.collection("contents")
@@ -254,6 +281,25 @@ public class MainPage extends Fragment
                                     .build();
                             makeAdapter(options);
                         }
+=======
+      /*  FirebaseUser user = mAuth.getCurrentUser();
+    private void initUI(ViewGroup rootView, FirebaseUser user) {
+        db.collection("contents")
+                .whereEqualTo("uid", user.getEmail())
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        String contentsId = document.getId();
+                        Query query = db.collection("contents")
+                                .document(contentsId).collection("title")
+                                .orderBy("");
+                        FirestoreRecyclerOptions<Contents> options = new FirestoreRecyclerOptions.Builder<Contents>()
+                                .setQuery(query, Contents.class)
+                                .build();
+                        makeAdapter(options);
+>>>>>>> ac8357873cc8383065b1b168374a3e26e9d271c4
                     }
                 }
             });
@@ -284,32 +330,35 @@ public class MainPage extends Fragment
         }
 
     private void moveMyLocation(MapView mapView) {
-
             mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading);
             MapPoint centerPoint = mapView.getMapCenterPoint();
             loadDtr(mapView, centerPoint);
-
             Handler mHandler = new Handler();
             mHandler.postDelayed(new Runnable() {
                 public void run() {
                     // 3초 후에 현재위치를 받아오도록 설정 , 바로 시작 시 에러납니다.
-
                     mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOff);
                 }
             }, 2000); // 1000 = 1초
             // lm = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
+<<<<<<< HEAD
 
     }
 
 /*    private void makeAdapter(FirestoreRecyclerOptions<Contents> options) {
         adapter = new FirestoreRecyclerOptions<SearchContents>(options) {
 
+=======
+    }*/
+
+    private void makeAdapter(FirestoreRecyclerOptions<Contents> options) {
+      /*  adapter = new FirestoreRecyclerOptions<SearchContents>(options) {
+>>>>>>> ac8357873cc8383065b1b168374a3e26e9d271c4
                @Override
                 public void onDataChanged() {
                     super.onDataChanged();
                     Log.d(TAG, "어댑터 작동");
                 }
-
                 @Override
                 protected void onBindViewHolder(@NonNull contentsViewHolder holder, int position,
                                                     @NonNull SearchContents model) {
@@ -323,9 +372,7 @@ public class MainPage extends Fragment
     public void loadDtr(MapView mapView, MapPoint point) {
         int zoomLevel = mapView.getZoomLevel();
         if (zoomLevel <= 0){
-
             // 모든 경로 표시
-
             //  } else {
             ArrayList<MapPoint> manyPins = new ArrayList<MapPoint>();
             //DB의 MapPoint 다 넣기
@@ -333,7 +380,6 @@ public class MainPage extends Fragment
             manyPins.add(MapPoint.mapPointWithGeoCoord(37.53890481231618, 126.82940817621092));
             manyPins.add(MapPoint.mapPointWithGeoCoord(37.540725844063566, 126.83696139065235));
             // manyPins.add(MapPoint.mapPointWithGeoCoord(37.734617832068224, 127.06367895894984));
-
             ArrayList<NearPin> nearPin = new ArrayList<NearPin>();
             // 근사값 배열 구하기
             for (int j = 0; j < manyPins.size(); j++) {
@@ -341,12 +387,10 @@ public class MainPage extends Fragment
                 MapPoint.GeoCoordinate latLng = manyPins.get(j).getMapPointGeoCoord();
                 double latlat = latLng.latitude;
                 double longlong = latLng.longitude;
-
                 //기준값
                 MapPoint.GeoCoordinate latLng1 = point.getMapPointGeoCoord();
                 double latlat1 = latLng1.latitude;
                 double longlong1 = latLng1.longitude;
-
                 double earthRadius = 6371000; //meters
                 double dLat = Math.toRadians(latlat - latlat1);
                 double dLng = Math.toRadians(longlong - longlong1);
@@ -360,7 +404,6 @@ public class MainPage extends Fragment
                 // double + MapPoint형 배열
                 nearPin.add(new NearPin(dist, manyPins.get(j)));
             }
-
             Collections.sort(nearPin, new Comparator<NearPin>() {
                 @Override
                 public int compare(NearPin o1, NearPin o2) {
@@ -371,11 +414,9 @@ public class MainPage extends Fragment
                     } else {
                         return 1;
                     }
-
                 }
             });
             ArrayList<MapPoint> PolyPoints = new ArrayList<>();
-
             // 가까운 핀들 맵뷰에 박기
             for (int k=0; k<2; k++) {
                 // DB에서 핀들의 정보 (이름, 하단팝업정보 등) 가져와야함)
@@ -391,123 +432,110 @@ public class MainPage extends Fragment
                 customMarker3.setShowCalloutBalloonOnTouch(false);
                 mapView.addPOIItem(customMarker3);
                 PolyPoints.add(Pin);
-
             }
-
             loadDtrLine(mapView, PolyPoints);
         } else {
             mapView.removeAllPOIItems();
             mapView.removeAllPolylines();
         }
     }
-
-
     public void loadDtrLine(MapView mapView, ArrayList<MapPoint> PolyPoints) {
-
         MapPolyline polyline = new MapPolyline();
         polyline.setTag(500);
         polyline.setLineColor(Color.argb(128, 255, 51, 0)); // Polyline 컬러 지정.
-
         // Polyline 좌표 지정.
         for (int i=0; i < PolyPoints.size(); i++) {
             MapPoint PolyPoint = PolyPoints.get(i);
             polyline.addPoint(PolyPoint);
         }
-
 // Polyline 지도에 올리기.
         mapView.addPolyline(polyline);
+<<<<<<< HEAD
 
     }
+=======
+    }*/
+>>>>>>> ac8357873cc8383065b1b168374a3e26e9d271c4
 
 
 
     @Override
     public void onMapViewInitialized(MapView mapView) {
-
     }
-
     @Override
     public void onMapViewCenterPointMoved(MapView mapView, MapPoint mapPoint) {
-
     }
-
     @Override
     public void onMapViewZoomLevelChanged(MapView mapView, int i) {
-
         MapPoint centerPoint = mapView.getMapCenterPoint();
         //loadDtr(mapView, centerPoint);
-
-
     }
-
     @Override
     public void onMapViewSingleTapped(MapView mapView, MapPoint mapPoint) {
-
     }
-
     @Override
     public void onMapViewDoubleTapped(MapView mapView, MapPoint mapPoint) {
-
     }
-
     @Override
     public void onMapViewLongPressed(MapView mapView, MapPoint mapPoint) {
-
     }
-
     @Override
     public void onMapViewDragStarted(MapView mapView, MapPoint mapPoint) {
-
     }
-
     @Override
     public void onMapViewDragEnded(MapView mapView, MapPoint mapPoint) {
-
     }
-
     @Override
     public void onMapViewMoveFinished(MapView mapView, MapPoint mapPoint) {
+<<<<<<< HEAD
 
     }
 
+=======
+    }*/
+/*
+>>>>>>> ac8357873cc8383065b1b168374a3e26e9d271c4
     @Override
     public void onPOIItemSelected(MapView mapView, MapPOIItem mapPOIItem) {
-
         String DtrName = mapPOIItem.getItemName();
         Toast.makeText(getContext(), DtrName, Toast.LENGTH_SHORT).show();
     }
-
     @Override
     public void onCalloutBalloonOfPOIItemTouched(MapView mapView, MapPOIItem mapPOIItem) {
-
     }
-
     @Override
     public void onCalloutBalloonOfPOIItemTouched(MapView mapView, MapPOIItem mapPOIItem, MapPOIItem.CalloutBalloonButtonType calloutBalloonButtonType) {
-
     }
-
     @Override
     public void onDraggablePOIItemMoved(MapView mapView, MapPOIItem mapPOIItem, MapPoint mapPoint) {
+<<<<<<< HEAD
 
     }
+=======
+    }  */
+>>>>>>> ac8357873cc8383065b1b168374a3e26e9d271c4
 
     public class contentsViewHolder extends RecyclerView.ViewHolder {
-            private View view;
+        private View view;
 
-            public contentsViewHolder(@NonNull View itemView) {
-                super(itemView);
-            }
+        public contentsViewHolder(@NonNull View itemView) {
+            super(itemView);
+        }
 
             public contentsViewHolder(NonNull View itemView) {
                 super(itemView);
                 view = itemView;
+<<<<<<< HEAD
             }
         }
+=======
+            }*/
+    }
+>>>>>>> ac8357873cc8383065b1b168374a3e26e9d271c4
 
 
 
-        // 디버그 키 해시 구하기 (카카오 맵 API 연동 시 필요), 맵 코드 주석 처리 후 실행! (애뮬에서 돌리면 실행 오류 날 수 있음)
+    // 디버그 키 해시 구하기 (카카오 맵 API 연동 시 필요), 맵 코드 주석 처리 후 실행! (애뮬에서 돌리면 실행 오류 날 수 있음)
         /*try {
             PackageInfo info = getActivity().getPackageManager().getPackageInfo("com.example.rotory", PackageManager.GET_SIGNATURES);
             for (Signature signature : info.signatures) {
