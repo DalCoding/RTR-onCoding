@@ -1,14 +1,27 @@
 package com.example.rotory;
 
 import android.content.Intent;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
+import com.example.rotory.google.WriteMapPage;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import net.daum.mf.map.api.MapPOIItem;
@@ -19,14 +32,11 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WriteRoadPage extends AppCompatActivity {
+public class WriteRoadPage extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMapClickListener {
     private static final String TAG = "WriteRoadPage";
     private static final int REQUEST_CODE = 4000;
 
     FirebaseFirestore db;
-
-    MapView mapView;
-    ViewGroup mapContainer;
     
     EditText writeRoadTitleEditText;
     EditText writeRoadReviewEditText;
@@ -35,40 +45,87 @@ public class WriteRoadPage extends AppCompatActivity {
     ArrayList<String> dtrName;
     ArrayList<String> dtrLatLng;
 
-    MapPOIItem dtrMarker;
+    GoogleMap map;
 
+    Double latitude;
+    Double longitude;
+
+    WriteMapPage fragment;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.write_road_page);
 
-        Intent mapIntent = getIntent();
-        mapIntent.getStringArrayListExtra("dtrName");
-        mapIntent.getStringArrayListExtra("dtrLatLng");
-
-        /*List<String> mapItem = new ArrayList<>(dtrName);
-        mapItem.addAll(dtrLatLng);*/
-
-        mapView = new MapView(this);
-        mapContainer = findViewById(R.id.writeRoadMap);
-        mapContainer.addView(mapView);
-
-        mapView.addPOIItem(dtrMarker);
-        mapView.getPOIItems();
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.writeRoadMap);
+        mapFragment.getMapAsync(this);
 
 
-        mapView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(WriteRoadPage.this, WriteMapPage.class);
-                startActivityForResult(intent, REQUEST_CODE);
-            }
-        });
-        
+        /*Intent intent = getIntent();
+        intent.getStringArrayListExtra("dtrName");
+        intent.getStringArrayListExtra("dtrLatLng");*/
+
+        fragment = new WriteMapPage();
+
         getTime();
     }
 
     private void getTime() {
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        map = googleMap;
+
+        startLocationService();
+        showCurrentLocation(latitude, longitude);
+
+        map.setOnMapClickListener(this);
+
+        Intent intent = getIntent();
+        dtrName = intent.getStringArrayListExtra("dtrName");
+        dtrLatLng = intent.getStringArrayListExtra("dtrLatLng");
+
+        LatLng dtrLatLng = new LatLng(latitude, longitude);
+        MarkerOptions markerOptions = new MarkerOptions();
+        markerOptions.position(dtrLatLng);
+        map.addMarker(markerOptions);
+
+    }
+
+    public void startLocationService() {
+        LocationManager manager = (LocationManager) getSystemService(LOCATION_SERVICE);
+
+        try {
+            Location location = manager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            if (location != null) {
+                latitude = location.getLatitude();
+                longitude = location.getLongitude();
+                String message = "내 위치 -> Latitude : " + latitude + "\nLongitude : " + longitude;
+                Log.d(TAG, message);
+            }
+
+        } catch (SecurityException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void showCurrentLocation(Double latitude, Double longitude) {
+        LatLng curPoint = new LatLng(latitude, longitude);
+        map.animateCamera(CameraUpdateFactory.newLatLngZoom(curPoint, 15));
+
+    }
+
+    @Override
+    public void onMapClick(LatLng latLng) {
+        replaceFragment(fragment);
+    }
+
+    public void replaceFragment(Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.write_road_page, fragment);
+        fragmentTransaction.commit();
     }
 }

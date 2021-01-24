@@ -137,9 +137,10 @@ public class SearchOnMyRoadFragment extends Fragment {
                 @Override
                 public void onClick(View view) {
                     Toast.makeText(getContext(), dtrName.getText(), Toast.LENGTH_SHORT).show();
-                    /*Intent intent = new Intent(getActivity(), WriteRoadPage.class);
+Intent intent = new Intent(getActivity(), WriteRoadPage.class);
                     intent.putExtra("dtrName", dtrName.getText());
-                    startActivityForResult(intent, 0);*/
+                    startActivityForResult(intent, 0);
+
                 }
             });
         }
