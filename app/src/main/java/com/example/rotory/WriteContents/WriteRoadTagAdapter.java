@@ -21,27 +21,21 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class WriteStoryTagAdapter extends RecyclerView.Adapter<WriteStoryTagAdapter.tagItemViewHolder> {
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
-    FirebaseAuth auth = FirebaseAuth.getInstance();
-    FirebaseUser user = auth.getCurrentUser();
-    private final static String TAG = "TagItemAdapter";
+    private final static String TAG = "WriteStoryTagAdapter";
     public Context context;
     public ArrayList<Tags> tagItemList;
-    OnTagItemClickListener listener;
-    TextView tagListSize;
     View view;
 
-    public WriteStoryTagAdapter(Context context) {
+    public WriteStoryTagAdapter(Context context, ArrayList<Tags> tagItemList) {
         this.context = context;
         this.tagItemList = tagItemList;
-        this.tagListSize = tagListSize;
     }
 
     @NonNull
     @Override
     public tagItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         view = LayoutInflater.from(parent.getContext()).inflate(R.layout.tag_pick_item, parent, false);
-        return new tagItemViewHolder(view/*,this::onItemClick*/);
+        return new tagItemViewHolder(view);
     }
 
     @Override
@@ -65,7 +59,7 @@ public class WriteStoryTagAdapter extends RecyclerView.Adapter<WriteStoryTagAdap
 
         public tagItemViewHolder(@NonNull View itemView) {
             super(itemView);
-            recyclerView = itemView.findViewById(R.id.activityTagRecyclerView);
+
             view = itemView;
             tagBtn = itemView.findViewById(R.id.tagText);
         }
