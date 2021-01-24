@@ -72,6 +72,9 @@
         <activity android:name=".BigMapPage"/>
         <activity android:name=".Theme.ThemePickPage"/>
         <activity android:name=".LoadRoadItem"/>
+        <activity android:name=".WriteRoadPage"/>
+        <activity android:name=".Theme.ThemePage" />
+        <activity android:name=".WriteContents.TagSelectDialog" android:theme="@style/Theme.AppCompat.Dialog"/>
 
         <!--        <activity android:name=".MainActivity"/>-->
        <!-- <activity android:name=".account.FindAccountActivity"/>-->

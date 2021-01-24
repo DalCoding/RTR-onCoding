@@ -19,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.rotory.BigMapPage;
 import com.example.rotory.MainPage;
 import com.example.rotory.R;
 import com.example.rotory.Theme.ThemePage;

@@ -23,7 +23,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.rotory.Adapter.LocationAdapter;
-import com.example.rotory.WriteContents.WriteRoadPage;
 import com.example.rotory.kakao.ApiClient;
 import com.example.rotory.kakao.ApiInterface;
 import com.example.rotory.kakao.BusProvider;

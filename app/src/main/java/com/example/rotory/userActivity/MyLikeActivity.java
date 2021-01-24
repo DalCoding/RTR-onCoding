@@ -17,6 +17,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.rotory.BigMapPage;
+import com.example.rotory.MainActivity;
 import com.example.rotory.MainPage;
 import com.example.rotory.MyPage;
 import com.example.rotory.R;
@@ -247,7 +249,9 @@ public class MyLikeActivity extends AppCompatActivity {
                         return true;
                     case R.id.theme:
                         if (isSignIn) {
-                            getSupportFragmentManager().beginTransaction().replace(R.id.container, themePage).commit();
+                            Intent myPageIntent = new Intent(MyLikeActivity.this, ThemePage.class);
+                            myPageIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(myPageIntent);
                             setTabUnderBar(1);
                         } else {
 

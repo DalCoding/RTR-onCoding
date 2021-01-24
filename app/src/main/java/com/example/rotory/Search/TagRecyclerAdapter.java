@@ -34,6 +34,11 @@ public class TagRecyclerAdapter extends FirestoreRecyclerAdapter<Tag, TagRecycle
         }
     }
 
+    @Override
+    public void onItemSelected(String toString) {
+
+    }
+
 
     TagRecyclerAdapter(FirestoreRecyclerOptions<Tag> options, OnTagItemClickListener listener) {
         super(options);

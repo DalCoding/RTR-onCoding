@@ -151,29 +151,13 @@ public class MainPage extends Fragment
 
 
         // 플로팅버튼 참고 https://re-build.tistory.com/31
-<<<<<<< HEAD
-      /*  Context = new context(getActivity());
 
-        fab_open = AnimationUtils.loadAnimation(Context, R.anim.fab_open);
-        fab_close = AnimationUtils.loadAnimation(Context, R.anim.fab_open); */
-=======
-<<<<<<< HEAD
-        /*Context = new context(getActivity());
-
-        fab_open = AnimationUtils.loadAnimation(Context, R.anim.fab_open);
-        fab_close = AnimationUtils.loadAnimation(Context, R.anim.fab_open);*/
-=======
         /*Context = new Context(getActivity());
 
         fab_open = AnimationUtils.loadAnimation(Context, R.anim.fab_open);
         fab_close = AnimationUtils.loadAnimation(Context, R.anim.fab_open);*/
 
-        Context context = getActivity().getApplicationContext();
->>>>>>> 2843abc6325c5bf84df8ca8e0a1099003dd3454c
 
-        fab_open = AnimationUtils.loadAnimation(context, R.anim.fab_open);
-        fab_close = AnimationUtils.loadAnimation(context, R.anim.fab_open);
->>>>>>> 10c85c702a1f544ffad32b9f8844231a43a94482
 
       /*  mainFloatingBtn = rootView.findViewById(R.id.mainFloatingBtn);
         popFloatingBtn = rootView.findViewById(R.id.popFloatingBtn);
