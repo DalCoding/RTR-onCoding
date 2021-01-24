@@ -2,17 +2,41 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:id="@+id/writeMapPage">
 
     <com.google.android.gms.maps.MapView
         android:id="@+id/writeMapContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:name="com.google.android.gms.maps.MapFragment">
+        android:name="com.google.android.gms.maps.MapFragment"/>
 
-    </com.google.android.gms.maps.MapView>
+    <!--<androidx.appcompat.widget.SearchView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/searchView"
+        android:layout_margin="10dp"
+        android:elevation="5dp"
+        android:background="@drawable/search_view"/>-->
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="350dp"
+        android:layout_height="50dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="80dp"
+        app:cardCornerRadius="4dp">
+
+        <fragment
+            android:id="@+id/autocomplete_fragment"
+            android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </androidx.cardview.widget.CardView>
 
     <RelativeLayout
+        android:visibility="gone"
         android:id="@+id/writeMapSearchBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -64,14 +88,14 @@
         app:iconTint="@color/beige"
         app:rippleColor="#FFFFFF" />
 
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/searchLocationRecyclerView"
         android:layout_width="370dp"
         android:layout_height="350dp"
-        android:layout_below="@id/writeMapSearchBox"
         android:layout_centerHorizontal="true"
         android:background="@color/white"
-        android:visibility="invisible" >
+        android:visibility="gone" >
 
     </androidx.recyclerview.widget.RecyclerView>
 

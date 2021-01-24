@@ -1,6 +1,7 @@
 package com.example.rotory.story;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -131,6 +132,7 @@ public class SearchOnMyRoadFragment extends Fragment {
                     /*Intent intent = new Intent(getActivity(), WriteRoadPage.class);
                     intent.putExtra("dtrName", dtrName.getText());
                     startActivityForResult(intent, 0);*/
+
                 }
             });
         }

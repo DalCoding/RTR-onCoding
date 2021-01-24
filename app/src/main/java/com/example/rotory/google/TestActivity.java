@@ -1,105 +1,129 @@
 package com.example.rotory.google;
 
-import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.rotory.R;
 
-import java.util.ArrayList;
-
-public class TestActivity extends AppCompatActivity/* implements View.OnClickListener */{
-    Context context;
-    private Button tab1, tab2, tab3;
-    private Fragment fragment = null;
-
-    /*PermissionListener permissionlistener = new PermissionListener() {
-        @Override
-        public void onPermissionGranted() {
-            initView();
-        }
-
-        @Override
-        public void onPermissionDenied(ArrayList<String> deniedPermissions) {
-            Toast.makeText(context, "권한 허용을 하지 않으면 서비스를 이용할 수 없습니다.", Toast.LENGTH_SHORT).show();
-        }
-    };
+public class TestActivity extends AppCompatActivity {
+    //구글맵참조변수
+   // GoogleMap mMap;
+   // FrameLayout container;
+    WriteMapPage writeMapPage = new WriteMapPage();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        context = this.getBaseContext();
-        checkPermissions();
+        setContentView(R.layout.main_activity);
+
+        //WriteMapPage writeMapPage = new WriteMapPage();
+        //getSupportFragmentManager().beginTransaction().replace(R.id.container, writeMapPage).commit();
+        // SupportMapFragment을 통해 레이아웃에 만든 fragment의 ID를 참조하고 구글맵을 호출한다.
+        //mapFragment.getMapAsync(this); //getMapAsync must be called on the main thread.
+        Button btn = findViewById(R.id.btn);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.container, writeMapPage).commit();
+            }
+        });
+    }
+    /*}
+
+    @Override //구글맵을 띄울준비가 됬으면 자동호출된다.
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+        //지도타입 - 일반
+        mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        oneMarker();
+        // manyMarker();
     }
 
-    private void checkPermissions() {
-        if (Build.VERSION.SDK_INT >= 23) { // 마시멜로(안드로이드 6.0) 이상 권한 체크
-            TedPermission.with(context)
-                    .setPermissionListener(permissionlistener)
-                    .setRationaleMessage("앱을 이용하기 위해서는 접근 권한이 필요합니다")
-                    .setDeniedMessage("앱에서 요구하는 권한설정이 필요합니다...\n [설정] > [권한] 에서 사용으로 활성화해주세요.")
-                    .setPermissions(new String[]{
-                            android.Manifest.permission.ACCESS_FINE_LOCATION,
-                            android.Manifest.permission.ACCESS_COARSE_LOCATION
-                            //android.Manifest.permission.READ_EXTERNAL_STORAGE,
-                            //android.Manifest.permission.WRITE_EXTERNAL_STORAGE // 기기, 사진, 미디어, 파일 엑세스 권한
-                    })
-                    .check();
+    //마커하나찍는 기본 예제
+    public void oneMarker() {
+        // 서울 여의도에 대한 위치 설정
+        LatLng seoul = new LatLng(37.52487, 126.92723);
 
-        } else {
-            initView();
+        // 구글 맵에 표시할 마커에 대한 옵션 설정  (알파는 좌표의 투명도이다.)
+        MarkerOptions makerOptions = new MarkerOptions();
+        makerOptions
+                .position(seoul)
+                .title("원하는 위치(위도, 경도)에 마커를 표시했습니다.")
+                .snippet("여기는 여의도인거같네여!!")
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
+                .alpha(0.5f);
+
+        // 마커를 생성한다. showInfoWindow를 쓰면 처음부터 마커에 상세정보가 뜨게한다. (안쓰면 마커눌러야뜸)
+        mMap.addMarker(makerOptions); //.showInfoWindow();
+
+        //정보창 클릭 리스너
+        mMap.setOnInfoWindowClickListener(infoWindowClickListener);
+
+        //마커 클릭 리스너
+        mMap.setOnMarkerClickListener(markerClickListener);
+
+        //카메라를 여의도 위치로 옮긴다.
+        // mMap.moveCamera(CameraUpdateFactory.newLatLng(seoul));
+        //처음 줌 레벨 설정 (해당좌표=>서울, 줌레벨(16)을 매개변수로 넣으면 된다.) (위에 코드대신 사용가능)(중첩되면 이걸 우선시하는듯)
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(seoul, 16));
+
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                Toast.makeText(TestActivity.this, "눌렀습니다!!", Toast.LENGTH_LONG);
+                return false;
+            }
+        });
+
+
+
+    }
+
+    ////////////////////////  구글맵 마커 여러개생성 및 띄우기 //////////////////////////
+    public void manyMarker() {
+        // for loop를 통한 n개의 마커 생성
+        for (int idx = 0; idx < 10; idx++) {
+            // 1. 마커 옵션 설정 (만드는 과정)
+            MarkerOptions makerOptions = new MarkerOptions();
+            makerOptions // LatLng에 대한 어레이를 만들어서 이용할 수도 있다.
+                    .position(new LatLng(37.52487 + idx, 126.92723))
+                    .title("마커" + idx); // 타이틀.
+
+            // 2. 마커 생성 (마커를 나타냄)
+            mMap.addMarker(makerOptions);
         }
+        //정보창 클릭 리스너
+        mMap.setOnInfoWindowClickListener(infoWindowClickListener);
+
+        //마커 클릭 리스너
+        mMap.setOnMarkerClickListener(markerClickListener);
+
+        // 카메라를 위치로 옮긴다.
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(37.52487, 126.92723)));
     }
 
-    private void initView() {
-        tab1 = findViewById(R.id.btn_tab1);
-        tab2 = findViewById(R.id.btn_tab2);
-        tab3 = findViewById(R.id.btn_tab3);
+    //마커정보창 클릭리스너는 다작동하나, 마커클릭리스너는 snippet정보가 있으면 중복되어 이벤트처리가 안되는거같다.
+    // oneMarker(); 는 동작하지않으나 manyMarker(); 는 snippet정보가 없어 동작이가능하다.
 
-        tab1.setOnClickListener(this);
-        tab2.setOnClickListener(this);
-        tab3.setOnClickListener(this);
-
-        if(findViewById(R.id.fragment_container) != null){
-            Fragment01 fragment01 = new Fragment01();
-            fragment01.setArguments(getIntent().getExtras());
-
-            getFragmentManager().beginTransaction().add(R.id.fragment_container, fragment01).commitAllowingStateLoss();
+    //정보창 클릭 리스너
+    GoogleMap.OnInfoWindowClickListener infoWindowClickListener = new GoogleMap.OnInfoWindowClickListener() {
+        @Override
+        public void onInfoWindowClick(Marker marker) {
+            String markerId = marker.getId();
+            Toast.makeText(TestActivity.this, "정보창 클릭 Marker ID : "+markerId, Toast.LENGTH_SHORT).show();
         }
-    }
+    };
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.btn_tab1:
-                fragment = new Fragment01();
-                selectFragment(fragment);
-                break;
-            case R.id.btn_tab2:
-                fragment = new Fragment02();
-                selectFragment(fragment);
-                break;
-            case R.id.btn_tab3:
-                fragment = new Fragment03();
-                selectFragment(fragment);
-                break;
+    //마커 클릭 리스너
+    GoogleMap.OnMarkerClickListener markerClickListener = new GoogleMap.OnMarkerClickListener() {
+        @Override
+        public boolean onMarkerClick(Marker marker) {
+            String markerId = marker.getId();
+            //선택한 타겟위치
+            LatLng location = marker.getPosition();
+            Toast.makeText(TestActivity.this, "마커 클릭 Marker ID : "+markerId+"("+location.latitude+" "+location.longitude+")", Toast.LENGTH_SHORT).show();
+            return false;
         }
-    }
-
-    private void selectFragment(Fragment fragment) {
-        // 액티비티 내의 프래그먼트를 관리하려면 FragmentManager를 사용해야 함.
-        FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_container,fragment);
-        // FragmentTransaction을 변경하고 나면, 반드시 commit()을 호출해야 변경 내용이 적용됨
-        fragmentTransaction.commit();
-    }*/
+    };*/
 }
