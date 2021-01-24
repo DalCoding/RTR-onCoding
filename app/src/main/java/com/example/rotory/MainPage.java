@@ -68,6 +68,7 @@ public class MainPage extends Fragment
     Button popFloatingBtn;
     Button pop2FloatingBtn;
 
+
     private FirestoreRecyclerAdapter adapter;
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -150,10 +151,10 @@ public class MainPage extends Fragment
 
 
         // 플로팅버튼 참고 https://re-build.tistory.com/31
-        Context = new context(getActivity());
+      /*  Context = new context(getActivity());
 
         fab_open = AnimationUtils.loadAnimation(Context, R.anim.fab_open);
-        fab_close = AnimationUtils.loadAnimation(Context, R.anim.fab_open);
+        fab_close = AnimationUtils.loadAnimation(Context, R.anim.fab_open); */
 
         mainFloatingBtn = rootView.findViewById(R.id.mainFloatingBtn);
         popFloatingBtn = rootView.findViewById(R.id.popFloatingBtn);
