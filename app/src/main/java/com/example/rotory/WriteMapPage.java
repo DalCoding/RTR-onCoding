@@ -1,6 +1,5 @@
 package com.example.rotory;
 
-import android.content.Context;
 import android.content.DialogInterface;
 
 import android.content.Intent;
@@ -24,13 +23,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.rotory.Adapter.LocationAdapter;
+import com.example.rotory.WriteContents.WriteRoadPage;
 import com.example.rotory.kakao.ApiClient;
 import com.example.rotory.kakao.ApiInterface;
 import com.example.rotory.kakao.BusProvider;
 import com.example.rotory.kakao.CategoryResult;
 import com.example.rotory.kakao.Document;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.protobuf.Api;
 import com.squareup.otto.Bus;
 
 import net.daum.mf.map.api.MapPOIItem;
@@ -40,7 +38,6 @@ import net.daum.mf.map.api.MapView;
 
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import retrofit2.Call;
 import retrofit2.Callback;

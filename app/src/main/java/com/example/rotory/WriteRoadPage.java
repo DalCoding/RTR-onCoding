@@ -125,7 +125,7 @@ public class WriteRoadPage extends AppCompatActivity implements OnMapReadyCallba
     public void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.write_road_page, fragment);
+        fragmentTransaction.replace(R.id.bigMapContainer, fragment);
         fragmentTransaction.commit();
     }
 }

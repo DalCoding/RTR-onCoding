@@ -177,12 +177,12 @@ public class WriteMapPage extends Fragment implements OnMapReadyCallback,
         Log.d(TAG, "onLowMemory");
     }
 
-    @Override
+    /*@Override
     public void onDestroy() {
         super.onDestroy();
         mapView.onDestroy();
         Log.d(TAG, "onDestroy");
-    }
+    }*/
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -338,7 +338,7 @@ public class WriteMapPage extends Fragment implements OnMapReadyCallback,
         Intent intent = new Intent(getActivity(), WriteRoadPage.class);
         intent.putStringArrayListExtra("dtrName", dtrName);
         intent.putStringArrayListExtra("dtrLatLng", dtrLatLng);
-        startActivity(intent);
+        startActivityForResult(intent, 0);
     }
 
     public void drawPoly(GoogleMap map, ArrayList<LatLng> polyPoints) {
