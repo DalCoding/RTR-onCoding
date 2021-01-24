@@ -22,14 +22,20 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.rotory.Interface.LoadMapDtrListener;
+import com.example.rotory.Search.SearchContents;
 import com.example.rotory.VO.Contents;
 import com.example.rotory.VO.NearPin;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
@@ -82,8 +88,6 @@ public class MainPage extends Fragment
     }
 
 
-
-/*
     @Override
     public void onDetach() {
         super.onDetach();
@@ -94,7 +98,7 @@ public class MainPage extends Fragment
     public void onPause() {
         super.onPause();
         getActivity().finish();
-    } */
+    }
 
     @Override
     public void onDestroy() {
@@ -126,9 +130,9 @@ public class MainPage extends Fragment
     private void setContentView(int main_page) {
     }
 
-    // public void showWrite(){}
+    public void showWrite(){}
 
-   /* public void onContentsListener (contentsAdapter.ViewHolder holder, View view, int position) {
+/*    public void onContentsListener (contentsAdapter.ViewHolder holder, View view, int position) {
         if (listener != null) {
             listener.onContentsListener(holder, view, position);
         }
@@ -149,7 +153,9 @@ public class MainPage extends Fragment
         setContentView(R.layout.main_page);
 
 
-        // 플로팅버튼 참고 https://re-build.tistory.com/31
+        // 플로팅버튼은 https://re-build.tistory.com/31 참고하여 fragment 형식에 맞춰 코드 작성
+        // 실행시 Activity Null point Exception 문제가 발생
+
         Context = new context(getActivity());
 
         fab_open = AnimationUtils.loadAnimation(Context, R.anim.fab_open);
@@ -159,18 +165,18 @@ public class MainPage extends Fragment
         popFloatingBtn = rootView.findViewById(R.id.popFloatingBtn);
         pop2FloatingBtn = rootView.findViewById(R.id.pop2FloatingBtn);
 
-        mainFloatingBtn.setOnClickListener(new View.OnClickListener(){
+        mainFloatingBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-            toggleFab();
+                toggleFab();
             }
         });
         popFloatingBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 toggleFab();
-                showToast("이야기 작성 페이지로 이동합니다.");
-                }
+                showToast("길 작성 페이지로 이동합니다.");
+            }
         });
 
         pop2FloatingBtn.setOnClickListener(new View.OnClickListener() {
@@ -182,33 +188,35 @@ public class MainPage extends Fragment
 
         });
 
-        /*Button button = rootView.findViewById(R.id.mainFloatingBtn);
-        button.setOnClickListener(new View.OnClickListener(){*/
-/*            @Override
+/*        Button button = rootView.findViewById(R.id.mainFloatingBtn);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
             public void onClick(View v) {
-                switch (v.getId()){
+                switch (v.getId()) {
                     case R.id.mainFloatingBtn:
                         toggleFab();
                         break;
 
                     case R.id.popFloatingBtn:
-                    toggleFab();
+                        toggleFab();
                         showToast("길 작성 페이지로 이동합니다.");
-                    break;
+                        break;
 
                     case R.id.pop2FloatingBtn:
-                    toggleFab();
+                        toggleFab();
                         showToast("이야기 작성 페이지로 이동합니다.");
-                    break;
+                        break;
                 }
 
             }*/
-/*            private void showWrite() {
-            }
-            private void showToast(String s) {
-                Toast.makeText(getContext(), s, Toast.LENGTH_SHORT).show();
-            }
-        });*/
+
+
+/*        private void showToast (String s){
+            Toast.makeText(getContext(), s, Toast.LENGTH_SHORT).show();
+        }*/
+
+    }
+
 
 /*        ImageButton mainMapExtendBtn = rootView.findViewById(R.id.mainMapExtendBtn);
         mainMapExtendBtn.bringToFront();
@@ -216,66 +224,65 @@ public class MainPage extends Fragment
             @Override
             public void onClick(View v) {
                 //((MainActivity)getActivity()).replaceFragment(BigMapPage.newInstance());
-               // mapViewContainer.removeView(mapView);
+                // mapViewContainer.removeView(mapView);
                 Intent intent = new Intent(getActivity(), BigMapPage.class);
                 startActivity(intent);
-               // getActivity().finish();
+                // getActivity().finish();
 
             }
         });*/
 
+        FirebaseUser user = mAuth.getCurrentUser();
 
-      /*  FirebaseUser user = mAuth.getCurrentUser();
+        private void initUI (ViewGroup rootView, FirebaseUser user){
 
-    private void initUI(ViewGroup rootView, FirebaseUser user) {
+            db.collection("contents")
+                    .whereEqualTo("uid", user.getEmail())
+                    .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            String contentsId = document.getId();
 
-        db.collection("contents")
-                .whereEqualTo("uid", user.getEmail())
-                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        String contentsId = document.getId();
+                            Query query = db.collection("contents")
+                                    .document(contentsId).collection("title")
+                                    .orderBy("");
 
-                        Query query = db.collection("contents")
-                                .document(contentsId).collection("title")
-                                .orderBy("");
-
-                        FirestoreRecyclerOptions<Contents> options = new FirestoreRecyclerOptions.Builder<Contents>()
-                                .setQuery(query, Contents.class)
-                                .build();
-                        makeAdapter(options);
+                            FirestoreRecyclerOptions<Contents> options = new FirestoreRecyclerOptions.Builder<Contents>()
+                                    .setQuery(query, Contents.class)
+                                    .build();
+                            makeAdapter(options);
+                        }
                     }
                 }
-            }
-        });*/
+            });
 
-        //mainRoadList.setAdapter(adapter);
-    }
-
-    private void showToast(String s) {
-        Toast.makeText(getContext(), s, Toast.LENGTH_SHORT).show();
-    }
-    private void toggleFab(){
-        if (isFabOpen) {
-            //mainFloatingBtn.setImageResource(R.drawable.ic_add);
-            popFloatingBtn.startAnimation(fab_close);
-            pop2FloatingBtn.startAnimation(fab_close);
-            popFloatingBtn.setClickable(false);
-            pop2FloatingBtn.setClickable(false);
-            isFabOpen = false;
-
-        } else {
-            //mainFloatingBtn.setImageResource(R.drawable.ic_close);
-            popFloatingBtn.startAnimation(fab_open);
-            pop2FloatingBtn.startAnimation(fab_open);
-            popFloatingBtn.setClickable(true);
-            pop2FloatingBtn.setClickable(true);
-            isFabOpen = true;
+            //mainRoadList.setAdapter(adapter);
         }
-    }
-/*
+
+        private void showToast(String s){
+            Toast.makeText(getContext(), s, Toast.LENGTH_SHORT).show();
+        }
+        private void toggleFab() {
+            if (isFabOpen) {
+                //mainFloatingBtn.setImageResource(R.drawable.ic_add);
+                popFloatingBtn.startAnimation(fab_close);
+                pop2FloatingBtn.startAnimation(fab_close);
+                popFloatingBtn.setClickable(false);
+                pop2FloatingBtn.setClickable(false);
+                isFabOpen = false;
+
+            } else {
+                //mainFloatingBtn.setImageResource(R.drawable.ic_close);
+                popFloatingBtn.startAnimation(fab_open);
+                pop2FloatingBtn.startAnimation(fab_open);
+                popFloatingBtn.setClickable(true);
+                pop2FloatingBtn.setClickable(true);
+                isFabOpen = true;
+            }
+        }
+
     private void moveMyLocation(MapView mapView) {
 
             mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading);
@@ -292,10 +299,10 @@ public class MainPage extends Fragment
             }, 2000); // 1000 = 1초
             // lm = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
 
-    }*/
+    }
 
-    private void makeAdapter(FirestoreRecyclerOptions<Contents> options) {
-      /*  adapter = new FirestoreRecyclerOptions<SearchContents>(options) {
+/*    private void makeAdapter(FirestoreRecyclerOptions<Contents> options) {
+        adapter = new FirestoreRecyclerOptions<SearchContents>(options) {
 
                @Override
                 public void onDataChanged() {
@@ -309,11 +316,11 @@ public class MainPage extends Fragment
                         holder.setUserItems(model);
                     }
                 }
-        }*/
-    }
+        }
+    }*/
 
 
-/*    public void loadDtr(MapView mapView, MapPoint point) {
+    public void loadDtr(MapView mapView, MapPoint point) {
         int zoomLevel = mapView.getZoomLevel();
         if (zoomLevel <= 0){
 
@@ -410,11 +417,11 @@ public class MainPage extends Fragment
 // Polyline 지도에 올리기.
         mapView.addPolyline(polyline);
 
-    }*/
+    }
 
 
 
-    /*@Override
+    @Override
     public void onMapViewInitialized(MapView mapView) {
 
     }
@@ -461,8 +468,8 @@ public class MainPage extends Fragment
     @Override
     public void onMapViewMoveFinished(MapView mapView, MapPoint mapPoint) {
 
-    }*/
-/*
+    }
+
     @Override
     public void onPOIItemSelected(MapView mapView, MapPOIItem mapPOIItem) {
 
@@ -483,7 +490,7 @@ public class MainPage extends Fragment
     @Override
     public void onDraggablePOIItemMoved(MapView mapView, MapPOIItem mapPOIItem, MapPoint mapPoint) {
 
-    }  */
+    }
 
     public class contentsViewHolder extends RecyclerView.ViewHolder {
             private View view;
@@ -492,10 +499,10 @@ public class MainPage extends Fragment
                 super(itemView);
             }
 
-          /*  public contentsViewHolder(NonNull View itemView) {
+            public contentsViewHolder(NonNull View itemView) {
                 super(itemView);
                 view = itemView;
-            }*/
+            }
         }
 
 
