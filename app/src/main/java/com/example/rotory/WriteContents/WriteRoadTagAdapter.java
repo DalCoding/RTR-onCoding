@@ -9,24 +9,22 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.rotory.Interface.OnTagItemClickListener;
 import com.example.rotory.R;
 import com.example.rotory.Theme.Tags;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
-public class WriteStoryTagAdapter extends RecyclerView.Adapter<WriteStoryTagAdapter.tagItemViewHolder> {
+public class WriteRoadTagAdapter extends RecyclerView.Adapter<WriteRoadTagAdapter.tagItemViewHolder> {
     private final static String TAG = "WriteStoryTagAdapter";
     public Context context;
-    public ArrayList<Tags> tagItemList;
+    public ArrayList<Tags> tagItemList = new ArrayList<>();
     View view;
 
-    public WriteStoryTagAdapter(Context context, ArrayList<Tags> tagItemList) {
+    public WriteRoadTagAdapter(Context context) {
+        this.context = context;
+    }
+
+    public WriteRoadTagAdapter(Context context, ArrayList<Tags> tagItemList) {
         this.context = context;
         this.tagItemList = tagItemList;
     }
@@ -40,6 +38,7 @@ public class WriteStoryTagAdapter extends RecyclerView.Adapter<WriteStoryTagAdap
 
     @Override
     public void onBindViewHolder(@NonNull tagItemViewHolder holder, int position) {
+        Tags item = tagItemList.get(position);
         holder.setTagItems(tagItemList.get(position));
     }
 
@@ -48,13 +47,27 @@ public class WriteStoryTagAdapter extends RecyclerView.Adapter<WriteStoryTagAdap
         return tagItemList.size();
     }
 
+    public void addItem(Tags item){
+        tagItemList.add(item);
+    }
+
+    public ArrayList<Tags> getItemList(){
+        return tagItemList;
+    }
+
+    public void removeItem(ArrayList<Tags> tagItemList){
+        tagItemList.removeAll(tagItemList);
+    }
+
+
+    public Tags getItem(int position){
+        return tagItemList.get(position);
+    }
 
     public class tagItemViewHolder extends RecyclerView.ViewHolder {
         View view;
-        RecyclerView recyclerView;
         TextView tagBtn;
-        Map<String, Object> tagList = new HashMap<String, Object>(5);
-        int isSelected = 0;
+
 
 
         public tagItemViewHolder(@NonNull View itemView) {
@@ -66,21 +79,7 @@ public class WriteStoryTagAdapter extends RecyclerView.Adapter<WriteStoryTagAdap
 
         public void setTagItems(Tags item) {
             tagBtn.setText(item.getTag());
-            //isInList(item.getTag());
 
-        }
-
-
-        public void onBind() {
-            String tagText = tagBtn.getText().toString();
-
-            tagBtn.setOnClickListener(new View.OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-
-                }
-            });
         }
 
 

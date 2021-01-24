@@ -109,6 +109,9 @@ dependencies {
     //noinspection GradleCompatible
     implementation 'com.android.support:design:28.0.0' // 메인 페이지 플로팅 버튼
 
+    //도토리별점바
+    implementation 'com.github.channguyen:rsv:1.0.1'
+
 
 
 
