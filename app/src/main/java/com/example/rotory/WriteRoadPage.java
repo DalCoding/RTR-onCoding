@@ -7,15 +7,14 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
@@ -36,40 +35,33 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.rotory.Interface.OnTagItemClickListener;
 import com.example.rotory.Theme.TagItemAdapter;
 import com.example.rotory.Theme.Tags;
-import com.example.rotory.Theme.ThemePickPage;
 import com.example.rotory.VO.AppConstant;
 import com.example.rotory.WriteContents.TagSelectDialog;
 import com.example.rotory.WriteContents.WriteRoadTagAdapter;
-import com.example.rotory.google.WriteMapPage;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import net.daum.mf.map.api.MapPOIItem;
-import net.daum.mf.map.api.MapView;
 
-import java.io.Serializable;
-import java.lang.reflect.Array;
-import java.sql.Time;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class WriteRoadPage extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMapClickListener {
+    ArrayList<MapItem> items = new ArrayList<>();
+
     private static final String TAG = "WriteRoadPage";
     private static final int REQUEST_CODE = 4000;
 
@@ -109,13 +101,12 @@ public class WriteRoadPage extends AppCompatActivity implements OnMapReadyCallba
     float num;
     int isPublic;
 
-    ArrayList<String> dtrName;
-    ArrayList<String> dtrLatLng;
-
     GoogleMap map;
 
     Double latitude;
     Double longitude;
+
+    Boolean isMap = false;
 
     WriteMapPage fragment;
 
@@ -130,9 +121,6 @@ public class WriteRoadPage extends AppCompatActivity implements OnMapReadyCallba
         mapFragment.getMapAsync(this);
 
         isPublic = 1;
-        /*Intent intent = getIntent();
-        intent.getStringArrayListExtra("dtrName");
-        intent.getStringArrayListExtra("dtrLatLng");*/
 
         fragment = new WriteMapPage();
 
@@ -154,8 +142,10 @@ public class WriteRoadPage extends AppCompatActivity implements OnMapReadyCallba
             @Override
             public void onClick(View v) {
 
-                roadTagAdapter.removeItem(roadTagAdapter.getItemList());
-                roadTagAdapter.notifyDataSetChanged();
+                if (roadTagAdapter.getItemList() != null) {
+                    roadTagAdapter.removeItem(roadTagAdapter.getItemList());
+                    roadTagAdapter.notifyDataSetChanged();
+                }
 
                 Log.d(TAG,"삭제 확인한기"+ roadTagAdapter.getItemCount());
 
@@ -443,18 +433,9 @@ public class WriteRoadPage extends AppCompatActivity implements OnMapReadyCallba
         map = googleMap;
 
         startLocationService();
-        //showCurrentLocation(latitude, longitude);
-
+        showCurrentLocation(latitude, longitude);
         map.setOnMapClickListener(this);
 
-        Intent intent = getIntent();
-        dtrName = intent.getStringArrayListExtra("dtrName");
-        dtrLatLng = intent.getStringArrayListExtra("dtrLatLng");
-
-       /* LatLng dtrLatLng = new LatLng(latitude, longitude);
-        MarkerOptions markerOptions = new MarkerOptions();
-        markerOptions.position(dtrLatLng);
-        map.addMarker(markerOptions);*/
 
     }
 
@@ -474,22 +455,36 @@ public class WriteRoadPage extends AppCompatActivity implements OnMapReadyCallba
             e.printStackTrace();
         }
     }
-/*
+
     private void showCurrentLocation(Double latitude, Double longitude) {
         LatLng curPoint = new LatLng(latitude, longitude);
-        map.animateCamera(CameraUpdateFactory.newLatLngZoom(curPoint, 15));
-
-    }*/
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(curPoint, 15));
+    }
 
     @Override
     public void onMapClick(LatLng latLng) {
         replaceFragment(fragment);
+        isMap = true;
+
+        ImageButton backBtn = findViewById(R.id.backImageButton);
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (isMap) {
+                    Toast.makeText(getBaseContext(), "경로가 저장 되었습니다.", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getBaseContext(), WriteRoadPage.class);
+                    startActivity(intent);
+                }
+            }
+        });
     }
 
     public void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.bigMapContainer, fragment);
+        //fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
+
 }

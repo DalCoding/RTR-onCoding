@@ -3,6 +3,7 @@ package com.example.rotory.WriteContents;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,11 +14,10 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
-
 import androidx.annotation.Nullable;
-
 import com.example.rotory.Interface.OnTagItemClickListener;
 import com.example.rotory.R;
+
 
 import java.util.ArrayList;
 
@@ -27,14 +27,13 @@ public class TagSelectDialog extends Activity {
     Button plusBtn;
     TagDataAdapter adapter;
 
+
     ArrayList<String> selectedTag = new ArrayList<>();
 
     public static OnTagItemClickListener listener;
 
     public TagSelectDialog() {
-
     }
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,11 +49,12 @@ public class TagSelectDialog extends Activity {
         gridView.setVerticalSpacing(4);
         gridView.setHorizontalSpacing(5);
 
+
         adapter = new TagDataAdapter(this, selectedTag);
+
 
         gridView.setAdapter(adapter);
         gridView.setNumColumns(adapter.getNumColumns());
-
         plusBtn = findViewById(R.id.tagPlusBtn);
         plusBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,11 +62,11 @@ public class TagSelectDialog extends Activity {
                 finish();
             }
         });
-
     }
 
     static class TagDataAdapter extends BaseAdapter{
         Context mContext;
+
         ArrayList<String> selectedTag = new ArrayList<>();
 
         public static final String [] tags = new String[]{
@@ -75,42 +75,43 @@ public class TagSelectDialog extends Activity {
                 "#술", "#커피", "#디저트", "#맛집", "#공원","#낙엽", "#가을", "#꽃",
                 "#봄","#여름", "#겨울", "#새벽","#저녁","#아침","#밤","#점심","#주말",
                 ""
-
         };
         int rowCount;
         int columnCount;
 
+
         public TagDataAdapter(Context mContext, ArrayList<String> selectedTag) {
-            super();
-            this.mContext = mContext;
-            columnCount = 4;
-            rowCount = 8;
-           this.selectedTag = selectedTag;
+                super();
+                this.mContext = mContext;
+                columnCount = 4;
+                rowCount = 8;
+                this.selectedTag = selectedTag;
+            }
+
+         public TagDataAdapter(Context mContext) {
+
         }
 
-        public ArrayList<String> getSelectedTag(){
-            return selectedTag;
-        }
 
-        public int getNumColumns() {
-            return columnCount;
-        }
+            public ArrayList<String> getSelectedTag(){
+                return selectedTag;
+            }
 
-        @Override
-        public int getCount() {
-            return columnCount*rowCount;
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return tags[position];
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return 0;
-        }
-
+            public int getNumColumns() {
+                return columnCount;
+            }
+            @Override
+            public int getCount() {
+                return columnCount*rowCount;
+            }
+            @Override
+            public Object getItem(int position) {
+                return tags[position];
+            }
+            @Override
+            public long getItemId(int position) {
+                return 0;
+            }
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             Log.d(TAG, "getView(" + position + ") called.");

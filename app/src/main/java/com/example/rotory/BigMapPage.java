@@ -247,9 +247,6 @@ public class BigMapPage extends AppCompatActivity implements OnTabItemSelectedLi
             public void onClick(View v) {
                 // this.removeAllViews();
                 finish();
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
 
             }
         });
@@ -397,7 +394,7 @@ public class BigMapPage extends AppCompatActivity implements OnTabItemSelectedLi
 
 
 
-    class GPSListener implements LocationListener { // 변화감지(위도, 경도)
+    static class GPSListener implements LocationListener { // 변화감지(위도, 경도)
         public void onLocationChanged(Location location) {
            /* Double latitude = location.getLatitude();
             Double longitude = location.getLongitude();

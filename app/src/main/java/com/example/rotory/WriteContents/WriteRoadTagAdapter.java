@@ -9,19 +9,28 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.rotory.Interface.OnTagItemClickListener;
 import com.example.rotory.R;
 import com.example.rotory.Theme.Tags;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class WriteRoadTagAdapter extends RecyclerView.Adapter<WriteRoadTagAdapter.tagItemViewHolder> {
     private final static String TAG = "WriteStoryTagAdapter";
     public Context context;
     public ArrayList<Tags> tagItemList = new ArrayList<>();
+
     View view;
 
     public WriteRoadTagAdapter(Context context) {
         this.context = context;
+        this.tagItemList = tagItemList;
+
     }
 
     public WriteRoadTagAdapter(Context context, ArrayList<Tags> tagItemList) {
@@ -44,18 +53,22 @@ public class WriteRoadTagAdapter extends RecyclerView.Adapter<WriteRoadTagAdapte
 
     @Override
     public int getItemCount() {
-        return tagItemList.size();
+
+        if (tagItemList!=null) {
+            return tagItemList.size();
+        }
+        return  0;
     }
 
-    public void addItem(Tags item){
+    public void addItem(Tags item) {
         tagItemList.add(item);
     }
 
-    public ArrayList<Tags> getItemList(){
+    public ArrayList<Tags> getItemList() {
         return tagItemList;
     }
 
-    public void removeItem(ArrayList<Tags> tagItemList){
+    public void removeItem(ArrayList<Tags> tagItemList) {
         tagItemList.removeAll(tagItemList);
     }
 
@@ -67,7 +80,6 @@ public class WriteRoadTagAdapter extends RecyclerView.Adapter<WriteRoadTagAdapte
     public class tagItemViewHolder extends RecyclerView.ViewHolder {
         View view;
         TextView tagBtn;
-
 
 
         public tagItemViewHolder(@NonNull View itemView) {
@@ -82,10 +94,10 @@ public class WriteRoadTagAdapter extends RecyclerView.Adapter<WriteRoadTagAdapte
 
         }
 
-
         public Tags getItem(int position) {
             return tagItemList.get(position);
         }
 
     }
 }
+
