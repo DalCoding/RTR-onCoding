@@ -2,7 +2,10 @@ package com.example.rotory.WriteContents;
 
 import android.app.Activity;
 import android.content.Context;
+<<<<<<< HEAD
+=======
 import android.content.Intent;
+>>>>>>> origin/master
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,16 +22,22 @@ import androidx.annotation.Nullable;
 import com.example.rotory.Interface.OnTagItemClickListener;
 import com.example.rotory.R;
 
+<<<<<<< HEAD
+=======
 import java.util.ArrayList;
 
+>>>>>>> origin/master
 public class TagSelectDialog extends Activity {
     private static final String TAG = "tagSelectDialog";
     GridView gridView;
     Button plusBtn;
     TagDataAdapter adapter;
 
+<<<<<<< HEAD
+=======
     ArrayList<String> selectedTag = new ArrayList<>();
 
+>>>>>>> origin/master
     public static OnTagItemClickListener listener;
 
     public TagSelectDialog() {
@@ -41,16 +50,23 @@ public class TagSelectDialog extends Activity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.write_road_tag);
 
+<<<<<<< HEAD
+=======
         Intent intent = getIntent();
         selectedTag = intent.getStringArrayListExtra("selectedTag");
         Log.d(TAG,"넘겨온 태그리스트 확인" + selectedTag);
 
+>>>>>>> origin/master
         gridView = findViewById(R.id.tagsList);
         gridView.setColumnWidth(30);
         gridView.setVerticalSpacing(4);
         gridView.setHorizontalSpacing(5);
 
+<<<<<<< HEAD
+        adapter = new TagDataAdapter(this);
+=======
         adapter = new TagDataAdapter(this, selectedTag);
+>>>>>>> origin/master
 
         gridView.setAdapter(adapter);
         gridView.setNumColumns(adapter.getNumColumns());
@@ -67,7 +83,10 @@ public class TagSelectDialog extends Activity {
 
     static class TagDataAdapter extends BaseAdapter{
         Context mContext;
+<<<<<<< HEAD
+=======
         ArrayList<String> selectedTag = new ArrayList<>();
+>>>>>>> origin/master
 
         public static final String [] tags = new String[]{
                 "#구경", "#데이트", "#장보기", "#사진찍기", "#쇼핑", "#산책", "#운동",
@@ -80,16 +99,23 @@ public class TagSelectDialog extends Activity {
         int rowCount;
         int columnCount;
 
+<<<<<<< HEAD
+        public TagDataAdapter(Context mContext) {
+=======
         public TagDataAdapter(Context mContext, ArrayList<String> selectedTag) {
+>>>>>>> origin/master
             super();
             this.mContext = mContext;
             columnCount = 4;
             rowCount = 8;
+<<<<<<< HEAD
+=======
            this.selectedTag = selectedTag;
         }
 
         public ArrayList<String> getSelectedTag(){
             return selectedTag;
+>>>>>>> origin/master
         }
 
         public int getNumColumns() {
@@ -131,6 +157,8 @@ public class TagSelectDialog extends Activity {
             tagItem.setBackgroundColor(Color.argb(100,239,235, 218));
             tagItem.setHeight(parent.getHeight()/8);
             tagItem.setTag(tags[position]);
+<<<<<<< HEAD
+=======
             selectedTag = getSelectedTag();
             Log.d(TAG,"getView에서 읽어내는지 확인" + selectedTag);
             if (selectedTag.contains(tagItem.getText().toString())){
@@ -140,21 +168,29 @@ public class TagSelectDialog extends Activity {
                 tagItem.setTextColor(Color.LTGRAY);
             }
 
+>>>>>>> origin/master
 
             tagItem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (TagSelectDialog.listener != null) {
                         TagSelectDialog.listener.onItemSelected(v.getTag().toString());
+<<<<<<< HEAD
+=======
                         if (tagItem.getCurrentTextColor() == Color.BLACK){
                             tagItem.setTextColor(Color.LTGRAY);
                         }else{
                             tagItem.setTextColor(Color.BLACK);
                         }
+>>>>>>> origin/master
                     }
                 }
             });
             return tagItem;
         }
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> origin/master

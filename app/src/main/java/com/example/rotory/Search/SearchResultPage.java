@@ -1,5 +1,6 @@
 package com.example.rotory.Search;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -45,6 +46,7 @@ public class SearchResultPage extends AppCompatActivity implements View.OnClickL
 
     private static final String uri = "android.resource://com.example.rotory/drawable/bridge";
     private static final String TAG = "SearchResultPage";
+
 
     MainPage mainPage;
     ThemePage themePage;
@@ -98,6 +100,9 @@ public class SearchResultPage extends AppCompatActivity implements View.OnClickL
         bottomNavUnderbarTheme = findViewById(R.id.bottomNavUnderbarTheme);
         bottomNavUnderbarUser = findViewById(R.id.bottomNavUnderbarUser);
 
+
+        Intent intent = getIntent();
+        intent.getStringExtra("searchText");
 
         EditText searchResultEdit = findViewById(R.id.searchResultEdit);
 

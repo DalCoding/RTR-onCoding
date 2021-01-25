@@ -25,9 +25,8 @@
         android:theme="@style/Theme.Rotory">
         <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyAf5Zp2t2IQyKHlMtWpkaKvsRsOEBDnVIs"/>
         <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />
-        <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyAf5Zp2t2IQyKHlMtWpkaKvsRsOEBDnVIs"/>
-        <meta-data android:name="com.kakao.sdk.AppKey" android:value="74327a949b44e3526226fb17f890121f"/>
-        <activity android:name=".MainActivity">
+        <!--<meta-data android:name="com.kakao.sdk.AppKey" android:value="74327a949b44e3526226fb17f890121f"/>-->
+        <activity android:name=".WriteRoadPage">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -63,7 +62,7 @@
         <activity android:name=".userActivity.MyFavoriteActivity"/>
         <activity android:name=".userActivity.MyLikeActivity" />
         <!--<activity android:name=".WriteMapPage"/>-->
-        <activity android:name=".Search.SearchPage"/>
+        <!--<activity android:name=".Search.SearchPage"/>-->
         <activity android:name=".Search.SearchResultPage"/>
 <!--        <activity android:name=".Write_Story" />-->
        <activity android:name=".userActivity.MyScrapActivity"/>
@@ -72,7 +71,6 @@
         <activity android:name=".BigMapPage"/>
         <activity android:name=".Theme.ThemePickPage"/>
         <activity android:name=".LoadRoadItem"/>
-        <activity android:name=".WriteRoadPage"/>
         <activity android:name=".Theme.ThemePage" />
         <activity android:name=".WriteContents.TagSelectDialog" android:theme="@style/Theme.AppCompat.Dialog"/>
 
@@ -90,6 +88,7 @@
                 <data android:path="/setPassword"/>
             </intent-filter>
         </activity>-->
+
 
 
     </application>

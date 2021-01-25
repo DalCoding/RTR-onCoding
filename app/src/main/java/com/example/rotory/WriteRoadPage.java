@@ -53,8 +53,12 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+<<<<<<< HEAD
+import com.google.protobuf.DoubleValue;
+=======
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+>>>>>>> origin/master
 
 import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapView;
@@ -70,6 +74,8 @@ import java.util.List;
 import java.util.Map;
 
 public class WriteRoadPage extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMapClickListener {
+    ArrayList<MapItem> items = new ArrayList<>();
+
     private static final String TAG = "WriteRoadPage";
     private static final int REQUEST_CODE = 4000;
 
@@ -109,9 +115,6 @@ public class WriteRoadPage extends AppCompatActivity implements OnMapReadyCallba
     float num;
     int isPublic;
 
-    ArrayList<String> dtrName;
-    ArrayList<String> dtrLatLng;
-
     GoogleMap map;
 
     Double latitude;
@@ -133,6 +136,9 @@ public class WriteRoadPage extends AppCompatActivity implements OnMapReadyCallba
         /*Intent intent = getIntent();
         intent.getStringArrayListExtra("dtrName");
         intent.getStringArrayListExtra("dtrLatLng");*/
+
+
+
 
         fragment = new WriteMapPage();
 
@@ -447,15 +453,23 @@ public class WriteRoadPage extends AppCompatActivity implements OnMapReadyCallba
 
         map.setOnMapClickListener(this);
 
-        Intent intent = getIntent();
-        dtrName = intent.getStringArrayListExtra("dtrName");
-        dtrLatLng = intent.getStringArrayListExtra("dtrLatLng");
+        /*Intent intent = getIntent();
+        ArrayList<String> dtrName = (ArrayList<String>) intent.getSerializableExtra("dtrName");
+        Serializable name = intent.getSerializableExtra("dtrName");
+        ArrayList<String> dtrLatLng = (ArrayList<String>) intent.getSerializableExtra("dtrLatLng");
+        Serializable latlng = intent.getSerializableExtra("dtrLatLng");
 
+<<<<<<< HEAD
+=======
        /* LatLng dtrLatLng = new LatLng(latitude, longitude);
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(dtrLatLng);
         map.addMarker(markerOptions);*/
+>>>>>>> origin/master
 
+        for (int i = 0; i < items.size(); i++) {
+            // 가져온 데이터로 맵에 마커 적용
+        }*/
     }
 
     public void startLocationService() {
