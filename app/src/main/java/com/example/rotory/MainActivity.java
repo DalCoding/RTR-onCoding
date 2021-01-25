@@ -23,10 +23,9 @@ import com.example.rotory.Interface.OnTabItemSelectedListener;
 
 import com.example.rotory.Interface.OnUserActItemClickListener;
 import com.example.rotory.Theme.ThemePage;
-import com.example.rotory.Theme.ThemePickPage;
 import com.example.rotory.VO.AppConstant;
 
-import com.example.rotory.account.SetNewPassword;
+import com.example.rotory.WriteContents.WriteRoadPage;
 import com.example.rotory.account.SignUpActivity;
 import com.example.rotory.account.LogInActivity;
 
@@ -105,7 +104,7 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
         getSupportFragmentManager().beginTransaction().replace(R.id.container, mainPage).commit();
 
         // 아래부분 이후 옮김 -> 로그아웃 여부 실험!
-        Button mainAlarmBtn = findViewById(R.id.mainAlarmBtn);
+        Button mainAlarmBtn = findViewById(R.id.tagSelectBtn);
         mainAlarmBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -128,7 +127,7 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
         pageTitleTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), SetNewPassword.class);
+                Intent intent = new Intent(getApplicationContext(), WriteRoadPage.class);
                 startActivity(intent);
 
             }
@@ -152,8 +151,7 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
 
 
         bottomNavigation = findViewById(R.id.bottom_appBar);
-        setBottomNavigation(bottomNavigation, isSignIn, appConstant.loginCode,
-                mainPage, themePage);
+        setBottomNavigation(bottomNavigation, isSignIn);
 
     }
 
@@ -202,7 +200,7 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
     }*/
 
 
-    public void setBottomNavigation(BottomNavigationView bottomNavigation, boolean isSignIn, int loginCode, MainPage mainPage, ThemePage themePage) {
+    public void setBottomNavigation(BottomNavigationView bottomNavigation, boolean isSignIn) {
         bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -216,13 +214,13 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
                         return true;
                     case R.id.theme:
                         if(isSignIn) {
-                            Intent myPageIntent = new Intent(MainActivity.this, ThemePickPage.class);
+                            Intent myPageIntent = new Intent(MainActivity.this, ThemePage.class);
                             myPageIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(myPageIntent);
                             setTabUnderBar(1);
                         } else {
                             Intent LogInIntent = new Intent(getApplicationContext(), LogInActivity.class);
-                            startActivityForResult(LogInIntent, loginCode);
+                            startActivity(LogInIntent);
                             bottomNavigation.setVisibility(View.GONE);
                         }
                         return true;
@@ -235,7 +233,7 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
                         } else {
                             Intent LogInIntent = new Intent(getApplicationContext(), LogInActivity.class);
                             LogInIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
-                            startActivityForResult(LogInIntent, loginCode);
+                            startActivity(LogInIntent);
                             bottomNavigation.setVisibility(View.GONE);
                             finish();
                         }

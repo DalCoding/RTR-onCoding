@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -29,6 +30,7 @@ import com.example.rotory.kakao.ApiInterface;
 import com.example.rotory.kakao.BusProvider;
 import com.example.rotory.kakao.CategoryResult;
 import com.example.rotory.kakao.Document;
+import com.google.android.material.appbar.AppBarLayout;
 import com.squareup.otto.Bus;
 
 import net.daum.mf.map.api.MapPOIItem;
@@ -68,6 +70,7 @@ public class WriteMapPage extends AppCompatActivity implements MapView.CurrentLo
     private String searchName;
 
     RecyclerView recyclerView;
+
 
 
     @Override

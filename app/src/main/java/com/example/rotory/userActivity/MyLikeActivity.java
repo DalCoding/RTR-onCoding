@@ -239,16 +239,19 @@ public class MyLikeActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 Intent LogInIntent = new Intent(MyLikeActivity.this, LogInActivity.class);
+                LogInIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 switch (item.getItemId()) {
                     case R.id.home:
-                        startActivityForResult(LogInIntent, loginCode);
+                        startActivity(LogInIntent);
                         setTabUnderBar(0);
                         bottomNavigation.setVisibility(View.VISIBLE);
 
                         return true;
                     case R.id.theme:
                         if (isSignIn) {
-                            getSupportFragmentManager().beginTransaction().replace(R.id.container, themePage).commit();
+                            Intent themeIntent = new Intent(MyLikeActivity.this, ThemePage.class);
+                            themeIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                            startActivity(themeIntent);
                             setTabUnderBar(1);
                         } else {
 
@@ -263,7 +266,7 @@ public class MyLikeActivity extends AppCompatActivity {
                             startActivity(myPageIntent);
                             setTabUnderBar(2);
                         } else {
-                            startActivityForResult(LogInIntent, loginCode);
+                            startActivity(LogInIntent);
                             bottomNavigation.setVisibility(View.GONE);
                         }
 
