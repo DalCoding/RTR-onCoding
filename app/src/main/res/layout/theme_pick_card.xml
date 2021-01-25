@@ -6,12 +6,20 @@
     android:layout_gravity="center"
     android:background="#CC442C2E">
 
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp">
+    <RelativeLayout
+        android:id="@+id/topInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp">
 
+
+<<<<<<< HEAD
         <RelativeLayout
             android:id="@+id/topInfo"
             android:layout_width="match_parent"
@@ -107,12 +115,53 @@
                 android:textStyle="bold" />
 
         </LinearLayout>
+=======
+        <TextView
+            android:id="@+id/tagListSize"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="30dp"
+            android:layout_toLeftOf="@id/tagListSize2"
+            android:gravity="right|center_vertical"
+            android:text="0"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tagListSize2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
+            android:layout_toLeftOf="@id/tagCheckBtn"
+            android:gravity="right|center_vertical"
+            android:text="/5"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/tagCheckBtn"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/mainimageset" />
+
+    </RelativeLayout>
+
+>>>>>>> origin/master
 
         <RelativeLayout
             android:id="@+id/firstItem"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+<<<<<<< HEAD
             android:layout_below="@id/chooseTags"
+=======
+            android:layout_below="@id/topInfo"
+>>>>>>> origin/master
             android:layout_marginTop="10dp">
 
             <androidx.cardview.widget.CardView

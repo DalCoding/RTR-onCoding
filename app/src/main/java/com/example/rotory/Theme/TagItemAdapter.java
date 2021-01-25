@@ -1,7 +1,6 @@
 package com.example.rotory.Theme;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.rotory.Interface.OnTagItemClickListener;
 import com.example.rotory.R;
-import com.example.rotory.Search.TagRecyclerAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -29,10 +27,7 @@ import com.google.firebase.firestore.SetOptions;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
 
 public class TagItemAdapter extends RecyclerView.Adapter<TagItemAdapter.tagItemViewHolder>
         implements OnTagItemClickListener {
@@ -51,6 +46,10 @@ public class TagItemAdapter extends RecyclerView.Adapter<TagItemAdapter.tagItemV
         this.context = context;
         this.tagItemList = tagItemList;
         this.tagListSize = tagListSize;
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/master
     }
 
     @NonNull
@@ -100,7 +99,41 @@ public class TagItemAdapter extends RecyclerView.Adapter<TagItemAdapter.tagItemV
         public void setTagItems(Tags item){
             tagBtn.setText(item.getTag());
             isInList(item.getTag());
+<<<<<<< HEAD
 
+        }
+=======
+>>>>>>> origin/master
+
+        private void isInList(String tag) {
+            db.collection("person").whereEqualTo("userId", user.getEmail())
+                    .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot pDocument : task.getResult()) {
+                            String pDocumentId = pDocument.getId();
+                            db.collection("person").document(pDocumentId)
+                                    .collection("myTag")
+                                    .document("myTagList")
+                                    .get()
+                                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<DocumentSnapshot> task){
+                                            Map<String, Object> myTagList = new HashMap<>();
+                                            myTagList = task.getResult().getData();
+                                            if (myTagList.containsKey(tag)) {
+                                                tagBtn.setTextColor(Color.RED);
+                                                tagBtn.setTextSize(16);
+                                            } else {
+                                                tagBtn.setTextColor(Color.BLACK);
+                                            }
+                                        }
+                                    });
+                        }
+                    }
+                }
+            });
         }
 
         private void isInList(String tag) {
@@ -137,6 +170,7 @@ public class TagItemAdapter extends RecyclerView.Adapter<TagItemAdapter.tagItemV
         public void onBind(){
             String tagText = tagBtn.getText().toString();
 
+<<<<<<< HEAD
                     tagBtn.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -158,6 +192,31 @@ public class TagItemAdapter extends RecyclerView.Adapter<TagItemAdapter.tagItemV
                                     tagBtn.setTextColor(Color.RED);
                                     tagBtn.setTextSize(16);
                                     Log.d(TAG, tagBtn.getText().toString() + " 선택됨");
+=======
+            tagBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                        /*    if (isSelected >= 5) {
+                                Toast.makeText(context, "선택가능한 태그 개수는 5개 입니다.", Toast.LENGTH_SHORT).show();
+                            } else {*/
+                    if (tagListSize.getText().toString().equals("5")) {
+                            if (tagBtn.getCurrentTextColor() == Color.RED) {
+                                removeFromList();
+                                setTagDb(tagText, false);
+                            } else {
+                                Toast.makeText(context, "선택가능한 태그 개수는 5개 입니다.", Toast.LENGTH_SHORT).show();
+                            }
+                    }else {
+                                if (tagBtn.getCurrentTextColor() == Color.RED) {
+                                    removeFromList();
+                                    setTagDb(tagText, false);
+                                }
+                                else if (tagBtn.getCurrentTextColor() == Color.BLACK) {
+                                    tagBtn.setTextColor(Color.RED);
+                                    tagBtn.setTextSize(16);
+                                    Log.d(TAG, tagBtn.getText().toString() + " 선택됨");
+                                    Toast.makeText(context, "태그 선택 : " + tagBtn.getText().toString(), Toast.LENGTH_SHORT).show();
+>>>>>>> origin/master
                                     setTagDb(tagText, true);
 
                                     int tagSize = Integer.parseInt(tagListSize.getText().toString());
@@ -168,7 +227,12 @@ public class TagItemAdapter extends RecyclerView.Adapter<TagItemAdapter.tagItemV
                                 }
                             }
                         }
+<<<<<<< HEAD
                     });
+=======
+
+                });
+>>>>>>> origin/master
         }
 
         private void removeFromList() {
@@ -182,6 +246,7 @@ public class TagItemAdapter extends RecyclerView.Adapter<TagItemAdapter.tagItemV
             Log.d(TAG, "선택 개수 변화 확인" + tagSize + " =>" + tagListSize.getText().toString());
         }
 
+<<<<<<< HEAD
         public void setTagDb(String tagText,boolean isAdd){
 
             Log.d(TAG, "리스트 추가 들어옴");
@@ -257,15 +322,104 @@ public class TagItemAdapter extends RecyclerView.Adapter<TagItemAdapter.tagItemV
 
     public void setOnTagItemClickListener(OnTagItemClickListener listener) {
         this.listener = listener;
+=======
+    public void setTagDb(String tagText,boolean isAdd){
+
+        Log.d(TAG, "리스트 추가 들어옴");
+
+        db.collection("person").whereEqualTo("userId", user.getEmail())
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot pDocument : task.getResult()) {
+                        String pDocumentId = pDocument.getId();
+                        if (isAdd) {
+                            tagList.put(tagText, tagText);
+                            addTagList(tagList,pDocumentId);
+
+                        }else{
+                            db.collection("person").document(pDocumentId)
+                                    .collection("myTag")
+                                    .document("myTagList")
+                                    .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                    Map<String, Object> userTagList = new HashMap<>();
+                                    userTagList = task.getResult().getData();
+                                    userTagList.remove(tagText);
+                                    updateTagList(userTagList, pDocumentId);
+                                }
+                            });
+                        }
+                    }
+                }
+            }
+        });
+>>>>>>> origin/master
     }
 
-    @Override
-    public void onItemClick(tagItemViewHolder holder, View view, int position) {
-        if (listener != null){
-            listener.onItemClick(holder, view, position);
+            private void updateTagList(Map<String, Object> userTagList, String pDocumentId) {
+                Log.d(TAG, "리스트 삭제 들어옴");
+                db.collection("person").document(pDocumentId)
+                        .collection("myTag")
+                        .document("myTagList")
+                        .set(userTagList)
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                Log.d(TAG, userTagList + " 저장");
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d(TAG, "태그 저장 실패 = > " + e.toString());
+                    }
+                });
+            }
+
+            private void addTagList(Map<String, Object> userTagList, String pDocumentId) {
+                db.collection("person").document(pDocumentId)
+                        .collection("myTag")
+                        .document("myTagList")
+                        .set(userTagList, SetOptions.merge())
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                Log.d(TAG, userTagList + " 저장");
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d(TAG, "태그 저장 실패 = > " + e.toString());
+                    }
+                });
+            }
         }
+
+        public void setOnTagItemClickListener(OnTagItemClickListener listener) {
+            this.listener = listener;
+        }
+
+        @Override
+        public void onItemClick(tagItemViewHolder holder, View view, int position) {
+            if (listener != null){
+                listener.onItemClick(holder, view, position);
+            }
+        }
+
+        @Override
+        public void onItemSelected(String tag) {
+
+        }
+
+        public Tags getItem(int position){
+            return tagItemList.get(position);
+        }
+
     }
 
+<<<<<<< HEAD
     @Override
     public void onItemSelected(String tag) {
 
@@ -276,3 +430,5 @@ public class TagItemAdapter extends RecyclerView.Adapter<TagItemAdapter.tagItemV
     }
 
 }
+=======
+>>>>>>> origin/master
