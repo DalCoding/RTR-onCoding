@@ -1,8 +1,9 @@
 package com.example.rotory;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class MapItem {
+public class MapItem implements Serializable {
     ArrayList<String> dtrName;
     ArrayList<String> dtrLatLng;
     ArrayList<String> address;

@@ -9,6 +9,6 @@ import java.util.ArrayList;
 
 public interface LoadMapDtrListener {
     public void loadDtr(LatLng point);
-    public void loadDtrLine(LatLng point);
+    public void loadDtrLine(MapView mapView, ArrayList<MapPoint> Points);
   //  public void showDtrLineNum();
 }

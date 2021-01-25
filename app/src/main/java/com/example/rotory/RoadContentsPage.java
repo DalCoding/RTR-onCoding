@@ -400,15 +400,12 @@ public class RoadContentsPage extends Fragment {
     }
 
 
-
 /*
     private void openReportDialog(QueryDocumentSnapshot pDocument, String pDocumentId) {
         reportSpinner = getView().findViewById(R.id.reportSpinner);
 
         ArrayAdapter reportAdapter = ArrayAdapter.createFromResource(getContext(), R.array.reportList, android.R.layout.simple_spinner_dropdown_item);
-    }
 */
-
 
 /*        db.collection("road")
                 .whereEqualTo("contentsType", 0)

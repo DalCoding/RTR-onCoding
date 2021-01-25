@@ -35,7 +35,7 @@ public class TagRecyclerAdapter extends FirestoreRecyclerAdapter<Tag, TagRecycle
     }
 
     @Override
-    public void onItemSelected(String toString) {
+    public void onItemSelected(String tag) {
 
     }
 
@@ -56,10 +56,10 @@ public class TagRecyclerAdapter extends FirestoreRecyclerAdapter<Tag, TagRecycle
         this.listener = null;
     }
 
-    public class TagViewHolder extends RecyclerView.ViewHolder {
+    public static class TagViewHolder extends RecyclerView.ViewHolder {
         Button tagBtn;
 
-        TagViewHolder(View view) {
+        public TagViewHolder(View view) {
             super(view);
             view = view;
             tagBtn = view.findViewById(R.id.tagBtn);

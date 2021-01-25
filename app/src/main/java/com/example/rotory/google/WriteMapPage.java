@@ -13,19 +13,26 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.ToolbarWidgetWrapper;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.rotory.Interface.OnBackPressedListener;
+import com.example.rotory.MapItem;
 import com.example.rotory.R;
 import com.example.rotory.WriteRoadPage;
 import com.google.android.gms.common.api.Status;
@@ -70,6 +77,9 @@ import static android.app.Activity.RESULT_OK;
 
 public class WriteMapPage extends Fragment implements OnMapReadyCallback,
         GoogleMap.OnMapClickListener, AutoPermissionsListener, OnBackPressedListener {
+
+    ArrayList<MapItem> items = new ArrayList<>();
+
     private static final String TAG = "WriteMapPage";
 
     private static final String apiKey = "AIzaSyAf5Zp2t2IQyKHlMtWpkaKvsRsOEBDnVIs";
@@ -91,6 +101,7 @@ public class WriteMapPage extends Fragment implements OnMapReadyCallback,
     ArrayList<String> dtrLatLng = new ArrayList<>();
     ArrayList<LatLng> PolyPoints = new ArrayList<>();
 
+    ImageButton backBtn;
 
     public WriteMapPage() {}
 
@@ -106,6 +117,16 @@ public class WriteMapPage extends Fragment implements OnMapReadyCallback,
 
         writeMapAddBtn = (Button) rootView.findViewById(R.id.writeMapAddBtn);
         mapSearchEditText = (EditText) rootView.findViewById(R.id.writeMapSearchEditText);
+        backBtn = rootView.findViewById(R.id.backImageButton);
+
+
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                backWritePage();
+            }
+        });
+
 
         mapView = (MapView) rootView.findViewById(R.id.writeMapContainer);
         mapView.onCreate(savedInstanceState);
@@ -139,6 +160,7 @@ public class WriteMapPage extends Fragment implements OnMapReadyCallback,
         });
 
         return rootView;
+
     }
 
 
@@ -274,6 +296,13 @@ public class WriteMapPage extends Fragment implements OnMapReadyCallback,
         DtrDialog.show();
     }
 
+    @Override
+    public void onBackPressed() {
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        fragmentManager.beginTransaction().remove(WriteMapPage.this).commit();
+        fragmentManager.popBackStack();
+    }
+
 
     class GPSListener implements LocationListener {
         @Override
@@ -332,13 +361,12 @@ public class WriteMapPage extends Fragment implements OnMapReadyCallback,
         Log.d(TAG, "permissions granted : " + permissions.length);
     }
 
-    @Override
-    public void onBackPressed() {
+    public void backWritePage() {
         Toast.makeText(getContext(), "경로가 저장 되었습니다.", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(getActivity(), WriteRoadPage.class);
-        intent.putStringArrayListExtra("dtrName", dtrName);
-        intent.putStringArrayListExtra("dtrLatLng", dtrLatLng);
-        startActivityForResult(intent, 0);
+        intent.putExtra("dtrName", dtrName);
+        intent.putExtra("dtrLatLng", dtrLatLng);
+        startActivity(intent);
     }
 
     public void drawPoly(GoogleMap map, ArrayList<LatLng> polyPoints) {
@@ -352,4 +380,5 @@ public class WriteMapPage extends Fragment implements OnMapReadyCallback,
             map.addPolyline(polylineOptions);
         }
     }
+
 }

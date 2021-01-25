@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.rotory.R;
+import com.example.rotory.Write_Story;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -129,10 +130,9 @@ public class SearchOnMyRoadFragment extends Fragment {
                 @Override
                 public void onClick(View view) {
                     Toast.makeText(getContext(), dtrName.getText(), Toast.LENGTH_SHORT).show();
-                    /*Intent intent = new Intent(getActivity(), WriteRoadPage.class);
+                    Intent intent = new Intent(getActivity(), Write_Story.class);
                     intent.putExtra("dtrName", dtrName.getText());
-                    startActivityForResult(intent, 0);*/
-
+                    startActivity(intent);
                 }
             });
         }

@@ -18,7 +18,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.rotory.BigMapPage;
-import com.example.rotory.MainActivity;
 import com.example.rotory.MainPage;
 import com.example.rotory.MyPage;
 import com.example.rotory.R;
@@ -240,18 +239,19 @@ public class MyLikeActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 Intent LogInIntent = new Intent(MyLikeActivity.this, LogInActivity.class);
+                LogInIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 switch (item.getItemId()) {
                     case R.id.home:
-                        startActivityForResult(LogInIntent, loginCode);
+                        startActivity(LogInIntent);
                         setTabUnderBar(0);
                         bottomNavigation.setVisibility(View.VISIBLE);
 
                         return true;
                     case R.id.theme:
                         if (isSignIn) {
-                            Intent myPageIntent = new Intent(MyLikeActivity.this, ThemePage.class);
-                            myPageIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            startActivity(myPageIntent);
+                            Intent themeIntent = new Intent(MyLikeActivity.this, ThemePage.class);
+                            themeIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                            startActivity(themeIntent);
                             setTabUnderBar(1);
                         } else {
 
@@ -266,7 +266,7 @@ public class MyLikeActivity extends AppCompatActivity {
                             startActivity(myPageIntent);
                             setTabUnderBar(2);
                         } else {
-                            startActivityForResult(LogInIntent, loginCode);
+                            startActivity(LogInIntent);
                             bottomNavigation.setVisibility(View.GONE);
                         }
 
