@@ -3,6 +3,7 @@ package com.example.rotory.WriteContents;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,6 +18,7 @@ import androidx.annotation.Nullable;
 import com.example.rotory.Interface.OnTagItemClickListener;
 import com.example.rotory.R;
 
+
 import java.util.ArrayList;
 
 public class TagSelectDialog extends Activity {
@@ -24,6 +26,7 @@ public class TagSelectDialog extends Activity {
     GridView gridView;
     Button plusBtn;
     TagDataAdapter adapter;
+
 
     ArrayList<String> selectedTag = new ArrayList<>();
 
@@ -46,7 +49,9 @@ public class TagSelectDialog extends Activity {
         gridView.setVerticalSpacing(4);
         gridView.setHorizontalSpacing(5);
 
+
         adapter = new TagDataAdapter(this, selectedTag);
+
 
         gridView.setAdapter(adapter);
         gridView.setNumColumns(adapter.getNumColumns());
@@ -61,6 +66,7 @@ public class TagSelectDialog extends Activity {
 
     static class TagDataAdapter extends BaseAdapter{
         Context mContext;
+
         ArrayList<String> selectedTag = new ArrayList<>();
 
         public static final String [] tags = new String[]{
@@ -73,6 +79,7 @@ public class TagSelectDialog extends Activity {
         int rowCount;
         int columnCount;
 
+
         public TagDataAdapter(Context mContext, ArrayList<String> selectedTag) {
                 super();
                 this.mContext = mContext;
@@ -80,6 +87,11 @@ public class TagSelectDialog extends Activity {
                 rowCount = 8;
                 this.selectedTag = selectedTag;
             }
+
+         public TagDataAdapter(Context mContext) {
+
+        }
+
 
             public ArrayList<String> getSelectedTag(){
                 return selectedTag;
@@ -100,48 +112,50 @@ public class TagSelectDialog extends Activity {
             public long getItemId(int position) {
                 return 0;
             }
-            @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
-                Log.d(TAG, "getView(" + position + ") called.");
-                int rowIndex = position/ rowCount;
-                int columnIndex = position % rowCount;
-                Log.d(TAG, "Index : " + rowIndex + ", " + columnIndex);
-                GridView.LayoutParams params = new GridView.LayoutParams(
-                        GridView.LayoutParams.MATCH_PARENT,
-                        GridView.LayoutParams.MATCH_PARENT
-                );
-                Button tagItem = new Button(mContext);
-                tagItem.setText(tags[position]);
-                tagItem.setLayoutParams(params);
-                tagItem.setPadding(2,2,2,2);
-                tagItem.setBackgroundColor(Color.argb(100,239,235, 218));
-                tagItem.setHeight(parent.getHeight()/8);
-                tagItem.setTag(tags[position]);
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            Log.d(TAG, "getView(" + position + ") called.");
+            int rowIndex = position/ rowCount;
+            int columnIndex = position % rowCount;
+
+            Log.d(TAG, "Index : " + rowIndex + ", " + columnIndex);
+
+            GridView.LayoutParams params = new GridView.LayoutParams(
+                    GridView.LayoutParams.MATCH_PARENT,
+                    GridView.LayoutParams.MATCH_PARENT
+            );
+
+            Button tagItem = new Button(mContext);
+            tagItem.setText(tags[position]);
+            tagItem.setLayoutParams(params);
+            tagItem.setPadding(2,2,2,2);
+            tagItem.setBackgroundColor(Color.argb(100,239,235, 218));
+            tagItem.setHeight(parent.getHeight()/8);
+            tagItem.setTag(tags[position]);
+            selectedTag = getSelectedTag();
+            Log.d(TAG,"getView에서 읽어내는지 확인" + selectedTag);
+            if (selectedTag.contains(tagItem.getText().toString())){
                 tagItem.setTextColor(Color.BLACK);
-                selectedTag = getSelectedTag();
-                Log.d(TAG,"getView에서 읽어내는지 확인" + selectedTag);
-                if (selectedTag.contains(tagItem.getText().toString())){
-                    tagItem.setTextColor(Color.BLACK);
 
-                }else{
-                    tagItem.setTextColor(Color.LTGRAY);
-                }
+            }else{
+                tagItem.setTextColor(Color.LTGRAY);
+            }
 
 
-                tagItem.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (TagSelectDialog.listener != null) {
-                            TagSelectDialog.listener.onItemSelected(v.getTag().toString());
-                            if (tagItem.getCurrentTextColor() == Color.BLACK){
-                                tagItem.setTextColor(Color.LTGRAY);
-                            }else{
-                                tagItem.setTextColor(Color.BLACK);
-                            }
+            tagItem.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (TagSelectDialog.listener != null) {
+                        TagSelectDialog.listener.onItemSelected(v.getTag().toString());
+                        if (tagItem.getCurrentTextColor() == Color.BLACK){
+                            tagItem.setTextColor(Color.LTGRAY);
+                        }else{
+                            tagItem.setTextColor(Color.BLACK);
                         }
                     }
-                });
-                return tagItem;
-            }
+                }
+            });
+            return tagItem;
         }
     }
+}

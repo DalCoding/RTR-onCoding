@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
         getSupportFragmentManager().beginTransaction().replace(R.id.container, mainPage).commit();
 
         // 아래부분 이후 옮김 -> 로그아웃 여부 실험!
-        Button mainAlarmBtn = findViewById(R.id.tagSelectBtn);
+        Button mainAlarmBtn = findViewById(R.id.mainAlarmBtn);
         mainAlarmBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

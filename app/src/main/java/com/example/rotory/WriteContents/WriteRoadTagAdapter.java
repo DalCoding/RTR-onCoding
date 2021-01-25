@@ -21,14 +21,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class WriteRoadTagAdapter extends RecyclerView.Adapter<WriteRoadTagAdapter.tagItemViewHolder> {
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
-    FirebaseAuth auth = FirebaseAuth.getInstance();
-    FirebaseUser user = auth.getCurrentUser();
-    private final static String TAG = "WriteRoadTagAdapter";
+    private final static String TAG = "WriteStoryTagAdapter";
     public Context context;
     public ArrayList<Tags> tagItemList = new ArrayList<>();
-    OnTagItemClickListener listener;
-    TextView tagListSize;
+
     View view;
 
     public WriteRoadTagAdapter(Context context) {
@@ -57,6 +53,7 @@ public class WriteRoadTagAdapter extends RecyclerView.Adapter<WriteRoadTagAdapte
 
     @Override
     public int getItemCount() {
+
         if (tagItemList!=null) {
             return tagItemList.size();
         }
@@ -76,14 +73,12 @@ public class WriteRoadTagAdapter extends RecyclerView.Adapter<WriteRoadTagAdapte
     }
 
 
-    public Tags getItem(int position) {
+    public Tags getItem(int position){
         return tagItemList.get(position);
     }
 
-
     public class tagItemViewHolder extends RecyclerView.ViewHolder {
         View view;
-
         TextView tagBtn;
 
 
@@ -102,5 +97,7 @@ public class WriteRoadTagAdapter extends RecyclerView.Adapter<WriteRoadTagAdapte
         public Tags getItem(int position) {
             return tagItemList.get(position);
         }
+
     }
 }
+

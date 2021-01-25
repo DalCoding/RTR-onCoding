@@ -1,16 +1,17 @@
 package com.example.rotory.VO;
 
-import net.daum.mf.map.api.MapPoint;
+import com.google.android.gms.maps.model.LatLng;
+
 
 public class NearPin  {
     double distance;
-    MapPoint point;
+    LatLng point;
 
 
     public NearPin() {
     }
 
-    public NearPin(double distance, MapPoint point){
+    public NearPin(double distance, LatLng point){
         this.distance = distance;
         this.point = point;
     }
@@ -23,11 +24,11 @@ public class NearPin  {
         this.distance = distance;
     }
 
-    public MapPoint getPoint() {
+    public LatLng getPoint() {
         return point;
     }
 
-    public void setPoint(MapPoint point) {
+    public void setPoint(LatLng point) {
         this.point = point;
     }
 

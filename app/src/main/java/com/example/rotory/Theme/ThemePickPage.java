@@ -72,13 +72,13 @@ public class ThemePickPage extends Activity {
     TextView time;
     TextView tagListSize;
 
+
     RecyclerView activityTagRecyclerView;
     RecyclerView feelTagRecyclerView;
     RecyclerView moodTagRecyclerView;
     RecyclerView placeTagRecyclerView;
     RecyclerView seasonTagRecyclerView;
     RecyclerView timeTagRecyclerView;
-
     ProgressDialogs progressDialogs;
 
     Button checkBtn;
@@ -110,7 +110,7 @@ public class ThemePickPage extends Activity {
         checkBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               finish();
+                finish();
             }
         });
 
@@ -120,7 +120,8 @@ public class ThemePickPage extends Activity {
         activity = findViewById(R.id.tpickGroupText);
         activity.setText("활동");
         activityTagRecyclerView = findViewById(R.id.activityTagRecyclerView);
-         getTagList("activity", activityTagRecyclerView);
+        getTagList("activity", activityTagRecyclerView);
+
 
         feel = findViewById(R.id.tpickGroupText2);
         feel.setText("기분");
@@ -130,7 +131,7 @@ public class ThemePickPage extends Activity {
         mood = findViewById(R.id.tpickGroupText3);
         mood.setText("분위기");
         moodTagRecyclerView = findViewById(R.id.moodTagRecyclerView);
-       getTagList("mood", moodTagRecyclerView);
+        getTagList("mood", moodTagRecyclerView);
 
         place = findViewById(R.id.tpickGroupText4);
         place.setText("장소");
@@ -156,7 +157,7 @@ public class ThemePickPage extends Activity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-               progressDialogs.dismiss();
+                progressDialogs.dismiss();
             }
         }, 2000);
     }
@@ -194,7 +195,6 @@ public class ThemePickPage extends Activity {
         GridLayoutManager tagLayoutManager = new GridLayoutManager(ThemePickPage.this, 4);
         recyclerView.setLayoutManager(tagLayoutManager);
 
-
         db.collection("tag").document(tagList)
                 .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -223,3 +223,4 @@ public class ThemePickPage extends Activity {
     }
 
 }
+
