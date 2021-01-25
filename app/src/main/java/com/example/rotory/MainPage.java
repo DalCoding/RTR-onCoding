@@ -73,10 +73,6 @@ public class MainPage extends Fragment implements LoadMapDtrListener
         //implements MapView.MapViewEventListener
 {
     final static String TAG = "MainPage";
-
-
-<<<<<<< HEAD
-=======
     FloatingActionButton mainFloatingBtn;
 
     GoogleMap map;
@@ -98,7 +94,6 @@ public class MainPage extends Fragment implements LoadMapDtrListener
 
 
     Button mainSearchBtn;
->>>>>>> 359c33cce01f542dd043dcd38d9637ba082b8df3
     EditText mainSearchEdit;
 
     RecyclerView mainRoadList;
@@ -115,15 +110,13 @@ public class MainPage extends Fragment implements LoadMapDtrListener
 
     Button popFloatingBtn;
     Button pop2FloatingBtn;
-    FloatingActionButton mainFloatingBtn;
-    Button mainSearchBtn;
 
 
     private FirestoreRecyclerAdapter adapter;
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     //MapView mapView;
-   // ViewGroup rootView;
+    // ViewGroup rootView;
 
     @Override
     public void onStop() {
@@ -156,7 +149,7 @@ public class MainPage extends Fragment implements LoadMapDtrListener
         super.onAttach(context);
 
         if (context instanceof Activity)
-            this.context = (Activity)context;
+            this.context = (Activity) context;
     }
 
 
@@ -166,7 +159,7 @@ public class MainPage extends Fragment implements LoadMapDtrListener
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.main_page, container, false);
         FirebaseUser user = mAuth.getCurrentUser();
 
-           initUI(rootView);
+        initUI(rootView);
 
         return rootView;
 
@@ -175,7 +168,8 @@ public class MainPage extends Fragment implements LoadMapDtrListener
     private void setContentView(int main_page) {
     }
 
-    public void showWrite(){}
+    public void showWrite() {
+    }
 
 /*    public void onContentsListener (contentsAdapter.ViewHolder holder, View view, int position) {
         if (listener != null) {
@@ -201,38 +195,38 @@ public class MainPage extends Fragment implements LoadMapDtrListener
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
                 .findFragmentById(R.id.mainGoogleMap);
         mapFragment.getMapAsync(new OnMapReadyCallback() {
-                                    @Override
-                                    public void onMapReady(GoogleMap googleMap) {
-                                        Log.d("Map", "지도준비됨.");
-                                        map = googleMap;
-                                        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                                            // TODO: Consider calling
-                                            //    ActivityCompat#requestPermissions
-                                            // here to request the missing permissions, and then overriding
-                                            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                                            //                                          int[] grantResults)
-                                            // to handle the case where the user grants the permission. See the documentation
-                                            // for ActivityCompat#requestPermissions for more details.
-                                            return;
-                                        }
-                                        //  map.setMyLocationEnabled(true);
-                                        LatLng SeoulPoint = new LatLng(37.55626036672879, 126.97217466067063);
-                                        map.moveCamera(CameraUpdateFactory.newLatLngZoom(SeoulPoint, 13));
-                                        map.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
+            @Override
+            public void onMapReady(GoogleMap googleMap) {
+                Log.d("Map", "지도준비됨.");
+                map = googleMap;
+                if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    // TODO: Consider calling
+                    //    ActivityCompat#requestPermissions
+                    // here to request the missing permissions, and then overriding
+                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                    //                                          int[] grantResults)
+                    // to handle the case where the user grants the permission. See the documentation
+                    // for ActivityCompat#requestPermissions for more details.
+                    return;
+                }
+                //  map.setMyLocationEnabled(true);
+                LatLng SeoulPoint = new LatLng(37.55626036672879, 126.97217466067063);
+                map.moveCamera(CameraUpdateFactory.newLatLngZoom(SeoulPoint, 13));
+                map.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
 
-                                            @Override
-                                            public void onCameraIdle() {
-                                                LatLng center = map.getCameraPosition().target;   // 중앙점 https://stackoverflow.com/questions/13904505/how-to-get-center-of-map-for-v2-android-maps
-                                                loadDtr(center);
-                                                int zoomLevel = (int) map.getCameraPosition().zoom;
-                                                if (zoomLevel >= 18) {
-                                                    loadDtrLine(center);
-                                                } else {
-                                                    loadDtr(center);
-                                                }
+                    @Override
+                    public void onCameraIdle() {
+                        LatLng center = map.getCameraPosition().target;   // 중앙점 https://stackoverflow.com/questions/13904505/how-to-get-center-of-map-for-v2-android-maps
+                        loadDtr(center);
+                        int zoomLevel = (int) map.getCameraPosition().zoom;
+                        if (zoomLevel >= 18) {
+                            loadDtrLine(center);
+                        } else {
+                            loadDtr(center);
+                        }
 
-                                            }
-                                        });
+                    }
+                });
 
           /*      map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                     @Override
@@ -257,14 +251,14 @@ public class MainPage extends Fragment implements LoadMapDtrListener
                 });
             }
         }); */
-                                    }
-                                });
+            }
+        });
 
-                                        LocationManager manager = (LocationManager)
-                                                getContext().getSystemService(Context.LOCATION_SERVICE);// LocationManager 객체 참조하기
-                                        // 이전에 확인햿던 위치 정보 가져오기
-                                        String locationProvider = LocationManager.NETWORK_PROVIDER;
-                                        //   Location location = manager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        LocationManager manager = (LocationManager)
+                getContext().getSystemService(Context.LOCATION_SERVICE);// LocationManager 객체 참조하기
+        // 이전에 확인햿던 위치 정보 가져오기
+        String locationProvider = LocationManager.NETWORK_PROVIDER;
+        //   Location location = manager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
      /*   if (location != null) {
             double latitude = location.getLatitude();
@@ -275,13 +269,13 @@ public class MainPage extends Fragment implements LoadMapDtrListener
             //   map.moveCamera(cameraUpdate);
         } */
 
-                                        BigMapPage.GPSListener gpsListener = new BigMapPage.GPSListener(); // 10초마다위치갱신되게끔
-                                        long minTime = 1000;
-                                        float minDistance = 0;
-                                        //manager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, minTime, minDistance, gpsListener);
-                                        // manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, minTime, minDistance, gpsListener);
+        BigMapPage.GPSListener gpsListener = new BigMapPage.GPSListener(); // 10초마다위치갱신되게끔
+        long minTime = 1000;
+        float minDistance = 0;
+        //manager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, minTime, minDistance, gpsListener);
+        // manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, minTime, minDistance, gpsListener);
 
-                                        Handler mHandler = new Handler();
+        Handler mHandler = new Handler();
                                       /*  mHandler.postDelayed(new Runnable() {
                                             public void run() {
                                                 // 3초 후에 현재위치를 받아오도록 설정 , 바로 시작 시 에러납니다.
@@ -301,29 +295,28 @@ public class MainPage extends Fragment implements LoadMapDtrListener
                                         }, 2000); // 1000 = 1초*/
 
 
-                                        ImageButton mainMapExtendBtn = rootView.findViewById(R.id.mainMapExtendBtn);
-                                        mainMapExtendBtn.bringToFront();
-                                        mainMapExtendBtn.setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
-                                                //((MainActivity)getActivity()).replaceFragment(BigMapPage.newInstance());
-                                                // mapViewContainer.removeView(mapView);
-                                                Intent intent = new Intent(getActivity(), BigMapPage.class);
-                                                startActivity(intent);
+        ImageButton mainMapExtendBtn = rootView.findViewById(R.id.mainMapExtendBtn);
+        mainMapExtendBtn.bringToFront();
+        mainMapExtendBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //((MainActivity)getActivity()).replaceFragment(BigMapPage.newInstance());
+                // mapViewContainer.removeView(mapView);
+                Intent intent = new Intent(getActivity(), BigMapPage.class);
+                startActivity(intent);
 
-                                                // getActivity().finish();
-                                            }
-                                        });
+                // getActivity().finish();
+            }
+        });
 
 
-                                        // 플로팅버튼은 https://re-build.tistory.com/31 참고하여 fragment 형식에 맞춰 코드 작성
-                                        // 실행시 Activity Null point Exception 문제가 발생
+        // 플로팅버튼은 https://re-build.tistory.com/31 참고하여 fragment 형식에 맞춰 코드 작성
+        // 실행시 Activity Null point Exception 문제가 발생
 
         context = getContext();
 
         fab_open = AnimationUtils.loadAnimation(context, R.anim.fab_open);
         fab_close = AnimationUtils.loadAnimation(context, R.anim.fab_open);
-
 
 
         mainFloatingBtn = rootView.findViewById(R.id.mainFloatingBtn);
@@ -379,44 +372,19 @@ public class MainPage extends Fragment implements LoadMapDtrListener
                         break;
                 }
             }
+            });
 
-<<<<<<< HEAD
-*/
-
-=======
-
-                                    private void showToast(String s) {
-                                        Toast.makeText(getContext(), s, Toast.LENGTH_SHORT).show();
-                                    }
-
-
-                                    FirebaseUser user = mAuth.getCurrentUser();
-
-                                    private void toggleFab() {
-                                        if (isFabOpen) {
-                                            //mainFloatingBtn.setImageResource(R.drawable.ic_add);
-                                            popFloatingBtn.startAnimation(fab_close);
-                                            pop2FloatingBtn.startAnimation(fab_close);
-                                            popFloatingBtn.setClickable(false);
-                                            pop2FloatingBtn.setClickable(false);
-                                            isFabOpen = false;
-
-                                        } else {
-                                            //mainFloatingBtn.setImageResource(R.drawable.ic_close);
-                                            popFloatingBtn.startAnimation(fab_open);
-                                            pop2FloatingBtn.startAnimation(fab_open);
-                                            popFloatingBtn.setClickable(true);
-                                            pop2FloatingBtn.setClickable(true);
-                                            isFabOpen = true;
-                                        }
-                                    } */
-
+ */
     }
+
+    private void showToast(String s) {
+        Toast.makeText(getContext(), s, Toast.LENGTH_SHORT).show();
+    }
+
 
     private void showCurrentLocation(Double latitude, Double longitude) {
         LatLng curPoint = new LatLng(latitude, longitude); // 현재위치의좌표로LatLng 객체생성하기
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(curPoint, 16));
->>>>>>> 359c33cce01f542dd043dcd38d9637ba082b8df3
     }
 
 
@@ -456,9 +424,9 @@ public class MainPage extends Fragment implements LoadMapDtrListener
         manyPins.add(new LatLng(37.73512333583128, 127.06135012282921));
         manyPins.add(new LatLng(37.73651945074978, 127.0612405606333));
         manyPins.add(new LatLng(37.73617747243228, 127.06364545969836));
-        manyPins.add(new LatLng( 37.7352838937455, 127.06131688927474));
+        manyPins.add(new LatLng(37.7352838937455, 127.06131688927474));
         manyPins.add(new LatLng(37.735869347144586, 127.0617996868873));
-        manyPins.add(new LatLng( 37.736997816721335, 127.06188551757396));
+        manyPins.add(new LatLng(37.736997816721335, 127.06188551757396));
 
         ArrayList<NearPin> nearPin = new ArrayList<NearPin>();
         // 근사값 배열 구하기
@@ -502,14 +470,14 @@ public class MainPage extends Fragment implements LoadMapDtrListener
         });
 
 
-        for (int k=0; k<4; k++) {
+        for (int k = 0; k < 4; k++) {
             // DB에서 핀들의 정보 (이름, 하단팝업정보 등) 가져와야함)
             LatLng point1 = nearPin.get(k).getPoint();
             MarkerOps1 = new MarkerOptions();
             MarkerOps1.position(point1);
             //    myLocationMarker.title("●내위치\n");
             //    myLocationMarker.snippet("●GPS로확인한위치");
-            int[] dtrImageName= {R.drawable.acorn_number1, R.drawable.acorn_number2, R.drawable.acorn_number3, R.drawable.acorn_number4, R.drawable.acorn_number5, R.drawable.acorn_number6};
+            int[] dtrImageName = {R.drawable.acorn_number1, R.drawable.acorn_number2, R.drawable.acorn_number3, R.drawable.acorn_number4, R.drawable.acorn_number5, R.drawable.acorn_number6};
             MarkerOps1.icon(BitmapDescriptorFactory.fromResource(dtrImageName[k]));
             Marker1 = map.addMarker(MarkerOps1);
 
@@ -528,9 +496,9 @@ public class MainPage extends Fragment implements LoadMapDtrListener
         manyPins.add(new LatLng(37.73512333583128, 127.06135012282921));
         manyPins.add(new LatLng(37.736145391876796, 127.0614203671098));
         manyPins.add(new LatLng(37.73680720072044, 127.06154911313982));
-        manyPins.add(new LatLng( 37.73592478761425, 127.06283657343994));
+        manyPins.add(new LatLng(37.73592478761425, 127.06283657343994));
         manyPins.add(new LatLng(37.7362132699792, 127.06116287504977));
-        manyPins.add(new LatLng( 37.73567872823825, 127.06111995970643));
+        manyPins.add(new LatLng(37.73567872823825, 127.06111995970643));
 
         ArrayList<NearPin> nearPin = new ArrayList<NearPin>();
         // 근사값 배열 구하기
@@ -575,7 +543,7 @@ public class MainPage extends Fragment implements LoadMapDtrListener
 
         ArrayList<LatLng> PolyPoints = new ArrayList<>();
 
-        for (int k=0; k<4; k++) {
+        for (int k = 0; k < 4; k++) {
             // DB에서 핀들의 정보 (이름, 하단팝업정보 등) 가져와야함)
             LatLng point1 = nearPin.get(k).getPoint();
             MarkerOps2 = new MarkerOptions();
@@ -592,7 +560,7 @@ public class MainPage extends Fragment implements LoadMapDtrListener
                 .width(10)
                 .geodesic(true);
 
-        for(int l=0; l<PolyPoints.size(); l++) {
+        for (int l = 0; l < PolyPoints.size(); l++) {
             polylineOptions
                     .add(PolyPoints.get(l));
         }
@@ -600,7 +568,6 @@ public class MainPage extends Fragment implements LoadMapDtrListener
         Polyline polyline = map.addPolyline(polylineOptions);
 
     }
-}
            /* private void initUI (ViewGroup rootView, FirebaseUser user){
 
             db.collection("contents")
@@ -630,42 +597,42 @@ public class MainPage extends Fragment implements LoadMapDtrListener
         }*/
 
 
-<<<<<<< HEAD
-        private void toggleFab() {
+    private void toggleFab() {
+        isFabOpen = 0;
+        if (isFabOpen == 1) {
+            //mainFloatingBtn.setImageResource(R.drawable.ic_add);
+            popFloatingBtn.startAnimation(fab_close);
+            pop2FloatingBtn.startAnimation(fab_close);
+            popFloatingBtn.setClickable(false);
+            pop2FloatingBtn.setClickable(false);
             isFabOpen = 0;
-            if (isFabOpen == 1) {
-                //mainFloatingBtn.setImageResource(R.drawable.ic_add);
-                popFloatingBtn.startAnimation(fab_close);
-                pop2FloatingBtn.startAnimation(fab_close);
-                popFloatingBtn.setClickable(false);
-                pop2FloatingBtn.setClickable(false);
-                isFabOpen =  0;
 
-            } else {
-                //mainFloatingBtn.setImageResource(R.drawable.ic_close);
-                popFloatingBtn.startAnimation(fab_open);
-                pop2FloatingBtn.startAnimation(fab_open);
-                popFloatingBtn.setClickable(true);
-                pop2FloatingBtn.setClickable(true);
-                isFabOpen = 1;
-            }
+        } else {
+            //mainFloatingBtn.setImageResource(R.drawable.ic_close);
+            popFloatingBtn.startAnimation(fab_open);
+            pop2FloatingBtn.startAnimation(fab_open);
+            popFloatingBtn.setClickable(true);
+            pop2FloatingBtn.setClickable(true);
+            isFabOpen = 1;
         }
+    }
 
     private void moveMyLocation(MapView mapView) {
-            mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading);
-            MapPoint centerPoint = mapView.getMapCenterPoint();
-           //loadDtr(mapView, centerPoint);
-            Handler mHandler = new Handler();
-            mHandler.postDelayed(new Runnable() {
-                public void run() {
-                    // 3초 후에 현재위치를 받아오도록 설정 , 바로 시작 시 에러납니다.
-                    mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOff);
-                }
-            }, 2000); // 1000 = 1초
-            // lm = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
+        mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading);
+        MapPoint centerPoint = mapView.getMapCenterPoint();
+        //loadDtr(mapView, centerPoint);
+        Handler mHandler = new Handler();
+        mHandler.postDelayed(new Runnable() {
+            public void run() {
+                // 3초 후에 현재위치를 받아오도록 설정 , 바로 시작 시 에러납니다.
+                mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOff);
+            }
+        }, 2000); // 1000 = 1초
+        // lm = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
 
 
     }
+}
 
 
 

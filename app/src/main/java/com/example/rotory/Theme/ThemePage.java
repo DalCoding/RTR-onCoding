@@ -81,10 +81,17 @@ public class ThemePage extends AppCompatActivity {
    ThemeItemAdapter adapter;
     ArrayList<Tags> tagsArrayList = new ArrayList<>();
 
+    ProgressDialogs progressDialogs;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.theme_page);
+
+        progressDialogs = new ProgressDialogs(this);
+        progressDialogs.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        progressDialogs.show();
+        startTagsLoading(2000);
+
 
         user = mAuth.getCurrentUser();
 
@@ -96,6 +103,8 @@ public class ThemePage extends AppCompatActivity {
         tagSelectBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                progressDialogs.show();
+                startTagsLoading(300);
                 Intent tagSelectIntent = new Intent(getApplicationContext(), ThemePickPage.class);
                 startActivity(tagSelectIntent);
             }
@@ -149,6 +158,16 @@ public class ThemePage extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void startTagsLoading(int millis) {
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                progressDialogs.dismiss();
+            }
+        }, millis);
     }
 
     private void setRandomTheme() {

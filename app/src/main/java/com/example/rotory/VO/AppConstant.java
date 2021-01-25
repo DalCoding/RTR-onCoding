@@ -1,13 +1,17 @@
 package com.example.rotory.VO;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.Handler;
 import android.util.Log;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 
 import com.bumptech.glide.Glide;
+import com.example.rotory.ProgressDialogs;
 import com.example.rotory.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -40,7 +44,8 @@ public class AppConstant {
     public static final String REGEX_PATTERN = "^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[$@$!%*#?&])[A-Za-z[0-9]$@$!%*#?&]{8,20}$";
     public static final String REGEX_NUMBER = "^(?=.*[0-9])[0-9]{9,12}$";
     public static final SimpleDateFormat dateFormat = new SimpleDateFormat("yy-MM-dd HH:mm");
-
+    Context mContext;
+    ProgressDialogs progressDialogs;
     public AppConstant() {
     }
 
