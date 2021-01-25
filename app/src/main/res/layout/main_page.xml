@@ -52,6 +52,13 @@
                 android:layout_marginTop="30dp"
                 android:background="@drawable/fragment_lines">
 
+                <fragment
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/mainGoogleMap"
+                    tools:context=".MainPage"
+                    android:name="com.google.android.gms.maps.SupportMapFragment" />
+
 
                 <ImageButton
                     android:id="@+id/mainMapExtendBtn"

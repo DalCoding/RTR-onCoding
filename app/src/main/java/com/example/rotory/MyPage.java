@@ -38,6 +38,7 @@ import com.example.rotory.userActivity.MyFavoriteActivity;
 import com.example.rotory.userActivity.MyLikeActivity;
 import com.example.rotory.userActivity.MyScrapActivity;
 import com.example.rotory.userActivity.Scrap;
+import com.example.rotory.userActivity.UserActivity;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -178,8 +179,9 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
         userActivityTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Intent intent = new Intent(getApplicationContext(), userActivityPage.class);
-                //startActivity(intent);
+                Intent intent = new Intent(getApplicationContext(), UserActivity.class);
+                startActivity(intent);
+                finish();
             }
         });
 
