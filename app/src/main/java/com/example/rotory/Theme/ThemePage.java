@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.rotory.MainActivity;
@@ -25,10 +26,20 @@ import com.example.rotory.MyPage;
 import com.example.rotory.R;
 import com.example.rotory.VO.Information;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class ThemePage extends AppCompatActivity {
     final static String TAG = "ThemePage";
@@ -36,6 +47,7 @@ public class ThemePage extends AppCompatActivity {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseUser user;
+    private FirestoreRecyclerAdapter themeAdapter;
 
     RelativeLayout bottomNavUnderbarHome;
     RelativeLayout bottomNavUnderbarTheme;
@@ -57,6 +69,10 @@ public class ThemePage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.theme_page);
 
+        user = mAuth.getCurrentUser();
+
+        setUserTheme();
+
         tagSelectBtn = findViewById(R.id.tagSelectBtn);
         tagSelectBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,6 +90,58 @@ public class ThemePage extends AppCompatActivity {
 
 
     }
+
+    private void setUserTheme() {
+        themeRView = findViewById(R.id.themeRView);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(ThemePage.this,2);
+        themeRView.setLayoutManager(gridLayoutManager);
+        db.collection("person").whereEqualTo("userId", user.getEmail())
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()){
+                    for (QueryDocumentSnapshot pDocument : task.getResult()){
+                        String personId = pDocument.getId();
+                        Query query = db.collection("person").document(personId)
+                                .collection("myTag");
+
+                        FirestoreRecyclerOptions<Tags> options = new FirestoreRecyclerOptions.Builder<Tags>()
+                                                                    .setQuery(query, Tags.class)
+                                                                    .build();
+
+                        setFirebaseAdapter(options);
+
+
+
+
+                    }
+                }
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d(TAG,"유저 정보 불러오기 실패" +e.toString());
+            }
+        });
+    }
+
+    private void setFirebaseAdapter(FirestoreRecyclerOptions options) {
+        themeAdapter = new FirestoreRecyclerAdapter(options, themeViewHolder) {
+            @Override
+            protected void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position, @NonNull Object model) {
+
+            }
+
+            @NonNull
+            @Override
+            public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                return null;
+            }
+        };
+
+    }
+
     public void setBottomNavigation(BottomNavigationView bottomNavigation) {
         bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
 
