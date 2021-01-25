@@ -57,8 +57,7 @@ public class MainPage extends Fragment
 {
     final static String TAG = "MainPage";
 
-    Button mainFloatingBtn;
-    Button mainSearchBtn;
+
     EditText mainSearchEdit;
 
     RecyclerView mainRoadList;
@@ -71,10 +70,12 @@ public class MainPage extends Fragment
 
     private Context context;
     private Animation fab_open, fab_close;
-    private boolean isFabOpen = false;
+    private int isFabOpen;
 
     Button popFloatingBtn;
     Button pop2FloatingBtn;
+    FloatingActionButton mainFloatingBtn;
+    Button mainSearchBtn;
 
 
     private FirestoreRecyclerAdapter adapter;
@@ -114,7 +115,7 @@ public class MainPage extends Fragment
         super.onAttach(context);
 
         if (context instanceof Activity)
-            context = (Activity)context;
+            this.context = (Activity)context;
     }
 
 
@@ -159,16 +160,19 @@ public class MainPage extends Fragment
         // 플로팅버튼은 https://re-build.tistory.com/31 참고하여 fragment 형식에 맞춰 코드 작성
         // 실행시 Activity Null point Exception 문제가 발생
 
-        /*Context = new context(getActivity());
+        context = getContext();
 
-        fab_open = AnimationUtils.loadAnimation(Context, R.anim.fab_open);
-        fab_close = AnimationUtils.loadAnimation(Context, R.anim.fab_open);*/
+        fab_open = AnimationUtils.loadAnimation(context, R.anim.fab_open);
+        fab_close = AnimationUtils.loadAnimation(context, R.anim.fab_open);
 
 
 
-     /*  mainFloatingBtn = rootView.findViewById(R.id.mainFloatingBtn);
+        mainFloatingBtn = rootView.findViewById(R.id.mainFloatingBtn);
         popFloatingBtn = rootView.findViewById(R.id.popFloatingBtn);
         pop2FloatingBtn = rootView.findViewById(R.id.pop2FloatingBtn);
+
+        popFloatingBtn.setClickable(false);
+        pop2FloatingBtn.setClickable(false);
 
         mainFloatingBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -195,6 +199,7 @@ public class MainPage extends Fragment
         });
 
 
+/*
         Button button = rootView.findViewById(R.id.mainFloatingBtn);
         button.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -217,6 +222,7 @@ public class MainPage extends Fragment
             }
 
 */
+
     }
 
         private void showToast (String s){
@@ -272,13 +278,14 @@ public class MainPage extends Fragment
 
 
         private void toggleFab() {
-            if (isFabOpen) {
+            isFabOpen = 0;
+            if (isFabOpen == 1) {
                 //mainFloatingBtn.setImageResource(R.drawable.ic_add);
                 popFloatingBtn.startAnimation(fab_close);
                 pop2FloatingBtn.startAnimation(fab_close);
                 popFloatingBtn.setClickable(false);
                 pop2FloatingBtn.setClickable(false);
-                isFabOpen = false;
+                isFabOpen =  0;
 
             } else {
                 //mainFloatingBtn.setImageResource(R.drawable.ic_close);
@@ -286,7 +293,7 @@ public class MainPage extends Fragment
                 pop2FloatingBtn.startAnimation(fab_open);
                 popFloatingBtn.setClickable(true);
                 pop2FloatingBtn.setClickable(true);
-                isFabOpen = true;
+                isFabOpen = 1;
             }
         }
 
