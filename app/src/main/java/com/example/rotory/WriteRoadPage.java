@@ -204,6 +204,7 @@ public class WriteRoadPage extends AppCompatActivity implements OnMapReadyCallba
                         tagItems.add(withHash);
                     }
                     roadTagAdapter.addItem(new Tags(addedCustomTag));
+                    roadTagAdapter.notifyDataSetChanged();
                     writeRoadTag.setText("");
                     Log.d(TAG, "들어갔는지 확인" + tagItems);
 

@@ -6,7 +6,7 @@ import android.app.Dialog;
 import androidx.fragment.app.DialogFragment;
 
 public class reportDialog extends DialogFragment {
-    private
+
 
 
 }

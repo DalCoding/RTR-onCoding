@@ -49,6 +49,8 @@ import java.util.Comparator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
+import retrofit2.http.HEAD;
+
 
 public class MainPage extends Fragment
         //implements MapView.MapViewEventListener
@@ -154,23 +156,17 @@ public class MainPage extends Fragment
         setContentView(R.layout.main_page);
 
 
-<<<<<<< HEAD
         // 플로팅버튼은 https://re-build.tistory.com/31 참고하여 fragment 형식에 맞춰 코드 작성
         // 실행시 Activity Null point Exception 문제가 발생
 
-        Context = new context(getActivity());
-=======
-        // 플로팅버튼 참고 https://re-build.tistory.com/31
-
-        /*Context = new Context(getActivity());
->>>>>>> ac8357873cc8383065b1b168374a3e26e9d271c4
+        /*Context = new context(getActivity());
 
         fab_open = AnimationUtils.loadAnimation(Context, R.anim.fab_open);
         fab_close = AnimationUtils.loadAnimation(Context, R.anim.fab_open);*/
 
 
 
-      /*  mainFloatingBtn = rootView.findViewById(R.id.mainFloatingBtn);
+     /*  mainFloatingBtn = rootView.findViewById(R.id.mainFloatingBtn);
         popFloatingBtn = rootView.findViewById(R.id.popFloatingBtn);
         pop2FloatingBtn = rootView.findViewById(R.id.pop2FloatingBtn);
 
@@ -184,11 +180,8 @@ public class MainPage extends Fragment
             @Override
             public void onClick(View view) {
                 toggleFab();
-<<<<<<< HEAD
                 showToast("길 작성 페이지로 이동합니다.");
-=======
-                showToast("이야기 작성 페이지로 이동합니다.");
->>>>>>> ac8357873cc8383065b1b168374a3e26e9d271c4
+
             }
         });
 
@@ -200,17 +193,12 @@ public class MainPage extends Fragment
             }
 
         });
-<<<<<<< HEAD
 
-/*        Button button = rootView.findViewById(R.id.mainFloatingBtn);
-        button.setOnClickListener(new View.OnClickListener() {
+
+        Button button = rootView.findViewById(R.id.mainFloatingBtn);
+        button.setOnClickListener(new View.OnClickListener(){
             @Override
-=======
-*/
-        /*Button button = rootView.findViewById(R.id.mainFloatingBtn);
-        button.setOnClickListener(new View.OnClickListener(){*/
-/*            @Override
->>>>>>> ac8357873cc8383065b1b168374a3e26e9d271c4
+
             public void onClick(View v) {
                 switch (v.getId()) {
                     case R.id.mainFloatingBtn:
@@ -219,25 +207,23 @@ public class MainPage extends Fragment
                     case R.id.popFloatingBtn:
                         toggleFab();
                         showToast("길 작성 페이지로 이동합니다.");
-<<<<<<< HEAD
                         break;
 
-=======
-                    break;
->>>>>>> ac8357873cc8383065b1b168374a3e26e9d271c4
                     case R.id.pop2FloatingBtn:
                         toggleFab();
                         showToast("이야기 작성 페이지로 이동합니다.");
                         break;
                 }
-            }*/
+            }
 
-
-/*        private void showToast (String s){
-            Toast.makeText(getContext(), s, Toast.LENGTH_SHORT).show();
-        }*/
-
+*/
     }
+
+        private void showToast (String s){
+            Toast.makeText(getContext(), s, Toast.LENGTH_SHORT).show();
+        }
+
+
 
 
 /*        ImageButton mainMapExtendBtn = rootView.findViewById(R.id.mainMapExtendBtn);
@@ -249,19 +235,14 @@ public class MainPage extends Fragment
                 // mapViewContainer.removeView(mapView);
                 Intent intent = new Intent(getActivity(), BigMapPage.class);
                 startActivity(intent);
-<<<<<<< HEAD
+
                 // getActivity().finish();
 
-=======
-               // getActivity().finish();
->>>>>>> ac8357873cc8383065b1b168374a3e26e9d271c4
-            }
         });*/
 
         FirebaseUser user = mAuth.getCurrentUser();
 
-<<<<<<< HEAD
-        private void initUI (ViewGroup rootView, FirebaseUser user){
+       /* private void initUI (ViewGroup rootView, FirebaseUser user){
 
             db.collection("contents")
                     .whereEqualTo("uid", user.getEmail())
@@ -281,35 +262,15 @@ public class MainPage extends Fragment
                                     .build();
                             makeAdapter(options);
                         }
-=======
-      /*  FirebaseUser user = mAuth.getCurrentUser();
-    private void initUI(ViewGroup rootView, FirebaseUser user) {
-        db.collection("contents")
-                .whereEqualTo("uid", user.getEmail())
-                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        String contentsId = document.getId();
-                        Query query = db.collection("contents")
-                                .document(contentsId).collection("title")
-                                .orderBy("");
-                        FirestoreRecyclerOptions<Contents> options = new FirestoreRecyclerOptions.Builder<Contents>()
-                                .setQuery(query, Contents.class)
-                                .build();
-                        makeAdapter(options);
->>>>>>> ac8357873cc8383065b1b168374a3e26e9d271c4
+
                     }
                 }
             });
 
             //mainRoadList.setAdapter(adapter);
-        }
+        }*/
 
-        private void showToast(String s){
-            Toast.makeText(getContext(), s, Toast.LENGTH_SHORT).show();
-        }
+
         private void toggleFab() {
             if (isFabOpen) {
                 //mainFloatingBtn.setImageResource(R.drawable.ic_add);
@@ -332,7 +293,7 @@ public class MainPage extends Fragment
     private void moveMyLocation(MapView mapView) {
             mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading);
             MapPoint centerPoint = mapView.getMapCenterPoint();
-            loadDtr(mapView, centerPoint);
+           //loadDtr(mapView, centerPoint);
             Handler mHandler = new Handler();
             mHandler.postDelayed(new Runnable() {
                 public void run() {
@@ -341,19 +302,15 @@ public class MainPage extends Fragment
                 }
             }, 2000); // 1000 = 1초
             // lm = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
-<<<<<<< HEAD
+
 
     }
 
-/*    private void makeAdapter(FirestoreRecyclerOptions<Contents> options) {
-        adapter = new FirestoreRecyclerOptions<SearchContents>(options) {
 
-=======
-    }*/
 
-    private void makeAdapter(FirestoreRecyclerOptions<Contents> options) {
-      /*  adapter = new FirestoreRecyclerOptions<SearchContents>(options) {
->>>>>>> ac8357873cc8383065b1b168374a3e26e9d271c4
+   /* private void makeAdapter(FirestoreRecyclerOptions<Contents> options) {
+       adapter = new FirestoreRecyclerOptions<SearchContents>(options) {
+
                @Override
                 public void onDataChanged() {
                     super.onDataChanged();
@@ -365,11 +322,11 @@ public class MainPage extends Fragment
                         holder.setUserItems(model);
                     }
                 }
-        }
-    }*/
+        }*/
 
 
-    public void loadDtr(MapView mapView, MapPoint point) {
+
+  /*  public void loadDtr(MapView mapView, MapPoint point) {
         int zoomLevel = mapView.getZoomLevel();
         if (zoomLevel <= 0){
             // 모든 경로 표시
@@ -438,7 +395,7 @@ public class MainPage extends Fragment
             mapView.removeAllPOIItems();
             mapView.removeAllPolylines();
         }
-    }
+    }*/
     public void loadDtrLine(MapView mapView, ArrayList<MapPoint> PolyPoints) {
         MapPolyline polyline = new MapPolyline();
         polyline.setTag(500);
@@ -450,16 +407,13 @@ public class MainPage extends Fragment
         }
 // Polyline 지도에 올리기.
         mapView.addPolyline(polyline);
-<<<<<<< HEAD
 
     }
-=======
-    }*/
->>>>>>> ac8357873cc8383065b1b168374a3e26e9d271c4
 
 
 
-    @Override
+
+    /*@Override
     public void onMapViewInitialized(MapView mapView) {
     }
     @Override
@@ -487,14 +441,14 @@ public class MainPage extends Fragment
     }
     @Override
     public void onMapViewMoveFinished(MapView mapView, MapPoint mapPoint) {
-<<<<<<< HEAD
 
-    }
 
-=======
     }*/
+
+
+
 /*
->>>>>>> ac8357873cc8383065b1b168374a3e26e9d271c4
+
     @Override
     public void onPOIItemSelected(MapView mapView, MapPOIItem mapPOIItem) {
         String DtrName = mapPOIItem.getItemName();
@@ -513,25 +467,17 @@ public class MainPage extends Fragment
     }
 =======
     }  */
->>>>>>> ac8357873cc8383065b1b168374a3e26e9d271c4
 
-    public class contentsViewHolder extends RecyclerView.ViewHolder {
+
+   /* public class contentsViewHolder extends RecyclerView.ViewHolder {
         private View view;
-
-        public contentsViewHolder(@NonNull View itemView) {
-            super(itemView);
-        }
 
             public contentsViewHolder(NonNull View itemView) {
                 super(itemView);
                 view = itemView;
-<<<<<<< HEAD
+
             }
-        }
-=======
-            }*/
-    }
->>>>>>> ac8357873cc8383065b1b168374a3e26e9d271c4
+        }*/
 
 
 
