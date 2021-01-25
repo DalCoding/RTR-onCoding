@@ -211,7 +211,7 @@ public class WriteMapPage extends Fragment implements OnMapReadyCallback,
         MapsInitializer.initialize(this.getActivity());
         map = googleMap;
         startLocationService();
-        showCurrentLocation(latitude, longitude);
+        //showCurrentLocation(latitude, longitude);
 
         if (MarkerExists) {
             writeMapAddBtn.setVisibility(View.INVISIBLE);
@@ -312,7 +312,7 @@ public class WriteMapPage extends Fragment implements OnMapReadyCallback,
 
             String message = "내 위치 -> Latitude : " + latitude + "\nLongitude : " + longitude;
             Log.d(TAG, message);
-            showCurrentLocation(latitude, longitude);
+            //showCurrentLocation(latitude, longitude);
         }
 
         @Override
@@ -325,12 +325,12 @@ public class WriteMapPage extends Fragment implements OnMapReadyCallback,
         public void onProviderDisabled(String s) { }
     }
 
-    private void showCurrentLocation(Double latitude, Double longitude) {
+   /* private void showCurrentLocation(Double latitude, Double longitude) {
         LatLng curPoint = new LatLng(latitude, longitude);
         map.animateCamera(CameraUpdateFactory.newLatLngZoom(curPoint, 15));
 
         showMyLocationMarker(curPoint);
-    }
+    }*/
 
     private void showMyLocationMarker(LatLng curPoint) {
         if (markerOptions == null) {
