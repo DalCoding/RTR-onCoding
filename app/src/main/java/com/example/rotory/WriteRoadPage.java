@@ -53,12 +53,10 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-<<<<<<< HEAD
-import com.google.protobuf.DoubleValue;
-=======
+
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
->>>>>>> origin/master
+
 
 import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapView;
@@ -160,8 +158,10 @@ public class WriteRoadPage extends AppCompatActivity implements OnMapReadyCallba
             @Override
             public void onClick(View v) {
 
-                roadTagAdapter.removeItem(roadTagAdapter.getItemList());
-                roadTagAdapter.notifyDataSetChanged();
+                if (roadTagAdapter.getItemList() != null) {
+                    roadTagAdapter.removeItem(roadTagAdapter.getItemList());
+                    roadTagAdapter.notifyDataSetChanged();
+                }
 
                 Log.d(TAG,"삭제 확인한기"+ roadTagAdapter.getItemCount());
 
@@ -459,17 +459,16 @@ public class WriteRoadPage extends AppCompatActivity implements OnMapReadyCallba
         ArrayList<String> dtrLatLng = (ArrayList<String>) intent.getSerializableExtra("dtrLatLng");
         Serializable latlng = intent.getSerializableExtra("dtrLatLng");
 
-<<<<<<< HEAD
-=======
+
        /* LatLng dtrLatLng = new LatLng(latitude, longitude);
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(dtrLatLng);
         map.addMarker(markerOptions);*/
->>>>>>> origin/master
+
 
         for (int i = 0; i < items.size(); i++) {
             // 가져온 데이터로 맵에 마커 적용
-        }*/
+        }
     }
 
     public void startLocationService() {

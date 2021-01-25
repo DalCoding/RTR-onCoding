@@ -49,7 +49,7 @@ public class MainPage extends Fragment
 {
     final static String TAG = "MainPage";
 
-    Button mainFloatingBtn;
+    FloatingActionButton mainFloatingBtn;
     Button mainSearchBtn;
     EditText mainSearchEdit;
 

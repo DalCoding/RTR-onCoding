@@ -26,7 +26,7 @@
         <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyAf5Zp2t2IQyKHlMtWpkaKvsRsOEBDnVIs"/>
         <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />
         <!--<meta-data android:name="com.kakao.sdk.AppKey" android:value="74327a949b44e3526226fb17f890121f"/>-->
-        <activity android:name=".WriteRoadPage">
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -72,7 +72,7 @@
         <activity android:name=".Theme.ThemePickPage"/>
         <activity android:name=".LoadRoadItem"/>
         <activity android:name=".Theme.ThemePage"/>
-        <activity android:name=".WriteContents.WriteRoadPage"/>
+        <activity android:name=".WriteRoadPage"/>
         <activity android:name=".WriteContents.TagSelectDialog" android:theme="@android:style/Theme.Dialog"/>
         <!--        <activity android:name=".MainActivity"/>-->
        <!-- <activity android:name=".account.FindAccountActivity"/>-->

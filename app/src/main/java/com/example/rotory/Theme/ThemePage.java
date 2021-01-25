@@ -115,7 +115,7 @@ public class ThemePage extends AppCompatActivity {
                                                                     .setQuery(query, Tags.class)
                                                                     .build();
 
-                        setFirebaseAdapter(options);
+                        //setFirebaseAdapter(options);
 
 
 
@@ -132,7 +132,7 @@ public class ThemePage extends AppCompatActivity {
         });
     }
 
-    private void setFirebaseAdapter(FirestoreRecyclerOptions options) {
+    /*private void setFirebaseAdapter(FirestoreRecyclerOptions options) {
         themeAdapter = new FirestoreRecyclerAdapter(options, themeViewHolder) {
             @Override
             protected void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position, @NonNull Object model) {
@@ -146,7 +146,7 @@ public class ThemePage extends AppCompatActivity {
             }
         };
 
-    }
+    }*/
 
     public void setBottomNavigation(BottomNavigationView bottomNavigation) {
         bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {

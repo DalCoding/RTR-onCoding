@@ -117,15 +117,16 @@ public class WriteMapPage extends Fragment implements OnMapReadyCallback,
 
         writeMapAddBtn = (Button) rootView.findViewById(R.id.writeMapAddBtn);
         mapSearchEditText = (EditText) rootView.findViewById(R.id.writeMapSearchEditText);
-        backBtn = rootView.findViewById(R.id.backImageButton);
+        //backBtn = rootView.findViewById(R.id.backImageButton);
 
-
+/*
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 backWritePage();
             }
-        });
+        });*/
 
 
         mapView = (MapView) rootView.findViewById(R.id.writeMapContainer);
