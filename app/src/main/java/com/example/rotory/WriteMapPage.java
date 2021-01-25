@@ -2,6 +2,7 @@ package com.example.rotory;
 
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -46,13 +47,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 
-public class WriteMapPage extends Fragment implements OnMapReadyCallback,
-        GoogleMap.OnMapClickListener, AutoPermissionsListener, OnBackPressedListener {
-
-    ArrayList<MapItem> items = new ArrayList<>();
-
+public class WriteMapPage extends Fragment implements OnMapReadyCallback, GoogleMap.OnMapClickListener, AutoPermissionsListener {
     private static final String TAG = "WriteMapPage";
-
     private static final String apiKey = "AIzaSyAf5Zp2t2IQyKHlMtWpkaKvsRsOEBDnVIs";
 
     Double latitude;
@@ -72,7 +68,6 @@ public class WriteMapPage extends Fragment implements OnMapReadyCallback,
     ArrayList<String> dtrLatLng = new ArrayList<>();
     ArrayList<LatLng> PolyPoints = new ArrayList<>();
 
-    ImageButton backBtn;
 
     public WriteMapPage() {}
 
@@ -88,17 +83,6 @@ public class WriteMapPage extends Fragment implements OnMapReadyCallback,
 
         writeMapAddBtn = (Button) rootView.findViewById(R.id.writeMapAddBtn);
         mapSearchEditText = (EditText) rootView.findViewById(R.id.writeMapSearchEditText);
-        //backBtn = rootView.findViewById(R.id.backImageButton);
-
-/*
-        backBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                backWritePage();
-            }
-        });*/
-
 
         mapView = (MapView) rootView.findViewById(R.id.writeMapContainer);
         mapView.onCreate(savedInstanceState);
@@ -171,19 +155,19 @@ public class WriteMapPage extends Fragment implements OnMapReadyCallback,
         Log.d(TAG, "onLowMemory");
     }
 
-    /*@Override
+    @Override
     public void onDestroy() {
         super.onDestroy();
         mapView.onDestroy();
         Log.d(TAG, "onDestroy");
-    }*/
+    }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         MapsInitializer.initialize(this.getActivity());
         map = googleMap;
         startLocationService();
-        //showCurrentLocation(latitude, longitude);
+        showCurrentLocation(latitude, longitude);
 
         if (MarkerExists) {
             writeMapAddBtn.setVisibility(View.INVISIBLE);
@@ -268,13 +252,13 @@ public class WriteMapPage extends Fragment implements OnMapReadyCallback,
         DtrDialog.show();
     }
 
-    @Override
+    /*@Override
     public void onBackPressed() {
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         fragmentManager.beginTransaction().remove(WriteMapPage.this).commit();
         fragmentManager.popBackStack();
     }
-
+*/
 
     class GPSListener implements LocationListener {
         @Override
@@ -284,7 +268,7 @@ public class WriteMapPage extends Fragment implements OnMapReadyCallback,
 
             String message = "내 위치 -> Latitude : " + latitude + "\nLongitude : " + longitude;
             Log.d(TAG, message);
-            //showCurrentLocation(latitude, longitude);
+            showCurrentLocation(latitude, longitude);
         }
 
         @Override
@@ -297,12 +281,12 @@ public class WriteMapPage extends Fragment implements OnMapReadyCallback,
         public void onProviderDisabled(String s) { }
     }
 
-   /* private void showCurrentLocation(Double latitude, Double longitude) {
+    private void showCurrentLocation(Double latitude, Double longitude) {
         LatLng curPoint = new LatLng(latitude, longitude);
-        map.animateCamera(CameraUpdateFactory.newLatLngZoom(curPoint, 15));
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(curPoint, 15));
 
         showMyLocationMarker(curPoint);
-    }*/
+    }
 
     private void showMyLocationMarker(LatLng curPoint) {
         if (markerOptions == null) {
@@ -333,13 +317,13 @@ public class WriteMapPage extends Fragment implements OnMapReadyCallback,
         Log.d(TAG, "permissions granted : " + permissions.length);
     }
 
-    public void backWritePage() {
+    /*public void backWritePage() {
         Toast.makeText(getContext(), "경로가 저장 되었습니다.", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(getActivity(), WriteRoadPage.class);
         intent.putExtra("dtrName", dtrName);
         intent.putExtra("dtrLatLng", dtrLatLng);
         startActivity(intent);
-    }
+    }*/
 
     public void drawPoly(GoogleMap map, ArrayList<LatLng> polyPoints) {
         PolylineOptions polylineOptions = new PolylineOptions();
@@ -352,5 +336,4 @@ public class WriteMapPage extends Fragment implements OnMapReadyCallback,
             map.addPolyline(polylineOptions);
         }
     }
-
 }

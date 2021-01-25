@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
@@ -37,6 +38,7 @@ import com.example.rotory.Theme.Tags;
 import com.example.rotory.VO.AppConstant;
 import com.example.rotory.WriteContents.TagSelectDialog;
 import com.example.rotory.WriteContents.WriteRoadTagAdapter;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -104,6 +106,8 @@ public class WriteRoadPage extends AppCompatActivity implements OnMapReadyCallba
     Double latitude;
     Double longitude;
 
+    Boolean isMap = false;
+
     WriteMapPage fragment;
 
     @Override
@@ -117,12 +121,6 @@ public class WriteRoadPage extends AppCompatActivity implements OnMapReadyCallba
         mapFragment.getMapAsync(this);
 
         isPublic = 1;
-        /*Intent intent = getIntent();
-        intent.getStringArrayListExtra("dtrName");
-        intent.getStringArrayListExtra("dtrLatLng");*/
-
-
-
 
         fragment = new WriteMapPage();
 
@@ -435,26 +433,10 @@ public class WriteRoadPage extends AppCompatActivity implements OnMapReadyCallba
         map = googleMap;
 
         startLocationService();
-        //showCurrentLocation(latitude, longitude);
-
+        showCurrentLocation(latitude, longitude);
         map.setOnMapClickListener(this);
 
-        /*Intent intent = getIntent();
-        ArrayList<String> dtrName = (ArrayList<String>) intent.getSerializableExtra("dtrName");
-        Serializable name = intent.getSerializableExtra("dtrName");
-        ArrayList<String> dtrLatLng = (ArrayList<String>) intent.getSerializableExtra("dtrLatLng");
-        Serializable latlng = intent.getSerializableExtra("dtrLatLng");
 
-
-       /* LatLng dtrLatLng = new LatLng(latitude, longitude);
-        MarkerOptions markerOptions = new MarkerOptions();
-        markerOptions.position(dtrLatLng);
-        map.addMarker(markerOptions);*/
-
-
-        for (int i = 0; i < items.size(); i++) {
-            // 가져온 데이터로 맵에 마커 적용
-        }
     }
 
     public void startLocationService() {
@@ -473,22 +455,36 @@ public class WriteRoadPage extends AppCompatActivity implements OnMapReadyCallba
             e.printStackTrace();
         }
     }
-/*
+
     private void showCurrentLocation(Double latitude, Double longitude) {
         LatLng curPoint = new LatLng(latitude, longitude);
-        map.animateCamera(CameraUpdateFactory.newLatLngZoom(curPoint, 15));
-
-    }*/
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(curPoint, 15));
+    }
 
     @Override
     public void onMapClick(LatLng latLng) {
         replaceFragment(fragment);
+        isMap = true;
+
+        ImageButton backBtn = findViewById(R.id.backImageButton);
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (isMap) {
+                    Toast.makeText(getBaseContext(), "경로가 저장 되었습니다.", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getBaseContext(), WriteRoadPage.class);
+                    startActivity(intent);
+                }
+            }
+        });
     }
 
     public void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.bigMapContainer, fragment);
+        //fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
+
 }
