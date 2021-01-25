@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -11,8 +12,12 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.Display;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -20,6 +25,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -27,6 +33,7 @@ import com.example.rotory.MainActivity;
 import com.example.rotory.MyPage;
 import com.example.rotory.ProgressDialogs;
 import com.example.rotory.R;
+import com.example.rotory.VO.AppConstant;
 import com.example.rotory.VO.Information;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -36,21 +43,26 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class ThemePage extends AppCompatActivity {
     final static String TAG = "ThemePage";
 
+    AppConstant appConstant = new AppConstant();
+
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseUser user;
-    private FirestoreRecyclerAdapter themeAdapter;
 
     RelativeLayout bottomNavUnderbarHome;
     RelativeLayout bottomNavUnderbarTheme;
@@ -62,13 +74,12 @@ public class ThemePage extends AppCompatActivity {
     RecyclerView themeRView;
     ThemePickPage themePickPage;
 
-    CardView themeCardView;
-    ImageView tcardThemeImg;
-    TextView tcardThemeText;
+    Display display;
 
     Information information;
 
-    private FirestoreRecyclerAdapter getThemeAdapter;
+   ThemeItemAdapter adapter;
+    ArrayList<Tags> tagsArrayList = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -78,6 +89,8 @@ public class ThemePage extends AppCompatActivity {
         user = mAuth.getCurrentUser();
 
         setUserTheme();
+        WindowManager windowManager = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
+        display = windowManager.getDefaultDisplay();
 
         tagSelectBtn = findViewById(R.id.tagSelectBtn);
         tagSelectBtn.setOnClickListener(new View.OnClickListener() {
@@ -101,6 +114,8 @@ public class ThemePage extends AppCompatActivity {
         themeRView = findViewById(R.id.themeRView);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(ThemePage.this,2);
         themeRView.setLayoutManager(gridLayoutManager);
+
+
         db.collection("person").whereEqualTo("userId", user.getEmail())
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -108,45 +123,37 @@ public class ThemePage extends AppCompatActivity {
                 if (task.isSuccessful()){
                     for (QueryDocumentSnapshot pDocument : task.getResult()){
                         String personId = pDocument.getId();
-                        Query query = db.collection("person").document(personId)
-                                .collection("myTag");
-
-                        FirestoreRecyclerOptions<Tags> options = new FirestoreRecyclerOptions.Builder<Tags>()
-                                                                    .setQuery(query, Tags.class)
-                                                                    .build();
-
-                        //setFirebaseAdapter(options);
-
-
-
-
+                        db.collection("person").document(personId).collection("myTag")
+                                .document("myTagList").get()
+                                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                            if (task.isSuccessful()) {
+                                                Map<String, Object> tagList = task.getResult().getData();
+                                                if (tagList.size() > 0) {
+                                                    Set<String> tagKeySet = tagList.keySet();
+                                                    ArrayList<String> tagKeyArrayList = new ArrayList<>(tagKeySet);
+                                                    for (int i = 0; i < tagList.size(); i++) {
+                                                        tagsArrayList.add(new Tags(tagKeyArrayList.get(i)));
+                                                    }
+                                                    adapter = new ThemeItemAdapter(tagsArrayList, ThemePage.this, display);
+                                                    themeRView.setAdapter(adapter);
+                                                } else{
+                                                    setRandomTheme();
+                                                }
+                                            }
+                                            }
+                                });
                     }
                 }
-
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.d(TAG,"유저 정보 불러오기 실패" +e.toString());
             }
         });
+
     }
 
-    /*private void setFirebaseAdapter(FirestoreRecyclerOptions options) {
-        themeAdapter = new FirestoreRecyclerAdapter(options, themeViewHolder) {
-            @Override
-            protected void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position, @NonNull Object model) {
+    private void setRandomTheme() {
+    }
 
-            }
-
-            @NonNull
-            @Override
-            public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                return null;
-            }
-        };
-
-    }*/
 
     public void setBottomNavigation(BottomNavigationView bottomNavigation) {
         bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
