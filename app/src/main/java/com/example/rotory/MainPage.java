@@ -55,6 +55,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.pedro.library.AutoPermissions;
+import com.pedro.library.AutoPermissionsListener;
 
 import net.daum.mf.map.api.MapPOIItem;
 import net.daum.mf.map.api.MapPoint;
@@ -68,12 +70,14 @@ import java.util.Comparator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
+import org.jetbrains.annotations.NotNull;
+
 import retrofit2.http.HEAD;
 
 import static android.view.View.VISIBLE;
 
 
-public class MainPage extends Fragment implements LoadMapDtrListener
+public class MainPage extends Fragment implements LoadMapDtrListener,AutoPermissionsListener
         //implements MapView.MapViewEventListener
 {
     final static String TAG = "MainPage";
@@ -168,9 +172,12 @@ public class MainPage extends Fragment implements LoadMapDtrListener
 
            initUI(rootView);
 
+
         return rootView;
 
     }
+
+
 
     private void setContentView(int main_page) {
     }
@@ -233,6 +240,7 @@ public class MainPage extends Fragment implements LoadMapDtrListener
 
                     }
                 });
+                //AutoPermissions.Companion.loadAllPermissions(getActivity(), 101);
 
           /*      map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                     @Override
@@ -257,8 +265,8 @@ public class MainPage extends Fragment implements LoadMapDtrListener
                 });
             }
         }); */
-                                    }
-                                });
+            }
+        });
         LocationManager manager = (LocationManager)
                 getContext().getSystemService(Context.LOCATION_SERVICE);// LocationManager 객체 참조하기
         // 이전에 확인햿던 위치 정보 가져오기
@@ -314,7 +322,7 @@ public class MainPage extends Fragment implements LoadMapDtrListener
             }
         });
 
-        fab_open = AnimationUtils.loadAnimation(getContext(),R.anim.fab_open);
+        fab_open = AnimationUtils.loadAnimation(getContext(), R.anim.fab_open);
         fab_close = AnimationUtils.loadAnimation(getContext(), R.anim.fab_close);
 
         pop2FloatingBtn = rootView.findViewById(R.id.pop2FloatingBtn);
@@ -322,10 +330,10 @@ public class MainPage extends Fragment implements LoadMapDtrListener
             @Override
             public void onClick(View v) {
                 if (user != null) {
-                    Intent writeStoryIntent = new Intent(getActivity(),Write_Story.class);
+                    Intent writeStoryIntent = new Intent(getActivity(), Write_Story.class);
                     //writeStoryIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                     startActivity(writeStoryIntent);
-                }else{
+                } else {
                     goLogInPage();
 
                 }
@@ -336,10 +344,10 @@ public class MainPage extends Fragment implements LoadMapDtrListener
             @Override
             public void onClick(View v) {
                 if (user != null) {
-                    Intent writeRoadIntent = new Intent(getActivity(),WriteRoadPage.class);
+                    Intent writeRoadIntent = new Intent(getActivity(), WriteRoadPage.class);
                     //writeRoadIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                     startActivity(writeRoadIntent);
-                }else{
+                } else {
                     goLogInPage();
 
                 }
@@ -360,7 +368,7 @@ public class MainPage extends Fragment implements LoadMapDtrListener
                     pop2FloatingBtn.startAnimation(fab_open);
                     pop2FloatingBtn.setClickable(true);
                     isFabOpen = false;
-                }else {
+                } else {
                     popFloatingBtn.startAnimation(fab_close);
                     //pop2FloatingBtn.setClickable(false);
                     pop2FloatingBtn.startAnimation(fab_close);
@@ -371,40 +379,6 @@ public class MainPage extends Fragment implements LoadMapDtrListener
             }
         });
 
-
-        // 플로팅버튼은 https://re-build.tistory.com/31 참고하여 fragment 형식에 맞춰 코드 작성
-        // 실행시 Activity Null point Exception 문제가 발생
-
- /*  m
-        Button button = rootView.findViewById(R.id.mainFloatingBtn);
-        button.setOnClickListener(new View.OnClickListener(){
-            @Override
-
-            public void onClick(View v) {
-                switch (v.getId()) {
-                    case R.id.mainFloatingBtn:
-                        toggleFab();
-                        break;
-                    case R.id.popFloatingBtn:
-                        toggleFab();
-                        showToast("길 작성 페이지로 이동합니다.");
-                        break;
-
-                    case R.id.pop2FloatingBtn:
-                        toggleFab();
-                        showToast("이야기 작성 페이지로 이동합니다.");
-                        break;
-                }
-            }
-
-
-
-
-
-
-
-                                     */
-
     }
 
     private void goLogInPage() {
@@ -412,29 +386,6 @@ public class MainPage extends Fragment implements LoadMapDtrListener
         LoginIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(LoginIntent);
 
-    }
-
-    private void toggleFab() {
-        if (isFabOpen) {
-            //mainFloatingBtn.setImageResource(R.drawable.ic_add);
-            pop2FloatingBtn.setVisibility(View.INVISIBLE);
-            popFloatingBtn.setVisibility(View.INVISIBLE);
-            popFloatingBtn.startAnimation(fab_close);
-            pop2FloatingBtn.startAnimation(fab_close);
-            popFloatingBtn.setClickable(false);
-            pop2FloatingBtn.setClickable(false);
-            isFabOpen = false;
-
-        } else {
-            //mainFloatingBtn.setImageResource(R.drawable.ic_close);
-            pop2FloatingBtn.setVisibility(VISIBLE);
-            popFloatingBtn.setVisibility(VISIBLE);
-            popFloatingBtn.startAnimation(fab_open);
-            pop2FloatingBtn.startAnimation(fab_open);
-            popFloatingBtn.setClickable(true);
-            pop2FloatingBtn.setClickable(true);
-            isFabOpen = true;
-        }
     }
     private void showToast(String s) {
         Toast.makeText(getContext(), s, Toast.LENGTH_SHORT).show();
@@ -625,6 +576,23 @@ public class MainPage extends Fragment implements LoadMapDtrListener
 
         Polyline polyline = map.addPolyline(polylineOptions);
 
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        AutoPermissions.Companion.parsePermissions(getActivity(), requestCode, permissions, this);
+    }
+
+    @Override
+    public void onDenied(int requestCode, String[] permissions) {
+        Log.d(TAG, "permissions denied : " + permissions.length);
+    }
+
+    @Override
+    public void onGranted(int requestCode, String[] permissions) {
+        Log.d(TAG, "permissions granted : " + permissions.length);
     }
 }
            /* private void initUI (ViewGroup rootView, FirebaseUser user){

@@ -27,6 +27,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.rotory.Interface.OnTagItemClickListener;
+import com.example.rotory.MainActivity;
 import com.example.rotory.ProgressDialogs;
 import com.example.rotory.R;
 import com.example.rotory.VO.AppConstant;
@@ -116,7 +117,9 @@ public class ThemePickPage extends Activity {
         checkBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                Intent myPageIntent = new Intent(getApplicationContext(), ThemePage.class);
+                myPageIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(myPageIntent);
             }
         });
 
