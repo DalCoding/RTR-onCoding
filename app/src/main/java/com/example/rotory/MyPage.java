@@ -1,10 +1,13 @@
 package com.example.rotory;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
@@ -17,6 +20,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,6 +33,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.rotory.Interface.OnTabItemSelectedListener;
 import com.example.rotory.Theme.ThemePage;
 import com.example.rotory.VO.AppConstant;
@@ -41,7 +46,10 @@ import com.example.rotory.userActivity.Scrap;
 import com.example.rotory.userActivity.UserActivity;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -51,6 +59,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
@@ -65,6 +75,7 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
     FirebaseUser user;
     Person persons = new Person();
     final static String TAG = "MyPage";
+    private StorageReference storageReference = FirebaseStorage.getInstance().getReference();
 
     public static final int REQUEST_CODE_GALLERY = 101;
     public static final int MainCode = 1000;
@@ -83,6 +94,7 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
     TextView myFavoriteTextView;
     TextView myLikeTextView;
     TextView personIDText;
+    TextView myExpTextView;
 
     ImageView myProfileImg;
     ImageView myEditImg;
@@ -93,7 +105,9 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
     TextView myAskTextView;
     RecyclerView myRecyclerView;
     CardView myScrapCardView;
+    ProgressBar myLevelProgressBar;
 
+    //Context imgContext;
     MainPage mainPage;
     ThemePage themePage;
     ProfileEditPage profileEditPage = new ProfileEditPage();
@@ -133,7 +147,9 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
         user=mAuth.getCurrentUser();
         String userEmail = user.getEmail(); // e-mail 형식
 
+        myProfileImg = findViewById(R.id.myProfileImg);
         loadScrapList();
+        getProfileImg(userEmail, myProfileImg);
 // 유저 정보 세팅
         db.collection("person")
                 .whereEqualTo("userId", userEmail)
@@ -165,6 +181,11 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
                                     }
                                 });
                                 //    Log.d("firebase", document.getId() + " => " + personId);
+                                int userPoint = Integer.parseInt(String.valueOf(document.get("userPoint")));
+                                myExpTextView = findViewById(R.id.myExpTextView);
+                                String expText = "(Exp. "+userPoint+"p)";
+                                myExpTextView.setText(expText);
+                                setPointToProgress(userPoint);
 
                             }
                         } else {
@@ -314,10 +335,43 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
         });
     }
 
+    private void setPointToProgress(int userPoint) {
+        myLevelProgressBar = findViewById(R.id.myLevelProgressBar);
+        if (userPoint <100) {
+            int userPoint1 = new Integer(Math.round(userPoint/100*20));
+            myLevelProgressBar.setProgress(userPoint1);
+        }
+        if(100<= userPoint && userPoint < 600){
+            int userPoint1 = new Integer(Math.round(userPoint/700*20));
+            myLevelProgressBar.setProgress(20+userPoint1);
+        }
+        if(600<=userPoint && userPoint < 3000){
+            int userPoint1 = new Integer(Math.round(userPoint/3600*20));
+            myLevelProgressBar.setProgress(40+userPoint1);
+        }
+        if(3000<=userPoint && userPoint < 10000){
+            int userPoint1 = new Integer(Math.round(userPoint/13000*20));
+            myLevelProgressBar.setProgress(60+userPoint1);
+        }
+        if(10000<=userPoint && userPoint < 50000){
+            int userPoint1 = new Integer(Math.round(userPoint/60000*20));
+            myLevelProgressBar.setProgress(80+userPoint1);
+
+        }
+        if(50000 <= userPoint ){
+            myLevelProgressBar.setProgress(100);
+        }
+
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
         loadScrapList();
+       /* user=mAuth.getCurrentUser();
+        String userEmail = user.getEmail(); // e-mail 형식
+        myProfileImg = findViewById(R.id.myProfileImg);
+        getProfileImg(userEmail, myProfileImg); */
     }
 
     private void FavoriteCount(String personId) {
@@ -563,8 +617,17 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_GALLERY) {
-            Uri uri = data.getData();
-            Bitmap bitmap = null;
+            if(data==null){
+                Intent intent = new Intent(getApplicationContext(), MyPage.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            }
+            else {
+                Uri uri = data.getData();
+                String userEmail = user.getEmail();
+
+            //    appConstant.setProfileImg(uri, userEmail);
+                Bitmap bitmap = null;
             try {
                 bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
             } catch (FileNotFoundException e) {
@@ -574,15 +637,25 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-            myProfileImg.setImageBitmap(bitmap);
 
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                appConstant.setProfileImg(bitmap, userEmail);
+
+                Handler nHandler = new Handler();
+                nHandler.postDelayed(new Runnable() {
+                    public void run() {
+                        getProfileImg(userEmail, myProfileImg);
+                    }
+                }, 2000);
+       //     myProfileImg.setImageBitmap(bitmap);
+
+        /*    ByteArrayOutputStream baos = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.PNG, 40, baos);
             byte[] bytes = baos.toByteArray();
             String temp = Base64.encodeToString(bytes, Base64.DEFAULT);
 
-            Toast.makeText(getApplicationContext(), temp, Toast.LENGTH_SHORT).show();
-            // String DB로 보내기
+            Toast.makeText(getApplicationContext(), temp, Toast.LENGTH_SHORT).show(); */
+                // String DB로 보내기
+            }
         }
     }
 
@@ -642,6 +715,27 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
         bottomNavigation.setVisibility(View.VISIBLE);
 
         profileEditContainer.setVisibility(View.GONE);
+
+    }
+
+    public void getProfileImg(String Email, ImageView imageView) {
+
+        String path = "profiles/"+ Email +".jpg";
+        storageReference.child(path).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Log.d(TAG,"storage에서 이미지 가져오기 성공" +uri);
+                Glide.with(getApplicationContext())
+                        .load(uri)
+                        .into(imageView);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d(TAG,"storage에서 이미지 가져오기 실패" +e.toString() );
+            }
+        });
+
 
     }
 

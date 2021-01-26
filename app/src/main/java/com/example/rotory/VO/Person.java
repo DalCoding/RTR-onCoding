@@ -12,12 +12,13 @@ public class Person {
     String userLevel;
     String userLevelImage;
     String  signUpDate;
+    Integer userPoint;
 
     public Person() {
     }
 
     public Person(String person_id, String userId, String password, String userName, String mobile,
-                  String email, String userImage, String userLevel, String userLevelImage, String  signUpDate) {
+                  String email, String userImage, String userLevel, String userLevelImage, String  signUpDate, int userPoint) {
         this.Uid = person_id;
         this.userId = userId;
         this.password = password;
@@ -28,6 +29,7 @@ public class Person {
         this.userLevel = userLevel;
         this.userLevelImage = userLevelImage;
         this.signUpDate = signUpDate;
+        this.userPoint = userPoint;
     }
 
 
@@ -110,4 +112,12 @@ public class Person {
     public void setSignUpDate(String  signUpDate) {
         this.signUpDate = signUpDate;
     }
+
+    public Integer getUserPoint() {
+        return userPoint;
+    }
+    public void setUserPoint(Integer userPoint) {
+        this.userPoint = userPoint;
+    }
+
 }

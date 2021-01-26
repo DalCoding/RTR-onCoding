@@ -229,4 +229,3 @@ public class ThemePickPage extends Activity {
     }
 
 }
-
