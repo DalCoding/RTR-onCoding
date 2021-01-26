@@ -35,21 +35,30 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.pedro.library.AutoPermissions;
 import com.pedro.library.AutoPermissionsListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 public class WriteMapPage extends Fragment implements OnMapReadyCallback, GoogleMap.OnMapClickListener, AutoPermissionsListener {
     private static final String TAG = "WriteMapPage";
     private static final String apiKey = "AIzaSyAf5Zp2t2IQyKHlMtWpkaKvsRsOEBDnVIs";
+
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     Double latitude;
     Double longitude;
@@ -239,6 +248,7 @@ public class WriteMapPage extends Fragment implements OnMapReadyCallback, Google
 
                 PolyPoints.add(latLng);
                 drawPoly(map, PolyPoints);
+
             }
         });
 
@@ -251,14 +261,6 @@ public class WriteMapPage extends Fragment implements OnMapReadyCallback, Google
 
         DtrDialog.show();
     }
-
-    /*@Override
-    public void onBackPressed() {
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        fragmentManager.beginTransaction().remove(WriteMapPage.this).commit();
-        fragmentManager.popBackStack();
-    }
-*/
 
     class GPSListener implements LocationListener {
         @Override
@@ -316,14 +318,6 @@ public class WriteMapPage extends Fragment implements OnMapReadyCallback, Google
     public void onGranted(int requestCode, String[] permissions) {
         Log.d(TAG, "permissions granted : " + permissions.length);
     }
-
-    /*public void backWritePage() {
-        Toast.makeText(getContext(), "경로가 저장 되었습니다.", Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(getActivity(), WriteRoadPage.class);
-        intent.putExtra("dtrName", dtrName);
-        intent.putExtra("dtrLatLng", dtrLatLng);
-        startActivity(intent);
-    }*/
 
     public void drawPoly(GoogleMap map, ArrayList<LatLng> polyPoints) {
         PolylineOptions polylineOptions = new PolylineOptions();

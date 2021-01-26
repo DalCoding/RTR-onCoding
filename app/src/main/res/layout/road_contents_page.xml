@@ -120,14 +120,15 @@
                 app:srcCompat="@drawable/star" />
         </LinearLayout>
 
-        <FrameLayout
+        <fragment
             android:id="@+id/rcontentsMap"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
             android:layout_height="176dp"
             android:layout_gravity="center"
             android:background="#F8F8F8">
 
-        </FrameLayout>
+        </fragment>
 
         <TextView
             android:id="@+id/rcontentsMapText"

@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -31,6 +32,7 @@ import com.example.rotory.Interface.LoadMapDtrListener;
 import com.example.rotory.Search.SearchContents;
 import com.example.rotory.VO.Contents;
 import com.example.rotory.VO.NearPin;
+import com.example.rotory.account.LogInActivity;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -68,11 +70,18 @@ import android.view.animation.AnimationUtils;
 
 import retrofit2.http.HEAD;
 
+import static android.view.View.VISIBLE;
+
 
 public class MainPage extends Fragment implements LoadMapDtrListener
         //implements MapView.MapViewEventListener
 {
     final static String TAG = "MainPage";
+
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    FirebaseUser user;
+
     FloatingActionButton mainFloatingBtn;
 
     GoogleMap map;
@@ -106,17 +115,13 @@ public class MainPage extends Fragment implements LoadMapDtrListener
 
     private Context context;
     private Animation fab_open, fab_close;
-    private int isFabOpen;
+    private boolean isFabOpen = true;
 
-    Button popFloatingBtn;
-    Button pop2FloatingBtn;
+    ImageButton popFloatingBtn;
+    ImageButton pop2FloatingBtn;
 
-
-    private FirestoreRecyclerAdapter adapter;
-    FirebaseAuth mAuth = FirebaseAuth.getInstance();
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
     //MapView mapView;
-    // ViewGroup rootView;
+   // ViewGroup rootView;
 
     @Override
     public void onStop() {
@@ -148,8 +153,10 @@ public class MainPage extends Fragment implements LoadMapDtrListener
     public void onAttach(Context context) {
         super.onAttach(context);
 
+        user = mAuth.getCurrentUser();
+
         if (context instanceof Activity)
-            this.context = (Activity) context;
+            context = (Activity)context;
     }
 
 
@@ -159,7 +166,7 @@ public class MainPage extends Fragment implements LoadMapDtrListener
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.main_page, container, false);
         FirebaseUser user = mAuth.getCurrentUser();
 
-        initUI(rootView);
+           initUI(rootView);
 
         return rootView;
 
@@ -168,8 +175,7 @@ public class MainPage extends Fragment implements LoadMapDtrListener
     private void setContentView(int main_page) {
     }
 
-    public void showWrite() {
-    }
+    public void showWrite(){}
 
 /*    public void onContentsListener (contentsAdapter.ViewHolder holder, View view, int position) {
         if (listener != null) {
@@ -251,14 +257,14 @@ public class MainPage extends Fragment implements LoadMapDtrListener
                 });
             }
         }); */
-            }
-        });
-
+                                    }
+                                });
         LocationManager manager = (LocationManager)
                 getContext().getSystemService(Context.LOCATION_SERVICE);// LocationManager 객체 참조하기
         // 이전에 확인햿던 위치 정보 가져오기
         String locationProvider = LocationManager.NETWORK_PROVIDER;
         //   Location location = manager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
 
      /*   if (location != null) {
             double latitude = location.getLatitude();
@@ -268,7 +274,6 @@ public class MainPage extends Fragment implements LoadMapDtrListener
             //   CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLng(curPoint);
             //   map.moveCamera(cameraUpdate);
         } */
-
         BigMapPage.GPSListener gpsListener = new BigMapPage.GPSListener(); // 10초마다위치갱신되게끔
         long minTime = 1000;
         float minDistance = 0;
@@ -309,49 +314,68 @@ public class MainPage extends Fragment implements LoadMapDtrListener
             }
         });
 
+        fab_open = AnimationUtils.loadAnimation(getContext(),R.anim.fab_open);
+        fab_close = AnimationUtils.loadAnimation(getContext(), R.anim.fab_close);
+
+        pop2FloatingBtn = rootView.findViewById(R.id.pop2FloatingBtn);
+        pop2FloatingBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (user != null) {
+                    Intent writeStoryIntent = new Intent(getActivity(),Write_Story.class);
+                    //writeStoryIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    startActivity(writeStoryIntent);
+                }else{
+                    goLogInPage();
+
+                }
+            }
+        });
+        popFloatingBtn = rootView.findViewById(R.id.popFloatingBtn);
+        popFloatingBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (user != null) {
+                    Intent writeRoadIntent = new Intent(getActivity(),WriteRoadPage.class);
+                    //writeRoadIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    startActivity(writeRoadIntent);
+                }else{
+                    goLogInPage();
+
+                }
+
+            }
+        });
+
+        popFloatingBtn.startAnimation(fab_close);
+        pop2FloatingBtn.startAnimation(fab_close);
+
+        mainFloatingBtn = rootView.findViewById(R.id.mainFloatingBtn);
+        mainFloatingBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isFabOpen) {
+                    popFloatingBtn.startAnimation(fab_open);
+                    pop2FloatingBtn.setClickable(true);
+                    pop2FloatingBtn.startAnimation(fab_open);
+                    pop2FloatingBtn.setClickable(true);
+                    isFabOpen = false;
+                }else {
+                    popFloatingBtn.startAnimation(fab_close);
+                    //pop2FloatingBtn.setClickable(false);
+                    pop2FloatingBtn.startAnimation(fab_close);
+                    //pop2FloatingBtn.setClickable(false);
+                    isFabOpen = true;
+                }
+
+            }
+        });
+
 
         // 플로팅버튼은 https://re-build.tistory.com/31 참고하여 fragment 형식에 맞춰 코드 작성
         // 실행시 Activity Null point Exception 문제가 발생
 
-        context = getContext();
-
-        fab_open = AnimationUtils.loadAnimation(context, R.anim.fab_open);
-        fab_close = AnimationUtils.loadAnimation(context, R.anim.fab_open);
-
-
-        mainFloatingBtn = rootView.findViewById(R.id.mainFloatingBtn);
-        popFloatingBtn = rootView.findViewById(R.id.popFloatingBtn);
-        pop2FloatingBtn = rootView.findViewById(R.id.pop2FloatingBtn);
-
-        popFloatingBtn.setClickable(false);
-        pop2FloatingBtn.setClickable(false);
-
-        mainFloatingBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                toggleFab();
-            }
-        });
-        popFloatingBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                toggleFab();
-                showToast("길 작성 페이지로 이동합니다.");
-
-            }
-        });
-
-        pop2FloatingBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                toggleFab();
-                showToast("이야기 작성 페이지로 이동합니다.");
-            }
-
-        });
-
-
-/*
+ /*  m
         Button button = rootView.findViewById(R.id.mainFloatingBtn);
         button.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -372,15 +396,49 @@ public class MainPage extends Fragment implements LoadMapDtrListener
                         break;
                 }
             }
-            });
 
- */
+
+
+
+
+
+
+                                     */
+
     }
 
+    private void goLogInPage() {
+        Intent LoginIntent = new Intent(getActivity(), LogInActivity.class);
+        LoginIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(LoginIntent);
+
+    }
+
+    private void toggleFab() {
+        if (isFabOpen) {
+            //mainFloatingBtn.setImageResource(R.drawable.ic_add);
+            pop2FloatingBtn.setVisibility(View.INVISIBLE);
+            popFloatingBtn.setVisibility(View.INVISIBLE);
+            popFloatingBtn.startAnimation(fab_close);
+            pop2FloatingBtn.startAnimation(fab_close);
+            popFloatingBtn.setClickable(false);
+            pop2FloatingBtn.setClickable(false);
+            isFabOpen = false;
+
+        } else {
+            //mainFloatingBtn.setImageResource(R.drawable.ic_close);
+            pop2FloatingBtn.setVisibility(VISIBLE);
+            popFloatingBtn.setVisibility(VISIBLE);
+            popFloatingBtn.startAnimation(fab_open);
+            pop2FloatingBtn.startAnimation(fab_open);
+            popFloatingBtn.setClickable(true);
+            pop2FloatingBtn.setClickable(true);
+            isFabOpen = true;
+        }
+    }
     private void showToast(String s) {
         Toast.makeText(getContext(), s, Toast.LENGTH_SHORT).show();
     }
-
 
     private void showCurrentLocation(Double latitude, Double longitude) {
         LatLng curPoint = new LatLng(latitude, longitude); // 현재위치의좌표로LatLng 객체생성하기
@@ -424,9 +482,9 @@ public class MainPage extends Fragment implements LoadMapDtrListener
         manyPins.add(new LatLng(37.73512333583128, 127.06135012282921));
         manyPins.add(new LatLng(37.73651945074978, 127.0612405606333));
         manyPins.add(new LatLng(37.73617747243228, 127.06364545969836));
-        manyPins.add(new LatLng(37.7352838937455, 127.06131688927474));
+        manyPins.add(new LatLng( 37.7352838937455, 127.06131688927474));
         manyPins.add(new LatLng(37.735869347144586, 127.0617996868873));
-        manyPins.add(new LatLng(37.736997816721335, 127.06188551757396));
+        manyPins.add(new LatLng( 37.736997816721335, 127.06188551757396));
 
         ArrayList<NearPin> nearPin = new ArrayList<NearPin>();
         // 근사값 배열 구하기
@@ -470,14 +528,14 @@ public class MainPage extends Fragment implements LoadMapDtrListener
         });
 
 
-        for (int k = 0; k < 4; k++) {
+        for (int k=0; k<4; k++) {
             // DB에서 핀들의 정보 (이름, 하단팝업정보 등) 가져와야함)
             LatLng point1 = nearPin.get(k).getPoint();
             MarkerOps1 = new MarkerOptions();
             MarkerOps1.position(point1);
             //    myLocationMarker.title("●내위치\n");
             //    myLocationMarker.snippet("●GPS로확인한위치");
-            int[] dtrImageName = {R.drawable.acorn_number1, R.drawable.acorn_number2, R.drawable.acorn_number3, R.drawable.acorn_number4, R.drawable.acorn_number5, R.drawable.acorn_number6};
+            int[] dtrImageName= {R.drawable.acorn_number1, R.drawable.acorn_number2, R.drawable.acorn_number3, R.drawable.acorn_number4, R.drawable.acorn_number5, R.drawable.acorn_number6};
             MarkerOps1.icon(BitmapDescriptorFactory.fromResource(dtrImageName[k]));
             Marker1 = map.addMarker(MarkerOps1);
 
@@ -496,9 +554,9 @@ public class MainPage extends Fragment implements LoadMapDtrListener
         manyPins.add(new LatLng(37.73512333583128, 127.06135012282921));
         manyPins.add(new LatLng(37.736145391876796, 127.0614203671098));
         manyPins.add(new LatLng(37.73680720072044, 127.06154911313982));
-        manyPins.add(new LatLng(37.73592478761425, 127.06283657343994));
+        manyPins.add(new LatLng( 37.73592478761425, 127.06283657343994));
         manyPins.add(new LatLng(37.7362132699792, 127.06116287504977));
-        manyPins.add(new LatLng(37.73567872823825, 127.06111995970643));
+        manyPins.add(new LatLng( 37.73567872823825, 127.06111995970643));
 
         ArrayList<NearPin> nearPin = new ArrayList<NearPin>();
         // 근사값 배열 구하기
@@ -543,7 +601,7 @@ public class MainPage extends Fragment implements LoadMapDtrListener
 
         ArrayList<LatLng> PolyPoints = new ArrayList<>();
 
-        for (int k = 0; k < 4; k++) {
+        for (int k=0; k<4; k++) {
             // DB에서 핀들의 정보 (이름, 하단팝업정보 등) 가져와야함)
             LatLng point1 = nearPin.get(k).getPoint();
             MarkerOps2 = new MarkerOptions();
@@ -560,7 +618,7 @@ public class MainPage extends Fragment implements LoadMapDtrListener
                 .width(10)
                 .geodesic(true);
 
-        for (int l = 0; l < PolyPoints.size(); l++) {
+        for(int l=0; l<PolyPoints.size(); l++) {
             polylineOptions
                     .add(PolyPoints.get(l));
         }
@@ -568,6 +626,7 @@ public class MainPage extends Fragment implements LoadMapDtrListener
         Polyline polyline = map.addPolyline(polylineOptions);
 
     }
+}
            /* private void initUI (ViewGroup rootView, FirebaseUser user){
 
             db.collection("contents")
@@ -597,49 +656,7 @@ public class MainPage extends Fragment implements LoadMapDtrListener
         }*/
 
 
-    private void toggleFab() {
-        isFabOpen = 0;
-        if (isFabOpen == 1) {
-            //mainFloatingBtn.setImageResource(R.drawable.ic_add);
-            popFloatingBtn.startAnimation(fab_close);
-            pop2FloatingBtn.startAnimation(fab_close);
-            popFloatingBtn.setClickable(false);
-            pop2FloatingBtn.setClickable(false);
-            isFabOpen = 0;
-
-        } else {
-            //mainFloatingBtn.setImageResource(R.drawable.ic_close);
-            popFloatingBtn.startAnimation(fab_open);
-            pop2FloatingBtn.startAnimation(fab_open);
-            popFloatingBtn.setClickable(true);
-            pop2FloatingBtn.setClickable(true);
-            isFabOpen = 1;
-        }
-    }
-
-    private void moveMyLocation(MapView mapView) {
-        mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading);
-        MapPoint centerPoint = mapView.getMapCenterPoint();
-        //loadDtr(mapView, centerPoint);
-        Handler mHandler = new Handler();
-        mHandler.postDelayed(new Runnable() {
-            public void run() {
-                // 3초 후에 현재위치를 받아오도록 설정 , 바로 시작 시 에러납니다.
-                mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOff);
-            }
-        }, 2000); // 1000 = 1초
-        // lm = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
-
-
-    }
-}
-
-
-
-   /* private void makeAdapter(FirestoreRecyclerOptions<Contents> options) {
-=======
        /* private void makeAdapter(FirestoreRecyclerOptions<Contents> options) {
->>>>>>> 359c33cce01f542dd043dcd38d9637ba082b8df3
        adapter = new FirestoreRecyclerOptions<SearchContents>(options) {
 
                @Override

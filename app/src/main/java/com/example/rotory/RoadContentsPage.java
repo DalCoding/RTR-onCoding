@@ -30,6 +30,13 @@ import com.example.rotory.VO.Contents;
 import com.example.rotory.account.LogInActivity;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -45,7 +52,6 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import net.daum.mf.map.api.MapView;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -54,10 +60,16 @@ import java.util.List;
 import java.util.Map;
 
 
-public class RoadContentsPage extends Fragment {
+public class RoadContentsPage extends Fragment implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
     final static String TAG = "RoadContentsPage";
     AppConstant appConstant = new AppConstant();
 
+    GoogleMap map;
+    double latitude;
+    double longitude;
+    MapView mapView;
+
+    MarkerOptions markerOptions;
 
     Button rcontentsCommBtn;
     ImageView rcontentsLinkImg;
@@ -93,8 +105,6 @@ public class RoadContentsPage extends Fragment {
     FirebaseFirestore db = FirebaseFirestore.getInstance(); //db 선언
     private FirestoreRecyclerAdapter commentAdapter;
 
-    MapView mapView;
-    ViewGroup mapContainer;
 
     TextView commUsernameText;
     TextView commConText;
@@ -211,6 +221,13 @@ public class RoadContentsPage extends Fragment {
         if (user != null) {
             initUI(rootView);
         }
+
+        rCommRView = rootView.findViewById(R.id.rCommRView);
+
+        mapView = (MapView) rootView.findViewById(R.id.rcontentsMap);
+        mapView.onCreate(savedInstanceState);
+        mapView.getMapAsync(this);
+
         return rootView;
     }
 
@@ -227,6 +244,11 @@ public class RoadContentsPage extends Fragment {
         //commentAdapter.stopListening();
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
 
     private void initUI(ViewGroup rootView) {
         rcontentsCommBtn = rootView.findViewById(R.id.rcontentsCommBtn);
@@ -241,12 +263,8 @@ public class RoadContentsPage extends Fragment {
         rcontentsMapText = rootView.findViewById(R.id.rcontentsMapText);
         rcontentsTaketimeText = rootView.findViewById(R.id.rcontentsTaketimeText);
         rcontentsTakewhoText = rootView.findViewById(R.id.rcontentsTakewhoText);
-        rCommRView = rootView.findViewById(R.id.rCommRView);
-        mapContainer = rootView.findViewById(R.id.rcontentsMap);
 
-       /* mapView = new MapView(getActivity());
-        mapContainer.addView(mapView);
-*/
+
         Bundle contentsBundle = this.getArguments();
         String contentsID = contentsBundle.getString("storyDocumentId");
         //String contentsID = "kWgSA53rxrk5bMMemdVd";
@@ -324,6 +342,36 @@ public class RoadContentsPage extends Fragment {
             }
         };
     }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        MapsInitializer.initialize(this.getActivity());
+        map = googleMap;
+
+        /*db.collection("contents")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d(TAG, document.getData().toString());
+
+                            }
+                        } else {
+                            Log.w(TAG, "Error getting documents.", task.getException());
+                        }
+                    }
+                });*/
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        Intent intent = new Intent(getActivity(), dtrInfoPopup.class);
+
+        return false;
+    }
+
 
     public class CommentViewHolder extends RecyclerView.ViewHolder {
         private View view;

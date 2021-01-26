@@ -7,10 +7,12 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -35,14 +37,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.rotory.Interface.OnTagItemClickListener;
 import com.example.rotory.Theme.TagItemAdapter;
 import com.example.rotory.Theme.Tags;
+import com.example.rotory.Theme.ThemePickPage;
 import com.example.rotory.VO.AppConstant;
 import com.example.rotory.WriteContents.TagSelectDialog;
 import com.example.rotory.WriteContents.WriteRoadTagAdapter;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -54,9 +57,17 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 
+import net.daum.mf.map.api.MapPOIItem;
+import net.daum.mf.map.api.MapView;
+
+import java.io.Serializable;
+import java.lang.reflect.Array;
+import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class WriteRoadPage extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMapClickListener {
@@ -76,6 +87,8 @@ public class WriteRoadPage extends AppCompatActivity implements OnMapReadyCallba
 
     TextView writeRoadHour;
     TextView writeRoadMin;
+
+    ImageButton backBtn;
 
     Map<String, Object> roadContents = new HashMap<>();
     ArrayList<String> tagItems;
@@ -106,8 +119,6 @@ public class WriteRoadPage extends AppCompatActivity implements OnMapReadyCallba
     Double latitude;
     Double longitude;
 
-    Boolean isMap = false;
-
     WriteMapPage fragment;
 
     @Override
@@ -121,6 +132,20 @@ public class WriteRoadPage extends AppCompatActivity implements OnMapReadyCallba
         mapFragment.getMapAsync(this);
 
         isPublic = 1;
+        /*Intent intent = getIntent();
+        intent.getStringArrayListExtra("dtrName");
+        intent.getStringArrayListExtra("dtrLatLng");*/
+
+        backBtn = findViewById(R.id.backImageButton);
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent mainIntent = new Intent(getApplicationContext(),MainActivity.class);
+                mainIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(mainIntent);
+            }
+        });
+
 
         fragment = new WriteMapPage();
 
@@ -433,10 +458,26 @@ public class WriteRoadPage extends AppCompatActivity implements OnMapReadyCallba
         map = googleMap;
 
         startLocationService();
-        showCurrentLocation(latitude, longitude);
+        //showCurrentLocation(latitude, longitude);
+
         map.setOnMapClickListener(this);
 
+        /*Intent intent = getIntent();
+        ArrayList<String> dtrName = (ArrayList<String>) intent.getSerializableExtra("dtrName");
+        Serializable name = intent.getSerializableExtra("dtrName");
+        ArrayList<String> dtrLatLng = (ArrayList<String>) intent.getSerializableExtra("dtrLatLng");
+        Serializable latlng = intent.getSerializableExtra("dtrLatLng");
 
+
+       /* LatLng dtrLatLng = new LatLng(latitude, longitude);
+        MarkerOptions markerOptions = new MarkerOptions();
+        markerOptions.position(dtrLatLng);
+        map.addMarker(markerOptions);*/
+
+
+        for (int i = 0; i < items.size(); i++) {
+            // 가져온 데이터로 맵에 마커 적용
+        }
     }
 
     public void startLocationService() {
@@ -455,36 +496,22 @@ public class WriteRoadPage extends AppCompatActivity implements OnMapReadyCallba
             e.printStackTrace();
         }
     }
-
+/*
     private void showCurrentLocation(Double latitude, Double longitude) {
         LatLng curPoint = new LatLng(latitude, longitude);
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(curPoint, 15));
-    }
+        map.animateCamera(CameraUpdateFactory.newLatLngZoom(curPoint, 15));
+
+    }*/
 
     @Override
     public void onMapClick(LatLng latLng) {
         replaceFragment(fragment);
-        isMap = true;
-
-        ImageButton backBtn = findViewById(R.id.backImageButton);
-        backBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (isMap) {
-                    Toast.makeText(getBaseContext(), "경로가 저장 되었습니다.", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(getBaseContext(), WriteRoadPage.class);
-                    startActivity(intent);
-                }
-            }
-        });
     }
 
     public void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.bigMapContainer, fragment);
-        //fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
-
 }
