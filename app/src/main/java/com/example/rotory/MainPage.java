@@ -289,7 +289,7 @@ public class MainPage extends Fragment implements LoadMapDtrListener,AutoPermiss
         // manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, minTime, minDistance, gpsListener);
 
         Handler mHandler = new Handler();
-                                      /*  mHandler.postDelayed(new Runnable() {
+                                        mHandler.postDelayed(new Runnable() {
                                             public void run() {
                                                 // 3초 후에 현재위치를 받아오도록 설정 , 바로 시작 시 에러납니다.
 
@@ -305,7 +305,7 @@ public class MainPage extends Fragment implements LoadMapDtrListener,AutoPermiss
                                                 showMyLocationMarker(); // 현재위치 보여주기
                                                 loadDtr(curPoint); // 도토리 보여주기
                                             }
-                                        }, 2000); // 1000 = 1초*/
+                                        }, 2000); // 1000 = 1초
 
 
         ImageButton mainMapExtendBtn = rootView.findViewById(R.id.mainMapExtendBtn);
@@ -565,8 +565,8 @@ public class MainPage extends Fragment implements LoadMapDtrListener,AutoPermiss
 
         }
         PolylineOptions polylineOptions = new PolylineOptions();
-        polylineOptions.color(Color.RED)
-                .width(10)
+        polylineOptions.color(Color.argb(128, 255, 51, 0))
+                .width(7)
                 .geodesic(true);
 
         for(int l=0; l<PolyPoints.size(); l++) {

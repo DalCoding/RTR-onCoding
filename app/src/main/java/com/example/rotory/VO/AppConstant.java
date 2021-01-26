@@ -1,6 +1,7 @@
 package com.example.rotory.VO;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -11,6 +12,7 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 
 import com.bumptech.glide.Glide;
+import com.example.rotory.MyPage;
 import com.example.rotory.ProgressDialogs;
 import com.example.rotory.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -21,9 +23,14 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.text.SimpleDateFormat;
 import java.util.Map;
 
@@ -46,18 +53,20 @@ public class AppConstant {
     public static final SimpleDateFormat dateFormat = new SimpleDateFormat("yy-MM-dd HH:mm");
     Context mContext;
     ProgressDialogs progressDialogs;
+    MyPage myPage;
+
     public AppConstant() {
     }
 
     public int getUserLevelImage(String userLevel) {
         switch (userLevel){
-            case "어린다람쥐":
+            case "어린 다람쥐":
                 return R.drawable.level2;
-            case "학생다람쥐":
+            case "학생 다람쥐":
                 return R.drawable.level3;
-            case "어른다람쥐" :
+            case "어른 다람쥐" :
                 return R.drawable.level4;
-            case "박사다람쥐" :
+            case "박사 다람쥐" :
                 return R.drawable.level5;
             case "다람쥐의 신":
                 return R.drawable.level6;
@@ -101,6 +110,37 @@ public class AppConstant {
                     }
                 });
     }
+
+    public void setProfileImg(Bitmap bitmap, String Email){
+        StorageReference profileImg = storageReference.child("profiles/"+Email+".jpg");
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 20, baos);
+        byte[] data = baos.toByteArray();
+
+        UploadTask uploadTask = profileImg.putBytes(data);
+
+       /* StorageReference profileImg = storageReference.child("profiles/"+Email+".jpg");
+        StorageMetadata metadata = new StorageMetadata.Builder()
+                .setContentType("image/jpg")
+                .build();
+        UploadTask uploadTask = profileImg.putFile(imgUri, metadata); */
+
+// Register observers to listen for when the download is done or if it fails
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle unsuccessful uploads
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
+                // ...
+            }
+        });
+    }
+
+
 
 
     public static String getKey(Map<String, Object> map, Object value){

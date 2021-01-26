@@ -1,5 +1,6 @@
 package com.example.rotory;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
@@ -45,12 +47,16 @@ public class ReportDialog extends DialogFragment implements View.OnClickListener
         });
 
         return v;
+        //showToast(getContext(), "신고가 접수되었습니다.", Toast.LENGTH_SHORT).show();
 }
+    private void showToast(String s) {Toast.makeText(getContext(), s, Toast.LENGTH_SHORT).show();}
 
     @Override
     public void onClick(View v) {
     dismiss();
     }
+
+
 }
 
 //https://altongmon.tistory.com/254
