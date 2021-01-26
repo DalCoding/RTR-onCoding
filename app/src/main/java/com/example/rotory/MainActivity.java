@@ -40,12 +40,15 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.pedro.library.AutoPermissions;
+import com.pedro.library.AutoPermissionsListener;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MainActivity extends AppCompatActivity implements OnTabItemSelectedListener, OnUserActItemClickListener {
+public class MainActivity extends AppCompatActivity implements OnTabItemSelectedListener, OnUserActItemClickListener
+        /*, AutoPermissionsListener */{
 
     public static final String TAG = "MainActivity";
     AppConstant appConstant;
@@ -151,6 +154,8 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
 
         bottomNavigation = findViewById(R.id.bottom_appBar);
         setBottomNavigation(bottomNavigation, isSignIn);
+
+        //AutoPermissions.Companion.loadAllPermissions(this, 101);
 
     }
 
@@ -372,8 +377,12 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
                     }
                 });
     }
-
-
+/*
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        AutoPermissions.Companion.parsePermissions(this, requestCode, permissions, this);
+    }*/
 
     @Override
     public void OnLinkClicked() {
@@ -385,53 +394,15 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
 
     }
 
+  /*  @Override
+    public void onDenied(int requestCode, String[] permissions) {
+        Log.d(TAG, "permissions denied : " + permissions.length);
+    }
 
-  /*  private void reload() {
-        mAuth.getCurrentUser().reload().addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()) {
-                    mAuth.getCurrentUser();
-                    Toast.makeText(getApplicationContext(),
-                            "Reload successful!",
-                            Toast.LENGTH_SHORT).show();
-                    Log.d(TAG, "reload 후 로그인 정보" + mAuth.getCurrentUser().getEmail());
-                } else {
-                    Log.e(TAG, "reload", task.getException());
-                    Toast.makeText(getApplicationContext(),
-                            "Failed to reload user.",
-                            Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+    @Override
+    public void onGranted(int requestCode, String[] permissions) {
+        Log.d(TAG, "permissions granted : " + permissions.length);
     }*/
-       /* @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-                if (requestCode == loginCode) {
-                    if (resultCode == RESULT_OK) {
-                        String tokenInfo = data.getStringExtra("token");
-                        Log.d(TAG, "onActivityResult, token 받아옴 : " + tokenInfo);
-                        logIn(tokenInfo);
-                    }
 
-        }
-    }
-
-    private void logIn(String tokenInfo) {
-        mAuth.signInWithCustomToken(tokenInfo).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()) {
-                    Log.d(TAG, "signInWithCustomToken:success");
-                    if (task.isSuccessful()) {
-                        Log.d(TAG, "signInWithCustomToken:success");
-
-                    }
-                }
-            }
-        });
-    }
-*/
 }
 

@@ -194,10 +194,10 @@
         android:layout_marginBottom="100dp"
         android:layout_toLeftOf="@id/popFloatingBtn"
         android:adjustViewBounds="false"
-        android:background="@drawable/brownlinebox"
+        android:background="@drawable/fragment_lines"
         android:baselineAlignBottom="false"
         android:clickable="true"
-        android:src="@drawable/storyicon"
+        android:src="@drawable/favorite_icon"
         android:visibility="visible" />
 
     <ImageButton
@@ -209,10 +209,10 @@
         android:layout_marginRight="20dp"
         android:layout_marginBottom="100dp"
         android:adjustViewBounds="false"
-        android:background="@drawable/brownlinebox"
+        android:background="@drawable/fragment_lines"
         android:baselineAlignBottom="false"
         android:clickable="true"
-        android:src="@drawable/roadicon_small"
+        android:src="@drawable/add_icon"
         android:visibility="visible" />
 
 </RelativeLayout>

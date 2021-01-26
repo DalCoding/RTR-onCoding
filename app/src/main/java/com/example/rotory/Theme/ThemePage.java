@@ -35,6 +35,7 @@ import com.example.rotory.ProgressDialogs;
 import com.example.rotory.R;
 import com.example.rotory.VO.AppConstant;
 import com.example.rotory.VO.Information;
+import com.example.rotory.account.LogInActivity;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -139,17 +140,24 @@ public class ThemePage extends AppCompatActivity {
                                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                         if (task.isSuccessful()) {
                                             Map<String, Object> tagList = task.getResult().getData();
-                                            if (tagList.size() > 0) {
+                                            /*if (tagList.size() == 5) {*/
                                                 Set<String> tagKeySet = tagList.keySet();
                                                 ArrayList<String> tagKeyArrayList = new ArrayList<>(tagKeySet);
-                                                for (int i = 0; i < tagList.size(); i++) {
-                                                    tagsArrayList.add(new Tags(tagKeyArrayList.get(i)));
+                                                if (tagList.size() >0) {
+                                                    for (int i = 0; i < tagList.size(); i++) {
+                                                        tagsArrayList.add(new Tags(tagKeyArrayList.get(i)));
+                                                    }
                                                 }
-                                                adapter = new ThemeItemAdapter(tagsArrayList, ThemePage.this, display);
-                                                themeRView.setAdapter(adapter);
-                                            } else{
-                                                setRandomTheme();
-                                            }
+                                                int randomTagCount = 7 - tagList.size();
+                                                Log.d(TAG, "태그갯수? =>" + tagList.size() + ":" + randomTagCount);
+                                                setRandomTheme(randomTagCount, tagsArrayList);
+                                               /* adapter = new ThemeItemAdapter(tagsArrayList, ThemePage.this, display);
+                                                themeRView.setAdapter(adapter);*/
+                                             /*   }else{
+
+                                                setRandomTheme(randomTagCount);
+                                                //안에서 어댑터 처리
+                                            }*/
                                         }
                                     }
                                 });
@@ -170,7 +178,36 @@ public class ThemePage extends AppCompatActivity {
         }, millis);
     }
 
-    private void setRandomTheme() {
+    private void setRandomTheme(int randomTagCount, ArrayList<Tags> tagsArrayList) {
+        db.collection("tag").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()){
+                    Map<String, Object> tagMap = new HashMap<>();
+                    ArrayList<String> tagItemList = new ArrayList<>();
+                    ArrayList<String> randomTagList = new ArrayList<>();
+                    for (QueryDocumentSnapshot tagDocument : task.getResult()){
+                        tagMap = tagDocument.getData();
+                        for (String mapKey : tagMap.keySet()){
+                            tagItemList.add(tagMap.get(mapKey).toString());
+                        }
+                        }
+                    Log.d(TAG, "전체 태그 받아옴" + tagItemList);
+                    for (int i = 0; i <randomTagCount; i++) {
+                        double randomValue = Math.random();
+                        int random = (int) ((randomValue*tagItemList.size())-1);
+                        randomTagList.add(tagItemList.get(random));
+                    }
+                    Log.d(TAG,"랜덤 리스트 받아옴" + randomTagList);
+                    for (int i = 0; i < randomTagCount; i++){
+                        tagsArrayList.add(new Tags(randomTagList.get(i)));
+                    }
+                    Log.d(TAG,"어댑터로 넘어갈 리스트" + tagsArrayList);
+                    adapter = new ThemeItemAdapter(tagsArrayList, ThemePage.this, display);
+                    themeRView.setAdapter(adapter);
+                }
+            }
+        });
     }
 
 
