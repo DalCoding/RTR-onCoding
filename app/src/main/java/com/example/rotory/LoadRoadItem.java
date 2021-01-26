@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -28,15 +29,17 @@ public class LoadRoadItem extends AppCompatActivity implements OnUserActItemClic
 
     final static String TAG = "LoadStoryItem";
     ImageButton backImageButton;
+    TextView pageTitlewithBtnTextView;
 
     RoadContentsPage roadContentsPage = new RoadContentsPage();
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.load_story_contents);
+        pageTitlewithBtnTextView = findViewById(R.id.pageTitlewithBtnTextView);
+        pageTitlewithBtnTextView.setText("도토리 길");
 
         onStart();
-
 
         getSupportFragmentManager().beginTransaction().replace(R.id.storyContainer, roadContentsPage).commit();
         backImageButton = findViewById(R.id.backImageButton);
