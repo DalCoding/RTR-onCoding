@@ -41,8 +41,6 @@ import com.example.rotory.Theme.ThemePickPage;
 import com.example.rotory.VO.AppConstant;
 import com.example.rotory.WriteContents.TagSelectDialog;
 import com.example.rotory.WriteContents.WriteRoadTagAdapter;
-import com.example.rotory.google.WriteMapPage;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
