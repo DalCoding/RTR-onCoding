@@ -60,13 +60,13 @@ public class AppConstant {
 
     public int getUserLevelImage(String userLevel) {
         switch (userLevel){
-            case "어린다람쥐":
+            case "어린 다람쥐":
                 return R.drawable.level2;
-            case "학생다람쥐":
+            case "학생 다람쥐":
                 return R.drawable.level3;
-            case "어른다람쥐" :
+            case "어른 다람쥐" :
                 return R.drawable.level4;
-            case "박사다람쥐" :
+            case "박사 다람쥐" :
                 return R.drawable.level5;
             case "다람쥐의 신":
                 return R.drawable.level6;

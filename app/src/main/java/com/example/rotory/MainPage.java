@@ -614,8 +614,8 @@ public class MainPage extends Fragment implements LoadMapDtrListener
 
         }
         PolylineOptions polylineOptions = new PolylineOptions();
-        polylineOptions.color(Color.RED)
-                .width(10)
+        polylineOptions.color(Color.argb(128, 255, 51, 0))
+                .width(7)
                 .geodesic(true);
 
         for(int l=0; l<PolyPoints.size(); l++) {

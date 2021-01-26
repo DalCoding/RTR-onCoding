@@ -30,6 +30,8 @@ import com.example.rotory.Interface.OnTabItemSelectedListener;
 import com.example.rotory.Theme.ThemePage;
 import com.example.rotory.VO.NearPin;
 import com.example.rotory.account.SignUpActivity;
+import com.example.rotory.userActivity.Scrap;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapsInitializer;
@@ -41,11 +43,16 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import net.daum.mf.map.api.MapPoint;
 import net.daum.mf.map.api.MapView;
@@ -53,6 +60,7 @@ import net.daum.mf.map.api.MapView;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 
 
 public class BigMapPage extends AppCompatActivity implements OnTabItemSelectedListener, LoadMapDtrListener {
@@ -455,6 +463,25 @@ public class BigMapPage extends AppCompatActivity implements OnTabItemSelectedLi
     @Override
     public void loadDtr(LatLng point) {
 
+        db.collection("contents")
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()){
+                    for (QueryDocumentSnapshot document : task.getResult()){
+                        String personId = document.getId();
+                        ArrayList<LatLng> dtrLatLng = (ArrayList<LatLng>) document.get("dtrLatLng");
+                       // HashMap<String, Object> =
+
+                        dtrLatLng.get(0);
+
+
+
+                    }
+                }
+            }
+        });
+
        map.clear();
        showMyLocationMarker();
 
@@ -594,8 +621,8 @@ public class BigMapPage extends AppCompatActivity implements OnTabItemSelectedLi
 
         }
         PolylineOptions polylineOptions = new PolylineOptions();
-        polylineOptions.color(Color.RED)
-                        .width(10)
+        polylineOptions.color(Color.argb(128, 255, 51, 0))
+                        .width(5)
                         .geodesic(true);
 
         for(int l=0; l<PolyPoints.size(); l++) {

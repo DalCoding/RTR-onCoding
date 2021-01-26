@@ -55,16 +55,21 @@ import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class MyPage extends AppCompatActivity implements OnTabItemSelectedListener {
@@ -166,13 +171,7 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
                                 FavoriteCount(personId);
 
                                 String userName1 = String.valueOf(document.get("userName"));
-
                                 myNickTextView.setText(userName1);
-                                String userLevel = String.valueOf(document.get("userLevel"));
-                                myLevelTextView = findViewById(R.id.myLevelTextView);
-                                myLevelTextView.setText(userLevel);
-                                myLevelImg = findViewById(R.id.myLevelImg);
-                                myLevelImg.setImageResource(appConstant.getUserLevelImage(userLevel));
                                 myEditImg = findViewById(R.id.myEditImg);
                                 myEditImg.setOnClickListener(new View.OnClickListener() {
                                     @Override
@@ -185,7 +184,13 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
                                 myExpTextView = findViewById(R.id.myExpTextView);
                                 String expText = "(Exp. "+userPoint+"p)";
                                 myExpTextView.setText(expText);
-                                setPointToProgress(userPoint);
+                                setPointToProgress(userPoint, personId);
+
+                                String userLevel = String.valueOf(document.get("userLevel"));
+                                myLevelTextView = findViewById(R.id.myLevelTextView);
+                                myLevelTextView.setText(userLevel);
+                                myLevelImg = findViewById(R.id.myLevelImg);
+                                myLevelImg.setImageResource(appConstant.getUserLevelImage(userLevel));
 
                             }
                         } else {
@@ -335,32 +340,54 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
         });
     }
 
-    private void setPointToProgress(int userPoint) {
+    private void setPointToProgress(int userPoint, String personId) {
+
         myLevelProgressBar = findViewById(R.id.myLevelProgressBar);
         if (userPoint <100) {
             int userPoint1 = new Integer(Math.round(userPoint/100*20));
             myLevelProgressBar.setProgress(userPoint1);
+            String userLevel1 = "아기 다람쥐";
+            setUserLevel(userLevel1, personId);
         }
         if(100<= userPoint && userPoint < 600){
             int userPoint1 = new Integer(Math.round(userPoint/700*20));
             myLevelProgressBar.setProgress(20+userPoint1);
+            String userLevel1 = "어린 다람쥐";
+            setUserLevel(userLevel1, personId);
         }
         if(600<=userPoint && userPoint < 3000){
             int userPoint1 = new Integer(Math.round(userPoint/3600*20));
             myLevelProgressBar.setProgress(40+userPoint1);
+            String userLevel1 = "학생 다람쥐";
+            setUserLevel(userLevel1, personId);
         }
         if(3000<=userPoint && userPoint < 10000){
             int userPoint1 = new Integer(Math.round(userPoint/13000*20));
             myLevelProgressBar.setProgress(60+userPoint1);
+            String userLevel1 = "어른 다람쥐";
+            setUserLevel(userLevel1, personId);
         }
         if(10000<=userPoint && userPoint < 50000){
             int userPoint1 = new Integer(Math.round(userPoint/60000*20));
             myLevelProgressBar.setProgress(80+userPoint1);
+            String userLevel1 = "박사 다람쥐";
+            setUserLevel(userLevel1, personId);
 
         }
         if(50000 <= userPoint ){
             myLevelProgressBar.setProgress(100);
+            String userLevel1 = "다람쥐의 신";
         }
+
+
+    }
+
+    private void setUserLevel(String userLevel1, String personId) {
+
+        Map<String, Object> levelData = new HashMap<>();
+        levelData.put("userLevel", userLevel1);
+
+        db.collection("person").document(personId).set(levelData, SetOptions.merge());
 
     }
 
