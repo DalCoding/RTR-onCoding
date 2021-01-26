@@ -34,6 +34,7 @@ import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
@@ -102,9 +103,10 @@ public class SearchResultPage extends AppCompatActivity implements View.OnClickL
 
 
         Intent intent = getIntent();
-        intent.getStringExtra("searchText");
+        String searchText = intent.getStringExtra("searchText");
 
         EditText searchResultEdit = findViewById(R.id.searchResultEdit);
+        searchResultEdit.setText(searchText);
 
 
 

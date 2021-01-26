@@ -42,7 +42,10 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -54,6 +57,9 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 
+import org.w3c.dom.Document;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -84,6 +90,7 @@ public class WriteRoadPage extends AppCompatActivity implements OnMapReadyCallba
     String ratingResult;
     float ratingNum;
     String companionText;
+    String DtrName;
 
     Button chooseTagBtn;
     Button tagInputBtn;
@@ -110,6 +117,14 @@ public class WriteRoadPage extends AppCompatActivity implements OnMapReadyCallba
 
     WriteMapPage fragment;
 
+    ArrayList<String> dtrName = new ArrayList<>();
+    ArrayList<String> dtrLatLng = new ArrayList<>();
+    ArrayList<LatLng> PolyPoints = new ArrayList<>();
+
+    MarkerOptions markerOptions;
+    LatLng latLng;
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -123,6 +138,20 @@ public class WriteRoadPage extends AppCompatActivity implements OnMapReadyCallba
         isPublic = 1;
 
         fragment = new WriteMapPage();
+
+        ImageButton backBtn = findViewById(R.id.backImageButton);
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (isMap) {
+                    Toast.makeText(getBaseContext(), "경로가 저장 되었습니다.", Toast.LENGTH_SHORT).show();
+                    getSupportFragmentManager().beginTransaction().remove(fragment).commit();
+                    isMap = false;
+                } else {
+                    // 작성 페이지에서 뒤로가기 구현
+                }
+            }
+        });
 
         writeRoadTitle = findViewById(R.id.writeRoadTitleEditText);
         writeRoadReview = findViewById(R.id.writeRoadReviewEditText);
@@ -375,6 +404,8 @@ public class WriteRoadPage extends AppCompatActivity implements OnMapReadyCallba
             roadContents.put("ratingComment", writeRoadReview.getText().toString());
             roadContents.put("isPublic", isPublic);
             roadContents.put("writeDate", writtenDate);
+            roadContents.put("dtrName", dtrName);
+            roadContents.put("dtrLatLng", dtrLatLng);
             Log.d(TAG, "입력될 내용 확인" + roadContents);
 
     }
@@ -436,7 +467,7 @@ public class WriteRoadPage extends AppCompatActivity implements OnMapReadyCallba
         showCurrentLocation(latitude, longitude);
         map.setOnMapClickListener(this);
 
-
+        // setLoadMarkers();
     }
 
     public void startLocationService() {
@@ -466,25 +497,39 @@ public class WriteRoadPage extends AppCompatActivity implements OnMapReadyCallba
         replaceFragment(fragment);
         isMap = true;
 
-        ImageButton backBtn = findViewById(R.id.backImageButton);
-        backBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (isMap) {
-                    Toast.makeText(getBaseContext(), "경로가 저장 되었습니다.", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(getBaseContext(), WriteRoadPage.class);
-                    startActivity(intent);
-                }
-            }
-        });
     }
 
     public void replaceFragment(Fragment fragment) {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.bigMapContainer, fragment);
-        //fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.bigMapContainer, fragment).commit();
     }
 
+    public void drawPoly(GoogleMap map, ArrayList<LatLng> polyPoints) {
+        PolylineOptions polylineOptions = new PolylineOptions();
+        polylineOptions.width(5).color(Color.argb(128, 255, 51, 0));
+
+        for (int i = 0; i < polyPoints.size(); i++) {
+            LatLng polyPoint = polyPoints.get(i);
+            polylineOptions.add(polyPoint);
+
+            map.addPolyline(polylineOptions);
+        }
+    }
+
+    public void setLoadMarkers() {
+
+        markerOptions.title(DtrName);
+        Double latitude = latLng.latitude;
+        Double longitude = latLng.longitude;
+        LatLng latLng = new LatLng(latitude, longitude);
+        markerOptions.position(latLng);
+        markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.acorn2));
+
+        map.addMarker(markerOptions);
+
+        /*dtrName.add(DtrName);
+        dtrLatLng.add(latLng.toString());*/
+
+        PolyPoints.add(latLng);
+        drawPoly(map, PolyPoints);
+    }
 }
