@@ -29,6 +29,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.rotory.Interface.OnTagItemClickListener;
 import com.example.rotory.ProgressDialogs;
 import com.example.rotory.R;
+import com.example.rotory.VO.AppConstant;
 import com.example.rotory.VO.Tag;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -79,9 +80,12 @@ public class ThemePickPage extends Activity {
     RecyclerView placeTagRecyclerView;
     RecyclerView seasonTagRecyclerView;
     RecyclerView timeTagRecyclerView;
-    ProgressDialogs progressDialogs;
+
 
     Button checkBtn;
+
+
+    ProgressDialogs progressDialogs;
 
     @Override
     protected void onStart() {
@@ -101,9 +105,11 @@ public class ThemePickPage extends Activity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.theme_pick_card);
 
+
         progressDialogs = new ProgressDialogs(this);
         progressDialogs.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         progressDialogs.show();
+        startTagsLoading();
 
         tagListSize = findViewById(R.id.tagListSize);
         checkBtn = findViewById(R.id.tagCheckBtn);
@@ -148,7 +154,7 @@ public class ThemePickPage extends Activity {
         timeTagRecyclerView = findViewById(R.id.timeTagRecyclerView);
         getTagList("time", timeTagRecyclerView);
 
-        startTagsLoading();
+
 
     }
 
@@ -223,4 +229,3 @@ public class ThemePickPage extends Activity {
     }
 
 }
-

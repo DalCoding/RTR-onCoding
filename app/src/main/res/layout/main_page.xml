@@ -5,15 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ScrollView
+    <RelativeLayout
         android:id="@+id/mainPageScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="wrap_content">
 
             <FrameLayout
                 android:id="@+id/mainSearchLayout"
@@ -53,11 +52,11 @@
                 android:background="@drawable/fragment_lines">
 
                 <fragment
+                    android:id="@+id/mainGoogleMap"
+                    android:name="com.google.android.gms.maps.SupportMapFragment"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:id="@+id/mainGoogleMap"
-                    tools:context=".MainPage"
-                    android:name="com.google.android.gms.maps.SupportMapFragment" />
+                    tools:context=".MainPage" />
 
 
                 <ImageButton
@@ -167,7 +166,7 @@
             </FrameLayout>
 
         </RelativeLayout>
-    </ScrollView>
+    </RelativeLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/mainFloatingBtn"
@@ -182,43 +181,38 @@
         android:baselineAlignBottom="true"
         android:clickable="true"
         app:backgroundTint="#EFEBDA"
+        app:borderWidth="1dp"
         app:srcCompat="@drawable/add_icon" />
 
-    <Button
+    <ImageButton
+        android:id="@+id/pop2FloatingBtn"
+        android:layout_width="80dp"
+        android:layout_height="60dp"
+        android:layout_alignParentRight="false"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="100dp"
+        android:layout_toLeftOf="@id/popFloatingBtn"
+        android:adjustViewBounds="false"
+        android:background="@drawable/brownlinebox"
+        android:baselineAlignBottom="false"
+        android:clickable="true"
+        android:src="@drawable/storyicon"
+        android:visibility="visible" />
+
+    <ImageButton
         android:id="@+id/popFloatingBtn"
-        android:layout_width="60dp"
-        android:layout_height="50dp"
+        android:layout_width="80dp"
+        android:layout_height="60dp"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
         android:layout_marginRight="20dp"
         android:layout_marginBottom="100dp"
         android:adjustViewBounds="false"
-        android:background="@drawable/ripple_custom"
-        android:baselineAlignBottom="true"
+        android:background="@drawable/brownlinebox"
+        android:baselineAlignBottom="false"
         android:clickable="true"
-        android:text="길     작성"
-        android:textSize="8sp"
-        android:visibility="invisible"
-        app:backgroundTint="#EFEBDA"
-        app:borderWidth="0dp" />
-
-    <Button
-        android:id="@+id/pop2FloatingBtn"
-        android:layout_width="60dp"
-        android:layout_height="50dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginRight="85dp"
-        android:layout_marginBottom="100dp"
-        android:adjustViewBounds="false"
-        android:background="@drawable/ripple_custom"
-        android:baselineAlignBottom="true"
-        android:clickable="true"
-        android:text="이야기 작성"
-        android:textColorLink="#FFFFFF"
-        android:textSize="8sp"
-        android:visibility="invisible"
-        app:backgroundTint="#EFEBDA"
-        app:borderWidth="0dp" />
+        android:src="@drawable/roadicon_small"
+        android:visibility="visible" />
 
 </RelativeLayout>

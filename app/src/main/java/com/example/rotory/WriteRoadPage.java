@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
@@ -89,6 +90,8 @@ public class WriteRoadPage extends AppCompatActivity implements OnMapReadyCallba
     TextView writeRoadHour;
     TextView writeRoadMin;
 
+    ImageButton backBtn;
+
     Map<String, Object> roadContents = new HashMap<>();
     ArrayList<String> tagItems;
 
@@ -135,7 +138,15 @@ public class WriteRoadPage extends AppCompatActivity implements OnMapReadyCallba
         intent.getStringArrayListExtra("dtrName");
         intent.getStringArrayListExtra("dtrLatLng");*/
 
-
+        backBtn = findViewById(R.id.backImageButton);
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent mainIntent = new Intent(getApplicationContext(),MainActivity.class);
+                mainIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(mainIntent);
+            }
+        });
 
 
         fragment = new WriteMapPage();

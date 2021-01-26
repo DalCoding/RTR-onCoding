@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -31,6 +32,7 @@ import com.example.rotory.Interface.LoadMapDtrListener;
 import com.example.rotory.Search.SearchContents;
 import com.example.rotory.VO.Contents;
 import com.example.rotory.VO.NearPin;
+import com.example.rotory.account.LogInActivity;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -68,12 +70,17 @@ import android.view.animation.AnimationUtils;
 
 import retrofit2.http.HEAD;
 
+import static android.view.View.VISIBLE;
+
 
 public class MainPage extends Fragment implements LoadMapDtrListener
         //implements MapView.MapViewEventListener
 {
     final static String TAG = "MainPage";
 
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    FirebaseUser user;
 
     FloatingActionButton mainFloatingBtn;
 
@@ -108,15 +115,11 @@ public class MainPage extends Fragment implements LoadMapDtrListener
 
     private Context context;
     private Animation fab_open, fab_close;
-    private boolean isFabOpen = false;
+    private boolean isFabOpen = true;
 
-    Button popFloatingBtn;
-    Button pop2FloatingBtn;
+    ImageButton popFloatingBtn;
+    ImageButton pop2FloatingBtn;
 
-
-    private FirestoreRecyclerAdapter adapter;
-    FirebaseAuth mAuth = FirebaseAuth.getInstance();
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
     //MapView mapView;
    // ViewGroup rootView;
 
@@ -149,6 +152,8 @@ public class MainPage extends Fragment implements LoadMapDtrListener
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+
+        user = mAuth.getCurrentUser();
 
         if (context instanceof Activity)
             context = (Activity)context;
@@ -196,38 +201,38 @@ public class MainPage extends Fragment implements LoadMapDtrListener
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
                 .findFragmentById(R.id.mainGoogleMap);
         mapFragment.getMapAsync(new OnMapReadyCallback() {
-                                    @Override
-                                    public void onMapReady(GoogleMap googleMap) {
-                                        Log.d("Map", "지도준비됨.");
-                                        map = googleMap;
-                                        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                                            // TODO: Consider calling
-                                            //    ActivityCompat#requestPermissions
-                                            // here to request the missing permissions, and then overriding
-                                            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                                            //                                          int[] grantResults)
-                                            // to handle the case where the user grants the permission. See the documentation
-                                            // for ActivityCompat#requestPermissions for more details.
-                                            return;
-                                        }
-                                        //  map.setMyLocationEnabled(true);
-                                        LatLng SeoulPoint = new LatLng(37.55626036672879, 126.97217466067063);
-                                        map.moveCamera(CameraUpdateFactory.newLatLngZoom(SeoulPoint, 13));
-                                        map.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
+            @Override
+            public void onMapReady(GoogleMap googleMap) {
+                Log.d("Map", "지도준비됨.");
+                map = googleMap;
+                if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    // TODO: Consider calling
+                    //    ActivityCompat#requestPermissions
+                    // here to request the missing permissions, and then overriding
+                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                    //                                          int[] grantResults)
+                    // to handle the case where the user grants the permission. See the documentation
+                    // for ActivityCompat#requestPermissions for more details.
+                    return;
+                }
+                //  map.setMyLocationEnabled(true);
+                LatLng SeoulPoint = new LatLng(37.55626036672879, 126.97217466067063);
+                map.moveCamera(CameraUpdateFactory.newLatLngZoom(SeoulPoint, 13));
+                map.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
 
-                                            @Override
-                                            public void onCameraIdle() {
-                                                LatLng center = map.getCameraPosition().target;   // 중앙점 https://stackoverflow.com/questions/13904505/how-to-get-center-of-map-for-v2-android-maps
-                                                loadDtr(center);
-                                                int zoomLevel = (int) map.getCameraPosition().zoom;
-                                                if (zoomLevel >= 18) {
-                                                    loadDtrLine(center);
-                                                } else {
-                                                    loadDtr(center);
-                                                }
+                    @Override
+                    public void onCameraIdle() {
+                        LatLng center = map.getCameraPosition().target;   // 중앙점 https://stackoverflow.com/questions/13904505/how-to-get-center-of-map-for-v2-android-maps
+                        loadDtr(center);
+                        int zoomLevel = (int) map.getCameraPosition().zoom;
+                        if (zoomLevel >= 18) {
+                            loadDtrLine(center);
+                        } else {
+                            loadDtr(center);
+                        }
 
-                                            }
-                                        });
+                    }
+                });
 
           /*      map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                     @Override
@@ -254,12 +259,12 @@ public class MainPage extends Fragment implements LoadMapDtrListener
         }); */
                                     }
                                 });
+        LocationManager manager = (LocationManager)
+                getContext().getSystemService(Context.LOCATION_SERVICE);// LocationManager 객체 참조하기
+        // 이전에 확인햿던 위치 정보 가져오기
+        String locationProvider = LocationManager.NETWORK_PROVIDER;
+        //   Location location = manager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
-                                        LocationManager manager = (LocationManager)
-                                                getContext().getSystemService(Context.LOCATION_SERVICE);// LocationManager 객체 참조하기
-                                        // 이전에 확인햿던 위치 정보 가져오기
-                                        String locationProvider = LocationManager.NETWORK_PROVIDER;
-                                        //   Location location = manager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
      /*   if (location != null) {
             double latitude = location.getLatitude();
@@ -269,14 +274,13 @@ public class MainPage extends Fragment implements LoadMapDtrListener
             //   CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLng(curPoint);
             //   map.moveCamera(cameraUpdate);
         } */
+        BigMapPage.GPSListener gpsListener = new BigMapPage.GPSListener(); // 10초마다위치갱신되게끔
+        long minTime = 1000;
+        float minDistance = 0;
+        //manager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, minTime, minDistance, gpsListener);
+        // manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, minTime, minDistance, gpsListener);
 
-                                        BigMapPage.GPSListener gpsListener = new BigMapPage.GPSListener(); // 10초마다위치갱신되게끔
-                                        long minTime = 1000;
-                                        float minDistance = 0;
-                                        //manager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, minTime, minDistance, gpsListener);
-                                        // manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, minTime, minDistance, gpsListener);
-
-                                        Handler mHandler = new Handler();
+        Handler mHandler = new Handler();
                                       /*  mHandler.postDelayed(new Runnable() {
                                             public void run() {
                                                 // 3초 후에 현재위치를 받아오도록 설정 , 바로 시작 시 에러납니다.
@@ -296,60 +300,82 @@ public class MainPage extends Fragment implements LoadMapDtrListener
                                         }, 2000); // 1000 = 1초*/
 
 
-                                        ImageButton mainMapExtendBtn = rootView.findViewById(R.id.mainMapExtendBtn);
-                                        mainMapExtendBtn.bringToFront();
-                                        mainMapExtendBtn.setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
-                                                //((MainActivity)getActivity()).replaceFragment(BigMapPage.newInstance());
-                                                // mapViewContainer.removeView(mapView);
-                                                Intent intent = new Intent(getActivity(), BigMapPage.class);
-                                                startActivity(intent);
+        ImageButton mainMapExtendBtn = rootView.findViewById(R.id.mainMapExtendBtn);
+        mainMapExtendBtn.bringToFront();
+        mainMapExtendBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //((MainActivity)getActivity()).replaceFragment(BigMapPage.newInstance());
+                // mapViewContainer.removeView(mapView);
+                Intent intent = new Intent(getActivity(), BigMapPage.class);
+                startActivity(intent);
 
-                                                // getActivity().finish();
-                                            }
-                                        });
+                // getActivity().finish();
+            }
+        });
 
+        fab_open = AnimationUtils.loadAnimation(getContext(),R.anim.fab_open);
+        fab_close = AnimationUtils.loadAnimation(getContext(), R.anim.fab_close);
 
-                                        // 플로팅버튼은 https://re-build.tistory.com/31 참고하여 fragment 형식에 맞춰 코드 작성
-                                        // 실행시 Activity Null point Exception 문제가 발생
-
-        /*Context = new context(getActivity());
-
-        fab_open = AnimationUtils.loadAnimation(Context, R.anim.fab_open);
-        fab_close = AnimationUtils.loadAnimation(Context, R.anim.fab_open);*/
-
-
-
-     /*  mainFloatingBtn = rootView.findViewById(R.id.mainFloatingBtn);
-        popFloatingBtn = rootView.findViewById(R.id.popFloatingBtn);
         pop2FloatingBtn = rootView.findViewById(R.id.pop2FloatingBtn);
-
-        mainFloatingBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                toggleFab();
-            }
-        });
-        popFloatingBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                toggleFab();
-                showToast("길 작성 페이지로 이동합니다.");
-
-            }
-        });
-
         pop2FloatingBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                toggleFab();
-                showToast("이야기 작성 페이지로 이동합니다.");
-            }
+            public void onClick(View v) {
+                if (user != null) {
+                    Intent writeStoryIntent = new Intent(getActivity(),Write_Story.class);
+                    //writeStoryIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    startActivity(writeStoryIntent);
+                }else{
+                    goLogInPage();
 
+                }
+            }
+        });
+        popFloatingBtn = rootView.findViewById(R.id.popFloatingBtn);
+        popFloatingBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (user != null) {
+                    Intent writeRoadIntent = new Intent(getActivity(),WriteRoadPage.class);
+                    //writeRoadIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    startActivity(writeRoadIntent);
+                }else{
+                    goLogInPage();
+
+                }
+
+            }
+        });
+
+        popFloatingBtn.startAnimation(fab_close);
+        pop2FloatingBtn.startAnimation(fab_close);
+
+        mainFloatingBtn = rootView.findViewById(R.id.mainFloatingBtn);
+        mainFloatingBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isFabOpen) {
+                    popFloatingBtn.startAnimation(fab_open);
+                    pop2FloatingBtn.setClickable(true);
+                    pop2FloatingBtn.startAnimation(fab_open);
+                    pop2FloatingBtn.setClickable(true);
+                    isFabOpen = false;
+                }else {
+                    popFloatingBtn.startAnimation(fab_close);
+                    //pop2FloatingBtn.setClickable(false);
+                    pop2FloatingBtn.startAnimation(fab_close);
+                    //pop2FloatingBtn.setClickable(false);
+                    isFabOpen = true;
+                }
+
+            }
         });
 
 
+        // 플로팅버튼은 https://re-build.tistory.com/31 참고하여 fragment 형식에 맞춰 코드 작성
+        // 실행시 Activity Null point Exception 문제가 발생
+
+ /*  m
         Button button = rootView.findViewById(R.id.mainFloatingBtn);
         button.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -372,32 +398,46 @@ public class MainPage extends Fragment implements LoadMapDtrListener
             }
 
 
-                                    private void showToast(String s) {
-                                        Toast.makeText(getContext(), s, Toast.LENGTH_SHORT).show();
-                                    }
 
 
-                                    FirebaseUser user = mAuth.getCurrentUser();
 
-                                    private void toggleFab() {
-                                        if (isFabOpen) {
-                                            //mainFloatingBtn.setImageResource(R.drawable.ic_add);
-                                            popFloatingBtn.startAnimation(fab_close);
-                                            pop2FloatingBtn.startAnimation(fab_close);
-                                            popFloatingBtn.setClickable(false);
-                                            pop2FloatingBtn.setClickable(false);
-                                            isFabOpen = false;
 
-                                        } else {
-                                            //mainFloatingBtn.setImageResource(R.drawable.ic_close);
-                                            popFloatingBtn.startAnimation(fab_open);
-                                            pop2FloatingBtn.startAnimation(fab_open);
-                                            popFloatingBtn.setClickable(true);
-                                            pop2FloatingBtn.setClickable(true);
-                                            isFabOpen = true;
-                                        }
-                                    } */
 
+                                     */
+
+    }
+
+    private void goLogInPage() {
+        Intent LoginIntent = new Intent(getActivity(), LogInActivity.class);
+        LoginIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(LoginIntent);
+
+    }
+
+    private void toggleFab() {
+        if (isFabOpen) {
+            //mainFloatingBtn.setImageResource(R.drawable.ic_add);
+            pop2FloatingBtn.setVisibility(View.INVISIBLE);
+            popFloatingBtn.setVisibility(View.INVISIBLE);
+            popFloatingBtn.startAnimation(fab_close);
+            pop2FloatingBtn.startAnimation(fab_close);
+            popFloatingBtn.setClickable(false);
+            pop2FloatingBtn.setClickable(false);
+            isFabOpen = false;
+
+        } else {
+            //mainFloatingBtn.setImageResource(R.drawable.ic_close);
+            pop2FloatingBtn.setVisibility(VISIBLE);
+            popFloatingBtn.setVisibility(VISIBLE);
+            popFloatingBtn.startAnimation(fab_open);
+            pop2FloatingBtn.startAnimation(fab_open);
+            popFloatingBtn.setClickable(true);
+            pop2FloatingBtn.setClickable(true);
+            isFabOpen = true;
+        }
+    }
+    private void showToast(String s) {
+        Toast.makeText(getContext(), s, Toast.LENGTH_SHORT).show();
     }
 
     private void showCurrentLocation(Double latitude, Double longitude) {

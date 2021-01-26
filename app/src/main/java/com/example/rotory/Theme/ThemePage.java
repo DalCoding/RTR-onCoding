@@ -78,13 +78,20 @@ public class ThemePage extends AppCompatActivity {
 
     Information information;
 
-   ThemeItemAdapter adapter;
+    ThemeItemAdapter adapter;
     ArrayList<Tags> tagsArrayList = new ArrayList<>();
 
+    ProgressDialogs progressDialogs;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.theme_page);
+
+        progressDialogs = new ProgressDialogs(this);
+        progressDialogs.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        progressDialogs.show();
+        startTagsLoading(2000);
+
 
         user = mAuth.getCurrentUser();
 
@@ -96,6 +103,8 @@ public class ThemePage extends AppCompatActivity {
         tagSelectBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                progressDialogs.show();
+                startTagsLoading(300);
                 Intent tagSelectIntent = new Intent(getApplicationContext(), ThemePickPage.class);
                 startActivity(tagSelectIntent);
             }
@@ -128,27 +137,37 @@ public class ThemePage extends AppCompatActivity {
                                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                     @Override
                                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                            if (task.isSuccessful()) {
-                                                Map<String, Object> tagList = task.getResult().getData();
-                                                if (tagList.size() > 0) {
-                                                    Set<String> tagKeySet = tagList.keySet();
-                                                    ArrayList<String> tagKeyArrayList = new ArrayList<>(tagKeySet);
-                                                    for (int i = 0; i < tagList.size(); i++) {
-                                                        tagsArrayList.add(new Tags(tagKeyArrayList.get(i)));
-                                                    }
-                                                    adapter = new ThemeItemAdapter(tagsArrayList, ThemePage.this, display);
-                                                    themeRView.setAdapter(adapter);
-                                                } else{
-                                                    setRandomTheme();
+                                        if (task.isSuccessful()) {
+                                            Map<String, Object> tagList = task.getResult().getData();
+                                            if (tagList.size() > 0) {
+                                                Set<String> tagKeySet = tagList.keySet();
+                                                ArrayList<String> tagKeyArrayList = new ArrayList<>(tagKeySet);
+                                                for (int i = 0; i < tagList.size(); i++) {
+                                                    tagsArrayList.add(new Tags(tagKeyArrayList.get(i)));
                                                 }
+                                                adapter = new ThemeItemAdapter(tagsArrayList, ThemePage.this, display);
+                                                themeRView.setAdapter(adapter);
+                                            } else{
+                                                setRandomTheme();
                                             }
-                                            }
+                                        }
+                                    }
                                 });
                     }
                 }
             }
         });
 
+    }
+
+    private void startTagsLoading(int millis) {
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                progressDialogs.dismiss();
+            }
+        }, millis);
     }
 
     private void setRandomTheme() {
@@ -170,10 +189,10 @@ public class ThemePage extends AppCompatActivity {
                     case R.id.theme:
                         return true;
                     case R.id.user:
-                            Intent myPageIntent = new Intent(ThemePage.this, MyPage.class);
-                            myPageIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            startActivity(myPageIntent);
-                            setTabUnderBar(2);
+                        Intent myPageIntent = new Intent(ThemePage.this, MyPage.class);
+                        myPageIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(myPageIntent);
+                        setTabUnderBar(2);
                         return true;
                 }
                 return false;
@@ -203,28 +222,22 @@ public class ThemePage extends AppCompatActivity {
 
     /*
         Query query = db.collection("contents").orderBy("theme", Query.Direction.ASCENDING);
-
         FirestoreRecyclerOptions<SearchContents> options = new FirestoreRecyclerOptions.Builder<SearchContents>()
                 .setQuery(query, SearchContents.class)
                 .build();
-
         themeRView = findViewById(R.id.themeRView);
         themeRView.setLayoutManager(new LinearLayoutManager(this));
-
         adapter = new FirestoreRecyclerAdapter<SearchContents, themeViewHolder>(options);
-
         @Override
         public void onDataChanged () {
             super.onDataChanged();
             Log.d(TAG, "어댑터 작동");
         }
-
         @Override
         protected void onBindViewHolder (@NonNull themeViewHolder holder,int position,
         @NonNull SearchContents model){
             holder.setContentsItems(model);
         }
-
         @NonNull
         @Override
         public themeViewHolder onCreateViewHolder (@NonNull ViewGroup parent,int viewType){
@@ -232,9 +245,7 @@ public class ThemePage extends AppCompatActivity {
             return new themeViewHolder(view);
         }
     }
-
     ;
-
     themeRView.setAdapter(adapter);
 }
 @Override
@@ -242,7 +253,6 @@ protected void onStart() {
     super.onStart();
     adapter.startListening();
 }
-
 @Override
 protected void onStop() {
     super.onStop();
@@ -250,23 +260,12 @@ protected void onStop() {
         adapter.stopListening();
     }
 }
-
 public class themViewHolder extends RecyclerView.ViewHolder {
     private View view;
-
     public favoriteViewHolder(@NonNull View itemView) {
         super(itemView);
         view = itemView;
     }
-
     public void set
-
-
-
-
         return rootView;
 */
-
-
-
-
