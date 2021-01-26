@@ -27,7 +27,7 @@ public class WriteRoadPage extends AppCompatActivity {
 
     MapView mapView;
     ViewGroup mapContainer;
-    
+
     EditText writeRoadTitleEditText;
     EditText writeRoadReviewEditText;
     EditText writeRoadTagEditText;
