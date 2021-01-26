@@ -6,6 +6,8 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
@@ -33,6 +35,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 
 import com.google.firebase.auth.FirebaseUser;
@@ -76,6 +79,15 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
     AppBarLayout appBarLayout;
     BottomNavigationView bottomNavigation;
     Boolean isSignIn = false;
+
+    FloatingActionButton mainFloatingBtn;
+
+    private Animation fab_open, fab_close;
+    private boolean isFabOpen = true;
+
+    ImageButton popFloatingBtn;
+    ImageButton pop2FloatingBtn;
+
 
 
     @Override
@@ -155,7 +167,72 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
         bottomNavigation = findViewById(R.id.bottom_appBar);
         setBottomNavigation(bottomNavigation, isSignIn);
 
+
+        fab_open = AnimationUtils.loadAnimation(this, R.anim.fab_open);
+        fab_close = AnimationUtils.loadAnimation(this, R.anim.fab_close);
+
+        pop2FloatingBtn = findViewById(R.id.pop2FloatingBtn2);
+        pop2FloatingBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (user != null) {
+                    Intent writeStoryIntent = new Intent(getApplicationContext(), Write_Story.class);
+                    //writeStoryIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    startActivity(writeStoryIntent);
+                } else {
+                    goLogInPage();
+
+                }
+            }
+        });
+        popFloatingBtn = findViewById(R.id.popFloatingBtn2);
+        popFloatingBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (user != null) {
+                    Intent writeRoadIntent = new Intent(getApplicationContext(), WriteRoadPage.class);
+                    //writeRoadIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    startActivity(writeRoadIntent);
+                } else {
+                    goLogInPage();
+
+                }
+
+            }
+        });
+
+        popFloatingBtn.startAnimation(fab_close);
+        pop2FloatingBtn.startAnimation(fab_close);
+
+        mainFloatingBtn =findViewById(R.id.mainFloatingBtn2);
+        mainFloatingBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isFabOpen) {
+                    popFloatingBtn.startAnimation(fab_open);
+                    pop2FloatingBtn.setClickable(true);
+                    pop2FloatingBtn.startAnimation(fab_open);
+                    pop2FloatingBtn.setClickable(true);
+                    isFabOpen = false;
+                } else {
+                    popFloatingBtn.startAnimation(fab_close);
+                    //pop2FloatingBtn.setClickable(false);
+                    pop2FloatingBtn.startAnimation(fab_close);
+                    //pop2FloatingBtn.setClickable(false);
+                    isFabOpen = true;
+                }
+
+            }
+        });
+
+
         //AutoPermissions.Companion.loadAllPermissions(this, 101);
+
+    }
+    private void goLogInPage() {
+        Intent LoginIntent = new Intent(this, LogInActivity.class);
+        LoginIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(LoginIntent);
 
     }
 

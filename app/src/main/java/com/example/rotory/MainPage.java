@@ -86,7 +86,7 @@ public class MainPage extends Fragment implements LoadMapDtrListener,AutoPermiss
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseUser user;
 
-    FloatingActionButton mainFloatingBtn;
+
 
     GoogleMap map;
     LocationManager manager;
@@ -117,7 +117,8 @@ public class MainPage extends Fragment implements LoadMapDtrListener,AutoPermiss
     FrameLayout mainMapLayout;
     Button mainMapExtendBtn;
 
-    private Context context;
+    FloatingActionButton mainFloatingBtn;
+
     private Animation fab_open, fab_close;
     private boolean isFabOpen = true;
 
