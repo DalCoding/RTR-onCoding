@@ -14,7 +14,7 @@
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.CAMERA,android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
 
     <application
         android:usesCleartextTraffic="true"
@@ -72,7 +72,7 @@
         <activity android:name=".BigMapPage"/>
         <activity android:name=".Theme.ThemePickPage"/>
         <activity android:name=".LoadRoadItem"/>
-
+        <activity android:name=".Write_Story"/>
         <activity android:name=".Theme.ThemePage"/>
         <activity android:name=".WriteRoadPage"/>
         <activity android:name=".WriteContents.TagSelectDialog" android:theme="@android:style/Theme.Dialog"/>

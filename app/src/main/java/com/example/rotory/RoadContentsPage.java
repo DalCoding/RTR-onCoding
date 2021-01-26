@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,6 +21,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.PluralsRes;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -52,6 +54,8 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+
+import org.w3c.dom.Document;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -157,66 +161,6 @@ public class RoadContentsPage extends Fragment implements OnMapReadyCallback, Go
                 .setQuery(query, Contents.class)
                 .build();
 
-     /*   adapter = new FirestoreRecyclerAdapter<SearchContents, roadcontentsViewHolder>(options) {
-
-            @Override
-            public void onDataChanged() {
-                super.onDataChanged();
-                Log.d(TAG, "어댑터 작동");
-            }
-
-            @Override
-            protected void onBindViewHolder(@NonNull roadcontentsViewHolder holder, int position, @NonNull SearchContents model) {
-                holder.setContentsItems(model);
-            }
-
-*//*            @NonNull
-            @Override
-            public roadcontentsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.road_contents_page);
-                return ;
-            }
-         };*//*
-
-        rCommRView.setAdapter(adapter);
-
-        }
-
-        @Override
-        protected void onStart(){
-            super.onStart();
-            adapter.startListening();
-        }
-
-        @Override
-        protected void onStop() {
-            super.onStop();
-            if(adapter != null) {
-                adapter.stopListening();
-            }
-        }
-
-
-        //정보추가recyclerView
-        public class roadcontentsViewHolder extends RecyclerView.ViewHolder{
-            private View view;
-
-            public roadcontentsViewHolder(@NonNull View itemView) {
-                super(itemView);
-                view = itemView;
-            }
-
-            public void setContentsItems(SearchContents comment) {
-                commLevelImg
-                commUsernameText
-                commConText
-                commTimeText
-                commReportText
-
-
-            }
-        }
-*/
 
         if (user != null) {
             initUI(rootView);
@@ -428,9 +372,10 @@ public class RoadContentsPage extends Fragment implements OnMapReadyCallback, Go
                             commReportText.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
+
                                     openReportDialog(builder);
                                 }
-                                //ReportDialog.java에서 따로 작업
+
                             });
                         }
                     } else {
@@ -451,14 +396,9 @@ public class RoadContentsPage extends Fragment implements OnMapReadyCallback, Go
         }
     }
 
-
-    /*
-        private void openReportDialog(QueryDocumentSnapshot pDocument, String pDocumentId) {
-            reportSpinner = getView().findViewById(R.id.reportSpinner);
-    */
-
     private void openReportDialog(AlertDialog.Builder dialog) {
         LayoutInflater inflater = getLayoutInflater();
+
 
         View viewDialog = inflater.inflate(R.layout.report, null);
         dialog.setView(viewDialog);
@@ -473,74 +413,71 @@ public class RoadContentsPage extends Fragment implements OnMapReadyCallback, Go
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
                 reportTextView.setText(reportSpinner.getItemAtPosition(position).toString());
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
                 reportTextView.setText("");
             }
         });
-
         dialog.setPositiveButton("제출", new DialogInterface.OnClickListener()
-            //showToast("댓글을 신고하셨습니다.");
-        { //제출 버튼..
+                //showToast("댓글을 신고하셨습니다.");
+        {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {//제출 버튼..
+                dialog.dismiss();
 
-        @Override
-        public void onClick(DialogInterface dialog, int which){
-            //roadContents.put("dtrRating", Float.valueOf(ratingResult)); 이것처럼 DB에 신고 내역 저장
-            dialog.dismiss();
-        }
+                FirebaseUser user = mAuth.getCurrentUser();
+                String userEmail = user.getEmail();
 
+                reportTextView = viewDialog.findViewById(R.id.reportTextView);
+                String reportText = reportTextView.getText().toString();  //reportTextView에서 선택된 신고 내역 받기
 
-    });
+                Date currentDate = new Date();
+                String reported_date = appConstant.dateFormat.format(currentDate);
 
+                Map<String, Object> ReportData = new HashMap<>();
+                ReportData.put("userId", userEmail); // 신고자 아이디
+                ReportData.put("reportContents", reportText);  // 신고 내용
+                ReportData.put("reportedId", ""); // 해당 코멘트 아이디
+                ReportData.put("reportedDate", reported_date); // 신고 날짜
 
-    AlertDialog alertDialog = dialog.create();
-    alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
-        @Override
-        public void onShow(DialogInterface dialog) {
-            alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK);
-        }
-    });
+                db.collection("report").add(ReportData)
+                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                            @Override
+                            public void onSuccess(DocumentReference documentreference) {
+                                showToast("댓글을 신고하셨습니다.");
 
-    alertDialog.show();
-
-}
-
-        //ArrayAdapter ReportAdapter = ArrayAdapter.createFromResource(getContext(), R.array.reportList, android.R.layout.simple_spinner_dropdown_item);
-
-
-/*        db.collection("road")
-                .whereEqualTo("contentsType", 0)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d(TAG, "initUI : 스토리에서 받아오기 성공" + document.getId());
-                                if (user != null) {
-                                    getUserActivityIcon(document, "myLike", rcontentsHeartImg, R.drawable.heartfilled, R.drawable.heart);
-                                    getUserActivityIcon(document, "myStar", rcontentsStarImg, R.drawable.starfilled, R.drawable.star);
-                                    getUserActivityIcon(document, "myScrap", rcontentsScrapImg, R.drawable.scrabtagfilled, R.drawable.scrabtag);
-                                }
-                                loadContents(document, user);
                             }
-                        } else {
-                            Log.d(TAG, "Error getting documents : ", task.getException());
-                        }
-                    }
-                });
-    }*/
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.w(TAG, "Error Report document", e);
+                            }
+                        });
+            }
+        });
+        AlertDialog alertDialog = dialog.create();
+        alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialog) {
+                alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK);
+            }
+
+        });
+
+
+        WindowManager.LayoutParams params=alertDialog.getWindow().getAttributes();
+        params.width=220;
+        params.height=220;
+        alertDialog.getWindow().setAttributes(params);
+        alertDialog.show();
+    }
+
 
     private void showToast(String s) {
         Toast.makeText(getContext(), s, Toast.LENGTH_SHORT).show();
     }
-
-/*
-    private void deleteComment(String documentId) {
-        comment.remove(CommentViewHolder.getAdapterPosition());                // 해당 항목 삭제
-        commentAdapter.notifyItemRemoved(CommentViewHolder.getAdapterPosition());    // Adapter에 알려주기.
-    }
-*/
 
     private void loadContents(String contentsID, FirebaseUser user) {
         // 해당글의 아이디 -> 해당 글의 정보 받아오려면 아이디로 다시 검색 필요!
@@ -886,40 +823,6 @@ public class RoadContentsPage extends Fragment implements OnMapReadyCallback, Go
     }
 }
 
-/*
 
-            DocumentReference docRef = db.collection("contents").document(contentsID);
-            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    if (task.isSuccessful()) {
-                        DocumentSnapshot document = task.getResult();
-                        if (document.exists()) {
-                            Log.d(TAG, "자료 받아오기 성공");
-                            Map<String, Object> ContentsList = new HashMap<>();
-                            ContentsList = document.getData();
-                            setContents(ContentsList);
-                        } else {
-                            Log.d(TAG, "No such document");
-                        }
-                    } else {
-                        Log.d(TAG, "get failed with ", task.getException());
-                    }
-                }
-
-                private void setContents(Map<String, Object> contentsList) {
-                }
-            });
-        }
-
-        private void setContents(Map<String, Object> contentsList) {
-            rcontentsTitleText.setText(contentsList.get("roadTitle").toString());
-            rcontentsTakeTimeText.setText(contentsList.get("roadTaketime").toString());
-            rcontentsTakewhoText.setText(contentsList.get("roadTakewho").toString());
-
-        }
-
-    }
-*/
 
 //https://machine-woong.tistory.com/53 스피너

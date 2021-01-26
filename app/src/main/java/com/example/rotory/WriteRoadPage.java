@@ -2,9 +2,12 @@ package com.example.rotory;
 
 import android.app.AlertDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -27,8 +30,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -38,36 +39,43 @@ import com.example.rotory.Theme.Tags;
 import com.example.rotory.VO.AppConstant;
 import com.example.rotory.WriteContents.TagSelectDialog;
 import com.example.rotory.WriteContents.WriteRoadTagAdapter;
+import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.net.FetchPlaceRequest;
+import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 
-import org.w3c.dom.Document;
-
-import java.lang.reflect.Array;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class WriteRoadPage extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMapClickListener {
-    ArrayList<MapItem> items = new ArrayList<>();
-
     private static final String TAG = "WriteRoadPage";
     private static final int REQUEST_CODE = 4000;
 
@@ -90,7 +98,6 @@ public class WriteRoadPage extends AppCompatActivity implements OnMapReadyCallba
     String ratingResult;
     float ratingNum;
     String companionText;
-    String DtrName;
 
     Button chooseTagBtn;
     Button tagInputBtn;
@@ -118,11 +125,9 @@ public class WriteRoadPage extends AppCompatActivity implements OnMapReadyCallba
     WriteMapPage fragment;
 
     ArrayList<String> dtrName = new ArrayList<>();
-    ArrayList<String> dtrLatLng = new ArrayList<>();
+    ArrayList<LatLng> dtrLatLng = new ArrayList<>();
     ArrayList<LatLng> PolyPoints = new ArrayList<>();
-
-    MarkerOptions markerOptions;
-    LatLng latLng;
+    ArrayList<String> dtrAddress = new ArrayList<>();
 
 
     @Override
@@ -139,6 +144,7 @@ public class WriteRoadPage extends AppCompatActivity implements OnMapReadyCallba
 
         fragment = new WriteMapPage();
 
+
         ImageButton backBtn = findViewById(R.id.backImageButton);
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -147,11 +153,21 @@ public class WriteRoadPage extends AppCompatActivity implements OnMapReadyCallba
                     Toast.makeText(getBaseContext(), "경로가 저장 되었습니다.", Toast.LENGTH_SHORT).show();
                     getSupportFragmentManager().beginTransaction().remove(fragment).commit();
                     isMap = false;
+                    dtrName = fragment.getDtrName();
+                    Log.d(TAG, dtrName.toString());
+                    dtrLatLng = fragment.getDtrLatLng();
+                    Log.d(TAG, dtrLatLng.toString());
+                    dtrAddress = fragment.getDtrAddress();
+                    Log.d(TAG, dtrAddress.toString());
+                    Log.d(TAG, "마커 들고옴 : " + dtrLatLng.toString());
+                    setLoadMarkers();
+
                 } else {
                     // 작성 페이지에서 뒤로가기 구현
                 }
             }
         });
+
 
         writeRoadTitle = findViewById(R.id.writeRoadTitleEditText);
         writeRoadReview = findViewById(R.id.writeRoadReviewEditText);
@@ -275,14 +291,15 @@ public class WriteRoadPage extends AppCompatActivity implements OnMapReadyCallba
         checkmarkBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              if (isValidate()){
-                  setUserInfo();
+                if (isValidate()){
+                    setUserInfo();
 
-              }else {
-                  Toast.makeText(getApplicationContext(),"필수 사항을 입력해 주세요", Toast.LENGTH_SHORT).show();
-              }
+                }else {
+                    Toast.makeText(getApplicationContext(),"필수 사항을 입력해 주세요", Toast.LENGTH_SHORT).show();
+                }
             }
         });
+
     }
 
 
@@ -391,22 +408,23 @@ public class WriteRoadPage extends AppCompatActivity implements OnMapReadyCallba
     private void setSavingData(){
         String writtenDate = appConstant.dateFormat.format(new Date());
 
-            roadContents.put("contentsType", 0);
-            roadContents.put("title", writeRoadTitle.getText().toString());
-            for (int i = 0; i < tagItems.size(); i++) {
-                String tagKey = "tag" + (i + 1);
-                roadContents.put(tagKey, tagItems.get(i));
-            }
-            roadContents.put("hour", writeRoadHour.getText().toString());
-            roadContents.put("min", writeRoadMin.getText().toString());
-            roadContents.put("isPartner", companySpinner.getSelectedItem().toString());
-            roadContents.put("dtrRating", ratingNum);
-            roadContents.put("ratingComment", writeRoadReview.getText().toString());
-            roadContents.put("isPublic", isPublic);
-            roadContents.put("writeDate", writtenDate);
-            roadContents.put("dtrName", dtrName);
-            roadContents.put("dtrLatLng", dtrLatLng);
-            Log.d(TAG, "입력될 내용 확인" + roadContents);
+        roadContents.put("contentsType", 0);
+        roadContents.put("title", writeRoadTitle.getText().toString());
+        for (int i = 0; i < tagItems.size(); i++) {
+            String tagKey = "tag" + (i + 1);
+            roadContents.put(tagKey, tagItems.get(i));
+        }
+        roadContents.put("hour", writeRoadHour.getText().toString());
+        roadContents.put("min", writeRoadMin.getText().toString());
+        roadContents.put("isPartner", companySpinner.getSelectedItem().toString());
+        roadContents.put("dtrRating", ratingNum);
+        roadContents.put("ratingComment", writeRoadReview.getText().toString());
+        roadContents.put("isPublic", isPublic);
+        roadContents.put("writeDate", writtenDate);
+        roadContents.put("dtrName", dtrName);
+        roadContents.put("dtrLatLng", dtrLatLng);
+        roadContents.put("dtrAddress", dtrAddress);
+        Log.d(TAG, "입력될 내용 확인" + roadContents);
 
     }
     private void saveContents() {
@@ -426,23 +444,23 @@ public class WriteRoadPage extends AppCompatActivity implements OnMapReadyCallba
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-            if (task.isSuccessful()){
-                for (QueryDocumentSnapshot pDocument : task.getResult()){
-                    String userLevel = pDocument.get("userLevel").toString();
-                    String userName = pDocument.get("userName").toString();
-                    Map<String, Object> addUserInfo = new HashMap<>();
-                    roadContents.put("userLevel", userLevel);
-                    roadContents.put("userName", userName);
-                    roadContents.put("uid", userUid);
+                if (task.isSuccessful()){
+                    for (QueryDocumentSnapshot pDocument : task.getResult()){
+                        String userLevel = pDocument.get("userLevel").toString();
+                        String userName = pDocument.get("userName").toString();
+                        Map<String, Object> addUserInfo = new HashMap<>();
+                        roadContents.put("userLevel", userLevel);
+                        roadContents.put("userName", userName);
+                        roadContents.put("uid", userUid);
 
-                    setSavingData();
-                    saveContents();
+                        setSavingData();
+                        saveContents();
 
-                    Log.d(TAG,"저장할 사용자 정보" + roadContents);
+                        Log.d(TAG,"저장할 사용자 정보" + roadContents);
 
 
+                    }
                 }
-            }
             }
         });
 
@@ -467,7 +485,6 @@ public class WriteRoadPage extends AppCompatActivity implements OnMapReadyCallba
         showCurrentLocation(latitude, longitude);
         map.setOnMapClickListener(this);
 
-        // setLoadMarkers();
     }
 
     public void startLocationService() {
@@ -488,9 +505,14 @@ public class WriteRoadPage extends AppCompatActivity implements OnMapReadyCallba
     }
 
     private void showCurrentLocation(Double latitude, Double longitude) {
-        LatLng curPoint = new LatLng(latitude, longitude);
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(curPoint, 15));
+        if (latitude == null) {
+
+        } else {
+            LatLng curPoint = new LatLng(latitude, longitude);
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(curPoint, 15));
+        }
     }
+
 
     @Override
     public void onMapClick(LatLng latLng) {
@@ -516,20 +538,23 @@ public class WriteRoadPage extends AppCompatActivity implements OnMapReadyCallba
     }
 
     public void setLoadMarkers() {
+        Log.d(TAG, "시작함");
+        MarkerOptions smallMapMarker = new MarkerOptions();
 
-        markerOptions.title(DtrName);
-        Double latitude = latLng.latitude;
-        Double longitude = latLng.longitude;
-        LatLng latLng = new LatLng(latitude, longitude);
-        markerOptions.position(latLng);
-        markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.acorn2));
+        for (int i = 0; i < dtrLatLng.size(); i++) {
+            double dtrLat = dtrLatLng.get(i).latitude;
+            double dtrLng = dtrLatLng.get(i).longitude;
 
-        map.addMarker(markerOptions);
+            LatLng dtrLatLng2 = new LatLng(dtrLat, dtrLng);
 
-        /*dtrName.add(DtrName);
-        dtrLatLng.add(latLng.toString());*/
+            Log.d(TAG, "좌표" + dtrLatLng.get(i).toString());
 
-        PolyPoints.add(latLng);
-        drawPoly(map, PolyPoints);
+            smallMapMarker.position(dtrLatLng2).icon(BitmapDescriptorFactory.fromResource(R.drawable.acorn2));
+            map.addMarker(smallMapMarker);
+
+            PolyPoints.add(dtrLatLng2);
+            drawPoly(map, PolyPoints);
+
+        }
     }
 }

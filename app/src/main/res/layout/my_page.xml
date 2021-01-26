@@ -194,6 +194,7 @@
                                             android:id="@+id/myLevelTextView"
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
+                                            android:gravity="right"
                                             android:text="level"
                                             android:textColor="#000000"
                                             android:textSize="12sp" />
@@ -202,6 +203,7 @@
                                             android:id="@+id/myExpTextView"
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
+                                            android:layout_marginTop="2dp"
                                             android:gravity="right"
                                             android:text="(Exp. 10000p)"
                                             android:textColor="#646464"
@@ -377,7 +379,8 @@
                     android:id="@+id/myLevelInfoLayout"
                     android:layout_width="310dp"
                     android:layout_height="190dp"
-                    android:layout_gravity="center"
+                    android:layout_gravity="center_horizontal|top"
+                    android:layout_marginTop="140dp"
                     android:background="@drawable/mylevelbackimg"
                     android:elevation="50dp"
                     android:orientation="vertical"
@@ -436,7 +439,8 @@
                             android:background="@null"
                             android:progress="30"
                             android:progressBackgroundTint="@color/white"
-                            android:progressTint="#F57F17" />
+                            android:progressTint="#F57F17"
+                            android:max = "100"/>
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -552,13 +556,13 @@
                             android:textSize="12sp" />
 
                         <TextView
-                            android:layout_width="28dp"
+                            android:layout_width="30dp"
                             android:layout_height="40dp"
                             android:layout_weight="1"
                             android:gravity="center"
                             android:text="다람쥐의\n신"
                             android:textColor="#000000"
-                            android:textSize="12sp" />
+                            android:textSize="11sp" />
                     </LinearLayout>
 
                 </LinearLayout>
