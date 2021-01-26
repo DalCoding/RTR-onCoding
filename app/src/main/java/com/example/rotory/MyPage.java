@@ -486,7 +486,7 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
                 @Override
                 public void onClick(View v) {
                     if (contentsType == 0) {
-                        Intent intent = new Intent(MyPage.this, RoadContentsPage.class);
+                        Intent intent = new Intent(MyPage.this, LoadRoadItem.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                         intent.putExtra("documentId", cDocumentID);
                         startActivity(intent);

@@ -251,7 +251,7 @@ public class SearchPage extends AppCompatActivity {
     private void goToSearch(String searchText) {
         Intent intent = new Intent(SearchPage.this, SearchResultPage.class);
         intent.putExtra("searchText", searchText);
-        startActivityForResult(intent, Integer.parseInt(REQUEST_CODE));
+        startActivity(intent);
     }
 
 
