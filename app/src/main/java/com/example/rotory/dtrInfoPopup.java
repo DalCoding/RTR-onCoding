@@ -37,14 +37,5 @@ public class dtrInfoPopup extends AppCompatActivity {
 
         // db에서 가져온 후 위도 경도로 변환 필요
 
-        Geocoder geocoder = new Geocoder(this);
-
-        /*try {
-            List<Address> addresses = geocoder.getFromLocation(dtrLatLng.latitude(), dtrLatLng.longitude(), 1);
-            Log.d(TAG, "onComplete:" + addresses.get(0).getAddressLine(0));
-        } catch (IOException e) {
-            e.printStackTrace();
-            Log.i(TAG, e.getMessage());
-        }*/
     }
 }

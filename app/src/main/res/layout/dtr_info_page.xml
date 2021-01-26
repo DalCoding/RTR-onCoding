@@ -18,20 +18,39 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="center"
                 android:orientation="vertical">
 
-                <LinearLayout
+                <TextView
+                    android:id="@+id/dinfoSignText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="5dp"
+                    android:text="도토리커피"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/dinfoAdText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="5dp"
+                    android:text="서울시 도톨구 맛있동 12-12 2층"
+                    android:textSize="14sp" />
+
+                <!--<LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-                    <TextView
+                    &lt;!&ndash;<TextView
                         android:layout_width="55dp"
                         android:layout_height="25dp"
                         android:paddingLeft="5dp"
                         android:text="상호명"
-                        android:textSize="16sp" />
+                        android:textSize="16sp" />&ndash;&gt;
 
                     <TextView
                         android:id="@+id/dinfoSignText"
@@ -46,12 +65,12 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-                    <TextView
+                    &lt;!&ndash;<TextView
                         android:layout_width="55dp"
                         android:layout_height="25dp"
                         android:paddingLeft="5dp"
                         android:text="주소"
-                        android:textSize="16sp" />
+                        android:textSize="16sp" />&ndash;&gt;
 
                     <TextView
                         android:id="@+id/dinfoAdText"
@@ -59,7 +78,7 @@
                         android:layout_height="wrap_content"
                         android:paddingLeft="5dp"
                         android:text="서울시 도톨구 맛있동 12-12 2층" />
-                </LinearLayout>
+                </LinearLayout>-->
             </LinearLayout>
 
         </LinearLayout>
@@ -72,8 +91,8 @@
 
             <Button
                 android:id="@+id/dinfoMoveBtn"
-                android:layout_width="80dp"
-                android:layout_height="50dp"
+                android:layout_width="90dp"
+                android:layout_height="55dp"
                 android:layout_gravity="center"
                 android:background="@drawable/button_drawable"
                 android:gravity="center"

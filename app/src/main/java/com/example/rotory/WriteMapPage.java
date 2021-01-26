@@ -2,10 +2,10 @@ package com.example.rotory;
 
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Color;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -16,15 +16,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
-import com.example.rotory.Interface.OnBackPressedListener;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -33,30 +29,29 @@ import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.pedro.library.AutoPermissions;
 import com.pedro.library.AutoPermissionsListener;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Locale;
 
 
 public class WriteMapPage extends Fragment implements OnMapReadyCallback, GoogleMap.OnMapClickListener, AutoPermissionsListener {
     private static final String TAG = "WriteMapPage";
     private static final String apiKey = "AIzaSyAf5Zp2t2IQyKHlMtWpkaKvsRsOEBDnVIs";
+
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -74,8 +69,9 @@ public class WriteMapPage extends Fragment implements OnMapReadyCallback, Google
     MarkerOptions markerOptions;
 
     ArrayList<String> dtrName = new ArrayList<>();
-    ArrayList<String> dtrLatLng = new ArrayList<>();
+    ArrayList<LatLng> dtrLatLng = new ArrayList<LatLng>();
     ArrayList<LatLng> PolyPoints = new ArrayList<>();
+    ArrayList<String> dtrAddress = new ArrayList<>();
 
 
     public WriteMapPage() {}
@@ -206,6 +202,7 @@ public class WriteMapPage extends Fragment implements OnMapReadyCallback, Google
 
     @Override
     public void onMapClick(LatLng latLng) {
+        markerOptions.visible(false);
         markerOptions = new MarkerOptions();
 
         writeMapAddBtn.setVisibility(View.VISIBLE);
@@ -231,6 +228,7 @@ public class WriteMapPage extends Fragment implements OnMapReadyCallback, Google
         DtrDialog.setPositiveButton("확인", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+
                 DtrName = DtrNameEditText.getText().toString();
                 dialogInterface.dismiss();
 
@@ -244,11 +242,23 @@ public class WriteMapPage extends Fragment implements OnMapReadyCallback, Google
                 map.addMarker(markerOptions);
 
                 dtrName.add(DtrName);
-                dtrLatLng.add(latLng.toString());
+                dtrLatLng.add(latLng);
 
                 PolyPoints.add(latLng);
                 drawPoly(map, PolyPoints);
 
+                Geocoder geocoder = new Geocoder(getActivity().getApplicationContext());
+
+                try {
+                    List<Address> addressList = geocoder.getFromLocation(latitude, longitude, 1);
+                    for (Address addr : addressList) {
+                        String address = addr.getAddressLine(0);
+                        dtrAddress.add(address);
+                        Log.d(TAG,"주소지 변경 확인" + address);
+                        }
+                    } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
             }
         });
 
@@ -330,4 +340,17 @@ public class WriteMapPage extends Fragment implements OnMapReadyCallback, Google
             map.addPolyline(polylineOptions);
         }
     }
+
+    public ArrayList<String> getDtrName() {
+        return dtrName;
+    }
+
+    public ArrayList<LatLng> getDtrLatLng() {
+        return dtrLatLng;
+    }
+
+    public ArrayList<String> getDtrAddress() {
+        return dtrAddress;
+    }
+
 }
