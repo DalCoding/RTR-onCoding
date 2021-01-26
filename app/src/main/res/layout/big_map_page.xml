@@ -14,7 +14,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/googleMap"
-            tools:context=".BigMapPage2"
+            tools:context=".BigMapPage"
             android:name="com.google.android.gms.maps.SupportMapFragment" />
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -153,7 +153,7 @@
                         android:layout_height="match_parent">
 
                         <Button
-                            android:id="@+id/mainAlarmBtn"
+                            android:id="@+id/tagSelectBtn"
                             android:layout_width="30dp"
                             android:layout_height="30dp"
                             android:layout_alignParentRight="true"
@@ -268,7 +268,7 @@
             android:layout_width="130dp"
             android:layout_height="40dp"
             android:background="@drawable/ripple_custom"
-            android:text="이 지도에서 찾기" />
+            android:text="내 위치로 돌아오기" />
 
         <ImageButton
             android:id="@+id/bigMapMyLocationBtn"

@@ -414,7 +414,7 @@ public class StoryContentsPage extends Fragment  {
 
     //다이얼로그 만들기+띄우기
     //다이얼로그 메세지 누르면 받아오기 String report...
-    //report 콜렉션에 들어갈 정보 만들기 Map.put....(reportText, personId, reportedId, reported_Date)
+    //report 콜렉션에 들어갈 정보 만들기 M3ap.put....(reportText, personId, reportedId, reported_Date)
 
 
     private static void showToast(String s) {

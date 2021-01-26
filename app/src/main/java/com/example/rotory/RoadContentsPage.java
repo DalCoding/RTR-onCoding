@@ -1,14 +1,16 @@
 package com.example.rotory;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -17,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -27,6 +30,13 @@ import com.example.rotory.VO.Contents;
 import com.example.rotory.account.LogInActivity;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -42,7 +52,6 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import net.daum.mf.map.api.MapView;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -51,10 +60,16 @@ import java.util.List;
 import java.util.Map;
 
 
-public class RoadContentsPage extends Fragment {
+public class RoadContentsPage extends Fragment implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
     final static String TAG = "RoadContentsPage";
     AppConstant appConstant = new AppConstant();
 
+    GoogleMap map;
+    double latitude;
+    double longitude;
+    MapView mapView;
+
+    MarkerOptions markerOptions;
 
     Button rcontentsCommBtn;
     ImageView rcontentsLinkImg;
@@ -76,6 +91,8 @@ public class RoadContentsPage extends Fragment {
     Context context;
     OnUserActItemClickListener listener;
 
+    TextView reportTextView;
+    public static final String TAG_EVENT_DIALOG = "report";
     TextView commReportText;
     Spinner reportSpinner;
 
@@ -88,8 +105,6 @@ public class RoadContentsPage extends Fragment {
     FirebaseFirestore db = FirebaseFirestore.getInstance(); //db 선언
     private FirestoreRecyclerAdapter commentAdapter;
 
-    MapView mapView;
-    ViewGroup mapContainer;
 
     TextView commUsernameText;
     TextView commConText;
@@ -97,6 +112,7 @@ public class RoadContentsPage extends Fragment {
     ImageView commLevelImg;
 
     EditText comment;
+
 
 
     @Override
@@ -135,7 +151,7 @@ public class RoadContentsPage extends Fragment {
         }
 
         Query query = db.collection("SearchContents").whereEqualTo("contentsType", 1)
-            .orderBy("contentsType", Query.Direction.DESCENDING);
+                .orderBy("contentsType", Query.Direction.DESCENDING);
 
         FirestoreRecyclerOptions<Contents> options = new FirestoreRecyclerOptions.Builder<Contents>()
                 .setQuery(query, Contents.class)
@@ -205,6 +221,13 @@ public class RoadContentsPage extends Fragment {
         if (user != null) {
             initUI(rootView);
         }
+
+        rCommRView = rootView.findViewById(R.id.rCommRView);
+
+        mapView = (MapView) rootView.findViewById(R.id.rcontentsMap);
+        mapView.onCreate(savedInstanceState);
+        mapView.getMapAsync(this);
+
         return rootView;
     }
 
@@ -221,6 +244,11 @@ public class RoadContentsPage extends Fragment {
         //commentAdapter.stopListening();
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
 
     private void initUI(ViewGroup rootView) {
         rcontentsCommBtn = rootView.findViewById(R.id.rcontentsCommBtn);
@@ -235,12 +263,8 @@ public class RoadContentsPage extends Fragment {
         rcontentsMapText = rootView.findViewById(R.id.rcontentsMapText);
         rcontentsTaketimeText = rootView.findViewById(R.id.rcontentsTaketimeText);
         rcontentsTakewhoText = rootView.findViewById(R.id.rcontentsTakewhoText);
-        rCommRView = rootView.findViewById(R.id.rCommRView);
-        mapContainer = rootView.findViewById(R.id.rcontentsMap);
 
-       /* mapView = new MapView(getActivity());
-        mapContainer.addView(mapView);
-*/
+
         Bundle contentsBundle = this.getArguments();
         String contentsID = contentsBundle.getString("storyDocumentId");
         //String contentsID = "kWgSA53rxrk5bMMemdVd";
@@ -319,6 +343,36 @@ public class RoadContentsPage extends Fragment {
         };
     }
 
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        MapsInitializer.initialize(this.getActivity());
+        map = googleMap;
+
+        /*db.collection("contents")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d(TAG, document.getData().toString());
+
+                            }
+                        } else {
+                            Log.w(TAG, "Error getting documents.", task.getException());
+                        }
+                    }
+                });*/
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        Intent intent = new Intent(getActivity(), dtrInfoPopup.class);
+
+        return false;
+    }
+
+
     public class CommentViewHolder extends RecyclerView.ViewHolder {
         private View view;
 
@@ -364,17 +418,17 @@ public class RoadContentsPage extends Fragment {
                             commReportText.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
-                                //    deleteComment();
+                                    //    deleteComment();
                                     //showToast("댓글을 삭제하셨습니다.");
                                 }
                             });
                         } else {
                             commReportText.setText("신고");
+                            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                             commReportText.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
-                                    //openReportDialog();
-                                    showToast("댓글을 신고하셨습니다.");
+                                    openReportDialog(builder);
                                 }
                                 //ReportDialog.java에서 따로 작업
                             });
@@ -394,18 +448,65 @@ public class RoadContentsPage extends Fragment {
                             comment.getComment());
                 }
             });
-
         }
-
     }
 
 
-/*
-    private void openReportDialog(QueryDocumentSnapshot pDocument, String pDocumentId) {
-        reportSpinner = getView().findViewById(R.id.reportSpinner);
+    /*
+        private void openReportDialog(QueryDocumentSnapshot pDocument, String pDocumentId) {
+            reportSpinner = getView().findViewById(R.id.reportSpinner);
+    */
 
-        ArrayAdapter reportAdapter = ArrayAdapter.createFromResource(getContext(), R.array.reportList, android.R.layout.simple_spinner_dropdown_item);
-*/
+    private void openReportDialog(AlertDialog.Builder dialog) {
+        LayoutInflater inflater = getLayoutInflater();
+
+        View viewDialog = inflater.inflate(R.layout.report, null);
+        dialog.setView(viewDialog);
+        dialog.setTitle("신고하기");
+
+
+        reportTextView = viewDialog.findViewById(R.id.reportTextView);
+        reportSpinner = viewDialog.findViewById(R.id.reportSpinner);
+
+        reportSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                reportTextView.setText(reportSpinner.getItemAtPosition(position).toString());
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                reportTextView.setText("");
+            }
+        });
+
+        dialog.setPositiveButton("제출", new DialogInterface.OnClickListener()
+            //showToast("댓글을 신고하셨습니다.");
+        { //제출 버튼..
+
+        @Override
+        public void onClick(DialogInterface dialog, int which){
+            //roadContents.put("dtrRating", Float.valueOf(ratingResult)); 이것처럼 DB에 신고 내역 저장
+            dialog.dismiss();
+        }
+
+
+    });
+
+
+    AlertDialog alertDialog = dialog.create();
+    alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+        @Override
+        public void onShow(DialogInterface dialog) {
+            alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK);
+        }
+    });
+
+    alertDialog.show();
+
+}
+
+        //ArrayAdapter ReportAdapter = ArrayAdapter.createFromResource(getContext(), R.array.reportList, android.R.layout.simple_spinner_dropdown_item);
+
 
 /*        db.collection("road")
                 .whereEqualTo("contentsType", 0)

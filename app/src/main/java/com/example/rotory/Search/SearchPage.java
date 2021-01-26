@@ -1,17 +1,21 @@
 package com.example.rotory.Search;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 
 
 import android.widget.EditText;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -37,6 +41,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -47,6 +52,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 public class SearchPage extends AppCompatActivity {
 
     private static final String TAG = "SearchPage";
+    private static final String REQUEST_CODE = "0000";
 
     RecyclerView searchTagList;
     MainPage mainPage;
@@ -66,6 +72,7 @@ public class SearchPage extends AppCompatActivity {
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    CollectionReference collectionReference;
 
     FirestoreRecyclerAdapter tagAdapter;
     //TagRecyclerAdapter adapter;
@@ -100,6 +107,23 @@ public class SearchPage extends AppCompatActivity {
         searchTagList = findViewById(R.id.searchTagList);
         searchTagList.setLayoutManager(new GridLayoutManager(this, 3));
         searchTagList.setAdapter(tagAdapter);
+
+        searchEdit = findViewById(R.id.searchEdit);
+        searchEdit.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
+        searchEdit.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                if (i == EditorInfo.IME_ACTION_SEARCH) {
+                    String searchText = searchEdit.getText().toString();
+
+                    goToSearch(searchText);
+
+                    return true;
+                }
+
+                return false;
+            }
+        });
 
 
 
@@ -223,6 +247,13 @@ public class SearchPage extends AppCompatActivity {
             }
         };
     }
+
+    private void goToSearch(String searchText) {
+        Intent intent = new Intent(SearchPage.this, SearchResultPage.class);
+        intent.putExtra("searchText", searchText);
+        startActivity(intent);
+    }
+
 
        /* private void setTagAdapter (String tagList) {
             Query query = db.collection("tag");

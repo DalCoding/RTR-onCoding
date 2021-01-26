@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.rotory">
 
+    <uses-feature android:glEsVersion="0x00020000" android:required="true" />
+
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -25,9 +27,8 @@
         android:theme="@style/Theme.Rotory">
         <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyAf5Zp2t2IQyKHlMtWpkaKvsRsOEBDnVIs"/>
         <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />
-        <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyAf5Zp2t2IQyKHlMtWpkaKvsRsOEBDnVIs"/>
-        <meta-data android:name="com.kakao.sdk.AppKey" android:value="74327a949b44e3526226fb17f890121f"/>
-        <activity android:name=".BigMapPage2">
+        <!--<meta-data android:name="com.kakao.sdk.AppKey" android:value="74327a949b44e3526226fb17f890121f"/>-->
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -62,7 +63,6 @@
         <activity android:name=".account.LogInActivity"/>
         <activity android:name=".userActivity.MyFavoriteActivity"/>
         <activity android:name=".userActivity.MyLikeActivity" />
-        <!--<activity android:name=".WriteMapPage"/>-->
         <activity android:name=".Search.SearchPage"/>
         <activity android:name=".Search.SearchResultPage"/>
 <!--        <activity android:name=".Write_Story" />-->
@@ -72,6 +72,11 @@
         <activity android:name=".BigMapPage"/>
         <activity android:name=".Theme.ThemePickPage"/>
         <activity android:name=".LoadRoadItem"/>
+
+        <activity android:name=".Theme.ThemePage"/>
+        <activity android:name=".WriteRoadPage"/>
+        <activity android:name=".WriteContents.TagSelectDialog" android:theme="@android:style/Theme.Dialog"/>
+
 
         <!--        <activity android:name=".MainActivity"/>-->
        <!-- <activity android:name=".account.FindAccountActivity"/>-->
@@ -87,6 +92,7 @@
                 <data android:path="/setPassword"/>
             </intent-filter>
         </activity>-->
+
 
 
     </application>
