@@ -467,10 +467,6 @@ public class RoadContentsPage extends Fragment implements OnMapReadyCallback, Go
         });
 
 
-        WindowManager.LayoutParams params=alertDialog.getWindow().getAttributes();
-        params.width=220;
-        params.height=220;
-        alertDialog.getWindow().setAttributes(params);
         alertDialog.show();
     }
 
