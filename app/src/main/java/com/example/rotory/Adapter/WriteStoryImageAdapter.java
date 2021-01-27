@@ -3,6 +3,8 @@ package com.example.rotory.Adapter;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.provider.MediaStore;
@@ -13,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -32,9 +35,10 @@ public class WriteStoryImageAdapter extends RecyclerView.Adapter<WriteStoryImage
     public ArrayList<Uri> albumImgList;
     public Context mContext;
     Bitmap bitmap = null;
-
     OnContentsItemClickListener listener;
     int itemPosition;
+    int backgroundColor;
+    Boolean isClicked;
 
 
     //생성자 정의
@@ -59,15 +63,13 @@ public class WriteStoryImageAdapter extends RecyclerView.Adapter<WriteStoryImage
         //앨범에서 가져온 이미지 표시
         holder.imageView.setImageURI(albumImgList.get(position));
 
+
 //        holder.deleteBtn.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
 //            removeItem(position);
 //            }
 //        });
-
-
-
 
     }
 //
@@ -99,15 +101,15 @@ public class WriteStoryImageAdapter extends RecyclerView.Adapter<WriteStoryImage
         public EditText  comment; // 이미지 코멘트
         public View deleteBtn;
         int itemPosition;
-
+       LinearLayout mainImageSelect;
 
         public writestroyHolder(@NonNull View view) {
             super(view);
-            imageView = itemView.findViewById(R.id.writeStroryImageSmall);
-            titleImage = imageView.findViewById(R.id.writeStoryMainImageView);
+            imageView = view.findViewById(R.id.writeStroryImageSmall);
+            mainImageSelect = view.findViewById(R.id.mainImageSelect);
 
 
-            itemView.setOnClickListener(new View.OnClickListener() {
+            view.setOnClickListener(new View.OnClickListener() {
                 Uri uri;
 
                 @Override
@@ -115,6 +117,7 @@ public class WriteStoryImageAdapter extends RecyclerView.Adapter<WriteStoryImage
                     int position = getAdapterPosition();
                     if (listener != null) {
                         listener.onItemClick(writestroyHolder.this,view,position);
+
                         notifyItemChanged(position) ;
                     }
                 }
@@ -125,7 +128,11 @@ public class WriteStoryImageAdapter extends RecyclerView.Adapter<WriteStoryImage
             return  getItemPosition;
         }
 
+
+
+
     }
+
 
 
 
@@ -142,6 +149,7 @@ public class WriteStoryImageAdapter extends RecyclerView.Adapter<WriteStoryImage
             listener.onItemClick(writestroyHolder, view, position);
         }
     }
+
 //
 //    @Override
 //    public void onItemDelete(int position) {
@@ -154,5 +162,6 @@ public class WriteStoryImageAdapter extends RecyclerView.Adapter<WriteStoryImage
     public Uri getItem(int position) {
         return albumImgList.get(position);
     }
+
 
 }

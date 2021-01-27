@@ -3,13 +3,11 @@ package com.example.rotory;
 
 import android.annotation.SuppressLint;
 import android.content.ClipData;
-import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
-import android.icu.text.Transliterator;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -17,25 +15,21 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Base64;
 import android.util.Log;
-import android.util.SparseBooleanArray;
 import android.view.View;
-import android.widget.Adapter;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -49,18 +43,14 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.ktx.Firebase;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Queue;
 
 public class Write_Story extends AppCompatActivity  {
     private final String TAG = "Write_Story";
@@ -73,6 +63,7 @@ public class Write_Story extends AppCompatActivity  {
     Button mainbtn;
     Button checkmarkBtn;
 
+    TextView mainImagetext;
     ImageButton DeleteBtn;
     RecyclerView recyclerView;
     ImageView titleImage;
@@ -81,6 +72,7 @@ public class Write_Story extends AppCompatActivity  {
     EditText writeStoryImageCommentEditText;
     EditText writeStoryTitle;
     Spinner spinner;
+    LinearLayout mainImageSelect;
 
 
     int CODE_ALBUM_REQUEST = 111;
@@ -106,7 +98,13 @@ public class Write_Story extends AppCompatActivity  {
     String title;
     String article;
 
+<<<<<<< HEAD
     //AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+=======
+    Boolean isChecked;
+
+    int checkPosition;
+>>>>>>> f6e75b5f804510002897ad499be4b9f16c147d0e
 
 
 
@@ -124,6 +122,7 @@ public class Write_Story extends AppCompatActivity  {
         spinner = findViewById(R.id.writeStoryPreFixSpinner);
         addbtn= findViewById(R.id.writeStoryImageAddBtn);
         recyclerView= findViewById(R.id.writeStoryImageListRecyclerView);
+        mainImageSelect = findViewById(R.id.mainImageSelect);
 
         writeStoryImageCommentEditText = findViewById(R.id.writeStoryImageCommentEditText);
         writeStoryEditText = findViewById(R.id.writeStoryEditText);
@@ -135,12 +134,67 @@ public class Write_Story extends AppCompatActivity  {
        article = writeStoryEditText.getText().toString();
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        AlertDialog.Builder saveDialog = new AlertDialog.Builder(this);
+        AlertDialog.Builder mainImageDialog = new AlertDialog.Builder(this);
 
+<<<<<<< HEAD
         //dialogBuilder.setTitle("다람쥐 이야기 작성");
+=======
+        saveDialog .setTitle("다람쥐 이야기 작성");
+        saveDialog .setMessage("작성을 완료하시겠습니까?");
+        saveDialog .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                setDB();
+            }
+        });
+        saveDialog .setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        AlertDialog alertDialog = saveDialog.create();
+        alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialog) {
+                alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK);
+                alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK);
+            }
 
+        });
+>>>>>>> f6e75b5f804510002897ad499be4b9f16c147d0e
 
+        mainImagetext = findViewById(R.id.mainImagetext);
+        mainImageDialog.setTitle("썸네일 지정");
+        mainImageDialog.setMessage("메인 사진으로 지정 하시겠습니까?");
+        mainImageDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
 
+                    dialogInterface.dismiss();
 
+                    Uri uri = adapter.getItem(imagePosition);
+                    mainImage = mainImageString(uri); //메인이미지 스트링바꿈
+                    checkPosition = imagePosition;
+                    mainImagetext.setVisibility(View.VISIBLE);
+            }
+        });
+        mainImageDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        AlertDialog mainImageAlertDialog =  mainImageDialog.create();
+        mainImageAlertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialog) {
+                mainImageAlertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK);
+                mainImageAlertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK);
+            }
+
+        });
 
        prefixId = spinner.getSelectedItem().toString(); //말머리 String
 
@@ -173,6 +227,8 @@ public class Write_Story extends AppCompatActivity  {
                 intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
                 intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
                 startActivityForResult(intent, CODE_ALBUM_REQUEST);
+
+
             }
         });
 
@@ -182,6 +238,9 @@ public class Write_Story extends AppCompatActivity  {
 
             @Override
             public void onClick(View v) {
+                if (imagePosition == checkPosition){
+                    mainImagetext.setVisibility(View.GONE);
+                }
                 if (imagePosition >= 0) {
                     titleImage.setImageResource(0);
                     adapter.removeItem(imagePosition);
@@ -204,9 +263,9 @@ public class Write_Story extends AppCompatActivity  {
             @SuppressLint("UseCompatLoadingForDrawables")
             @Override
             public void onClick(View v) {
-                Uri uri = adapter.getItem(imagePosition);
-               mainImage = mainImageString(uri);         //메인이미지 스트링바꿈
-
+                if (uriList.size() > 0) {
+                    mainImageAlertDialog.show();
+                }
 
             }
         });
@@ -216,20 +275,22 @@ public class Write_Story extends AppCompatActivity  {
             @Override
             public void onClick(View view) {
                 if (isValidate()){
-                    setDB();
-                } else {
+                    alertDialog.show();
+
+                }
+                else if (mainImage == null) {
+                    Toast.makeText(getApplicationContext(), "V 를 눌러 메인사진을 지정해주세요.", Toast.LENGTH_SHORT).show();
+
+                }
+                else {
                     Toast.makeText(getApplicationContext(), "필수 입력 사항을 입력해주세요.", Toast.LENGTH_SHORT).show();
                 }
 
             }
         });
 
-
-
-
-
-
     } //end of onCreate]
+
 
     private boolean isValidate() {
 
@@ -240,6 +301,7 @@ public class Write_Story extends AppCompatActivity  {
             return false;
         } else if (mainImage == null) {
             return false;
+
         } else if (storyaddress.equals("") || storyaddress == null) {
             return false;
         }
@@ -327,9 +389,6 @@ public class Write_Story extends AppCompatActivity  {
         return  stringIamge;
 
     }
-
-
-
 
 
     private Map<String, Object> changeUritoBITmap() {
@@ -436,8 +495,6 @@ public class Write_Story extends AppCompatActivity  {
 
         //end of onActivityResult
 
-
-
         recyclerView.setAdapter(adapter);
         adapter.setOnItemClickListener(new OnContentsItemClickListener() {
 
@@ -447,13 +504,25 @@ public class Write_Story extends AppCompatActivity  {
                 Uri uri = adapter.getItem(position);
                 titleImage.setImageURI(uri);
                 imagePosition = position;
+
                 writeStoryImageCommentEditText.setText(imageComment.get(String.valueOf(position)));
                 Log.d(TAG,"작동확인" + imageComment.get(position));
 
+                if (String.valueOf(checkPosition) != null) {
+                    if (adapter.getItem(checkPosition) == uri) {
+                        mainImagetext.setVisibility(View.VISIBLE);
+
+                    } else {
+                        mainImagetext.setVisibility(View.GONE);
+
+                    }
+                }
 
             }
 
+
         });
+
 
         writeStoryImageCommentEditText.addTextChangedListener(new TextWatcher() {
             // edittext 마다 다르게 코멘트
@@ -476,6 +545,13 @@ public class Write_Story extends AppCompatActivity  {
                 }
             }
         });
+
+        if (uriList.size()>0){
+            Log.d(TAG, "사진 제대로 받아옴");
+            Uri uri = uriList.get(0);
+            mainImage = mainImageString(uri);
+
+        }
 
     }
 }

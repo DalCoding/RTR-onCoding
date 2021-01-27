@@ -7,4 +7,5 @@ import com.example.rotory.Adapter.WriteStoryImageAdapter;
 
 public interface OnContentsItemClickListener {
    void onItemClick(WriteStoryImageAdapter.writestroyHolder writestroyHolder, View view, int position);
+
 }
