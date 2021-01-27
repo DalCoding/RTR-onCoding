@@ -5,6 +5,7 @@ import com.google.type.LatLng;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 public class Contents {
@@ -31,13 +32,13 @@ public class Contents {
     String prefix;
     ArrayList<String> address;
     String titleImage;
-    ArrayList<String> imageComment;
+    Map<String,String> imageComment;
     String article;
     int isPublic;
     String writeDate;
     String modifiedDate;
     String scrapped;
-    Map<String, String> smallImage;
+    Map<String, Object> smallImage;
     String userLevel;
     String userName;
     String liked;
@@ -248,14 +249,6 @@ public class Contents {
         this.titleImage = titleImage;
     }
 
-    public ArrayList<String> getImageComment() {
-        return imageComment;
-    }
-
-    public void setImageComment(ArrayList<String> imageComment) {
-        this.imageComment = imageComment;
-    }
-
     public String getArticle() {
         return article;
     }
@@ -296,11 +289,15 @@ public class Contents {
         this.scrapped = scrapped;
     }
 
-    public Map<String, String> getSmallImage() {
+    public void setImageComment(Map<String, String> imageComment) {
+        this.imageComment = imageComment;
+    }
+
+    public Map<String, Object> getSmallImage() {
         return smallImage;
     }
 
-    public void setSmallImage(Map<String, String> smallImage) {
+    public void setSmallImage(Map<String, Object> smallImage) {
         this.smallImage = smallImage;
     }
 

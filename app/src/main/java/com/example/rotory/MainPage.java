@@ -425,6 +425,7 @@ public class MainPage extends Fragment implements LoadMapDtrListener, AutoPermis
                         ArrayList<HashMap> dtrLatLng = (ArrayList<HashMap>) document.get("dtrLatLng");
                         // 도토리 배열 : [{latitude=37.422083928086955, longitude=-122.08573322743177}, {latitu... + null
 
+
                         HashMap latLng = dtrLatLng.get(0);
 
                         double latlat = (double) latLng.get("latitude");

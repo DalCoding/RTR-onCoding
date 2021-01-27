@@ -39,7 +39,12 @@ public class LoadStoryItem extends AppCompatActivity implements OnUserActItemCli
         Intent intent = getIntent();
       if (intent != null) {
           String documentID = intent.getStringExtra("documentId");
-          Log.d(TAG, documentID);
+          //Log.d(TAG, documentID);
+
+          documentID = "zKjIK1G8cwJMdJSiJSst";
+
+
+
           Bundle pDocumentIdBundle = new Bundle();
           pDocumentIdBundle.putString("storyDocumentId", documentID);
           Log.d(TAG, pDocumentIdBundle.getString("storyDocumentId"));

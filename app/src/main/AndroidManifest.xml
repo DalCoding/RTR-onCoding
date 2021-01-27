@@ -27,13 +27,15 @@
         <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyAf5Zp2t2IQyKHlMtWpkaKvsRsOEBDnVIs"/>
         <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />
         <!--<meta-data android:name="com.kakao.sdk.AppKey" android:value="74327a949b44e3526226fb17f890121f"/>-->
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-    <activity android:name=".account.SetNewPassword">
+    <activity android:name=".account.SetNewPassword"
+        android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
@@ -48,7 +50,8 @@
                    />
             </intent-filter>
         </activity>
-        <activity android:name=".account.FindAccountActivity">
+        <activity android:name=".account.FindAccountActivity"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
@@ -58,8 +61,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".MyPage"/>
-        <activity android:name=".account.SignUpActivity"/>
-        <activity android:name=".account.LogInActivity"/>
+        <activity android:name=".account.SignUpActivity"
+            android:windowSoftInputMode="adjustPan"/>
+        <activity android:name=".account.LogInActivity"
+            android:windowSoftInputMode="adjustPan"/>
         <activity android:name=".userActivity.MyFavoriteActivity"/>
         <activity android:name=".userActivity.MyLikeActivity" />
         <activity android:name=".Search.SearchPage"/>
@@ -67,14 +72,17 @@
 <!--        <activity android:name=".Write_Story" />-->
        <activity android:name=".userActivity.MyScrapActivity"/>
         <activity android:name=".LoadStoryItem"/>
-        <activity android:name=".AskPage"/>
+        <activity android:name=".AskPage"
+            android:windowSoftInputMode="adjustPan"/>
         <activity android:name=".BigMapPage"/>
         <activity android:name=".Theme.ThemePickPage"/>
         <activity android:name=".LoadRoadItem"/>
         <activity android:name=".userActivity.UserActivity"/>
         <activity android:name=".Theme.ThemePage"/>
-        <activity android:name=".WriteRoadPage"/>
-        <activity android:name=".Write_Story"/>
+        <activity android:name=".WriteRoadPage"
+            android:windowSoftInputMode="adjustPan"/>
+        <activity android:name=".Write_Story"
+            android:windowSoftInputMode="adjustPan"/>
         <activity android:name=".WriteContents.TagSelectDialog" android:theme="@android:style/Theme.Dialog"/>
 
 

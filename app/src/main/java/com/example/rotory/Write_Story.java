@@ -16,12 +16,15 @@ import android.text.TextWatcher;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,8 +37,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.rotory.Adapter.WriteStoryImageAdapter;
+import com.example.rotory.Contents.StoryImageAdapter;
 import com.example.rotory.Interface.OnContentsItemClickListener;
+import com.example.rotory.VO.AppConstant;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -49,6 +56,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -59,22 +67,30 @@ public class Write_Story extends AppCompatActivity  {
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseUser user;
 
+    RelativeLayout writeStory;
+
     Button addbtn;
     Button mainbtn;
     Button checkmarkBtn;
+
+    RadioButton publicRadioButton;
+    RadioButton privateRadioButton;
 
     TextView mainImagetext;
     ImageButton DeleteBtn;
     RecyclerView recyclerView;
     ImageView titleImage;
+
     EditText writeStoryEditText;
     EditText writeStoryLocationEditText;
     EditText writeStoryImageCommentEditText;
     EditText writeStoryTitle;
+
     Spinner spinner;
     LinearLayout mainImageSelect;
 
 
+    private InputMethodManager keyboardManager;
     int CODE_ALBUM_REQUEST = 111;
     OnContentsItemClickListener listener;
 
@@ -83,29 +99,30 @@ public class Write_Story extends AppCompatActivity  {
     ArrayList<Uri> uriList = new ArrayList<>();
 
     WriteStoryImageAdapter adapter = new WriteStoryImageAdapter(uriList, Write_Story.this, listener);
-    ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
     Map<String, Bitmap> bitmapImageList = new HashMap<>();
     Map<String, Object> stringImageList = new HashMap<>();
     Map<String, String>imageComment = new HashMap<>();
 
-    Map<String, Object> imageList = new HashMap<>();
+  Map<String, Object> imageList = new HashMap<>();
+
+    //Map<String, Bitmap> imageList = new HashMap<>();
     Map<String, Object> DBStoryContents = new HashMap<>();
 
+   //Bitmap mainImage;
     String mainImage;
     String prefixId;
     String storyaddress;
     String title;
     String article;
 
-<<<<<<< HEAD
-    //AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
-=======
+
     Boolean isChecked;
 
+    int isPublic;
     int checkPosition;
->>>>>>> f6e75b5f804510002897ad499be4b9f16c147d0e
 
+    AppConstant appConstant = new AppConstant();
 
 
 
@@ -115,6 +132,19 @@ public class Write_Story extends AppCompatActivity  {
         setContentView(R.layout.write_story_page);
 
         user = mAuth.getCurrentUser(); //관리자에게 유저 권한을 받아옴.
+
+        isPublic = 1;
+
+        writeStory = findViewById(R.id.writeStory);
+        keyboardManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+
+        writeStory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                keyboardManager.hideSoftInputFromWindow(writeStoryImageCommentEditText.getWindowToken(), 0);
+            }
+        });
+
 
         titleImage = findViewById(R.id.writeStoryMainImageView);
         mainbtn = findViewById(R.id.writeStorySetMainImageBtn);
@@ -137,15 +167,17 @@ public class Write_Story extends AppCompatActivity  {
         AlertDialog.Builder saveDialog = new AlertDialog.Builder(this);
         AlertDialog.Builder mainImageDialog = new AlertDialog.Builder(this);
 
-<<<<<<< HEAD
-        //dialogBuilder.setTitle("다람쥐 이야기 작성");
-=======
+
         saveDialog .setTitle("다람쥐 이야기 작성");
         saveDialog .setMessage("작성을 완료하시겠습니까?");
         saveDialog .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                setDB();
+                try {
+                    setDB();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
         saveDialog .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -163,7 +195,7 @@ public class Write_Story extends AppCompatActivity  {
             }
 
         });
->>>>>>> f6e75b5f804510002897ad499be4b9f16c147d0e
+
 
         mainImagetext = findViewById(R.id.mainImagetext);
         mainImageDialog.setTitle("썸네일 지정");
@@ -175,8 +207,12 @@ public class Write_Story extends AppCompatActivity  {
                     dialogInterface.dismiss();
 
                     Uri uri = adapter.getItem(imagePosition);
+                try {
                     mainImage = mainImageString(uri); //메인이미지 스트링바꿈
-                    checkPosition = imagePosition;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                checkPosition = imagePosition;
                     mainImagetext.setVisibility(View.VISIBLE);
             }
         });
@@ -196,7 +232,7 @@ public class Write_Story extends AppCompatActivity  {
 
         });
 
-       prefixId = spinner.getSelectedItem().toString(); //말머리 String
+       //말머리 String
 
 
 
@@ -205,8 +241,9 @@ public class Write_Story extends AppCompatActivity  {
             @Override
             public void onItemSelected(AdapterView<?> parent, View arg1,
                                        int position, long id) {
-                Log.d(TAG, "SELECT");
-                // TODO Auto-generated method stub
+
+                prefixId = spinner.getSelectedItem().toString();
+                Log.d(TAG, "SELECT" + prefixId);
             }
 
             @Override
@@ -289,6 +326,23 @@ public class Write_Story extends AppCompatActivity  {
             }
         });
 
+        publicRadioButton = findViewById(R.id.publicRadioButton2);
+        publicRadioButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isPublic = 1;
+
+            }
+        });
+
+        privateRadioButton = findViewById(R.id.privateRadioButton2);
+        privateRadioButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isPublic = 0;
+            }
+        });
+
     } //end of onCreate]
 
 
@@ -312,13 +366,14 @@ public class Write_Story extends AppCompatActivity  {
 
     }
 
-    private void setDB() {
+    private void setDB() throws IOException {
         imageList = changeUritoBITmap();
 
 
         ArrayList<String> address = new ArrayList<>();
         address.add(storyaddress);
 
+        DBStoryContents.put("contentsType", 1);
         DBStoryContents.put("smallImage", imageList);
         DBStoryContents.put("titleImage", mainImage);
         DBStoryContents.put("imageComment", imageComment);
@@ -326,6 +381,8 @@ public class Write_Story extends AppCompatActivity  {
         DBStoryContents.put("address", address);
         DBStoryContents.put("title", title);
         DBStoryContents.put("article", article);
+        DBStoryContents.put("isPublic", isPublic);
+        DBStoryContents.put("writeDate",appConstant.dateFormat.format(new Date()));
 
         setUserDB();
     }
@@ -361,19 +418,28 @@ public class Write_Story extends AppCompatActivity  {
         db.collection("contents").add(dbStoryContents).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
             @Override
             public void onComplete(@NonNull Task<DocumentReference> task) {
-
                 Log.d(TAG, "정보제대로 들어갔는지 확인 : " +dbStoryContents);
 
                 Intent mainIntent = new Intent(Write_Story.this, MainActivity.class);
                 mainIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP|Intent.FLAG_ACTIVITY_NEW_TASK); //SINGLE_TOP는 쌓아주는것(돌고돌게)을 전것을 제거 해주고, NEW_TASK는 다시 시작해줌.
                 startActivity(mainIntent);
             }
+        }).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+            @Override
+            public void onSuccess(DocumentReference documentReference) {
+                Log.d(TAG, "저장 성공 : " );
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d(TAG, "저장 실패..."  + e.toString());
+            }
         });
 
     }
 
 
-    private String mainImageString(Uri uri) { //메인 이미지 스트링 바꿈.
+    private String mainImageString(Uri uri) throws IOException { //메인 이미지 스트링 바꿈.
         Bitmap bitmap = null;
         try {
             bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
@@ -383,24 +449,44 @@ public class Write_Story extends AppCompatActivity  {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        bitmap.compress(Bitmap.CompressFormat.PNG, 70, baos);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 70, baos);
         byte[] bytes =baos.toByteArray();
-        String stringIamge = Base64.encodeToString(bytes, Base64.DEFAULT);
+        String stringIamge = Base64.encodeToString(bytes, Base64.NO_WRAP);
+        Log.d(TAG,"타이틀 이미지 스트링 변경 성공?" + stringIamge);
+
+        baos.flush();
         return  stringIamge;
 
+
     }
+   /* private Bitmap mainImageString(Uri uri) { //메인 이미지 스트링 바꿈.
+        Bitmap bitmap = null;
+        try {
+            bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return  bitmap;
+
+    }*/
 
 
-    private Map<String, Object> changeUritoBITmap() {
-
+    private Map<String, Object> changeUritoBITmap() throws IOException {
+        Uri uri;
         Bitmap bitmap = null;
         for (int i =0; i <uriList.size(); i++){  /// uri를 Bitmap으로 변환
-            Uri uri = uriList.get(i);
+
 
             try {
 //                            uri 주소를 Bitmap으로 변환한다.
+                uri = uriList.get(i);
                 bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
                 bitmapImageList.put("image"+(i+1), bitmap);
+                Log.d(TAG,"bitmap값 확인" + bitmap);
 
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
@@ -412,21 +498,34 @@ public class Write_Story extends AppCompatActivity  {
         Log.d(TAG,"비트맵 변경 성공?" + bitmapImageList);
 
 
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        int count = 0;
+
         for (int i =0; i < bitmapImageList.size(); i++){  //Bitmap을 string으로 변환
+            //ArrayList<ByteArrayOutputStream> baosList = new ArrayList<>();
+           // baosList.add(new ByteArrayOutputStream());
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
             String keyString = "image"+String.valueOf(i+1);
             Bitmap imageBitmap;
             imageBitmap = bitmapImageList.get(keyString);
-            imageBitmap.compress(Bitmap.CompressFormat.PNG, 70, baos);
-            byte[] bytes = baos.toByteArray();
-            String stringImage = Base64.encodeToString(bytes, Base64.DEFAULT);
-            stringImageList.put(keyString, stringImage);
-            count ++;
+            if (imageBitmap != null) {
+                imageBitmap.compress(Bitmap.CompressFormat.JPEG, 70, stream);
+                byte[] bytes = stream.toByteArray();
+                String stringImage = Base64.encodeToString(bytes, Base64.NO_WRAP);
+                stringImageList.put(keyString, stringImage);
+                Log.d(TAG,"스트링 변경 성공?" +keyString+ "=>" + stringImage);
+
+            }else{
+                Log.d(TAG,"image"+i + "null임 : " + imageBitmap);
+            }
+
+            stream.flush();
+           // baosList.get(i).flush();
+            //Log.d(TAG,"스트링 변경 성공?" +keyString+ "=>" + stringImage);
+
         }
         Log.d(TAG,"스트링 변경 성공?" + stringImageList.size() + "=>" + stringImageList);
 
         return  stringImageList;
+
 
     }
 
@@ -520,7 +619,10 @@ public class Write_Story extends AppCompatActivity  {
 
             }
 
+            @Override
+            public void onItemClick(StoryImageAdapter.writestroyHolder writestroyHolder, View view, int position) {
 
+            }
         });
 
 
@@ -549,7 +651,11 @@ public class Write_Story extends AppCompatActivity  {
         if (uriList.size()>0){
             Log.d(TAG, "사진 제대로 받아옴");
             Uri uri = uriList.get(0);
-            mainImage = mainImageString(uri);
+            try {
+                mainImage = mainImageString(uri);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
         }
 
