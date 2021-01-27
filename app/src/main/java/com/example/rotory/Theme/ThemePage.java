@@ -140,17 +140,21 @@ public class ThemePage extends AppCompatActivity {
                                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                         if (task.isSuccessful()) {
                                             Map<String, Object> tagList = task.getResult().getData();
-                                            /*if (tagList.size() == 5) {*/
-                                                Set<String> tagKeySet = tagList.keySet();
-                                                ArrayList<String> tagKeyArrayList = new ArrayList<>(tagKeySet);
-                                                if (tagList.size() >0) {
-                                                    for (int i = 0; i < tagList.size(); i++) {
-                                                        tagsArrayList.add(new Tags(tagKeyArrayList.get(i)));
-                                                    }
-                                                }
-                                                int randomTagCount = 7 - tagList.size();
-                                                Log.d(TAG, "태그갯수? =>" + tagList.size() + ":" + randomTagCount);
-                                                setRandomTheme(randomTagCount, tagsArrayList);
+                                          if (tagList != null) {
+                                              Set<String> tagKeySet = tagList.keySet();
+                                              ArrayList<String> tagKeyArrayList = new ArrayList<>(tagKeySet);
+                                              if (tagList.size() > 0) {
+                                                  for (int i = 0; i < tagList.size(); i++) {
+                                                      tagsArrayList.add(new Tags(tagKeyArrayList.get(i)));
+                                                  }
+                                                  int randomTagCount = 7 - tagList.size();
+                                                  Log.d(TAG, "태그갯수? =>" + tagList.size() + ":" + randomTagCount);
+                                                  setRandomTheme(randomTagCount, tagsArrayList);
+                                              }
+                                          }else{
+                                              setRandomTheme(7, tagsArrayList);
+                                          }
+
                                                /* adapter = new ThemeItemAdapter(tagsArrayList, ThemePage.this, display);
                                                 themeRView.setAdapter(adapter);*/
                                              /*   }else{

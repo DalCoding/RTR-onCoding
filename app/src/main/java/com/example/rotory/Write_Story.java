@@ -106,7 +106,7 @@ public class Write_Story extends AppCompatActivity  {
     String title;
     String article;
 
-    AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+    //AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
 
 
 
@@ -136,7 +136,7 @@ public class Write_Story extends AppCompatActivity  {
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 
-        dialogBuilder.setTitle("다람쥐 이야기 작성");
+        //dialogBuilder.setTitle("다람쥐 이야기 작성");
 
 
 
@@ -238,7 +238,7 @@ public class Write_Story extends AppCompatActivity  {
 
          if (title.equals("")||title == null){
             return false;
-        } else if (mainImage.equals("") || mainImage == null) {
+        } else if (mainImage == null) {
             return false;
         } else if (storyaddress.equals("") || storyaddress == null) {
             return false;
