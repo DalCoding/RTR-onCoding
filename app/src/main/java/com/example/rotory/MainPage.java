@@ -15,11 +15,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -29,12 +30,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.rotory.Interface.LoadMapDtrListener;
-import com.example.rotory.Search.SearchContents;
-import com.example.rotory.VO.Contents;
 import com.example.rotory.VO.NearPin;
 import com.example.rotory.account.LogInActivity;
-import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
-import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapsInitializer;
@@ -51,33 +48,20 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.pedro.library.AutoPermissions;
 import com.pedro.library.AutoPermissionsListener;
 
-import net.daum.mf.map.api.MapPOIItem;
-import net.daum.mf.map.api.MapPoint;
-import net.daum.mf.map.api.MapPolyline;
-import net.daum.mf.map.api.MapView;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-
-import org.jetbrains.annotations.NotNull;
-
-import retrofit2.http.HEAD;
-
-import static android.view.View.VISIBLE;
+import java.util.HashMap;
 
 
-public class MainPage extends Fragment implements LoadMapDtrListener,AutoPermissionsListener
+public class MainPage extends Fragment implements LoadMapDtrListener, AutoPermissionsListener
         //implements MapView.MapViewEventListener
 {
     final static String TAG = "MainPage";
@@ -284,7 +268,7 @@ public class MainPage extends Fragment implements LoadMapDtrListener,AutoPermiss
             //   map.moveCamera(cameraUpdate);
         } */
         BigMapPage.GPSListener gpsListener = new BigMapPage.GPSListener(); // 10초마다위치갱신되게끔
-        long minTime = 1000;
+        long minTime = 500;
         float minDistance = 0;
         //manager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, minTime, minDistance, gpsListener);
         // manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, minTime, minDistance, gpsListener);
@@ -306,7 +290,7 @@ public class MainPage extends Fragment implements LoadMapDtrListener,AutoPermiss
                                                 showMyLocationMarker(); // 현재위치 보여주기
                                                 loadDtr(curPoint); // 도토리 보여주기
                                             }
-                                        }, 2000); // 1000 = 1초
+                                        }, 1000); // 1000 = 1초
 
 
         ImageButton mainMapExtendBtn = rootView.findViewById(R.id.mainMapExtendBtn);
@@ -429,70 +413,79 @@ public class MainPage extends Fragment implements LoadMapDtrListener,AutoPermiss
         map.clear();
         showMyLocationMarker();
 
-        ArrayList<LatLng> manyPins = new ArrayList<LatLng>();
-        //DB의 MapPoint 다 넣기 LatLng(latitude, longitude)
-        manyPins.add(new LatLng(37.73512333583128, 127.06135012282921));
-        manyPins.add(new LatLng(37.73651945074978, 127.0612405606333));
-        manyPins.add(new LatLng(37.73617747243228, 127.06364545969836));
-        manyPins.add(new LatLng( 37.7352838937455, 127.06131688927474));
-        manyPins.add(new LatLng(37.735869347144586, 127.0617996868873));
-        manyPins.add(new LatLng( 37.736997816721335, 127.06188551757396));
-
-        ArrayList<NearPin> nearPin = new ArrayList<NearPin>();
-        // 근사값 배열 구하기
-        for (int j = 0; j < manyPins.size(); j++) {
-            //DB의 MapPoint를 위경도로 반환
-            LatLng latLng = manyPins.get(j);
-            double latlat = latLng.latitude;
-            double longlong = latLng.longitude;
-
-            //기준값
-            LatLng latLng1 = point;
-            double latlat1 = latLng1.latitude;
-            double longlong1 = latLng1.longitude;
-
-            double earthRadius = 6371000; //meters
-            double dLat = Math.toRadians(latlat - latlat1);
-            double dLng = Math.toRadians(longlong - longlong1);
-            double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                    Math.cos(Math.toRadians(latlat1)) * Math.cos(Math.toRadians(latlat)) *
-                            Math.sin(dLng / 2) * Math.sin(dLng / 2);
-            double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-            double dist = (double) (earthRadius * c);
-            // String dist1 = Double.toString(dist);
-            //  Log.d ("배열", dist1);  // 여기까진 확인 OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
-            // double + MapPoint형 배열
-            nearPin.add(new NearPin(dist, manyPins.get(j)));
-        }
-
-        Collections.sort(nearPin, new Comparator<NearPin>() {
+        db.collection("contents")
+                .whereEqualTo("contentsType", 0)
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
-            public int compare(NearPin o1, NearPin o2) {
-                if (o1.getDistance() == o2.getDistance()) {
-                    return 0;
-                } else if (o1.getDistance() < o2.getDistance()) {
-                    return -1;
-                } else {
-                    return 1;
-                }
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()){
+                    ArrayList<NearPin> nearPin2 = new ArrayList<>();   // 거리차이, 위경도점(첫번째), 문서아이디
+                    for (QueryDocumentSnapshot document : task.getResult()){
+                        String contentsId = document.getId();
+                        ArrayList<HashMap> dtrLatLng = (ArrayList<HashMap>) document.get("dtrLatLng");
+                        // 도토리 배열 : [{latitude=37.422083928086955, longitude=-122.08573322743177}, {latitu... + null
 
+                        HashMap latLng = dtrLatLng.get(0);
+
+                        double latlat = (double) latLng.get("latitude");
+                        double longlong = (double) latLng.get("longitude");
+                        LatLng latLng2 = new LatLng(latlat, longlong);
+
+                        //기준값
+                        LatLng latLng1 = point;
+                        double latlat1 = latLng1.latitude;
+                        double longlong1 = latLng1.longitude;
+
+                        double earthRadius = 6371000; //meters
+                        double dLat = Math.toRadians(latlat - latlat1);
+                        double dLng = Math.toRadians(longlong - longlong1);
+                        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                                Math.cos(Math.toRadians(latlat1)) * Math.cos(Math.toRadians(latlat)) *
+                                        Math.sin(dLng / 2) * Math.sin(dLng / 2);
+                        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+                        double dist = (double) (earthRadius * c);
+                        // String dist1 = Double.toString(dist);
+                        //  Log.d ("배열", dist1);  // 여기까진 확인 OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+                        // double + MapPoint형 배열
+
+                        nearPin2.add(new NearPin(dist, latLng2, contentsId));
+                        //   dtrLatLng.get(0);
+                        Log.d("지도 DB", "문서 id : " + contentsId + "/ 거리: " +dist);
+                    }
+
+                    Collections.sort(nearPin2, new Comparator<NearPin>() {
+                        @Override
+                        public int compare(NearPin o1, NearPin o2) {
+                            if (o1.getDistance() == o2.getDistance()) {
+                                return 0;
+                            } else if (o1.getDistance() < o2.getDistance()) {
+                                return -1;
+                            } else {
+                                return 1;
+                            }
+
+                        }
+                    });
+
+                    // 핀 표시 -> 표시할 개수 선정
+                    for (int k=0; k<6; k++) {
+                        // DB에서 핀들의 정보 (이름, 하단팝업정보 등) 가져와야함)
+                        LatLng point1 = nearPin2.get(k).getPoint();
+                        MarkerOps1 = new MarkerOptions();
+                        MarkerOps1.position(point1);
+                        //    myLocationMarker.title("●내위치\n");
+                        //    myLocationMarker.snippet("●GPS로확인한위치");
+                        int[] dtrImageName= {R.drawable.acorn_number1, R.drawable.acorn_number2, R.drawable.acorn_number3, R.drawable.acorn_number4, R.drawable.acorn_number5, R.drawable.acorn_number6};
+                        MarkerOps1.icon(BitmapDescriptorFactory.fromResource(dtrImageName[k]));
+                        Marker1 = map.addMarker(MarkerOps1);
+
+                    }
+                }
             }
         });
 
-
-        for (int k=0; k<4; k++) {
-            // DB에서 핀들의 정보 (이름, 하단팝업정보 등) 가져와야함)
-            LatLng point1 = nearPin.get(k).getPoint();
-            MarkerOps1 = new MarkerOptions();
-            MarkerOps1.position(point1);
-            //    myLocationMarker.title("●내위치\n");
-            //    myLocationMarker.snippet("●GPS로확인한위치");
-            int[] dtrImageName= {R.drawable.acorn_number1, R.drawable.acorn_number2, R.drawable.acorn_number3, R.drawable.acorn_number4, R.drawable.acorn_number5, R.drawable.acorn_number6};
-            MarkerOps1.icon(BitmapDescriptorFactory.fromResource(dtrImageName[k]));
-            Marker1 = map.addMarker(MarkerOps1);
-
-        }
     }
+
 
     // 도토리 경로들 + 선 로딩
     @Override
@@ -501,81 +494,109 @@ public class MainPage extends Fragment implements LoadMapDtrListener,AutoPermiss
         map.clear();
         showMyLocationMarker();
 
-        ArrayList<LatLng> manyPins = new ArrayList<LatLng>();
-        //DB의 MapPoint 다 넣기 LatLng(latitude, longitude)
-        manyPins.add(new LatLng(37.73512333583128, 127.06135012282921));
-        manyPins.add(new LatLng(37.736145391876796, 127.0614203671098));
-        manyPins.add(new LatLng(37.73680720072044, 127.06154911313982));
-        manyPins.add(new LatLng( 37.73592478761425, 127.06283657343994));
-        manyPins.add(new LatLng(37.7362132699792, 127.06116287504977));
-        manyPins.add(new LatLng( 37.73567872823825, 127.06111995970643));
-
-        ArrayList<NearPin> nearPin = new ArrayList<NearPin>();
-        // 근사값 배열 구하기
-        for (int j = 0; j < manyPins.size(); j++) {
-            //DB의 MapPoint를 위경도로 반환
-            LatLng latLng = manyPins.get(j);
-            double latlat = latLng.latitude;
-            double longlong = latLng.longitude;
-
-            //기준값
-            LatLng latLng1 = point;
-            double latlat1 = latLng1.latitude;
-            double longlong1 = latLng1.longitude;
-
-            double earthRadius = 6371000; //meters
-            double dLat = Math.toRadians(latlat - latlat1);
-            double dLng = Math.toRadians(longlong - longlong1);
-            double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                    Math.cos(Math.toRadians(latlat1)) * Math.cos(Math.toRadians(latlat)) *
-                            Math.sin(dLng / 2) * Math.sin(dLng / 2);
-            double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-            double dist = (double) (earthRadius * c);
-            // String dist1 = Double.toString(dist);
-            //  Log.d ("배열", dist1);  // 여기까진 확인 OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
-            // double + MapPoint형 배열
-            nearPin.add(new NearPin(dist, manyPins.get(j)));
-        }
-
-        Collections.sort(nearPin, new Comparator<NearPin>() {
+        db.collection("contents")
+                .whereEqualTo("contentsType", 0)
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
-            public int compare(NearPin o1, NearPin o2) {
-                if (o1.getDistance() == o2.getDistance()) {
-                    return 0;
-                } else if (o1.getDistance() < o2.getDistance()) {
-                    return -1;
-                } else {
-                    return 1;
-                }
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()){
+                    ArrayList<NearPin> nearPin2 = new ArrayList<>();   // 거리차이, 위경도점(첫번째), 문서아이디
+                    for (QueryDocumentSnapshot document : task.getResult()){
+                        String contentsId = document.getId();
+                        ArrayList<HashMap> dtrLatLng = (ArrayList<HashMap>) document.get("dtrLatLng");
+                        // 도토리 배열 : [{latitude=37.422083928086955, longitude=-122.08573322743177}, {latitu... + null
 
+                        HashMap latLng = dtrLatLng.get(0);
+
+                        double latlat = (double) latLng.get("latitude");
+                        double longlong = (double) latLng.get("longitude");
+                        LatLng latLng2 = new LatLng(latlat, longlong);
+
+                        //기준값
+                        LatLng latLng1 = point;
+                        double latlat1 = latLng1.latitude;
+                        double longlong1 = latLng1.longitude;
+
+                        double earthRadius = 6371000; //meters
+                        double dLat = Math.toRadians(latlat - latlat1);
+                        double dLng = Math.toRadians(longlong - longlong1);
+                        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                                Math.cos(Math.toRadians(latlat1)) * Math.cos(Math.toRadians(latlat)) *
+                                        Math.sin(dLng / 2) * Math.sin(dLng / 2);
+                        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+                        double dist = (double) (earthRadius * c);
+                        // String dist1 = Double.toString(dist);
+                        //  Log.d ("배열", dist1);  // 여기까진 확인 OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+                        // double + MapPoint형 배열
+
+                        nearPin2.add(new NearPin(dist, latLng2, contentsId));
+                        //   dtrLatLng.get(0);
+                        Log.d("지도 DB", "문서 id : " + contentsId + "/ 거리: " +dist);
+                    }
+
+                    Collections.sort(nearPin2, new Comparator<NearPin>() {
+                        @Override
+                        public int compare(NearPin o1, NearPin o2) {
+                            if (o1.getDistance() == o2.getDistance()) {
+                                return 0;
+                            } else if (o1.getDistance() < o2.getDistance()) {
+                                return -1;
+                            } else {
+                                return 1;
+                            }
+
+                        }
+                    });
+
+                    // 핀 표시 + 선연결 -> 표시할 개수 선정
+                    for (int k=0; k<6; k++) {
+
+                        String documentId = nearPin2.get(k).getDocumentId();
+                        db.collection("contents").document(documentId)
+                                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    DocumentSnapshot document = task.getResult();
+                                    ArrayList<HashMap> dtrLatLngs = (ArrayList<HashMap>) document.get("dtrLatLng");
+
+                                    ArrayList<LatLng> PolyPoints = new ArrayList<>();
+
+                                    for(int l=0; l<dtrLatLngs.size(); l++) {
+                                        HashMap latLng = dtrLatLngs.get(l);
+                                        double latlat = (double) latLng.get("latitude");
+                                        double longlong = (double) latLng.get("longitude");
+                                        LatLng latLng2 = new LatLng(latlat, longlong);
+
+                                        //마커 표시
+                                        //  MarkerOps1 = new MarkrOptions();
+                                        MarkerOps1.position(latLng2);
+                                        //    myLocationMarker.title("●내위치\n");
+                                        //    myLocationMarker.snippet("●GPS로확인한위치");
+                                        MarkerOps1.icon(BitmapDescriptorFactory.fromResource(R.drawable.acorn2));
+                                        Marker1 = map.addMarker(MarkerOps1);
+                                        PolyPoints.add(latLng2);
+                                    }
+                                    PolylineOptions polylineOptions = new PolylineOptions();
+                                    polylineOptions.color(Color.argb(128, 255, 51, 0))
+                                            .width(7)
+                                            .geodesic(true);
+
+                                    for(int l=0; l<PolyPoints.size(); l++) {
+                                        polylineOptions
+                                                .add(PolyPoints.get(l));
+                                    }
+
+                                    Polyline polyline = map.addPolyline(polylineOptions);
+                                }
+                            }
+                        });
+
+
+                    }
+                }
             }
         });
-
-        ArrayList<LatLng> PolyPoints = new ArrayList<>();
-
-        for (int k=0; k<4; k++) {
-            // DB에서 핀들의 정보 (이름, 하단팝업정보 등) 가져와야함)
-            LatLng point1 = nearPin.get(k).getPoint();
-            MarkerOps2 = new MarkerOptions();
-            MarkerOps2.position(point1);
-            //    myLocationMarker.title("●내위치\n");
-            //    myLocationMarker.snippet("●GPS로확인한위치");
-            MarkerOps2.icon(BitmapDescriptorFactory.fromResource(R.drawable.acorn2));
-            Marker2 = map.addMarker(MarkerOps2);
-            PolyPoints.add(point1);
-
-        }
-        PolylineOptions polylineOptions = new PolylineOptions();
-        polylineOptions.color(Color.argb(128, 255, 51, 0))
-                .width(7)
-                .geodesic(true);
-
-        for(int l=0; l<PolyPoints.size(); l++) {
-            polylineOptions
-                    .add(PolyPoints.get(l));
-        }
-
-        Polyline polyline = map.addPolyline(polylineOptions);
 
     }
 
