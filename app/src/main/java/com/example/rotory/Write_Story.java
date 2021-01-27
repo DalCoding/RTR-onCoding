@@ -30,7 +30,9 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -39,6 +41,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.rotory.Adapter.WriteStoryImageAdapter;
 import com.example.rotory.Interface.OnContentsItemClickListener;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.ktx.Firebase;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
@@ -53,63 +64,88 @@ import java.util.Queue;
 
 public class Write_Story extends AppCompatActivity  {
     private final String TAG = "Write_Story";
+
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    FirebaseUser user;
+
     Button addbtn;
     Button mainbtn;
+    Button checkmarkBtn;
+
     ImageButton DeleteBtn;
     RecyclerView recyclerView;
     ImageView titleImage;
+    EditText writeStoryEditText;
+    EditText writeStoryLocationEditText;
+    EditText writeStoryImageCommentEditText;
+    EditText writeStoryTitle;
+    Spinner spinner;
+
+
     int CODE_ALBUM_REQUEST = 111;
     OnContentsItemClickListener listener;
-    Spinner spinner;
+
     public int imagePosition;
     //private ArrayAdapter spinnerAdapter;
     ArrayList<Uri> uriList = new ArrayList<>();
+
     WriteStoryImageAdapter adapter = new WriteStoryImageAdapter(uriList, Write_Story.this, listener);
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+    Map<String, Bitmap> bitmapImageList = new HashMap<>();
+    Map<String, Object> stringImageList = new HashMap<>();
+    Map<String, String>imageComment = new HashMap<>();
+
+    Map<String, Object> imageList = new HashMap<>();
+    Map<String, Object> DBStoryContents = new HashMap<>();
+
+    String mainImage;
+    String prefixId;
+    String storyaddress;
+    String title;
+    String article;
+
+    AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.write_story_page);
+
+        user = mAuth.getCurrentUser(); //관리자에게 유저 권한을 받아옴.
+
         titleImage = findViewById(R.id.writeStoryMainImageView);
         mainbtn = findViewById(R.id.writeStorySetMainImageBtn);
         DeleteBtn = findViewById(R.id.writeStorySetDeleteImageBtn);
         spinner = findViewById(R.id.writeStoryPreFixSpinner);
         addbtn= findViewById(R.id.writeStoryImageAddBtn);
         recyclerView= findViewById(R.id.writeStoryImageListRecyclerView);
-//        LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
-//        mLayoutManager.setReverseLayout(true);
-//        mLayoutManager.setStackFromEnd(true);
+
+        writeStoryImageCommentEditText = findViewById(R.id.writeStoryImageCommentEditText);
+        writeStoryEditText = findViewById(R.id.writeStoryEditText);
+        writeStoryLocationEditText = findViewById(R.id.writeStoryLocationEditText);
+        writeStoryTitle = findViewById(R.id.writeStoryTitle);
+
+       storyaddress = writeStoryLocationEditText.getText().toString();
+       title = writeStoryTitle.getText().toString();
+       article = writeStoryEditText.getText().toString();
+
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 
+        dialogBuilder.setTitle("다람쥐 이야기 작성");
 
-//        Spinner spinner =findViewById(R.id.writeStoryPreFixSpinner);
-//        spinnerAdapter = new ArrayAdapter(this,R.layout.support_simple_spinner_dropdown_item, );
-//        ArrayList<String> spinnerList = new ArrayList<>();
-//        spinner.setAdapter(spinnerAdapter);
-//
-//        spinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Toast.makeText( Write_Story.this,"선택 " + spinner.getItemAtPosition(position),Toast.LENGTH_SHORT).show();
-//            }
-//        });
 
-//        Spinner spinner = findViewById(R.id.writeStoryPreFixSpinner);
-//        try {
-//            Field popup = Spinner.class.getDeclaredField("mPopup");
-//            ListPopupWindow popupWindow = (ListPopupWindow) popup.get(spinner);
-//            popupWindow.setHeight(500);
-//        } catch (IllegalAccessException e) {
-//            e.printStackTrace();
-//        } catch (NoSuchFieldException e) {
-//            e.printStackTrace();
-//        }
 
-        //String prefixId = spinner.getSelectedItemPosition().toString();  //말머리 String
 
-        String prefixId = spinner.getSelectedItem().toString(); //말머리 String
+
+       prefixId = spinner.getSelectedItem().toString(); //말머리 String
+
+
+
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
             @Override
@@ -124,13 +160,6 @@ public class Write_Story extends AppCompatActivity  {
                 Log.d(TAG, "NOSELECT");
                 // TODO Auto-generated method stub
 
-            }
-        });
-        mainbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                Uri uri = uriList.set();
-//                int position = Integer.parseInt(Uri,toString());
             }
         });
 
@@ -166,6 +195,9 @@ public class Write_Story extends AppCompatActivity  {
                     Log.d(TAG, "사진 전에꺼 보여주기 " + imagePosition);
                 }
 //                Log.d(TAG, "사진 삭제" + imagePosition);
+
+
+
             }
         });
                mainbtn.setOnClickListener(new View.OnClickListener() {
@@ -173,28 +205,110 @@ public class Write_Story extends AppCompatActivity  {
             @Override
             public void onClick(View v) {
                 Uri uri = adapter.getItem(imagePosition);
-                String mainImage = mainImageString(uri);         //메인이미지 스트링바꿈
-//
-//                adapter.getItem(imagePosition);
-//                Drawable drawable = getResources().getDrawable(R.drawable.mainimageselect);
-//
-//
-//
-//                Log.d(TAG, "메인 이미지 확인" );
+               mainImage = mainImageString(uri);         //메인이미지 스트링바꿈
+
+
+            }
+        });
+
+        checkmarkBtn = findViewById(R.id.checkmarkBtn);
+        checkmarkBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (isValidate()){
+                    setDB();
+                } else {
+                    Toast.makeText(getApplicationContext(), "필수 입력 사항을 입력해주세요.", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
 
 
 
+
+
+
     } //end of onCreate]
-//
-//    private Drawable mainImageDrawable() {
-//
-//        Drawable drawable = getResources().getDrawable(R.drawable.mainimageselect);
-//
-//
-//        return drawable;
-//    }
+
+    private boolean isValidate() {
+
+        storyaddress = writeStoryLocationEditText.getText().toString();
+        title = writeStoryTitle.getText().toString();
+
+         if (title.equals("")||title == null){
+            return false;
+        } else if (mainImage.equals("") || mainImage == null) {
+            return false;
+        } else if (storyaddress.equals("") || storyaddress == null) {
+            return false;
+        }
+
+
+        return true;
+
+
+    }
+
+    private void setDB() {
+        imageList = changeUritoBITmap();
+
+
+        ArrayList<String> address = new ArrayList<>();
+        address.add(storyaddress);
+
+        DBStoryContents.put("smallImage", imageList);
+        DBStoryContents.put("titleImage", mainImage);
+        DBStoryContents.put("imageComment", imageComment);
+        DBStoryContents.put("prefixId", prefixId);
+        DBStoryContents.put("address", address);
+        DBStoryContents.put("title", title);
+        DBStoryContents.put("article", article);
+
+        setUserDB();
+    }
+
+    private void setUserDB() {
+        db.collection("person").whereEqualTo("userId", user.getEmail())
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                Log.d(TAG,"데이터 받아오기 시작");
+                if (task.isSuccessful()){
+                    for (QueryDocumentSnapshot pDocument : task.getResult()){
+                        Log.d(TAG,"pDocument 존재 확인" + pDocument.getData());
+                        String userName = pDocument.get("userName").toString();
+                        String userLevel =pDocument.get("userLevel").toString();
+                        String uid = pDocument.get("uid").toString();
+
+                        DBStoryContents.put("userName",userName);
+                        DBStoryContents.put("userLevel", userLevel);
+                        DBStoryContents.put("uid", uid);
+
+                        saveDB(DBStoryContents);
+
+                    }
+
+                }
+            }
+        });
+
+    }
+
+    private void saveDB(Map<String, Object> dbStoryContents) {
+        db.collection("contents").add(dbStoryContents).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentReference> task) {
+
+                Log.d(TAG, "정보제대로 들어갔는지 확인 : " +dbStoryContents);
+
+                Intent mainIntent = new Intent(Write_Story.this, MainActivity.class);
+                mainIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP|Intent.FLAG_ACTIVITY_NEW_TASK); //SINGLE_TOP는 쌓아주는것(돌고돌게)을 전것을 제거 해주고, NEW_TASK는 다시 시작해줌.
+                startActivity(mainIntent);
+            }
+        });
+
+    }
 
 
     private String mainImageString(Uri uri) { //메인 이미지 스트링 바꿈.
@@ -219,8 +333,7 @@ public class Write_Story extends AppCompatActivity  {
 
 
     private Map<String, Object> changeUritoBITmap() {
-        Map<String, Bitmap> bitmapImageList = new HashMap<>();
-        Map<String, Object> stringImageList = new HashMap<>();
+
         Bitmap bitmap = null;
         for (int i =0; i <uriList.size(); i++){  /// uri를 Bitmap으로 변환
             Uri uri = uriList.get(i);
@@ -322,9 +435,8 @@ public class Write_Story extends AppCompatActivity  {
         }
 
         //end of onActivityResult
-        Map<Integer, String>imageComment = new HashMap<>();
-        EditText editText;
-        editText = findViewById(R.id.writeStoryImageCommentEditText);
+
+
 
         recyclerView.setAdapter(adapter);
         adapter.setOnItemClickListener(new OnContentsItemClickListener() {
@@ -335,7 +447,7 @@ public class Write_Story extends AppCompatActivity  {
                 Uri uri = adapter.getItem(position);
                 titleImage.setImageURI(uri);
                 imagePosition = position;
-                editText.setText(imageComment.get(position));
+                writeStoryImageCommentEditText.setText(imageComment.get(String.valueOf(position)));
                 Log.d(TAG,"작동확인" + imageComment.get(position));
 
 
@@ -343,7 +455,7 @@ public class Write_Story extends AppCompatActivity  {
 
         });
 
-        editText.addTextChangedListener(new TextWatcher() {
+        writeStoryImageCommentEditText.addTextChangedListener(new TextWatcher() {
             // edittext 마다 다르게 코멘트
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -358,7 +470,7 @@ public class Write_Story extends AppCompatActivity  {
             @Override
             public void afterTextChanged(Editable editable) {
                 if (editable.toString().length() > 0 && !editable.toString().equals("")){
-                    imageComment.put(imagePosition, editable.toString());
+                    imageComment.put(String.valueOf(imagePosition), editable.toString());
 
                 }else{
                 }
