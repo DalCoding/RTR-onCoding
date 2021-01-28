@@ -141,7 +141,7 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
         pageTitleTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), LoadStoryItem.class);
+                Intent intent = new Intent(getApplicationContext(), SearchPage1.class);
                 startActivity(intent);
 
             }

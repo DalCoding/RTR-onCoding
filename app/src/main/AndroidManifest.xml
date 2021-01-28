@@ -90,6 +90,7 @@
         <activity android:name=".Write_Story"
             android:windowSoftInputMode="adjustPan"/>
         <activity android:name=".WriteContents.TagSelectDialog" android:theme="@android:style/Theme.Dialog"/>
+        <activity android:name=".SearchPage1"/>
 
 
         <!--        <activity android:name=".MainActivity"/>-->

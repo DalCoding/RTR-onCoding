@@ -16,12 +16,11 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <androidx.core.widget.NestedScrollView
+            <RelativeLayout
                 android:id="@+id/story_nestedscrollview"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:fillViewport="true">
+                android:layout_weight="1">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -31,8 +30,9 @@
                     <LinearLayout
                         android:id="@+id/story_linerlayout"
                         android:layout_width="match_parent"
-                        android:layout_height="40sp"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
                         android:background="@color/beige"
                         android:gravity="center_vertical"
                         android:orientation="horizontal">
@@ -40,11 +40,13 @@
                         <TextView
                             android:id="@+id/squstory"
                             android:layout_width="100dp"
-                            android:layout_height="20dp"
+                            android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
                             android:layout_marginLeft="10dp"
+                            android:layout_marginTop="10dp"
                             android:layout_marginEnd="30dp"
                             android:layout_marginRight="30dp"
+                            android:layout_marginBottom="10dp"
                             android:layout_weight="1"
                             android:text="다람쥐 이야기"
                             android:textColor="#442C2E"
@@ -68,14 +70,13 @@
                         android:layout_margin="10dp" />
 
                 </LinearLayout>
-            </androidx.core.widget.NestedScrollView>
+            </RelativeLayout>
 
-            <androidx.core.widget.NestedScrollView
+            <RelativeLayout
                 android:id="@+id/road_nestedscrollview"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:fillViewport="true">
+                android:layout_weight="1">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -85,7 +86,7 @@
                     <LinearLayout
                         android:id="@+id/road_linerlayout"
                         android:layout_width="match_parent"
-                        android:layout_height="40sp"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:background="@color/beige"
                         android:gravity="center_vertical"
@@ -94,11 +95,13 @@
                         <TextView
                             android:id="@+id/dtlroad"
                             android:layout_width="100dp"
-                            android:layout_height="20dp"
+                            android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
                             android:layout_marginLeft="10dp"
+                            android:layout_marginTop="10dp"
                             android:layout_marginEnd="30dp"
                             android:layout_marginRight="30dp"
+                            android:layout_marginBottom="10dp"
                             android:layout_weight="1"
                             android:text="도토리 길"
                             android:textColor="#442C2E"
@@ -122,7 +125,7 @@
                         android:layout_margin="10dp" />
 
                 </LinearLayout>
-            </androidx.core.widget.NestedScrollView>
+            </RelativeLayout>
         </LinearLayout>
 
     </RelativeLayout>
