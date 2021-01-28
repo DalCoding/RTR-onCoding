@@ -35,7 +35,7 @@
 
                 <TextView
                     android:id="@+id/roadtitle"
-                    android:layout_width="30dp"
+                    android:layout_width="match_parent"
                     android:layout_height="20dp"
                     android:layout_marginStart="10dp"
                     android:layout_marginLeft="10dp"
@@ -45,7 +45,7 @@
 
                 <TextView
                     android:id="@+id/roadtime"
-                    android:layout_width="60dp"
+                    android:layout_width="match_parent"
                     android:layout_height="20dp"
                     android:layout_marginStart="10dp"
                     android:layout_marginLeft="10dp"
@@ -55,7 +55,7 @@
 
                 <TextView
                     android:id="@+id/road_writetime"
-                    android:layout_width="60dp"
+                    android:layout_width="match_parent"
                     android:layout_height="20dp"
                     android:layout_marginStart="10dp"
                     android:layout_marginLeft="10dp"

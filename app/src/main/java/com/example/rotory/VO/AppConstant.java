@@ -7,6 +7,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Handler;
 import android.util.Log;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
@@ -34,6 +35,9 @@ import java.io.FileInputStream;
 import java.text.SimpleDateFormat;
 import java.util.Map;
 
+import static android.content.Context.INPUT_METHOD_SERVICE;
+import static androidx.core.content.ContextCompat.getSystemService;
+
 public class AppConstant {
     private StorageReference storageReference = FirebaseStorage.getInstance().getReference();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -54,6 +58,8 @@ public class AppConstant {
     Context mContext;
     ProgressDialogs progressDialogs;
     MyPage myPage;
+
+    public InputMethodManager keyboardManager;
 
     public AppConstant() {
     }
@@ -139,9 +145,6 @@ public class AppConstant {
             }
         });
     }
-
-
-
 
     public static String getKey(Map<String, Object> map, Object value){
         for (String key : map.keySet()){

@@ -179,6 +179,48 @@
         </FrameLayout>
     </androidx.core.widget.NestedScrollView>
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/mainFloatingBtn2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="80dp"
+        android:background="@drawable/ripple_custom"
+        android:backgroundTint="@color/beige"
+        android:clickable="true"
+        app:backgroundTint="@color/beige"
+        app:borderWidth="1dp"
+        app:srcCompat="@drawable/add_icon" />
+
+    <ImageButton
+        android:id="@+id/popFloatingBtn2"
+        android:layout_width="80dp"
+        android:layout_height="60dp"
+        android:layout_gravity="bottom|right"
+        android:layout_marginRight="100dp"
+        android:layout_marginBottom="145dp"
+        android:adjustViewBounds="false"
+        android:background="@drawable/brownlinebox"
+        android:baselineAlignBottom="false"
+        android:src="@drawable/roadicon_small"
+        android:visibility="visible" />
+
+    <ImageButton
+        android:id="@+id/pop2FloatingBtn2"
+        android:layout_width="80dp"
+        android:layout_height="60dp"
+        android:layout_gravity="bottom|right"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="145dp"
+        android:layout_toLeftOf="@id/popFloatingBtn"
+        android:adjustViewBounds="false"
+        android:background="@drawable/brownlinebox"
+        android:baselineAlignBottom="false"
+        android:clickable="true"
+        android:src="@drawable/storyicon"
+        android:visibility="visible" />
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_appBar"
         android:layout_width="match_parent"

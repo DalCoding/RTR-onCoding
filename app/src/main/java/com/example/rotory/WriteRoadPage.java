@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,6 +22,7 @@ import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -29,6 +31,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -123,18 +126,30 @@ public class WriteRoadPage extends AppCompatActivity implements OnMapReadyCallba
     Boolean isMap = false;
 
     WriteMapPage fragment;
+    NestedScrollView writeRoadContainer;
 
     ArrayList<String> dtrName = new ArrayList<>();
     ArrayList<LatLng> dtrLatLng = new ArrayList<>();
     ArrayList<LatLng> PolyPoints = new ArrayList<>();
     ArrayList<String> dtrAddress = new ArrayList<>();
 
+    private InputMethodManager keyboardManager;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.write_road_page);
         user = mAuth.getCurrentUser();
+
+        keyboardManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+
+        writeRoadContainer = findViewById(R.id.writeRoadContainer);
+        writeRoadContainer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                keyboardManager.hideSoftInputFromWindow(writeRoadReview.getWindowToken(),0);
+            }
+        });
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.writeRoadMap);
@@ -472,8 +487,13 @@ public class WriteRoadPage extends AppCompatActivity implements OnMapReadyCallba
         }else if (writeRoadHour.getText().toString().length()<1
                 && writeRoadMin.getText().toString().length() <1) {
             return false;
+        }else if (dtrName.size() == 0 || dtrName.size() < 1){
+            return false;
+        }else if (dtrLatLng == null || dtrLatLng.size() < 1){
+            return false;
+        }else if (dtrAddress.size() == 0 || dtrAddress.size() <1) {
+            return false;
         }
-
         return true;
     }
 

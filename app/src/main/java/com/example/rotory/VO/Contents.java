@@ -1,8 +1,11 @@
 package com.example.rotory.VO;
 
+import com.google.type.LatLng;
+
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 public class Contents {
@@ -24,24 +27,33 @@ public class Contents {
     String isPartner;
     int dtrRating;
     String ratingComment;
-    ArrayList dtrName;
-    ArrayList dtrLatLng;
+    ArrayList<String> dtrName;
+    ArrayList<Object> dtrLatLng;
     String prefix;
-    ArrayList address;
+    ArrayList<String> address;
     String titleImage;
-    ArrayList<String> imageComment;
+    Map<String,String> imageComment;
     String article;
     int isPublic;
-    Date writeDate;
-    Date modifiedDate;
+    String writeDate;
+    String modifiedDate;
     String scrapped;
-    Map<String, String> smallImage;
+    Map<String, Object> smallImage;
     String userLevel;
     String userName;
     String liked;
 
 
-    public Contents() { }
+    public Contents() {
+    }
+
+    public Contents(String title, String tag1, String hour, String min, String writeDate) {
+        this.title = title;
+        this.tag1 = tag1;
+        this.hour = hour;
+        this.min = min;
+        this.writeDate = writeDate;
+    }
 
     public Contents(int contentsType, String title, String titleImage, String article, String userLevel, String userName, String liked) {
         this.contentsType = contentsType;
@@ -51,48 +63,6 @@ public class Contents {
         this.userLevel = userLevel;
         this.userName = userName;
         this.liked = liked;
-    }
-
-    public Contents(int contentsType, String uid, String title, String tag1, String tag2, String tag3, String tag4,
-                    String tag5, String tag6, String tag7, String tag8, String tag9, String tag10, String hour, String min,
-                    String isPartner, int dtrRating, String ratingComment, ArrayList dtrName, ArrayList dtrLatLng, String prefix,
-                    ArrayList address, String titleImage, ArrayList<String> imageComment, String article, int isPublic, Date writeDate,
-                    Date modifiedDate, String scrapped, Map<String, String> smallImage, String userLevel, String userName, String liked) {
-
-        this.contentsType = contentsType;
-        this.uid = uid;
-        this.title = title;
-        this.tag1 = tag1;
-        this.tag2 = tag2;
-        this.tag3 = tag3;
-        this.tag4 = tag4;
-        this.tag5 = tag5;
-        this.tag6 = tag6;
-        this.tag7 = tag7;
-        this.tag8 = tag8;
-        this.tag9 = tag9;
-        this.tag10 = tag10;
-        this.hour = hour;
-        this.min = min;
-        this.isPartner = isPartner;
-        this.dtrRating = dtrRating;
-        this.ratingComment = ratingComment;
-        this.dtrName = dtrName;
-        this.dtrLatLng = dtrLatLng;
-        this.prefix = prefix;
-        this.address = address;
-        this.titleImage = titleImage;
-        this.imageComment = imageComment;
-        this.article = article;
-        this.isPublic = isPublic;
-        this.writeDate = writeDate;
-        this.modifiedDate = modifiedDate;
-        this.scrapped = scrapped;
-        this.smallImage = smallImage;
-        this.userLevel = userLevel;
-        this.userName = userName;
-        this.liked = liked;
-
     }
 
     public int getContentsType() {
@@ -239,21 +209,22 @@ public class Contents {
         this.ratingComment = ratingComment;
     }
 
-    public ArrayList getDtrName() {
+    public ArrayList<String> getDtrName() {
         return dtrName;
     }
 
-    public void setDtrName(ArrayList dtrName) {
+    public void setDtrName(ArrayList<String> dtrName) {
         this.dtrName = dtrName;
     }
 
-    public ArrayList getDtrLatLng() {
+    public ArrayList<Object> getDtrLatLng() {
         return dtrLatLng;
     }
 
-    public void setDtrLatLng(ArrayList dtrName) {
+    public void setDtrLatLng(ArrayList<Object> dtrLatLng) {
         this.dtrLatLng = dtrLatLng;
     }
+
     public String getPrefix() {
         return prefix;
     }
@@ -262,11 +233,11 @@ public class Contents {
         this.prefix = prefix;
     }
 
-    public ArrayList getAddress() {
+    public ArrayList<String> getAddress() {
         return address;
     }
 
-    public void setAddress(ArrayList address) {
+    public void setAddress(ArrayList<String> address) {
         this.address = address;
     }
 
@@ -276,14 +247,6 @@ public class Contents {
 
     public void setTitleImage(String titleImage) {
         this.titleImage = titleImage;
-    }
-
-    public ArrayList<String> getImageComment() {
-        return imageComment;
-    }
-
-    public void setImageComment(ArrayList<String> imageComment) {
-        this.imageComment = imageComment;
     }
 
     public String getArticle() {
@@ -302,19 +265,19 @@ public class Contents {
         this.isPublic = isPublic;
     }
 
-    public Date getWriteDate() {
+    public String getWriteDate() {
         return writeDate;
     }
 
-    public void setWriteDate(Date writeDate) {
+    public void setWriteDate(String writeDate) {
         this.writeDate = writeDate;
     }
 
-    public Date getModifiedDate() {
+    public String getModifiedDate() {
         return modifiedDate;
     }
 
-    public void setModifiedDate(Date modifiedDate) {
+    public void setModifiedDate(String modifiedDate) {
         this.modifiedDate = modifiedDate;
     }
 
@@ -326,11 +289,15 @@ public class Contents {
         this.scrapped = scrapped;
     }
 
-    public Map<String, String> getSmallImage() {
+    public void setImageComment(Map<String, String> imageComment) {
+        this.imageComment = imageComment;
+    }
+
+    public Map<String, Object> getSmallImage() {
         return smallImage;
     }
 
-    public void setSmallImage(Map<String, String> smallImage) {
+    public void setSmallImage(Map<String, Object> smallImage) {
         this.smallImage = smallImage;
     }
 

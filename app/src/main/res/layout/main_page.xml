@@ -21,7 +21,9 @@
                 android:layout_centerHorizontal="true"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="20dp"
-                android:background="@drawable/search_radius">
+                android:background="@drawable/search_radius"
+                android:focusable="true"
+                android:focusableInTouchMode="true">
 
                 <EditText
                     android:id="@+id/mainSearchEdit"
@@ -180,6 +182,7 @@
         android:background="@drawable/ripple_custom"
         android:baselineAlignBottom="true"
         android:clickable="true"
+        android:visibility="invisible"
         app:backgroundTint="#EFEBDA"
         app:borderWidth="1dp"
         app:srcCompat="@drawable/add_icon" />
@@ -194,11 +197,11 @@
         android:layout_marginBottom="100dp"
         android:layout_toLeftOf="@id/popFloatingBtn"
         android:adjustViewBounds="false"
-        android:background="@drawable/fragment_lines"
+        android:background="@drawable/brownlinebox"
         android:baselineAlignBottom="false"
         android:clickable="true"
-        android:src="@drawable/favorite_icon"
-        android:visibility="visible" />
+        android:src="@drawable/storyicon"
+        android:visibility="invisible" />
 
     <ImageButton
         android:id="@+id/popFloatingBtn"
@@ -209,10 +212,10 @@
         android:layout_marginRight="20dp"
         android:layout_marginBottom="100dp"
         android:adjustViewBounds="false"
-        android:background="@drawable/fragment_lines"
+        android:background="@drawable/brownlinebox"
         android:baselineAlignBottom="false"
         android:clickable="true"
-        android:src="@drawable/add_icon"
-        android:visibility="visible" />
+        android:src="@drawable/roadicon_small"
+        android:visibility="invisible" />
 
 </RelativeLayout>
