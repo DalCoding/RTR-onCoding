@@ -700,7 +700,7 @@ public class StoryContentsPage extends Fragment {
         ArrayList<Bitmap> bitmapImageList = new ArrayList<>();
         for (int i = 0; i < stringImageMap.size(); i ++){
             String key = "image"+(i+1);
-            Bitmap imageBitmap = StringToBitmap(String.valueOf(stringImageMap.get(key)));
+            Bitmap imageBitmap = appConstant.StringToBitmap(String.valueOf(stringImageMap.get(key)));
             bitmapImageList.add(imageBitmap);
         }
 
@@ -710,20 +710,6 @@ public class StoryContentsPage extends Fragment {
         imageAdapter = new StoryImageAdapter(bitmapImageList, getContext(),imageListener);
         scontentsThumbnailRView.setAdapter(imageAdapter);
 
-    }
-
-    public Bitmap StringToBitmap(String encodedString){
-        try {
-            byte[] enCodeBytes = new byte[0];
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                enCodeBytes = Base64.getDecoder().decode(encodedString);
-            }
-            Bitmap bitmap = BitmapFactory.decodeByteArray(enCodeBytes,0,enCodeBytes.length);
-            return bitmap;
-        }catch (Exception e){
-            e.getMessage();
-            return null;
-        }
     }
 
     // 사용자의 각 사용자행동리스트에서 해당 글을 저장했는지 여부를 확인할때,

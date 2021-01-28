@@ -1,6 +1,7 @@
 package com.example.rotory.userActivity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,6 +24,7 @@ import com.example.rotory.MainPage;
 import com.example.rotory.MyPage;
 import com.example.rotory.R;
 import com.example.rotory.Theme.ThemePage;
+import com.example.rotory.VO.AppConstant;
 import com.example.rotory.account.LogInActivity;
 import com.example.rotory.account.SignUpActivity;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
@@ -63,6 +65,8 @@ public class MyLikeActivity extends AppCompatActivity {
     private FirestoreRecyclerAdapter likedAdapter;
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseFirestore db;
+
+    AppConstant appConstant = new AppConstant();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -186,21 +190,33 @@ public class MyLikeActivity extends AppCompatActivity {
             TextView myLikeKindTextView = view.findViewById(R.id.myLikeKindTextView);
             TextView myLikeTagTextView = view.findViewById(R.id.myLikeTagTextView);
             TextView myLikeTitleTextView = view.findViewById(R.id.myLikeTitleTextView);
+
             String contentsType = getContentsType(items.getContentsType());
-            myLikeKindTextView.setText(contentsType);
-            if (items.getTag1() == null || items.getTag1().equals("")){
-                myLikeTagTextView.setText("");
-            }else {
-                myLikeTagTextView.setText(items.getTag1());
-            }
+
             myLikeTitleTextView.setText(items.getTitle());
+            myLikeKindTextView.setText(contentsType);
+            if (items.contentsType == 0) {
+                if (items.getTag1() == null || items.getTag1().equals("")) {
+                    myLikeTagTextView.setText("");
+                } else {
+                    myLikeTagTextView.setText(items.getTag1());
+                    appConstant.getThemeImage(items.getTag1(), myLikePreImg, getApplicationContext());
+                }
+            }else if (items.contentsType == 1){
+                myLikeTagTextView.setText("");
+                String titleImage = items.getTitleImage();
+                Log.d(TAG,titleImage);
+                Bitmap titleImageBitmap = appConstant.StringToBitmap(items.getTitleImage());
+                Log.d(TAG,titleImageBitmap.toString());
+                myLikePreImg.setImageBitmap(titleImageBitmap);
+
+            }
            //이미지 저장하는 메서드 완성한 후 이미지 불러오기
             // myLikePreImg.setImageBitmap();
-
-
             //myFavoriteImg.setImageURI(Uri.parse(uri));
 
         }
+
 
     }
 
@@ -217,22 +233,6 @@ public class MyLikeActivity extends AppCompatActivity {
 
 
     //다람쥐 레벨용 이미지는 프로그램 내부에 넣어놓고, 유저레벨애 따라 불러서 사용
-    private int getUserLevelImage(String userLevel) {
-        switch (userLevel){
-            case "어린다람쥐":
-                return R.drawable.level2;
-            case "학생다람쥐":
-                return R.drawable.level3;
-            case "어른다람쥐" :
-                return R.drawable.level4;
-            case "박사다람쥐" :
-                return R.drawable.level5;
-            case "다람쥐의 신":
-                return R.drawable.level6;
-            default:
-                return R.drawable.level1;
-        }
-    }
 
 //하단바 설정
     public void setBottomNavigation(BottomNavigationView bottomNavigation, boolean isSignIn, int loginCode, MainPage mainPage, ThemePage themePage) {

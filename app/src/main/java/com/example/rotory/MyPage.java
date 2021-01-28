@@ -304,6 +304,7 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
                         Intent MainIntent= new Intent(getApplicationContext(), MainActivity.class);
                         MainIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP|Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(MainIntent);
+                        finish();
                         bottomNavigation.setVisibility(View.VISIBLE);
                         setTabUnderBar(0);
                         return  true;
@@ -543,7 +544,7 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
             TextView myScrapId;
 
 
-            //     ImageView myScrapImg = findViewById(R.id.myScrabImg);//myScrapImg.setAlpha(50);
+            ImageView myScrapImg = itemView.findViewById(R.id.myScrabImg);//myScrapImg.setAlpha(50);
             myScrapTitle = itemView.findViewById(R.id.myScrabTitle);
             //     TextView myScrapSave = findViewById(R.id.myScrabSave);
             myScrapPlace = itemView.findViewById(R.id.myScrabPlace);
@@ -554,6 +555,27 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
             //  myScrapSave.setText(item.getSavedDate());
             myScrapPlace.setText(item.getContentsAddress());
             myScrapId.setText(item.getContentsId());
+
+            if (item.contentsType == 0) {
+                if (item.getTag1() != null) {
+                    appConstant.getThemeImage(item.getTag1(), myScrapImg, getApplicationContext());
+                }
+
+            }else if (item.contentsType == 1){
+
+                String titleImage = item.getTitleImage();
+                Log.d(TAG,titleImage);
+                if(titleImage.equals("2131230836")){
+
+                }else {
+                    Bitmap titleImageBitmap = appConstant.StringToBitmap(titleImage);
+                    Log.d(TAG, titleImageBitmap.toString());
+                    myScrapImg.setMinimumWidth(120);
+                    myScrapImg.setMinimumHeight(100);
+                    myScrapImg.setImageBitmap(titleImageBitmap);
+                }
+
+            }
 
 
 //Title, Article, ContentsAddress, ContentsType, TitleImage , ContentsId, , SavedDate, Uid
@@ -673,15 +695,7 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
                         getProfileImg(userEmail, myProfileImg);
                     }
                 }, 2000);
-       //     myProfileImg.setImageBitmap(bitmap);
 
-        /*    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.PNG, 40, baos);
-            byte[] bytes = baos.toByteArray();
-            String temp = Base64.encodeToString(bytes, Base64.DEFAULT);
-
-            Toast.makeText(getApplicationContext(), temp, Toast.LENGTH_SHORT).show(); */
-                // String DB로 보내기
             }
         }
     }
@@ -782,7 +796,7 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
 
                         Query query = db.collection("person")
                                 .document(personId).collection("myScrap")
-                                .orderBy("savedDate", Query.Direction.ASCENDING).limit(8);
+                                .orderBy("savedDate", Query.Direction.DESCENDING).limit(8);
 
                         FirestoreRecyclerOptions<Scrap> options = new FirestoreRecyclerOptions.Builder<Scrap>()
                                 .setQuery(query, Scrap.class)

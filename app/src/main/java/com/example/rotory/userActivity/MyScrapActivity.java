@@ -105,6 +105,7 @@ public class MyScrapActivity extends AppCompatActivity {
                             for (QueryDocumentSnapshot pDocument : task.getResult()) {
                                 Query query = db.collection("person")
                                         .document(pDocument.getId()).collection("myScrap")
+                                        .whereNotEqualTo("savedDate","")
                                         .orderBy("savedDate", Query.Direction.DESCENDING);
 
                                 Log.d(TAG, "다큐먼트 아이디" + pDocument.getId());
@@ -174,7 +175,7 @@ public class MyScrapActivity extends AppCompatActivity {
                 contentsType = "도토리 길";
             }
 
-            Log.d(TAG, scrap.getTitle());
+          //  Log.d(TAG, scrap.getTitle());
             db.collection("person")
                     .whereEqualTo("userId",user.getEmail())
                     .get()

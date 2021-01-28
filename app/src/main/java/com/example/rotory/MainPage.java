@@ -273,25 +273,25 @@ public class MainPage extends Fragment implements LoadMapDtrListener, AutoPermis
         //manager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, minTime, minDistance, gpsListener);
         // manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, minTime, minDistance, gpsListener);
 
-        Handler mHandler = new Handler();
-                                        mHandler.postDelayed(new Runnable() {
-                                            public void run() {
-                                                // 3초 후에 현재위치를 받아오도록 설정 , 바로 시작 시 에러납니다.
+        /*Handler mHandler = new Handler();
+        mHandler.postDelayed(new Runnable() {
+            public void run() {
+                // 3초 후에 현재위치를 받아오도록 설정 , 바로 시작 시 에러납니다.
 
-                                                @SuppressLint("MissingPermission") Location location = manager.getLastKnownLocation(locationProvider);
+                @SuppressLint("MissingPermission") Location location = manager.getLastKnownLocation(locationProvider);
 
-                                                Double latitude = location.getLatitude();
-                                                Double longitude = location.getLongitude();
-                                                String message = "내위치-> Latitude : "+ latitude + "\nLongitude:"+ longitude;
-                                                Log.d("Map", message);
+                Double latitude = location.getLatitude();
+                Double longitude = location.getLongitude();
+                String message = "내위치-> Latitude : "+ latitude + "\nLongitude:"+ longitude;
+                Log.d("Map", message);
 
-                                                showCurrentLocation(latitude, longitude); // 카메라움직여지도에띄우기
-                                                LatLng curPoint = new LatLng(latitude, longitude);
-                                                showMyLocationMarker(); // 현재위치 보여주기
-                                                loadDtr(curPoint); // 도토리 보여주기
-                                            }
-                                        }, 1000); // 1000 = 1초
-
+                showCurrentLocation(latitude, longitude); // 카메라움직여지도에띄우기
+                LatLng curPoint = new LatLng(latitude, longitude);
+                showMyLocationMarker(); // 현재위치 보여주기
+                loadDtr(curPoint); // 도토리 보여주기
+            }
+        }, 1000); // 1000 = 1초
+*/
 
         ImageButton mainMapExtendBtn = rootView.findViewById(R.id.mainMapExtendBtn);
         mainMapExtendBtn.bringToFront();
