@@ -42,7 +42,7 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-public class  extends AppCompatActivity  {
+public class MyFavoriteActivity  extends AppCompatActivity  {
     AppConstant appConstant = new AppConstant();
     final static String TAG = "MyFavoriteActivity";
 
