@@ -2,6 +2,9 @@
     <!-- Base application theme. -->
     <style name="Theme.Rotory" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Primary brand color. -->
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+
         <item name="colorPrimary">@color/beige</item>
         <item name="colorOnPrimary">@color/black</item>
         <!-- Secondary brand color. -->

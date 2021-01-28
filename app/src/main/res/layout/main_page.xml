@@ -116,7 +116,7 @@
                         android:layout_width="360dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="3dp"
+                        android:layout_marginTop="10dp"
                         android:background="@drawable/fragment_lines">
 
                         <HorizontalScrollView
@@ -168,7 +168,7 @@
                         android:layout_width="360dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="5dp"
+                        android:layout_marginTop="10dp"
                         android:layout_marginBottom="30dp"
                         android:background="@drawable/fragment_lines">
 
