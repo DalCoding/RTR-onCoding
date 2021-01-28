@@ -22,24 +22,29 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.PluralsRes;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.rotory.Contents.StoryContentsPage;
 import com.example.rotory.Interface.OnUserActItemClickListener;
 import com.example.rotory.VO.AppConstant;
 import com.example.rotory.VO.Contents;
 import com.example.rotory.account.LogInActivity;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -58,6 +63,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import org.w3c.dom.Document;
 
+import java.io.IOError;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -69,12 +75,12 @@ public class RoadContentsPage extends Fragment implements OnMapReadyCallback, Go
     final static String TAG = "RoadContentsPage";
     AppConstant appConstant = new AppConstant();
 
-    GoogleMap map;
-    double latitude;
-    double longitude;
-    MapView mapView;
+    Bundle contentsBundle = this.getArguments();
+    //String contentsID = contentsBundle.getString("storyDocumentId");
+    String contentsID = "ivKwpuWoyGnB6v7FvsEm";
 
-    MarkerOptions markerOptions;
+    GoogleMap map;
+
 
     Button rcontentsCommBtn;
     ImageView rcontentsLinkImg;
@@ -116,12 +122,16 @@ public class RoadContentsPage extends Fragment implements OnMapReadyCallback, Go
     TextView commTimeText;
     ImageView commLevelImg;
 
+    CardView dtrInfo;
+
     EditText comment;
 
     ArrayList<String> dtrName = new ArrayList<>();
-    ArrayList<LatLng> dtrLatLng = new ArrayList<>();
+    ArrayList<Object> dtrLatLng = new ArrayList<>();
     ArrayList<LatLng> PolyPoints = new ArrayList<>();
     ArrayList<String> dtrAddress = new ArrayList<>();
+
+    ArrayList<String> dtrName2 = new ArrayList<>();
 
     public RoadContentsPage() {}
 
@@ -218,10 +228,10 @@ public class RoadContentsPage extends Fragment implements OnMapReadyCallback, Go
         rcontentsTakewhoText = rootView.findViewById(R.id.rcontentsTakewhoText);
 
 
-        Bundle contentsBundle = this.getArguments();
+        //Bundle contentsBundle = this.getArguments();
         //String contentsID = contentsBundle.getString("storyDocumentId");
-        // String contentsID = "kWgSA53rxrk5bMMemdVd";
-        String contentsID = "1Icyko95eOyx1atvpcbL";
+        //String contentsID = "kWgSA53rxrk5bMMemdVd";
+        //String contentsID = "1Icyko95eOyx1atvpcbL";
 
 
 
@@ -302,13 +312,128 @@ public class RoadContentsPage extends Fragment implements OnMapReadyCallback, Go
         MapsInitializer.initialize(this.getActivity());
         map = googleMap;
 
+        db.collection("contents")
+                .document(contentsID)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        Map<String, Object> contents = documentSnapshot.getData();
+                        dtrName = (ArrayList<String>) contents.get("dtrName");
+                        dtrAddress = (ArrayList<String>) contents.get("dtrAddress");
+                        dtrLatLng = (ArrayList<Object>) contents.get("dtrLatLng");
+
+                        Map<String, Object> forPopUp = new HashMap<>();
+
+
+                        MarkerOptions markerOptions = new MarkerOptions();
+
+                        LatLng latLng;
+
+                        for (int i = 0; i < dtrLatLng.size(); i++) {
+                            Map<String, Double> list = (Map<String, Double>) dtrLatLng.get(i);
+                            Log.d(TAG, "for문 안 확인" + list);
+                            double latitude = list.get("latitude");
+                            double longitude = list.get("longitude");
+
+                            Log.d(TAG, "latitude : longitude" + latitude + ":" + longitude);
+
+                            latLng = new LatLng(latitude, longitude);
+
+
+                            markerOptions.position(latLng);
+                            markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.acorn2));
+                            map.addMarker(markerOptions);
+                            map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 14));
+
+                            ArrayList<String> infoList = new ArrayList<>();
+                            infoList.add(dtrName.get(i));
+                            infoList.add(dtrAddress.get(i));
+
+                            ArrayList<String> infoName = new ArrayList<>();
+                            infoName.add(dtrName.get(i));
+
+                            Log.d(TAG,"도토리 이름, 도토리 주소 정보 확인" + infoList);
+
+                            HashMap<String, Double> dtrLatLngList = (HashMap<String, Double>) dtrLatLng.get(i);
+                            String key = String.valueOf(dtrLatLngList.get("latitude"));
+                            Log.d(TAG, "key 값 확인" + key);
+                            forPopUp.put(key, infoList);
+
+                            Log.d(TAG, "해쉬맵 정보 잘들어가는지 확인" + forPopUp);
+
+                            PolyPoints.add(latLng);
+                            drawPoly(map, PolyPoints);
+
+
+
+                        }
+
+                            map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                                @Override
+                                public boolean onMarkerClick(Marker marker) {
+                                    String key = String.valueOf(marker.getPosition().latitude);
+                                    Log.d(TAG, "마커에서 받은 정보 : 해쉬맵에서 받은 정보" + key+  " : " + forPopUp.keySet());
+                                    ArrayList<String> infoList = (ArrayList<String>) forPopUp.get(key);
+
+                                    Log.d(TAG,"infoList 확인" + infoList + "\n" + forPopUp.get(key));
+
+
+                                    TextView dtrInfoSignText = getView().findViewById(R.id.dinfoSignText);
+                                    dtrInfo = getView().findViewById(R.id.dtrInfo);
+
+                                    TextView dtrInfoAdText = getView().findViewById(R.id.dinfoAdText);
+                                    Button dtrInfoMoveBtn = getView().findViewById(R.id.dinfoMoveBtn);
+
+                                    dtrInfoAdText.clearComposingText();
+
+                                    dtrInfo.setVisibility(View.VISIBLE);
+
+                                    dtrInfoSignText.setText(infoList.get(0));
+                                    dtrInfoAdText.setText(infoList.get(1));
+                                    dtrInfoMoveBtn.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+                                            Toast.makeText(getActivity().getApplicationContext(), "아쉽게도 이야기가 없네요.", Toast.LENGTH_SHORT).show();
+
+                                            /*Intent intent = new Intent(getActivity(), LoadStoryItem.class);
+                                            intent.putExtra("documentId", contentsID);
+                                            startActivity(intent);*/
+                                        }
+                                    });
+
+                                    return false;
+                                }
+                            });
+
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d(TAG, "onFailure: " + e.getMessage());
+                    }
+                });
+
     }
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-        Intent intent = new Intent(getActivity(), dtrInfoPopup.class);
 
         return false;
+    }
+
+    public void drawPoly(GoogleMap map, ArrayList<LatLng> polyPoints) {
+        PolylineOptions polylineOptions = new PolylineOptions();
+        polylineOptions.width(5).color(Color.argb(128, 255, 51, 0));
+
+        for (int i = 0; i < polyPoints.size(); i++) {
+            LatLng polyPoint = polyPoints.get(i);
+            polylineOptions.add(polyPoint);
+
+            map.addPolyline(polylineOptions);
+        }
     }
 
 
@@ -699,8 +824,8 @@ public class RoadContentsPage extends Fragment implements OnMapReadyCallback, Go
     Map<String, Object> imageCommentList = (Map<String, Object>) contentsList.get("imageComment");
     String userLevel = contentsList.get("userLevel").toString();
     rcontentsTitleText.setText(contentsList.get("title").toString());
-    if (contentsList.get("article") != null) {
-        rcontentsMapText.setText(contentsList.get("article").toString());
+    if (contentsList.get("dtrName") != null) {
+        rcontentsMapText.setText(contentsList.get("dtrName").toString());
     }
     rcontentsTaketimeText.setText(contentsList.get("hour").toString());
     rcontentsTakewhoText.setText(contentsList.get("isPartner").toString());

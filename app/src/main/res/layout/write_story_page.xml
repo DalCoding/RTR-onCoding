@@ -73,10 +73,14 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <RelativeLayout
+<<<<<<< HEAD
+        android:id="@+id/writeStory"
+=======
 
 
         android:id="@+id/writeStory"
 
+>>>>>>> 6125a619eede4d3c4de66d3f9633cfaae17c435b
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="60dp">

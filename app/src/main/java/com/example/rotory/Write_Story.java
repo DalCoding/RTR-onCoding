@@ -117,12 +117,12 @@ public class Write_Story extends AppCompatActivity  {
     Map<String, Object> stringImageList = new HashMap<>();
     Map<String, String>imageComment = new HashMap<>();
 
-  Map<String, Object> imageList = new HashMap<>();
+    Map<String, Object> imageList = new HashMap<>();
 
     //Map<String, Bitmap> imageList = new HashMap<>();
     Map<String, Object> DBStoryContents = new HashMap<>();
 
-   //Bitmap mainImage;
+    //Bitmap mainImage;
     String mainImage;
     String prefixId;
     String storyaddress;
@@ -175,9 +175,10 @@ public class Write_Story extends AppCompatActivity  {
         writeStoryEditText = findViewById(R.id.writeStoryEditText);
         writeStoryTitle = findViewById(R.id.writeStoryTitle);
 
-       //storyaddress = writeStoryLocation.getText().toString();
-       title = writeStoryTitle.getText().toString();
-       article = writeStoryEditText.getText().toString();
+        //storyaddress = writeStoryLocation.getText().toString();
+        title = writeStoryTitle.getText().toString();
+        article = writeStoryEditText.getText().toString();
+
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         AlertDialog.Builder saveDialog = new AlertDialog.Builder(this);
@@ -220,16 +221,16 @@ public class Write_Story extends AppCompatActivity  {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
 
-                    dialogInterface.dismiss();
+                dialogInterface.dismiss();
 
-                    Uri uri = adapter.getItem(imagePosition);
+                Uri uri = adapter.getItem(imagePosition);
                 try {
                     mainImage = mainImageString(uri); //메인이미지 스트링바꿈
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
                 checkPosition = imagePosition;
-                    mainImagetext.setVisibility(View.VISIBLE);
+                mainImagetext.setVisibility(View.VISIBLE);
             }
         });
         mainImageDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -317,8 +318,6 @@ public class Write_Story extends AppCompatActivity  {
                 if (uriList.size() > 0) {
                     mainImageAlertDialog.show();
                 }
-
-
             }
         });
 
@@ -339,7 +338,22 @@ public class Write_Story extends AppCompatActivity  {
             }
         });
 
+        publicRadioButton=findViewById(R.id.publicRadioButton2);
+        publicRadioButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                isPublic=1;
 
+            }
+        });
+
+        privateRadioButton=findViewById(R.id.privateRadioButton2);
+        privateRadioButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                isPublic=0;
+            }
+        });
 
         checkmarkBtn = findViewById(R.id.checkmarkBtn);
         checkmarkBtn.setOnClickListener(new View.OnClickListener() {
@@ -355,7 +369,7 @@ public class Write_Story extends AppCompatActivity  {
                     Toast.makeText(getApplicationContext(), "필수 입력 사항을 입력해주세요.", Toast.LENGTH_SHORT).show();
                 }
             }
-         });
+        });
 
         //장소 검색 페이지 띄우기
         //findLocationPage = new StoryFindLocationPage();
@@ -381,28 +395,25 @@ public class Write_Story extends AppCompatActivity  {
             writeStoryLocation.setText(placeText);
         }
 
-        } //end of onCreate]
+    } //end of onCreate]
 
 
-private boolean isValidate(){
+    private boolean isValidate() {
 
-        storyaddress=writeStoryLocation.getText().toString();
-        title=writeStoryTitle.getText().toString();
+        storyaddress = writeStoryLocation.getText().toString();
+        title = writeStoryTitle.getText().toString();
 
-        if(title.equals("")||title==null){
-        return false;
-        }else if(mainImage==null){
-        return false;
+        if (title.equals("") || title == null) {
+            return false;
+        } else if (mainImage == null) {
+            return false;
 
-        }else if(storyaddress.equals("")||storyaddress==null){
-        return false;
+        } else if (storyaddress.equals("") || storyaddress == null) {
+            return false;
         }
-
 
         return true;
-
-
-        }
+    }
 
     private void setDB() throws IOException {
         imageList = changeUritoBITmap();
@@ -502,14 +513,12 @@ private boolean isValidate(){
         Bitmap bitmap = null;
         try {
             bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
-
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
         return  bitmap;
-
     }*/
 
 
@@ -539,7 +548,7 @@ private boolean isValidate(){
 
         for (int i =0; i < bitmapImageList.size(); i++){  //Bitmap을 string으로 변환
             //ArrayList<ByteArrayOutputStream> baosList = new ArrayList<>();
-           // baosList.add(new ByteArrayOutputStream());
+            // baosList.add(new ByteArrayOutputStream());
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             String keyString = "image"+String.valueOf(i+1);
             Bitmap imageBitmap;
@@ -556,7 +565,7 @@ private boolean isValidate(){
             }
 
             stream.flush();
-           // baosList.get(i).flush();
+            // baosList.get(i).flush();
             //Log.d(TAG,"스트링 변경 성공?" +keyString+ "=>" + stringImage);
 
         }
@@ -625,10 +634,10 @@ private boolean isValidate(){
 
             }
 
-             if (requestCode == Map_RESULT_CODE) {
-                 if (resultCode == RESULT_OK) {
-                 }
-             }
+            if (requestCode == Map_RESULT_CODE) {
+                if (resultCode == RESULT_OK) {
+                }
+            }
 
             //리사이클러뷰에 보여주기
 
@@ -665,6 +674,7 @@ private boolean isValidate(){
             public void onItemClick(StoryImageAdapter.writestroyHolder writestroyHolder, View view, int position) {
 
             }
+
             @Override
             public void onItemClick(MainPage.MyAdapter.ViewHolder holder, View view, int position) {
 
@@ -708,5 +718,3 @@ private boolean isValidate(){
 
     }
 }
-
-

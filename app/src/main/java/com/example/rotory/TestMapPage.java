@@ -1,5 +1,6 @@
 package com.example.rotory;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,14 +11,17 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
@@ -25,24 +29,23 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 public class TestMapPage extends Fragment implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
     private static final String TAG = "Test";
 
-    GoogleMap map;
-    MapView mapView;
+    String contentsID = "ivKwpuWoyGnB6v7FvsEm";
 
-    Double latitude;
-    Double longitude;
+    GoogleMap map;
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
-    DocumentReference collRef = db.collection("contentsType").document("1Icyko95eOyx1atvpcbL");
 
     ArrayList<String> dtrName = new ArrayList<>();
-    ArrayList<LatLng> dtrLatLng = new ArrayList<>();
+    ArrayList<Object> dtrLatLng = new ArrayList<>();
     ArrayList<LatLng> PolyPoints = new ArrayList<>();
     ArrayList<String> dtrAddress = new ArrayList<>();
+
 
 
     public TestMapPage() {}
@@ -87,46 +90,10 @@ public class TestMapPage extends Fragment implements OnMapReadyCallback, GoogleM
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.road_contents_page, container, false);
 
-        String contentsID = "1Icyko95eOyx1atvpcbL";
 
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.rcontentsMap);
         mapFragment.getMapAsync(this);
 
-
-
-        db.collection("contents")
-                .document(contentsID)
-                .get()
-                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        Log.d(TAG, String.valueOf(documentSnapshot.getData()));
-                        Map<String, Object> Name = documentSnapshot.getData();
-                        Map<String, Object> LatLng = documentSnapshot.getData();
-                        Map<String, Object> Address = documentSnapshot.getData();
-                        for (Map.Entry<String, Object> entryName : Name.entrySet()) {
-                            for (Map.Entry<String, Object> entryLatLng : LatLng.entrySet()) {
-                                for (Map.Entry<String, Object> entryAddress : Address.entrySet()) {
-                                    if (entryName.getKey().equals("dtrName") && entryLatLng.getKey().equals("dtrLatLng") && entryAddress.getKey().equals("dtrAddress")) {
-                                        dtrName.add(entryName.toString());
-                                        Log.d(TAG, dtrName.toString());
-                                        dtrAddress.add(entryAddress.toString());
-                                        Log.d(TAG, dtrAddress.toString());
-                                        ArrayList<LatLng> entryList = (ArrayList<com.google.android.gms.maps.model.LatLng>) entryLatLng.getValue();
-                                        dtrLatLng = entryList;
-                                        Log.d(TAG, dtrLatLng.toString());
-                                    }
-                                }
-                            }
-                        }
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d(TAG, "onFailure: " + e.getMessage());
-                    }
-                });
 
         return viewGroup;
     }
@@ -137,18 +104,69 @@ public class TestMapPage extends Fragment implements OnMapReadyCallback, GoogleM
 
         map = googleMap;
 
+        db.collection("contents")
+                .document(contentsID)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        Map<String, Object> contents = documentSnapshot.getData();
+                        dtrName = (ArrayList<String>) contents.get("dtrName");
+                        dtrAddress = (ArrayList<String>) contents.get("dtrAddress");
+                        dtrLatLng = (ArrayList<Object>) contents.get("dtrLatLng");
 
-        MarkerOptions markerOptions = new MarkerOptions();
-        markerOptions.title(String.valueOf(dtrName));
 
+                        MarkerOptions markerOptions = new MarkerOptions();
+
+                        for (int i = 0; i < dtrLatLng.size(); i++) {
+                            Map<String, Double> list = (Map<String, Double>) dtrLatLng.get(i);
+                            Log.d(TAG, "for문 안 확인" + list);
+                            double latitude = list.get("latitude");
+                            double longitude = list.get("longitude");
+
+                            Log.d(TAG, "latitude : longitude" + latitude + ":" + longitude);
+
+                            LatLng latLng = new LatLng(latitude, longitude);
+
+                            markerOptions.position(latLng);
+                            markerOptions.title(String.valueOf(dtrName));
+                            markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.acorn2));
+                            map.addMarker(markerOptions);
+                            map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 14));
+
+                            PolyPoints.add(latLng);
+                            drawPoly(map, PolyPoints);
+
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d(TAG, "onFailure: " + e.getMessage());
+                    }
+                });
 
     }
 
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-
         return false;
     }
 
+    public void drawPoly(GoogleMap map, ArrayList<LatLng> polyPoints) {
+        PolylineOptions polylineOptions = new PolylineOptions();
+        polylineOptions.width(5).color(Color.argb(128, 255, 51, 0));
+
+        for (int i = 0; i < polyPoints.size(); i++) {
+            LatLng polyPoint = polyPoints.get(i);
+            polylineOptions.add(polyPoint);
+
+            map.addPolyline(polylineOptions);
+        }
+    }
+
 }
+
+

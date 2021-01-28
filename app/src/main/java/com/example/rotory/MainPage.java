@@ -334,9 +334,9 @@ public class MainPage extends Fragment implements AutoPermissionsListener
             @Override
             public void onClick(View v) {
                 if (user != null) {
-                    Intent writeStoryIntent = new Intent(getActivity(), Write_Story.class);
+                    /*Intent writeStoryIntent = new Intent(getActivity(), Write_Story.class);
                     //writeStoryIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                    startActivity(writeStoryIntent);
+                    startActivity(writeStoryIntent);*/
                 } else {
                     goLogInPage();
 

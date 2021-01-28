@@ -32,7 +32,8 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="10dp"
                     android:background="@null"
-                    android:inputType="text" />
+                    android:inputType="text"
+                    android:textColor="@color/white"/>
 
                 <ImageButton
                     android:id="@+id/mainSearchBtn"

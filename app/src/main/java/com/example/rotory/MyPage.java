@@ -555,6 +555,7 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
             //  myScrapSave.setText(item.getSavedDate());
             myScrapPlace.setText(item.getContentsAddress());
             myScrapId.setText(item.getContentsId());
+            myScrapImg.setAlpha(70);
 
             if (item.contentsType == 0) {
                 if (item.getTag1() != null) {
