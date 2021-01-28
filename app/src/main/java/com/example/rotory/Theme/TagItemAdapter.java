@@ -120,11 +120,13 @@ public class TagItemAdapter extends RecyclerView.Adapter<TagItemAdapter.tagItemV
                                         public void onComplete(@NonNull Task<DocumentSnapshot> task){
                                             Map<String, Object> myTagList = new HashMap<>();
                                             myTagList = task.getResult().getData();
-                                            if (myTagList.containsKey(tag)) {
-                                                tagBtn.setTextColor(Color.RED);
-                                                tagBtn.setTextSize(16);
-                                            } else {
-                                                tagBtn.setTextColor(Color.BLACK);
+                                            if (myTagList!=null) {
+                                                if (myTagList.containsKey(tag)) {
+                                                    tagBtn.setTextColor(Color.RED);
+                                                    tagBtn.setTextSize(16);
+                                                } else {
+                                                    tagBtn.setTextColor(Color.BLACK);
+                                                }
                                             }
                                         }
                                     });

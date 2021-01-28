@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,6 +26,7 @@ import com.example.rotory.MyPage;
 import com.example.rotory.R;
 import com.example.rotory.Theme.ThemePage;
 import com.example.rotory.VO.AppConstant;
+import com.example.rotory.VO.Person;
 import com.example.rotory.account.LogInActivity;
 import com.example.rotory.account.SignUpActivity;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
@@ -35,6 +37,7 @@ import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -56,6 +59,8 @@ public class MyLikeActivity extends AppCompatActivity {
     RelativeLayout bottomNavUnderbarTheme;
     RelativeLayout bottomNavUnderbarUser;
 
+    TextView profileTextView;
+
     RelativeLayout userAppbarContainer;
 
     AppBarLayout appBarLayout;
@@ -65,8 +70,11 @@ public class MyLikeActivity extends AppCompatActivity {
     private FirestoreRecyclerAdapter likedAdapter;
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseFirestore db;
+    FirebaseUser user;
 
     AppConstant appConstant = new AppConstant();
+
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -74,16 +82,9 @@ public class MyLikeActivity extends AppCompatActivity {
         setContentView(R.layout.my_like_page);
         db = FirebaseFirestore.getInstance();
 
-        FirebaseUser user = mAuth.getCurrentUser();
+        user = mAuth.getCurrentUser();
 
-        if (user != null) {
-            String checkLogIN = user.getEmail();
-            Log.d(TAG, "로그인 정보 유저네임 : " + checkLogIN);
-            isSignIn = true;
-        } else {
-            Log.d(TAG, "로그인 실패");
-            isSignIn = false;
-        }
+        profileTextView = findViewById(R.id.profileTextView);
 
         appBarLayout =findViewById(R.id.appBarLayout);
         bottomNavUnderbarHome = findViewById(R.id.bottomNavUnderbarHome);
@@ -124,7 +125,14 @@ public class MyLikeActivity extends AppCompatActivity {
                     }
                 });
 
-
+        profileTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MyLikeActivity.this, MyPage.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            }
+        });
 
 
     }
@@ -139,6 +147,7 @@ public class MyLikeActivity extends AppCompatActivity {
 
         likedAdapter = new FirestoreRecyclerAdapter<Liked, likeViewHolder>(options) {
 
+
             @Override
             public void onDataChanged() {
                 super.onDataChanged();
@@ -148,6 +157,16 @@ public class MyLikeActivity extends AppCompatActivity {
             @Override
             protected void onBindViewHolder(@NonNull likeViewHolder holder, int position, @NonNull Liked model) {
                 holder.setLikedItems(model);
+                holder.clickIcon();
+                profileTextView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                       holder.setIcon(model);
+                       Intent intent = new Intent(MyLikeActivity.this, MyPage.class);
+                       intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                       startActivity(intent);
+                    }
+                });
             }
 
             @NonNull
@@ -178,12 +197,29 @@ public class MyLikeActivity extends AppCompatActivity {
 
     public class likeViewHolder extends RecyclerView.ViewHolder {
         private View view;
+        ImageView myLikeIcon;
+        Boolean removeItem = false;
 
         public likeViewHolder(@NonNull View itemView) {
             super(itemView);
             view = itemView;
+            myLikeIcon = view.findViewById(R.id.myLikeEditImg1);
         }
 
+        public void clickIcon(){
+                myLikeIcon.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (!removeItem) {
+                            myLikeIcon.setImageResource(R.drawable.heart);
+                            removeItem = true;
+                        }else {
+                            myLikeIcon.setImageResource(R.drawable.heartfilled);
+                            removeItem = false;
+                        }
+                    }
+                });
+        }
 
         public void setLikedItems(Liked items) {
             ImageView myLikePreImg = view.findViewById(R.id.myLikePreImg);
@@ -211,12 +247,42 @@ public class MyLikeActivity extends AppCompatActivity {
                 myLikePreImg.setImageBitmap(titleImageBitmap);
 
             }
-           //이미지 저장하는 메서드 완성한 후 이미지 불러오기
-            // myLikePreImg.setImageBitmap();
-            //myFavoriteImg.setImageURI(Uri.parse(uri));
 
         }
+        public void setIcon(Liked item){
+            if (removeItem) {
+                db.collection("person").whereEqualTo("userId", user.getEmail())
+                        .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
+                                String pDocumentId = documentSnapshot.getId();
+                                CollectionReference userCollectionRef = db.collection("person")
+                                        .document(pDocumentId).collection("myLike");
+                                userCollectionRef.whereEqualTo("contentsId", item.getContentsId())
+                                        .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+                                            for (QueryDocumentSnapshot thisLikeDocument : task.getResult()) {
+                                                String userActDocId = thisLikeDocument.getId();
+                                                userCollectionRef.document(userActDocId).delete();
+                                                return;
+                                            }
 
+                                        }
+                                    }
+                                });
+
+                            }
+                        }
+                    }
+                });
+            }else{
+
+            }
+        }
 
     }
 
@@ -231,10 +297,6 @@ public class MyLikeActivity extends AppCompatActivity {
         return cTypeName;
     }
 
-
-    //다람쥐 레벨용 이미지는 프로그램 내부에 넣어놓고, 유저레벨애 따라 불러서 사용
-
-//하단바 설정
     public void setBottomNavigation(BottomNavigationView bottomNavigation, boolean isSignIn, int loginCode, MainPage mainPage, ThemePage themePage) {
         bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override

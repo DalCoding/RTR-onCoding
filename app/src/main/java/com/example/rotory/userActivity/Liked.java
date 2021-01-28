@@ -20,6 +20,22 @@ public class Liked {
         this.contentsType = contentsType;
     }
 
+    public String getSavedDate() {
+        return savedDate;
+    }
+
+    public void setSavedDate(String savedDate) {
+        this.savedDate = savedDate;
+    }
+
+    public String getContentsId() {
+        return contentsId;
+    }
+
+    public void setContentsId(String contentsId) {
+        this.contentsId = contentsId;
+    }
+
     public String getTitleImage() {
         return titleImage;
     }

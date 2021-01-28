@@ -89,10 +89,10 @@ public class LogInActivity extends AppCompatActivity  {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null){
+                    finish();
                     Intent intent = new Intent(LogInActivity.this, MainActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
-                    finish();
                 }else {
                     Log.d(TAG,"AuthStateChangeListener, 유저 불러오기 실패");
                 }

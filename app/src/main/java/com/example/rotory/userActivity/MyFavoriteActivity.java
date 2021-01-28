@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -35,12 +36,13 @@ import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-public class MyFavoriteActivity  extends AppCompatActivity  {
+public class  extends AppCompatActivity  {
     AppConstant appConstant = new AppConstant();
     final static String TAG = "MyFavoriteActivity";
 
@@ -64,15 +66,15 @@ public class MyFavoriteActivity  extends AppCompatActivity  {
     Boolean isSignIn = false;
     private FirestoreRecyclerAdapter adapter;
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
-    FirebaseFirestore db;
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    FirebaseUser user;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.my_favorite_page);
-        db = FirebaseFirestore.getInstance();
 
-        FirebaseUser user = mAuth.getCurrentUser();
+        user = mAuth.getCurrentUser();
 
         if (user != null) {
             String checkLogIN = user.getEmail();
@@ -151,6 +153,8 @@ public class MyFavoriteActivity  extends AppCompatActivity  {
                 View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.my_favorite_item, parent,false);
                 return new favoriteViewHolder(view);
             }
+
+
         };
 
     }
@@ -176,8 +180,6 @@ public class MyFavoriteActivity  extends AppCompatActivity  {
             super(itemView);
             view = itemView;
         }
-
-
         public void setUserItems(Person user) {
             ImageView myFavoriteImg;
             TextView myFavoriteNickTextView;
@@ -193,7 +195,6 @@ public class MyFavoriteActivity  extends AppCompatActivity  {
             myFavoriteLevelImg.setImageResource(levelImg);
             myFavoriteNickTextView.setText(user.getUserName());
             myFavoriteLevelTextView.setText(user.getUserLevel());
-
 
         }
 

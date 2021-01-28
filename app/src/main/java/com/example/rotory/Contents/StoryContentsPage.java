@@ -217,10 +217,9 @@ public class StoryContentsPage extends Fragment {
         loadContents(contentsID, user);
 
         if (user != null) {
-            setIcons.getUserActivityIcon(contentsID, "myLike", scontentsHeartImg,
-                    R.drawable.heartfilled, R.drawable.heart);
-            setIcons.getUserActivityIcon(contentsID, "myScrap", scontentsScrapImg,
-                    R.drawable.scrabtagfilled, R.drawable.scrabtag);
+            setIcons.getUserActivityIcon(contentsID, "myLike", scontentsHeartImg, R.drawable.heartfilled, R.drawable.heart);
+            setIcons.getUserActivityIcon(contentsID, "myScrap", scontentsScrapImg, R.drawable.scrabtagfilled, R.drawable.scrabtag);
+
         }
 
         scontentsCommBtn.setOnClickListener(new View.OnClickListener() {
@@ -236,8 +235,6 @@ public class StoryContentsPage extends Fragment {
             }
         });
 
-        getUserActivityIcon(contentsID, "myStar", scontentsStarImg,
-                R.drawable.starfilled, R.drawable.star);
 
         sCommRView.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -259,7 +256,6 @@ public class StoryContentsPage extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         sCommRView.setLayoutManager(layoutManager);
 
-        String userId = user.getEmail();
     }
 
     private void makeCommentAdapter(FirestoreRecyclerOptions<Comment> options) {
@@ -467,8 +463,17 @@ public class StoryContentsPage extends Fragment {
                         Map<String, Object> ContentsList = new HashMap<>();
                         ContentsList = document.getData();
                         Log.d(TAG, "title확인" + ContentsList.get("title"));
+                        db.collection("person").whereEqualTo("uid", ContentsList.get("uid")).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                for (QueryDocumentSnapshot snapshot : task.getResult()){
+                                    setIcons.getUserActivityIcon(snapshot.getId(), "myStar", scontentsStarImg, R.drawable.starfilled, R.drawable.star);
+                                }
+                            }
+                        });
                         setContents(ContentsList);
                         clickUserActIcon(contentsID, ContentsList, user);
+
 
                     } else {
                         Log.d(TAG, "No such document");
@@ -478,42 +483,6 @@ public class StoryContentsPage extends Fragment {
                 }
             }
         });
-    }
-
-    private void getUserActivityIcon(String cDocumentId, String userCollection, ImageView imageView,
-                                     int listIn, int listOut) {
-        db.collection("person").whereEqualTo("userId", user.getEmail()).get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            Log.d(TAG, "person에서 사용자의 정보 받아오기 성공");
-                            for (QueryDocumentSnapshot pDocument : task.getResult()) {
-                                String pDocumentId = pDocument.getId();
-                                db.collection("person").document(pDocumentId).collection(userCollection)
-                                        .whereEqualTo("contentsId", cDocumentId)
-                                        .get()
-                                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                                Log.d(TAG, userCollection + " getUserActivity 사용자의 활동리스트 정보 받아오기 성공 " + cDocumentId);
-                                                if (task.isSuccessful()) {
-                                                    QuerySnapshot snapshot = task.getResult();
-                                                    List userActList = new ArrayList();
-                                                    userActList = snapshot.getDocuments();
-                                                    if (userActList.size() > 0) {
-                                                        imageView.setImageResource(listIn);
-                                                    } else {
-                                                        imageView.setImageResource(listOut);
-                                                    }
-                                                }
-                                            }
-                                        });
-                            }
-                        }
-                    }
-                });
-
     }
 
     private void clickUserActIcon(String contentsId, Map<String, Object> contentsList,
@@ -530,8 +499,8 @@ public class StoryContentsPage extends Fragment {
                         showToast(user.getDisplayName() + "님의 도토리! 자신의 도토리는 담을 수 없습니다.");
                     } else {
                         Log.d(TAG, "하트아이콘 클릭");
-                        isInList(contentsId, contentsList, "myLike", user,
-                                scontentsHeartImg, R.drawable.heartfilled, R.drawable.heart);
+                        setIcons.isInList(contentsId, contentsList, "myLike", user,
+                                scontentsHeartImg,listener, context);
                     }
                 }
             });
@@ -552,8 +521,8 @@ public class StoryContentsPage extends Fragment {
                     if (writerUid.equals(user.getUid())) {
                         showToast(user.getDisplayName() + "님의 도토리! 자신의 도토리는 담을 수 없습니다.");
                     } else {
-                        isInList(contentsId, contentsList, "myScrap", user,
-                                scontentsScrapImg, R.drawable.scrabtagfilled, R.drawable.scrabtag);
+                        setIcons.isInList(contentsId, contentsList, "myScrap", user,
+                                scontentsScrapImg, listener, context);
                         Log.d(TAG, "태그아이콘 클릭");
                     }
 
@@ -655,15 +624,6 @@ public class StoryContentsPage extends Fragment {
 
     //사용자의 아이디와 글쓴이의 아이디를 비교해 같을경우 즐겨찾기를 할 수 없도록 설정(자기 자신 즐겨찾기 못함)
     private void setFavoriteAct(Map<String, Object> contentsList, FirebaseUser user) {
-        String userId = user.getEmail();
-
-        Log.d(TAG, "setFavoriteAct : " + contentsList.get("pDocumentId").toString());
-        if (contentsList.get("pDocumentId").toString().equals(userId)) {
-            showToast("자신을 관심 목록에 넣을 수 없습니다.");
-        } else {
-            isInList(contentsList.get("pDocumentId").toString(), contentsList, "myStar", user, scontentsStarImg,
-                    R.drawable.starfilled, R.drawable.star);
-        }
 
         db.collection("person").whereEqualTo("uid", contentsList.get("uid")).get() //글쓴이 정보 검색
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -673,11 +633,12 @@ public class StoryContentsPage extends Fragment {
                             for (QueryDocumentSnapshot writerDocument : task.getResult()) {
                                 String savedDocumentId = writerDocument.getId();
                                 String savedUserId = writerDocument.get("userId").toString();
-                                if (savedUserId.equals(userId)) { //글쓴이의 아이디와 비교
+                                if (savedUserId.equals(user.getEmail())) { //글쓴이의 아이디와 비교
                                     showToast("자신을 관심 목록에 넣을 수 없습니다.");
 
                                 } else {
-                                    isInList(savedDocumentId, contentsList, "myStar", user, scontentsStarImg, R.drawable.starfilled, R.drawable.star);
+                                    setIcons.isInList(savedDocumentId, contentsList, "myStar", user, scontentsStarImg
+                                                    ,listener, context);
                                 }
                             }
 

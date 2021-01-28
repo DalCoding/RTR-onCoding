@@ -11,6 +11,7 @@ import android.view.View;
 
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
@@ -145,7 +146,7 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
         pageTitleTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), SearchPage1.class);
+                Intent intent = new Intent(getApplicationContext(), LoadStoryItem.class);
                 startActivity(intent);
 
             }
@@ -180,9 +181,9 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
             @Override
             public void onClick(View v) {
                 if (user != null) {
-                    /*Intent writeStoryIntent = new Intent(getApplicationContext(), Write_Story.class);
-                    //writeStoryIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                    startActivity(writeStoryIntent);*/
+                    Intent writeStoryIntent = new Intent(getApplicationContext(), Write_Story.class);
+                    writeStoryIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    startActivity(writeStoryIntent);
                 } else {
                     goLogInPage();
 
@@ -195,7 +196,7 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
             public void onClick(View v) {
                 if (user != null) {
                     Intent writeRoadIntent = new Intent(getApplicationContext(), WriteRoadPage.class);
-                    //writeRoadIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    writeRoadIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                     startActivity(writeRoadIntent);
                 } else {
                     goLogInPage();
@@ -220,9 +221,9 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
                     isFabOpen = false;
                 } else {
                     popFloatingBtn.startAnimation(fab_close);
-                    //pop2FloatingBtn.setClickable(false);
+                    pop2FloatingBtn.setClickable(false);
                     pop2FloatingBtn.startAnimation(fab_close);
-                    //pop2FloatingBtn.setClickable(false);
+                    pop2FloatingBtn.setClickable(false);
                     isFabOpen = true;
                 }
 
@@ -306,7 +307,6 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
                             progressDialogs.show();
                             startTagsLoading(300);
                             Intent myPageIntent = new Intent(MainActivity.this, ThemePage.class);
-                            myPageIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(myPageIntent);
                             setTabUnderBar(1);
                         } else {

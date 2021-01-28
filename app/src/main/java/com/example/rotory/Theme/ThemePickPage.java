@@ -185,7 +185,12 @@ public class ThemePickPage extends Activity {
                             @Override
                             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                 Map<String, Object> myTagList = task.getResult().getData();
-                                int tagSize = myTagList.size();
+                                int tagSize;
+                                if (myTagList != null) {
+                                    tagSize = myTagList.size();
+                                }else{
+                                    tagSize = 0;
+                                }
                                 tagListSize.setText(String.valueOf(tagSize));
                             }
                         });

@@ -27,6 +27,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.rotory.Contents.SetIcons;
 import com.example.rotory.Contents.StoryContentsPage;
 import com.example.rotory.Interface.OnUserActItemClickListener;
 import com.example.rotory.VO.AppConstant;
@@ -74,10 +75,11 @@ import java.util.Map;
 public class RoadContentsPage extends Fragment implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
     final static String TAG = "RoadContentsPage";
     AppConstant appConstant = new AppConstant();
+    SetIcons setIcons = new SetIcons();
 
+    String contentsID;
     Bundle contentsBundle = this.getArguments();
     //String contentsID = contentsBundle.getString("storyDocumentId");
-    String contentsID = "ivKwpuWoyGnB6v7FvsEm";
 
     GoogleMap map;
 
@@ -157,13 +159,15 @@ public class RoadContentsPage extends Fragment implements OnMapReadyCallback, Go
     }
 
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.road_contents_page, container, false);
 
         db = FirebaseFirestore.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
+
+        Bundle contentsBundle = this.getArguments();
+        String contentsID = contentsBundle.getString("storyDocumentId");
 
         if (user != null) {
             String checkLogIN = user.getEmail();
@@ -180,12 +184,9 @@ public class RoadContentsPage extends Fragment implements OnMapReadyCallback, Go
                 .setQuery(query, Contents.class)
                 .build();
 
-
         if (user != null) {
             initUI(rootView);
         }
-
-        //
 
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.rcontentsMap);
         mapFragment.getMapAsync(this);
@@ -227,22 +228,12 @@ public class RoadContentsPage extends Fragment implements OnMapReadyCallback, Go
         rcontentsTaketimeText = rootView.findViewById(R.id.rcontentsTaketimeText);
         rcontentsTakewhoText = rootView.findViewById(R.id.rcontentsTakewhoText);
 
-
-        //Bundle contentsBundle = this.getArguments();
-        //String contentsID = contentsBundle.getString("storyDocumentId");
-        //String contentsID = "kWgSA53rxrk5bMMemdVd";
-        //String contentsID = "1Icyko95eOyx1atvpcbL";
-
-
-
         Log.d(TAG, "initUI 시작, 번들 전송 잘 됐는지, pDocumentId:" + contentsID);
         loadContents(contentsID, user);
 
         if (user != null) {
-            getUserActivityIcon(contentsID, "myLike", rcontentsHeartImg,
-                    R.drawable.heartfilled, R.drawable.heart);
-            getUserActivityIcon(contentsID, "myScrap", rcontentsScrapImg,
-                    R.drawable.scrabtagfilled, R.drawable.scrabtag);
+            setIcons.getUserActivityIcon(contentsID, "myLike", rcontentsHeartImg, R.drawable.heartfilled, R.drawable.heart);
+            setIcons.getUserActivityIcon(contentsID, "myScrap", rcontentsScrapImg, R.drawable.scrabtagfilled, R.drawable.scrabtag);
         }
 
         rcontentsCommBtn.setOnClickListener(new View.OnClickListener() {
@@ -258,8 +249,7 @@ public class RoadContentsPage extends Fragment implements OnMapReadyCallback, Go
             }
         });
 
-        getUserActivityIcon(contentsID, "myStar", rcontentsStarImg,
-                R.drawable.starfilled, R.drawable.star);
+
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
        rCommRView.setLayoutManager(layoutManager);
@@ -405,8 +395,6 @@ public class RoadContentsPage extends Fragment implements OnMapReadyCallback, Go
                                     return false;
                                 }
                             });
-
-
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -608,8 +596,17 @@ public class RoadContentsPage extends Fragment implements OnMapReadyCallback, Go
                         Map<String, Object> ContentsList = new HashMap<>();
                         ContentsList = document.getData();
                         Log.d(TAG, "title확인" + ContentsList.get("title"));
+                        db.collection("person").whereEqualTo("uid", ContentsList.get("uid")).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                for (QueryDocumentSnapshot snapshot : task.getResult()){
+                                    setIcons.getUserActivityIcon(snapshot.getId(), "myStar", rcontentsStarImg, R.drawable.starfilled, R.drawable.star);
+                                }
+                            }
+                        });
                         setContents(ContentsList);
                         clickUserActIcon(contentsID, ContentsList, user);
+
 
                     } else {
                         Log.d(TAG, "No such document");
@@ -619,42 +616,6 @@ public class RoadContentsPage extends Fragment implements OnMapReadyCallback, Go
                 }
             }
         });
-    }
-
-    private void getUserActivityIcon(String cDocumentId, String userCollection, ImageView imageView,
-                                     int listIn, int listOut) {
-        db.collection("person").whereEqualTo("userId", user.getEmail()).get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            Log.d(TAG, "person에서 사용자의 정보 받아오기 성공");
-                            for (QueryDocumentSnapshot pDocument : task.getResult()) {
-                                String pDocumentId = pDocument.getId();
-                                db.collection("person").document(pDocumentId).collection(userCollection)
-                                        .whereEqualTo("contentsId", cDocumentId)
-                                        .get()
-                                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                                Log.d(TAG, userCollection + " getUserActivity 사용자의 활동리스트 정보 받아오기 성공 " + cDocumentId);
-                                                if (task.isSuccessful()) {
-                                                    QuerySnapshot snapshot = task.getResult();
-                                                    List userActList = new ArrayList();
-                                                    userActList = snapshot.getDocuments();
-                                                    if (userActList.size() > 0) {
-                                                        imageView.setImageResource(listIn);
-                                                    } else {
-                                                        imageView.setImageResource(listOut);
-                                                    }
-                                                }
-                                            }
-                                        });
-                            }
-                        }
-                    }
-                });
-
     }
 
         private void clickUserActIcon(String contentsID, Map<String, Object> contentsList,
@@ -671,8 +632,8 @@ public class RoadContentsPage extends Fragment implements OnMapReadyCallback, Go
                             Toast.makeText(getContext(), user.getDisplayName() + " 님의 도토리! 자신의 도토리는 담을 수 없습니다.", Toast.LENGTH_SHORT).show();
                         } else {
                             Log.d(TAG, "하트 아이콘 클릭");
-                            isInList(contentsID, contentsList, "myLike", user,
-                                    rcontentsHeartImg, R.drawable.heartfilled, R.drawable.heart);
+                            setIcons.isInList(contentsID, contentsList, "myScrap", user,
+                                    rcontentsScrapImg, listener, context);
                         }
                     }
                 });
@@ -693,8 +654,8 @@ public class RoadContentsPage extends Fragment implements OnMapReadyCallback, Go
                         if (writerUid.equals(user.getUid())) {
                             Toast.makeText(getContext(), user.getDisplayName() + "님의 도토리! 자신의 도토리는 담을 수 없습니다.", Toast.LENGTH_SHORT).show();
                         } else {
-                            isInList(contentsID, contentsList, "myScrap", user,
-                                    rcontentsScrapImg, R.drawable.scrabtagfilled, R.drawable.scrabtag);
+                            setIcons.isInList(contentsID, contentsList, "myScrap", user,
+                                    rcontentsScrapImg, listener, context);
                         Log.d(TAG, "태그 아이콘 클릭");
                         }
                     }
@@ -789,14 +750,6 @@ public class RoadContentsPage extends Fragment implements OnMapReadyCallback, Go
     private void setFavoriteAct(Map<String, Object> contentsList, FirebaseUser user){
     String userId = user.getEmail();
 
-        Log.d(TAG, "setFavoriteAct : " + contentsList.get("pDocumentId").toString());
-        if (contentsList.get("pDocumentId").toString().equals(userId)) {
-            Toast.makeText(getContext(), "자신을 관심 목록에 넣을 수 없습니다.", Toast.LENGTH_SHORT).show();
-        } else {
-            isInList(contentsList.get("pDocumentId").toString(), contentsList, "myStar", user, rcontentsStarImg,
-                    R.drawable.starfilled, R.drawable.star);
-        }
-
     db.collection("person").whereEqualTo("uid", contentsList.get("uid")).get()
             .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                 @Override
@@ -808,7 +761,8 @@ public class RoadContentsPage extends Fragment implements OnMapReadyCallback, Go
                             if(savedUserId.equals(userId)) {
                                 Toast.makeText(getContext(), "자신을 관심 목록에 넣을 수 없습니다." , Toast.LENGTH_SHORT).show();
                             } else {
-                                isInList(savedDocumentId, contentsList, "myStar", user, rcontentsStarImg, R.drawable.starfilled, R.drawable.star);
+                                setIcons.isInList(savedDocumentId, contentsList, "myStar", user, rcontentsStarImg
+                                        ,listener, context);
                             }
                         }
                     } else {
@@ -830,114 +784,7 @@ public class RoadContentsPage extends Fragment implements OnMapReadyCallback, Go
     rcontentsTaketimeText.setText(contentsList.get("hour").toString());
     rcontentsTakewhoText.setText(contentsList.get("isPartner").toString());
     rcontentsUsernameText.setText(contentsList.get("userName").toString());
-    rcontentsLevelImg.setImageResource(getUserLevelImage(userLevel));
-    }
-
-
-    private void isInList(String contentsID, Map<String, Object> contentsList, String userCollection, FirebaseUser user,
-                          ImageView imageView, int listIn, int listOut) {
-        Log.d(TAG, "인리스트 메서드 작동 : 이미지 뷰 = " + imageView.toString());
-        String writerUid = contentsList.get("uid").toString();
-        db.collection("person").whereEqualTo("userId", user.getEmail()).get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot pDocument : task.getResult()) {
-                                String pDocumentId = pDocument.getId();
-                                Log.d(TAG,"isInList : 해당 유저 고유 번호 받아옴" +  pDocumentId);
-                                CollectionReference userCollectionRef = db.collection("person").document(pDocumentId).collection((userCollection));
-                                if (userCollection.equals("myStar")){
-                                    userCollectionRef
-                                            .whereEqualTo("personId", contentsID)
-                                            .get()
-                                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                                    if (task.isSuccessful()) {
-                                                        Log.d(TAG, "엔트리셋?" + contentsID);
-                                                        Log.d(TAG, "사용자 활동리스트 정보 리스트에서 빼기");
-                                                        imageView.setImageResource(listIn);
-                                                        for (QueryDocumentSnapshot thisLikeDocument : task.getResult()) {
-                                                            String userActDocId = thisLikeDocument.getId();
-                                                            Log.d(TAG, "해당 다큐먼츠 찾기 => id" + userActDocId);
-                                                            userCollectionRef.document(userActDocId).delete();
-                                                            imageView.setImageResource(listOut);
-                                                            Toast.makeText(getContext(), "관심 있는 이웃 취소", Toast.LENGTH_SHORT).show();
-                                                            return;
-                                                        }
-                                                        Log.d(TAG, "사용자 활동리스트 정보 리스트에 넣기");
-                                                        imageView.setImageResource(listOut);
-                                                        listener.OnStarClicked(contentsID, user.getEmail());
-                                                        Toast.makeText(getContext(), "관심있는 이웃 다람쥐로 등록", Toast.LENGTH_SHORT).show();
-                                                        imageView.setImageResource(listIn);
-                                                        return;
-                                                    }
-                                                }
-                                            });
-                                }
-                                else {
-                                    if (userCollection.contains(userCollection)) {
-                                        Log.d(TAG, "isInList " + userCollection + " 호출 성공");
-                                        userCollectionRef
-                                                .whereEqualTo("contentsID", contentsID)
-                                                .get()
-                                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                                    @Override
-                                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                                        if (task.isSuccessful()) {
-                                                            Log.d(TAG, "엔트리셋?" + contentsID);
-                                                            Log.d(TAG, "사용자 활동리스트 정보 리스트에서 빼기");
-                                                            imageView.setImageResource(listIn);
-                                                            for (QueryDocumentSnapshot thisLikeDocument : task.getResult()) {
-                                                                String userActDocId = thisLikeDocument.getId();
-                                                                Log.d(TAG, "해당 다큐먼츠 찾기 => id" + userActDocId);
-                                                                userCollectionRef.document(userActDocId).delete();
-                                                                imageView.setImageResource(listOut);
-                                                                Toast.makeText(getContext(), "이 도토리를 버립니다.", Toast.LENGTH_SHORT).show();
-                                                                return;
-                                                            }
-                                                            Log.d(TAG, "사용자 활동리스트 정보 리스트에 넣기");
-                                                            imageView.setImageResource(listOut);
-                                                            if (userCollection.equals("myLike")) {
-                                                                listener.OnLikeClicked(contentsID, contentsList, user.getEmail());
-                                                                Toast.makeText(getContext(), "이 도토리를 좋아합니다.", Toast.LENGTH_SHORT).show();
-                                                            } else if (userCollection.equals("myScrap")) {
-                                                                //스크랩 구현 아직 안함
-                                                                listener.OnFlagClicked(contentsID, contentsList, user.getEmail());
-                                                                Toast.makeText(getContext(), "이 도토리를 담아갑니다.", Toast.LENGTH_SHORT).show();
-                                                            }
-                                                            imageView.setImageResource(listIn);
-                                                            return;
-                                                        }
-                                                    }
-                                                });
-                                    }
-
-                                }
-                            }
-                        }
-                    }
-                });
-
-    }
-
-    //다람쥐 레벨용 이미지는 프로그램 내부에 넣어놓고, 유저레벨에 따라 불러서 사용
-    private int getUserLevelImage(String userLevel) {
-        switch (userLevel) {
-            case "어린다람쥐":
-                return R.drawable.level2;
-            case "학생다람쥐":
-                return R.drawable.level3;
-            case "어른다람쥐":
-                return R.drawable.level4;
-            case "박사다람쥐":
-                return R.drawable.level5;
-            case "다람쥐의 신":
-                return R.drawable.level6;
-            default:
-                return R.drawable.level1;
-        }
+    rcontentsLevelImg.setImageResource(appConstant.getUserLevelImage(userLevel));
     }
 
 
