@@ -73,7 +73,14 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <RelativeLayout
+<<<<<<< HEAD
         android:id="@+id/writeStory"
+=======
+
+
+        android:id="@+id/writeStory"
+
+>>>>>>> 6125a619eede4d3c4de66d3f9633cfaae17c435b
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="60dp">
@@ -186,6 +193,8 @@
                     android:layout_marginLeft="5dp"
                     android:background="#E0E0E0"
                     android:ems="10"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
                     android:gravity="center"
                     android:hint="이야기 제목"
                     android:inputType="textPersonName"
@@ -344,6 +353,8 @@
                 android:layout_marginTop="15dp"
                 android:background="@drawable/box"
                 android:ems="10"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:gravity="center"
                 android:hint="사진에 대해서 알려주세요(80자 내외)"
                 android:inputType="textPersonName"
@@ -368,6 +379,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ems="10"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
                         android:gravity="center"
                         android:hint="자세한 이야기를 알려주세요!"
                         android:inputType="textPersonName"

@@ -108,7 +108,7 @@ public class SearchPage extends Fragment {
         themePage = new ThemePage();
 
 
-        searchEdit = rootView.findViewById(R.id.searchEdit);
+        searchEdit = rootView.findViewById(R.id.searchIdEdit);
         searchEdit.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
         searchEdit.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -131,69 +131,10 @@ public class SearchPage extends Fragment {
     }
 
     private void initUI(ViewGroup rootView) {
-        searchTagList = rootView.findViewById(R.id.searchTagList);
+        searchTagList = rootView.findViewById(R.id.search1List);
         searchTagList.setLayoutManager(new GridLayoutManager(getActivity(), 3));
         searchTagList.setAdapter(tagAdapter);
 
-        db.collection("tag")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Map<String, Object> tag = document.getData();
-                                for (Map.Entry<String, Object> entry : tag.entrySet()) {
-                                    Log.d(TAG, entry.getValue().toString());
-                                }
-                            }
-
-                            Query query = db.collection("tag");
-
-                            FirestoreRecyclerOptions<Tag> options = new FirestoreRecyclerOptions.Builder<Tag>()
-                                    .setQuery(query, Tag.class)
-                                    .build();
-                            setAdapter(options);
-                            tagAdapter.startListening();
-                            searchTagList.setAdapter(tagAdapter);
-                        }
-                    }
-                });
-
-    }
-
-    public void setAdapter(FirestoreRecyclerOptions options) {
-        tagAdapter = new FirestoreRecyclerAdapter<Tag, TagViewHolder>(options) {
-            @Override
-            protected void onBindViewHolder(@NonNull TagViewHolder holder, int position, @NonNull Tag model) {
-                holder.setTagItems(model);
-            }
-
-            @NonNull
-            @Override
-            public TagViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.tag_item, parent, false);
-
-                return new TagViewHolder(view);
-            }
-        };
-    }
-
-    private class TagViewHolder extends RecyclerView.ViewHolder {
-        View view;
-
-        Button tagBtn = itemView.findViewById(R.id.tagBtn);
-
-        public TagViewHolder(@NonNull View itemView) {
-            super(itemView);
-            view = itemView;
-
-        }
-
-        public void setTagItems(Tag items) {
-
-            tagBtn.setText(items.getTag());
-        }
     }
 
     private void goToSearch(String searchText) {

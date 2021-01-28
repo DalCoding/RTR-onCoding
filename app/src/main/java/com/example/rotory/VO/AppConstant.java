@@ -2,6 +2,7 @@ package com.example.rotory.VO;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -33,6 +34,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.text.SimpleDateFormat;
+import java.util.Base64;
 import java.util.Map;
 
 import static android.content.Context.INPUT_METHOD_SERVICE;
@@ -154,6 +156,20 @@ public class AppConstant {
         }
 
         return null;
+    }
+
+    public Bitmap StringToBitmap(String encodedString){
+        try {
+            byte[] enCodeBytes = new byte[0];
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                enCodeBytes = Base64.getDecoder().decode(encodedString);
+            }
+            Bitmap bitmap = BitmapFactory.decodeByteArray(enCodeBytes,0,enCodeBytes.length);
+            return bitmap;
+        }catch (Exception e){
+            e.getMessage();
+            return null;
+        }
     }
 
 }

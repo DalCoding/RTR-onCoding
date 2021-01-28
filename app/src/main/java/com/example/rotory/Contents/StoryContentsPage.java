@@ -57,6 +57,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
 
 
 import java.io.ByteArrayOutputStream;
@@ -415,6 +416,16 @@ public class StoryContentsPage extends Fragment {
                             @Override
                             public void onSuccess(DocumentReference documentreference) {
                                 showToast("댓글을 신고하셨습니다.");
+                                String reportId = documentreference.getId();
+                                ReportData.put("reportId", reportId);
+                                db.collection("report").document(reportId)
+                                        .set(ReportData, SetOptions.merge())
+                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                //Log.d(TAG,"리포트 아이디까지 저장 성공" + task.getResult().toString());
+                                            }
+                                        });
 
                             }
                         })
@@ -700,7 +711,7 @@ public class StoryContentsPage extends Fragment {
         ArrayList<Bitmap> bitmapImageList = new ArrayList<>();
         for (int i = 0; i < stringImageMap.size(); i ++){
             String key = "image"+(i+1);
-            Bitmap imageBitmap = StringToBitmap(String.valueOf(stringImageMap.get(key)));
+            Bitmap imageBitmap = appConstant.StringToBitmap(String.valueOf(stringImageMap.get(key)));
             bitmapImageList.add(imageBitmap);
         }
 
@@ -710,20 +721,6 @@ public class StoryContentsPage extends Fragment {
         imageAdapter = new StoryImageAdapter(bitmapImageList, getContext(),imageListener);
         scontentsThumbnailRView.setAdapter(imageAdapter);
 
-    }
-
-    public Bitmap StringToBitmap(String encodedString){
-        try {
-            byte[] enCodeBytes = new byte[0];
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                enCodeBytes = Base64.getDecoder().decode(encodedString);
-            }
-            Bitmap bitmap = BitmapFactory.decodeByteArray(enCodeBytes,0,enCodeBytes.length);
-            return bitmap;
-        }catch (Exception e){
-            e.getMessage();
-            return null;
-        }
     }
 
     // 사용자의 각 사용자행동리스트에서 해당 글을 저장했는지 여부를 확인할때,

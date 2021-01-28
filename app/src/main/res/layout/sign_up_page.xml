@@ -400,6 +400,7 @@
                         android:layout_toRightOf="@id/signin_pin"
                         android:background="@drawable/button_drawable"
                         android:elevation="5dp"
+                        android:enabled="false"
                         android:text="확인"
                         android:textColor="@color/brown"
                         android:textColorHighlight="#FFFFFF"
@@ -408,10 +409,16 @@
                 </RelativeLayout>
 
                 <TextView
-                    android:id="@+id/signUpCheckMobile"
-                    android:layout_width="match_parent"
+                    android:id="@+id/signup_pw_check"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:visibility="visible" />
+                    android:layout_marginStart="44dp"
+                    android:layout_marginLeft="44dp"
+                    android:layout_marginTop="5dp"
+                    android:text="'비밀번호가 다릅니다.'"
+                    android:textColor="#FF0000"
+                    android:textSize="14sp"
+                    android:visibility="invisible" />
 
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>

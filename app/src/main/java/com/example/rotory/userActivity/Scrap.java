@@ -2,28 +2,38 @@ package com.example.rotory.userActivity;
 
 public class Scrap {
 
-    String title;
-    String article;
-    String contentsAddress;
-    int contentsType;
-    String contentsId;
-    String savedDate;
-    String titleImage;
-    String uid;
+    public int contentsType;
+    public String title;
+    public String article;
+    public String contentsAddress;
+    public  String contentsId;
+    public  String savedDate;
+    public String titleImage;
+    public  String uid;
+    public String tag1;
 
-    public Scrap() {
-    }
-
-    public Scrap(String title, String article, String contentsAddress, int contentsType,
-                 String contentsId, String savedDate, String titleImage, String uid) {
+    public Scrap(int contentsType, String title, String article, String contentsAddress,
+                 String contentsId, String savedDate, String titleImage, String uid, String tag1) {
+        this.contentsType = contentsType;
         this.title = title;
         this.article = article;
         this.contentsAddress = contentsAddress;
-        this.contentsType = contentsType;
         this.contentsId = contentsId;
         this.savedDate = savedDate;
         this.titleImage = titleImage;
         this.uid = uid;
+        this.tag1 = tag1;
+    }
+
+    public Scrap() {
+    }
+
+    public String getTag1() {
+        return tag1;
+    }
+
+    public void setTag1(String tag1) {
+        this.tag1 = tag1;
     }
 
     public int getContentsType() {

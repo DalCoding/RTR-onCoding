@@ -179,6 +179,7 @@ public class Write_Story extends AppCompatActivity  {
         title = writeStoryTitle.getText().toString();
         article = writeStoryEditText.getText().toString();
 
+
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         AlertDialog.Builder saveDialog = new AlertDialog.Builder(this);
         AlertDialog.Builder mainImageDialog = new AlertDialog.Builder(this);
@@ -317,8 +318,6 @@ public class Write_Story extends AppCompatActivity  {
                 if (uriList.size() > 0) {
                     mainImageAlertDialog.show();
                 }
-
-
             }
         });
 
@@ -339,7 +338,22 @@ public class Write_Story extends AppCompatActivity  {
             }
         });
 
+        publicRadioButton=findViewById(R.id.publicRadioButton2);
+        publicRadioButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                isPublic=1;
 
+            }
+        });
+
+        privateRadioButton=findViewById(R.id.privateRadioButton2);
+        privateRadioButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                isPublic=0;
+            }
+        });
 
         checkmarkBtn = findViewById(R.id.checkmarkBtn);
         checkmarkBtn.setOnClickListener(new View.OnClickListener() {
@@ -384,24 +398,21 @@ public class Write_Story extends AppCompatActivity  {
     } //end of onCreate]
 
 
-    private boolean isValidate(){
+    private boolean isValidate() {
 
-        storyaddress=writeStoryLocation.getText().toString();
-        title=writeStoryTitle.getText().toString();
+        storyaddress = writeStoryLocation.getText().toString();
+        title = writeStoryTitle.getText().toString();
 
-        if(title.equals("")||title==null){
+        if (title.equals("") || title == null) {
             return false;
-        }else if(mainImage==null){
+        } else if (mainImage == null) {
             return false;
 
-        }else if(storyaddress.equals("")||storyaddress==null){
+        } else if (storyaddress.equals("") || storyaddress == null) {
             return false;
         }
 
-
         return true;
-
-
     }
 
     private void setDB() throws IOException {
@@ -663,10 +674,11 @@ public class Write_Story extends AppCompatActivity  {
             public void onItemClick(StoryImageAdapter.writestroyHolder writestroyHolder, View view, int position) {
 
             }
-            /*@Override
+
+            @Override
             public void onItemClick(MainPage.MyAdapter.ViewHolder holder, View view, int position) {
 
-            }*/
+            }
 
         });
 
