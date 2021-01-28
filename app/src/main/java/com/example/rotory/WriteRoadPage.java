@@ -178,7 +178,10 @@ public class WriteRoadPage extends AppCompatActivity implements OnMapReadyCallba
                     setLoadMarkers();
 
                 } else {
-                    // 작성 페이지에서 뒤로가기 구현
+                    Toast.makeText(getApplicationContext(), "작성을 취소하였습니다.", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(WriteRoadPage.this, MainPage.class);
+                    startActivity(intent);
+                    finish();
                 }
             }
         });
