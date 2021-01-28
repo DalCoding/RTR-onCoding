@@ -1,6 +1,7 @@
 package com.example.rotory.userActivity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -171,9 +172,26 @@ public class MyScrapActivity extends AppCompatActivity {
             String contentsType;
             if (scrap.getContentsType() == 1) {
                 contentsType = "다람쥐 이야기";
+
+                String titleImage = scrap.getTitleImage();
+                Log.d(TAG,titleImage);
+                if(titleImage.equals("2131230836")){
+
+                }else {
+                    Bitmap titleImageBitmap = appConstant.StringToBitmap(titleImage);
+                    Log.d(TAG, titleImageBitmap.toString());
+                    myScrapPreImg.setMinimumWidth(120);
+                    myScrapPreImg.setMinimumHeight(100);
+                    myScrapPreImg.setImageBitmap(titleImageBitmap);
+                }
+
             } else {
                 contentsType = "도토리 길";
+                if (scrap.getTag1() != null) {
+                    appConstant.getThemeImage(scrap.getTag1(), myScrapPreImg, getApplicationContext());
+                }
             }
+
 
           //  Log.d(TAG, scrap.getTitle());
             db.collection("person")

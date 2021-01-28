@@ -193,7 +193,7 @@ public class MyFavoriteActivity  extends AppCompatActivity  {
             myFavoriteLevelImg.setImageResource(levelImg);
             myFavoriteNickTextView.setText(user.getUserName());
             myFavoriteLevelTextView.setText(user.getUserLevel());
-            //myFavoriteImg.setImageURI(Uri.parse(uri));
+
 
         }
 
