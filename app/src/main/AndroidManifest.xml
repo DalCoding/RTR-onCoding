@@ -69,6 +69,7 @@
         <activity android:name=".userActivity.MyLikeActivity" />
         <activity android:name=".Search.SearchPage"/>
         <activity android:name=".Search.SearchResultPage"/>
+        <activity android:name=".story.StoryFindLocationPage"/>
 <!--        <activity android:name=".Write_Story" />-->
        <activity android:name=".userActivity.MyScrapActivity"/>
         <activity android:name=".LoadStoryItem"/>
@@ -77,7 +78,11 @@
         <activity android:name=".BigMapPage"/>
         <activity android:name=".Theme.ThemePickPage"/>
         <activity android:name=".LoadRoadItem"/>
+<<<<<<< HEAD
+        <!--<activity android:name=".Write_Story"/>-->
+=======
         <activity android:name=".userActivity.UserActivity"/>
+>>>>>>> f9ec3e5fc6cbee669e5e5e13e89ca1a2a2db6635
         <activity android:name=".Theme.ThemePage"/>
         <activity android:name=".WriteRoadPage"
             android:windowSoftInputMode="adjustPan"/>

@@ -2,23 +2,25 @@ package com.example.rotory.story;
 
 import com.google.gson.internal.$Gson$Preconditions;
 
+import java.util.ArrayList;
+
 public class MyRoad {
 
-    int contentsType;
-    String dtrName;
-    String title;
-    String address;
+    private int contentsType;
+    private ArrayList<String> dtrName;
+    private String title;
+    private ArrayList<String> dtrAddress;
 
     public MyRoad() {}
 
-    public MyRoad(int contentsType, String dtrName, String title, String address) {
+    public MyRoad(int contentsType, ArrayList<String> dtrName, String title, ArrayList<String> dtrAddress) {
         this.contentsType = contentsType;
         this.dtrName = dtrName;
         this.title = title;
-        this.address = address;
+        this.dtrAddress = dtrAddress;
     }
 
-    public String getDtrName() {
+    public ArrayList<String> getDtrName() {
         return dtrName;
     }
 
@@ -30,7 +32,7 @@ public class MyRoad {
         this.contentsType = contentsType;
     }
 
-    public void setDtrName(String dtrName) {
+    public void setDtrName(ArrayList<String> dtrName) {
         this.dtrName = dtrName;
     }
 
@@ -42,11 +44,11 @@ public class MyRoad {
         this.title = title;
     }
 
-    public String getAddress() {
-        return address;
+    public ArrayList<String> getDtrAddress() {
+        return dtrAddress;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setAddress(ArrayList<String> dtrAddress) {
+        this.dtrAddress = dtrAddress;
     }
 }

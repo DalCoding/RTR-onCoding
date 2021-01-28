@@ -67,11 +67,12 @@ public class SearchOnMapFragment extends Fragment {
             @Override
             public void onPlaceSelected(Place place) {
                 Log.i(TAG, "Place: " + place.getName() + ", " + place.getId());
+                String placeName = place.getName();
                 Intent intent = new Intent(getActivity(), Write_Story.class);
-                intent.putExtra("PlaceName", place);
+                intent.putExtra("placeName", placeName);
                 startActivity(intent);
-
             }
+
             @Override
             public void onError(Status status) {
                 Log.i(TAG, "An error occurred: " + status);

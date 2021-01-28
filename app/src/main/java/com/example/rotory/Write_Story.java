@@ -33,12 +33,21 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.rotory.Adapter.WriteStoryImageAdapter;
 import com.example.rotory.Contents.StoryImageAdapter;
 import com.example.rotory.Interface.OnContentsItemClickListener;
+<<<<<<< HEAD
+import com.example.rotory.VO.Story;
+import com.example.rotory.story.SearchOnMyRoadFragment;
+import com.example.rotory.story.StoryFindLocationPage;
+import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.internal.InternalTokenProvider;
+
+=======
 import com.example.rotory.VO.AppConstant;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -52,6 +61,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.io.ByteArrayOutputStream;
+>>>>>>> f9ec3e5fc6cbee669e5e5e13e89ca1a2a2db6635
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -62,6 +72,10 @@ import java.util.Map;
 
 public class Write_Story extends AppCompatActivity  {
     private final String TAG = "Write_Story";
+<<<<<<< HEAD
+    private static final int Map_RESULT_CODE = 5200;
+    private static final int Road_RESULT_CODE = 5300;
+=======
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -69,6 +83,7 @@ public class Write_Story extends AppCompatActivity  {
 
     RelativeLayout writeStory;
 
+>>>>>>> f9ec3e5fc6cbee669e5e5e13e89ca1a2a2db6635
     Button addbtn;
     Button mainbtn;
     Button checkmarkBtn;
@@ -93,6 +108,12 @@ public class Write_Story extends AppCompatActivity  {
     private InputMethodManager keyboardManager;
     int CODE_ALBUM_REQUEST = 111;
     OnContentsItemClickListener listener;
+<<<<<<< HEAD
+    Spinner spinner;
+    WriteStoryImageAdapter adapter;
+    private ArrayAdapter spinnerAdapter;
+    TextView writeStoryLocation;
+=======
 
     public int imagePosition;
     //private ArrayAdapter spinnerAdapter;
@@ -124,7 +145,12 @@ public class Write_Story extends AppCompatActivity  {
 
     AppConstant appConstant = new AppConstant();
 
+>>>>>>> f9ec3e5fc6cbee669e5e5e13e89ca1a2a2db6635
 
+    StoryFindLocationPage findLocationPage;
+
+
+    public Write_Story() { }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -236,6 +262,35 @@ public class Write_Story extends AppCompatActivity  {
 
 
 
+<<<<<<< HEAD
+        /*Spinner spinner =findViewById(R.id.writeStoryPreFixSpinner);
+        spinnerAdapter = new ArrayAdapter(this,R.layout.support_simple_spinner_dropdown_item, );
+        ArrayList<String> spinnerList = new ArrayList<>();
+        spinner.setAdapter(spinnerAdapter);
+
+        spinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText( Write_Story.this,"선택 " + spinner.getItemAtPosition(position),Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        Spinner spinner = findViewById(R.id.writeStoryPreFixSpinner);
+        try {
+            Field popup = Spinner.class.getDeclaredField("mPopup");
+            ListPopupWindow popupWindow = (ListPopupWindow) popup.get(spinner);
+            popupWindow.setHeight(500);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (NoSuchFieldException e) {
+             e.printStackTrace();
+        }*/
+
+        //String prefixId = spinner.getSelectedItemPosition().toString();  //말머리 String
+
+        String prefixId = spinner.getSelectedItem().toString(); //말머리 String
+=======
+>>>>>>> f9ec3e5fc6cbee669e5e5e13e89ca1a2a2db6635
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
             @Override
@@ -300,9 +355,19 @@ public class Write_Story extends AppCompatActivity  {
             @SuppressLint("UseCompatLoadingForDrawables")
             @Override
             public void onClick(View v) {
+<<<<<<< HEAD
+                Log.d(TAG, "사진 삭제");
+               titleImage.setImageResource(0); //-삭제 버튼 자동 생성
+                 //adapter.albumImgList.get(position)
+
+
+            }
+        });
+=======
                 if (uriList.size() > 0) {
                     mainImageAlertDialog.show();
                 }
+>>>>>>> f9ec3e5fc6cbee669e5e5e13e89ca1a2a2db6635
 
             }
         });
@@ -323,8 +388,34 @@ public class Write_Story extends AppCompatActivity  {
                     Toast.makeText(getApplicationContext(), "필수 입력 사항을 입력해주세요.", Toast.LENGTH_SHORT).show();
                 }
 
+        //장소 검색 페이지 띄우기
+        //findLocationPage = new StoryFindLocationPage();
+        writeStoryLocation = findViewById(R.id.writeStoryLocation);
+        writeStoryLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Write_Story.this, StoryFindLocationPage.class);
+                startActivity(intent);
             }
         });
+<<<<<<< HEAD
+
+        Intent placeTextIntent = getIntent();
+        String placeText = placeTextIntent.getStringExtra("placeText");
+
+        Intent placeNameIntent = getIntent();
+        String placeName = placeNameIntent.getStringExtra("placeName");
+
+
+        if (placeText == null) {
+            writeStoryLocation.setText(placeName);
+        } else {
+            writeStoryLocation.setText(placeText);
+        }
+
+        // changeUritoBITmap();
+=======
+>>>>>>> f9ec3e5fc6cbee669e5e5e13e89ca1a2a2db6635
 
         publicRadioButton = findViewById(R.id.publicRadioButton2);
         publicRadioButton.setOnClickListener(new View.OnClickListener() {
@@ -587,6 +678,10 @@ public class Write_Story extends AppCompatActivity  {
 
             }
 
+             if (requestCode == Map_RESULT_CODE) {
+                 if (resultCode == RESULT_OK) {
+                 }
+             }
 
             //리사이클러뷰에 보여주기
 
