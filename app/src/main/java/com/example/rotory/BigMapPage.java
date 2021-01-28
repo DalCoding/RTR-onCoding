@@ -187,7 +187,9 @@ public class BigMapPage extends AppCompatActivity implements OnTabItemSelectedLi
                 map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                     @Override
                     public boolean onMarkerClick(Marker marker) {
-                        showDtrInfo(marker);
+                        int z = (int) marker.getTag();
+                        if (z!=0){
+                        showDtrInfo(marker);}
                         return true;
                     }
                 });
@@ -353,6 +355,7 @@ public class BigMapPage extends AppCompatActivity implements OnTabItemSelectedLi
         //    myLocationMarker.snippet("●GPS로확인한위치");
         MarkerSelectedOps.icon(BitmapDescriptorFactory.fromResource(R.drawable.acornlined2));
         MarkerSelected = map.addMarker(MarkerSelectedOps);
+        MarkerSelected.setTag(3);
       //  marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.acorn2));
 
 
@@ -445,7 +448,8 @@ public class BigMapPage extends AppCompatActivity implements OnTabItemSelectedLi
                 //    myLocationMarker.title("●내위치\n");
                 //    myLocationMarker.snippet("●GPS로확인한위치");
                 myLocationMarker.icon(BitmapDescriptorFactory.fromResource(R.drawable.squirrel3));
-                map.addMarker(myLocationMarker);
+                myMarker = map.addMarker(myLocationMarker);
+                 myMarker.setTag(0);
 
     }
 
@@ -579,6 +583,7 @@ public class BigMapPage extends AppCompatActivity implements OnTabItemSelectedLi
                         //    myLocationMarker.snippet("●GPS로확인한위치");
                         MarkerOps1.icon(BitmapDescriptorFactory.fromResource(R.drawable.acorn2));
                         Marker1 = map.addMarker(MarkerOps1);
+                        Marker1.setTag(1);
 
                     }
                 }
@@ -675,6 +680,7 @@ public class BigMapPage extends AppCompatActivity implements OnTabItemSelectedLi
                                         //    myLocationMarker.snippet("●GPS로확인한위치");
                                         MarkerOps1.icon(BitmapDescriptorFactory.fromResource(R.drawable.acorn2));
                                         Marker1 = map.addMarker(MarkerOps1);
+                                        Marker1.setTag(2);
                                         PolyPoints.add(latLng2);
                                     }
                                     PolylineOptions polylineOptions = new PolylineOptions();

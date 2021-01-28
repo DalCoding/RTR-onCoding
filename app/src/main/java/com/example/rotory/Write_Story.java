@@ -623,6 +623,10 @@ public class Write_Story extends AppCompatActivity  {
             public void onItemClick(StoryImageAdapter.writestroyHolder writestroyHolder, View view, int position) {
 
             }
+            @Override
+            public void onItemClick(MainPage.MyAdapter.ViewHolder holder, View view, int position) {
+
+            }
         });
 
 
