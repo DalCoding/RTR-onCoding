@@ -57,6 +57,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
 
 
 import java.io.ByteArrayOutputStream;
@@ -415,6 +416,16 @@ public class StoryContentsPage extends Fragment {
                             @Override
                             public void onSuccess(DocumentReference documentreference) {
                                 showToast("댓글을 신고하셨습니다.");
+                                String reportId = documentreference.getId();
+                                ReportData.put("reportId", reportId);
+                                db.collection("report").document(reportId)
+                                        .set(ReportData, SetOptions.merge())
+                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                //Log.d(TAG,"리포트 아이디까지 저장 성공" + task.getResult().toString());
+                                            }
+                                        });
 
                             }
                         })

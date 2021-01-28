@@ -141,7 +141,7 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
         pageTitleTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), LoadStoryItem.class);
+                Intent intent = new Intent(getApplicationContext(), SearchPage1.class);
                 startActivity(intent);
 
             }
@@ -176,9 +176,9 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
             @Override
             public void onClick(View v) {
                 if (user != null) {
-                    Intent writeStoryIntent = new Intent(getApplicationContext(), Write_Story.class);
+                    /*Intent writeStoryIntent = new Intent(getApplicationContext(), Write_Story.class);
                     //writeStoryIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                    startActivity(writeStoryIntent);
+                    startActivity(writeStoryIntent);*/
                 } else {
                     goLogInPage();
 

@@ -41,7 +41,7 @@ public class LoadStoryItem extends AppCompatActivity implements OnUserActItemCli
           String documentID = intent.getStringExtra("documentId");
           //Log.d(TAG, documentID);
 
-          documentID = "cUdrbXxnxLCh5gf5rDYJ";
+          documentID ="cUdrbXxnxLCh5gf5rDYJ";
 
 
 

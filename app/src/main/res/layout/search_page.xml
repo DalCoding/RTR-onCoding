@@ -21,7 +21,7 @@
             app:srcCompat="@drawable/back_button" />
 
         <EditText
-            android:id="@+id/searchEdit"
+            android:id="@+id/searchIdEdit"
             android:layout_width="300dp"
             android:layout_height="50dp"
             android:layout_alignParentBottom="true"
@@ -50,7 +50,7 @@
         android:background="@drawable/fragment_lines">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/searchTagList"
+            android:id="@+id/search1List"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="10dp"

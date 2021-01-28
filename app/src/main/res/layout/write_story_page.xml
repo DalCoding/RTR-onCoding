@@ -73,8 +73,6 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <RelativeLayout
-
-
         android:id="@+id/writeStory"
 
         android:layout_width="match_parent"
