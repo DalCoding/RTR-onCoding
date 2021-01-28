@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
@@ -136,11 +138,16 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
     BottomNavigationView bottomNavigation;
     Boolean isSignIn;
 
+    ProgressDialogs progressDialogs;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.my_page);
+
+        progressDialogs = new ProgressDialogs(this);
+        progressDialogs.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
 
         relativeLayout1 = findViewById(R.id.myRelativeLayout1);
         relativeLayout2 = findViewById(R.id.myRelativeLayout2);
@@ -311,6 +318,10 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
 
                     case R.id.theme:
                        // if(isSignIn) {
+                        progressDialogs = new ProgressDialogs(MyPage.this);
+                        progressDialogs.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                        progressDialogs.show();
+                        startTagsLoading(300);
                             Intent ThemeIntent= new Intent(getApplicationContext(), ThemePage.class);
                             startActivityForResult(ThemeIntent, ThemeCode);
                             bottomNavigation.setVisibility(View.VISIBLE);
@@ -338,6 +349,17 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
                 }
                 return false;
             }
+
+            private void startTagsLoading(int millis){
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            progressDialogs.dismiss();
+                        }
+                    }, millis);
+                }
         });
     }
 

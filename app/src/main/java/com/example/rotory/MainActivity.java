@@ -1,7 +1,10 @@
 package com.example.rotory;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -87,7 +90,7 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
 
     ImageButton popFloatingBtn;
     ImageButton pop2FloatingBtn;
-
+    ProgressDialogs progressDialogs;
 
 
     @Override
@@ -116,6 +119,7 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
             isSignIn = false;
         }
         getSupportFragmentManager().beginTransaction().replace(R.id.container, mainPage).commit();
+
 
         // 아래부분 이후 옮김 -> 로그아웃 여부 실험!
         Button mainAlarmBtn = findViewById(R.id.mainAlarmBtn);
@@ -282,6 +286,8 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
 
 
     public void setBottomNavigation(BottomNavigationView bottomNavigation, boolean isSignIn) {
+
+
         bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -295,6 +301,10 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
                         return true;
                     case R.id.theme:
                         if(isSignIn) {
+                            progressDialogs = new ProgressDialogs(MainActivity.this);
+                            progressDialogs.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                            progressDialogs.show();
+                            startTagsLoading(300);
                             Intent myPageIntent = new Intent(MainActivity.this, ThemePage.class);
                             myPageIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(myPageIntent);
@@ -321,6 +331,18 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
                         return true;
                 }
                 return false;
+            }
+
+            private void startTagsLoading(int millis) {
+
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            progressDialogs.dismiss();
+                        }
+                    }, millis);
             }
         });
     }
