@@ -73,8 +73,6 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <RelativeLayout
-
-
         android:id="@+id/writeStory"
 
         android:layout_width="match_parent"
@@ -379,7 +377,8 @@
                         android:focusableInTouchMode="true"
                         android:gravity="center"
                         android:hint="자세한 이야기를 알려주세요!"
-                        android:inputType="textPersonName"
+                        android:inputType="textMultiLine|textPersonName"
+                        android:scrollHorizontally="false"
                         android:textSize="16sp" />
                 </LinearLayout>
             </ScrollView>

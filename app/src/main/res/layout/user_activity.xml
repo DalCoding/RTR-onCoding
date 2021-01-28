@@ -16,6 +16,9 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
+<<<<<<< HEAD
+            <RelativeLayout
+=======
             <LinearLayout
                 android:id="@+id/story_linerlayout"
                 android:layout_width="match_parent"
@@ -50,17 +53,56 @@
             </LinearLayout>
 
             <androidx.core.widget.NestedScrollView
+>>>>>>> 5dadfb190171c0e6535e42cdd4ce0461b399d3fc
                 android:id="@+id/story_nestedscrollview"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:fillViewport="true">
+                android:layout_weight="1">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
+<<<<<<< HEAD
+                    <LinearLayout
+                        android:id="@+id/story_linerlayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:background="@color/beige"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/squstory"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="30dp"
+                            android:layout_marginRight="30dp"
+                            android:layout_marginBottom="10dp"
+                            android:layout_weight="1"
+                            android:text="다람쥐 이야기"
+                            android:textColor="#442C2E"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                        <ImageButton
+                            android:id="@+id/story_backbutton"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginRight="10dp"
+                            android:background="@drawable/right_arrowbrown" />
+
+                    </LinearLayout>
+
+=======
+>>>>>>> 5dadfb190171c0e6535e42cdd4ce0461b399d3fc
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/story_recylerview"
                         android:layout_width="match_parent"
@@ -68,8 +110,11 @@
                         android:layout_margin="10dp" />
 
                 </LinearLayout>
-            </androidx.core.widget.NestedScrollView>
+            </RelativeLayout>
 
+<<<<<<< HEAD
+            <RelativeLayout
+=======
             <LinearLayout
                 android:id="@+id/road_linerlayout"
                 android:layout_width="match_parent"
@@ -104,17 +149,55 @@
             </LinearLayout>
 
             <androidx.core.widget.NestedScrollView
+>>>>>>> 5dadfb190171c0e6535e42cdd4ce0461b399d3fc
                 android:id="@+id/road_nestedscrollview"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:fillViewport="true">
+                android:layout_weight="1">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
+<<<<<<< HEAD
+                    <LinearLayout
+                        android:id="@+id/road_linerlayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@color/beige"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/dtlroad"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="30dp"
+                            android:layout_marginRight="30dp"
+                            android:layout_marginBottom="10dp"
+                            android:layout_weight="1"
+                            android:text="도토리 길"
+                            android:textColor="#442C2E"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                        <ImageButton
+                            android:id="@+id/road_backbutton"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginRight="10dp"
+                            android:background="@drawable/right_arrowbrown" />
+
+                    </LinearLayout>
+
+=======
+>>>>>>> 5dadfb190171c0e6535e42cdd4ce0461b399d3fc
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/road_recylerview"
                         android:layout_width="match_parent"
@@ -122,8 +205,12 @@
                         android:layout_margin="10dp" />
 
                 </LinearLayout>
+<<<<<<< HEAD
+            </RelativeLayout>
+=======
             </androidx.core.widget.NestedScrollView>
 
+>>>>>>> 5dadfb190171c0e6535e42cdd4ce0461b399d3fc
         </LinearLayout>
 
     </RelativeLayout>

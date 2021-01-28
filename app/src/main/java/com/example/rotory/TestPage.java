@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.rotory.Search.SearchPage;
 import com.example.rotory.VO.Road;
 
 public class TestPage extends AppCompatActivity {
@@ -19,7 +20,7 @@ public class TestPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        fragment = new RoadContentsPage();
+        fragment = new SearchPage();
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

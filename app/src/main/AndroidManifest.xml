@@ -70,7 +70,6 @@
             android:windowSoftInputMode="adjustPan"/>
         <activity android:name=".userActivity.MyFavoriteActivity"/>
         <activity android:name=".userActivity.MyLikeActivity" />
-        <activity android:name=".Search.SearchPage"/>
         <activity android:name=".Search.SearchResultPage"/>
         <activity android:name=".story.StoryFindLocationPage"/>
 <!--        <activity android:name=".Write_Story" />-->
@@ -83,13 +82,13 @@
         <activity android:name=".LoadRoadItem"/>
         <!--<activity android:name=".Write_Story"/>-->
         <activity android:name=".userActivity.UserActivity"/>
-
         <activity android:name=".Theme.ThemePage"/>
         <activity android:name=".WriteRoadPage"
             android:windowSoftInputMode="adjustPan"/>
-        <activity android:name=".Write_Story"
-            android:windowSoftInputMode="adjustPan"/>
+<!--        <activity android:name=".Write_Story"
+            android:windowSoftInputMode="adjustPan"/>-->
         <activity android:name=".WriteContents.TagSelectDialog" android:theme="@android:style/Theme.Dialog"/>
+        <activity android:name=".SearchPage1"/>
 
 
         <!--        <activity android:name=".MainActivity"/>-->
@@ -106,6 +105,7 @@
                 <data android:path="/setPassword"/>
             </intent-filter>
         </activity>-->
+
 
 
 
