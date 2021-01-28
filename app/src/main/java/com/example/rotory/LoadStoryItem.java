@@ -45,9 +45,6 @@ public class LoadStoryItem extends AppCompatActivity implements OnUserActItemCli
 
 
 
-
-
-
           Bundle pDocumentIdBundle = new Bundle();
           pDocumentIdBundle.putString("storyDocumentId", documentID);
           Log.d(TAG, pDocumentIdBundle.getString("storyDocumentId"));

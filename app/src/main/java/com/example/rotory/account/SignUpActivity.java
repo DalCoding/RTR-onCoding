@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.telephony.PhoneNumberUtils;
 import android.util.Log;
 
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -27,9 +29,14 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
+import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthSettings;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.PhoneAuthCredential;
+import com.google.firebase.auth.PhoneAuthOptions;
+import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.DocumentReference;
 
@@ -41,13 +48,15 @@ import com.google.firebase.firestore.SetOptions;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
 
 public class SignUpActivity extends AppCompatActivity {
-    //닉네임 중복검사 -> 진행중.. 과정중에 한번 브레이크가 걸려야 중복검사 가능.. 어떤식으로? 고민중... 0115
 
+    Counter mobileCounter = new Counter();
 
     AppConstant appConstant;
     private static final String TAG = "SignUpActivity";
@@ -56,20 +65,31 @@ public class SignUpActivity extends AppCompatActivity {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
+    FirebaseAuthSettings firebaseAuthSettings = mAuth.getFirebaseAuthSettings();
+    private FirebaseAuth.AuthStateListener firebaseAuthListener;
+
+    PhoneAuthCredential credential;
+    String authNum;
+
     EditText signin_id_edittext;
     EditText signin_pw_edittext;
     EditText signin_pwcheck_edittext;
     EditText signin_nicname_edittext;
     EditText signin_mobile;
+    EditText signin_pin;
 
     ImageButton signUpBackImageButton;
     Button signUpCheckBtn;
+    Button signin_phone_button;
+    Button signin_pin_button;
 
     TextView signUpTitlewithBtnTextView;
     TextView signin_pwcheck_check;
     TextView signin_id_check;
     TextView signin_userName_check;
     TextView signin_mobile_check;
+    TextView mobileTimeCountText;
+    TextView signup_pw_check;
 
     String userId;
     String pw;
@@ -112,6 +132,54 @@ public class SignUpActivity extends AppCompatActivity {
         signin_mobile_check.setVisibility(View.GONE);
         signin_id_check = findViewById(R.id.signin_id_check);
         signin_pwcheck_check = findViewById(R.id.signin_pwcheck_check);
+        mobileTimeCountText = findViewById(R.id.mobileTimeCountText);
+        signin_pin = findViewById(R.id.signin_pin);
+        signup_pw_check = findViewById(R.id.signup_pw_check);
+
+        signin_phone_button = findViewById(R.id.signin_phone_button);
+        signin_pin_button = findViewById(R.id.signin_phone_button2);
+
+        signin_pin_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mobileTimeCountText.getText() == "00:00"){
+                    Toast.makeText(getApplicationContext(), "인증 시간이 초과되었습니다.",Toast.LENGTH_SHORT).show();
+                } else {
+                    signup_pw_check.setVisibility(View.INVISIBLE);
+                    Log.d(TAG,"인증번호 : " + authNum );
+                    String userCode = signin_pin.getText().toString();
+                    Log.d(TAG, "입력코드 : " + userCode);
+                    if (!userCode.equals(authNum)){
+                        Log.d(TAG,"인증번호 불일치"+ userCode + ":" + authNum);
+                        //showToast("인증번호가 틀렸습니다");
+                        signup_pw_check.setVisibility(View.VISIBLE);
+                    }else {
+                        showToast("인증 성공");
+                        //LogInWithPhoneAuthCredential(mAuth,mContext,credential);
+                    }
+                }
+            }
+        });
+        signin_phone_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String checkedPhone = signin_mobile.getText().toString();
+                Log.d(TAG, "휴대전화 인증 " + checkedPhone);
+
+                String number = PhoneNumberUtils.formatNumber(signin_mobile.getText().toString(),
+                        Locale.getDefault().getCountry());
+                if (number == null ||number.length()<8){
+                    showToast("핸드폰 번호를 확인해주세요");
+                }else {
+                    String phoneNum = "+82 " + number.substring(1);
+                    Log.d(TAG, "인증번호 보낼 핸드폰 번호 확인 : " + phoneNum);
+                    getPwWithMobile(phoneNum);
+                    signin_mobile.setEnabled(true);
+                    mobileCounter.countDownTimer(mobileTimeCountText).start();
+
+                }
+            }
+        });
 
         signUpTitlewithBtnTextView.setText("회원가입");
         signUpBackImageButton.setOnClickListener(new View.OnClickListener() {
@@ -280,10 +348,14 @@ public class SignUpActivity extends AppCompatActivity {
             return false;
         } else if (!mobilePattern) {
             return false;
-        } /*else if (signin_userName_check.getVisibility() == View.VISIBLE) {
+        } else if (!signin_pin_button.isEnabled()){
+            return false;
+
+            /*else if (signin_userName_check.getVisibility() == View.VISIBLE) {
                 Log.d(TAG, "중복된 이름" + userName);
                 return false;
         }*/
+        }
 
         return true;
     }
@@ -313,7 +385,7 @@ public class SignUpActivity extends AppCompatActivity {
         persons.setUserId(userId);
         persons.setUid(uid);
 
-        HashMap<Object, String> person = new HashMap<>();
+        HashMap<String, Object> person = new HashMap<>();
 
         person.put("userId", persons.getUserId());
         person.put("userName", persons.getUserName());
@@ -323,6 +395,7 @@ public class SignUpActivity extends AppCompatActivity {
         person.put("userLevel", persons.getUserLevel());
         person.put("userImage", persons.getUserImage());
         person.put("userLevelImage", persons.getUserLevelImage());
+        person.put("userPoint",0);
         person.put("signUpDate", persons.getSignUpDate());
         //Date (그날날짜) 받아와서 다시저장
 
@@ -333,6 +406,7 @@ public class SignUpActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
                         Log.d(TAG, "Person add with id" + documentReference.getId());
+                        setScrapItem(persons.getUserId().toString());
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -371,6 +445,36 @@ public class SignUpActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    private void setScrapItem(String userId) {
+        db.collection("person").whereEqualTo("userId", userId)
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()){
+                        String personId;
+                        Map<String, Object> defaultScrapSet = new HashMap<>();
+                        for (QueryDocumentSnapshot pDocument : task.getResult()){
+                            personId = pDocument.getId();
+                            defaultScrapSet.put(" title", "");
+                            defaultScrapSet.put("contentsAddress","");
+                            defaultScrapSet.put("savedDate", "");
+                            defaultScrapSet.put("contentsId", "");
+                            defaultScrapSet.put("titleImage", String.valueOf(R.drawable.black_scrap));
+                            for (int i = 0; i < 8; i++) {
+                                db.collection("person").document(personId).collection("myScrap")
+                                        .add(defaultScrapSet).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<DocumentReference> task) {
+                                        Log.d(TAG, "비어있는 스크랩 저장");
+                                    }
+                                });
+                            }
+                        }
+                    }
+            }
+        });
     }
 
 
@@ -416,172 +520,57 @@ public class SignUpActivity extends AppCompatActivity {
 
     }
 
-}
- /* private final void signUp(final String userId, final String password,
-                              String email, String name,String mobile){
-        FirebaseAuth firebaseAuth = this.mAuth;
-        if (firebaseAuth == null){
-            Log.e(TAG,"firebaseauth 연결 안됨");
-        }
-        mAuth.createUserWithEmailAndPassword(userId, password).addOnCompleteListener(
-                SignUpActivity.this, new OnCompleteListener<AuthResult>() {
+    private void getPwWithMobile(String phoneNum) {
+        PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
+        mobileCounter.countDownTimer(mobileTimeCountText); // 카운트다운 될 택스트 선택
+
+        signin_pin_button.setEnabled(true); //인증확인 버튼
+
+        firebaseAuthSettings.setAutoRetrievedSmsCodeForPhoneNumber(phoneNum,"123456");
+
+        Log.d(TAG, "입력한 핸드폰 번호 " + phoneNum);
+
+        mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
             @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful()){
-                    Log.d(TAG, "등록버튼" + userId + ", " + password);
-                    FirebaseUser user = mAuth.getCurrentUser();
-                    String userId = user.getEmail();
-                    String uid = user.getUid();
+            public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
+                Log.d(TAG, "인증코드 전송 성공");
+                showToast("인증번호가 발송되었습니다. 60초 이내에 입력해주세요");
+                credential = phoneAuthCredential;
+                authNum = phoneAuthCredential.getSmsCode();
+                Log.d(TAG,"onVerificationCode에서 나오는  phoneAuthCredential" + authNum);
 
-                    saveUserAccount(userId, pw, email,name, mobile, uid);
-
-                }else {
-                    Toast.makeText(getApplicationContext(),"회원가입 실패",Toast.LENGTH_SHORT).show();
-                }
             }
-        });
-    }*/
 
-  /*  private void saveUserAccount(String userId, String pw, String email,
-                                 String name,String mobile, String Uid) {
+            @Override
+            public void onVerificationFailed(@NonNull FirebaseException e) {
+                Log.d(TAG, "인증실패" + e.getMessage());
+                showToast("인증실패");
+            }
 
-        HashMap<Object, String> person = new HashMap<>();
-        person.put("userEmail", email);
-        person.put("email", userId);
-        person.put("name", name);
-        person.put("password", pw);
-        person.put("mobile", mobile);
-        person.put("uid", Uid);
+            @Override
+            public void onCodeSent(@NonNull String authNum, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
+                super.onCodeSent(authNum, forceResendingToken);
 
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+                Log.d(TAG, "onCodeSent의 authnum : forceResendingToken" + authNum + " : " + forceResendingToken);
 
-        db.collection("person")
-                .add(person)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        Log.d(TAG, "Person add with id" + documentReference.getId());
-                        goMain();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error adding user", e);
-                    }
-                });
+                //mobileCounter.countDownTimer(findIdMobileCounter);
 
-    }*/
+            }
+        };
+        PhoneAuthOptions options = PhoneAuthOptions.newBuilder(mAuth)
+                .setPhoneNumber(phoneNum)
+                .setTimeout(120L, TimeUnit.SECONDS)
+                .setActivity(this)
+                .setCallbacks(mCallbacks)
+                .build();
 
-  /*  private void existUserName() {
-        List<String> userNameList = new ArrayList<>();
+        PhoneAuthProvider.verifyPhoneNumber(options);
 
-            db.collection("person")
-                    .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                        @Override
-                        public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                            if (error != null) {
-                                Log.w(TAG, "Listen failed.", error);
-                            }
-                            boolean exist = true;
-                            for (QueryDocumentSnapshot documentSnapshot : value) {
-                                if (documentSnapshot.get("userName") != null) {
-                                    userNameList.add(documentSnapshot.getString("userName"));
-                                    if (userNameList.contains("hello")) {
-                                        signin_userName_check.setVisibility(View.VISIBLE);
-                                        Log.d(TAG, "Duplicated Username"+ userName + ", Check userNameList : " + userNameList);
-
-                                    } else {
-                                        Log.d(TAG,"new Username" + userName);
-                                    }
-                                } else {
-                                }
-                            }
-
-                        }
-
-                    });
-
-    }*/
-
-   /* private void existOrNot(int tf){
-        if (tf == 0){
-            exist = 1;
-        }else
-            exist = 0;
-    }*/
-
- /* private boolean existMobile2(String mobile){
-        List<String> mobileList = new ArrayList<>();
-        userId = signin_id_edittext.getText().toString().trim();
-        pw =signin_pw_edittext.getText().toString().trim();
-        signin_mobile_check.setVisibility(View.INVISIBLE);
-
-        db.collection("person")
-                .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                        if (error != null) {
-                            Log.w(TAG, "Listen failed", error);
-                        }
-                        loop:
-                        for (QueryDocumentSnapshot documentSnapshot : value) {
-                            if (documentSnapshot.get("mobile") != null) {
-                                mobileList.add(documentSnapshot.getString("mobile"));
-                                if (mobileList.contains(mobile)) {
-                                    signin_mobile_check.setVisibility(View.VISIBLE);
-                                    Log.d(TAG, "mobileList : " + mobileList);
-                                    break loop;
-
-                                } else {
-                                    Log.d(TAG,"new mobile");
-
-                                }
-                            } else {
-
-                            }
-
-                        }
-                    }
-                });
-        Toast.makeText(getApplicationContext(),"중복확인",Toast.LENGTH_SHORT).show();
-        return false;
+        Log.d(TAG,"인증번호 보냄 " + authNum);
     }
-    private void existMobile(String mobile, FirebaseUser user){
-        List<String> mobileList = new ArrayList<>();
-        userId = signin_id_edittext.getText().toString().trim();
-        pw =signin_pw_edittext.getText().toString().trim();
-        signin_mobile_check.setVisibility(View.INVISIBLE);
 
-            db.collection("person")
-                    .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                        @Override
-                        public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                            if (error != null) {
-                                Log.w(TAG, "Listen failed", error);
-                            }
-                            loop:
-                            for (QueryDocumentSnapshot documentSnapshot : value) {
-                                if (documentSnapshot.get("mobile") != null) {
-                                    mobileList.add(documentSnapshot.getString("mobile"));
-                                    if (mobileList.contains(mobile)) {
-                                        signin_mobile_check.setVisibility(View.VISIBLE);
-                                        Log.d(TAG, "mobileList : " + mobileList);
-                                        break loop;
 
-                                    } else {
-                                        Log.d(TAG,"new mobile");
-                                        if(checkValidation()) {
-                                            setNewAccount(persons);
-                                            signUp(userId, pw, persons, user);
-                                        }
-                                    }
-                                } else {
-
-                                }
-
-                            }
-                        }
-                    });
-            Toast.makeText(getApplicationContext(),"중복확인",Toast.LENGTH_SHORT).show();
-    }*/
+    private void showToast(String s) {
+        Toast.makeText(getApplicationContext(),s,Toast.LENGTH_SHORT).show();
+    }
+}

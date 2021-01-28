@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.rotory.Adapter.WriteStoryImageAdapter;
 import com.example.rotory.Interface.OnContentsItemClickListener;
+import com.example.rotory.MainPage;
 import com.example.rotory.R;
 
 import java.util.ArrayList;
@@ -70,6 +71,10 @@ public class StoryImageAdapter extends RecyclerView.Adapter<StoryImageAdapter.wr
 
     @Override
     public void onItemClick(writestroyHolder writestroyHolder, View view, int position) {
+
+    }
+    @Override
+    public void onItemClick(MainPage.MyAdapter.ViewHolder holder, View view, int position) {
 
     }
 

@@ -44,7 +44,7 @@
                         android:layout_marginStart="10dp"
                         android:layout_marginLeft="10dp"
                         android:layout_toRightOf="@id/backImageButton"
-                        android:text="다람쥐이야기"
+                        android:text="이야기 작성"
                         android:textAppearance="@style/Base.TextAppearance.Widget.AppCompat.Toolbar.Title" />
                 </RelativeLayout>
 
@@ -73,7 +73,10 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <RelativeLayout
+
+
         android:id="@+id/writeStory"
+
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="60dp">
@@ -186,6 +189,8 @@
                     android:layout_marginLeft="5dp"
                     android:background="#E0E0E0"
                     android:ems="10"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
                     android:gravity="center"
                     android:hint="이야기 제목"
                     android:inputType="textPersonName"
@@ -200,17 +205,18 @@
                 android:textColor="#acacac"
                 android:textSize="18sp" />
 
-            <EditText
-                android:id="@+id/writeStoryLocationEditText"
+            <TextView
+                android:id="@+id/writeStoryLocation"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:layout_marginStart="5dp"
                 android:layout_marginLeft="5dp"
                 android:background="#E0E0E0"
                 android:ems="10"
-                android:gravity="center"
-                android:hint="어느 장소에 대한 이야기인가요?(장소 찾기)"
-                android:inputType="textPersonName"
+                android:paddingLeft="10dp"
+                android:gravity="center_vertical"
+                android:hint="어느 장소에 대한 이야기인가요? (장소 찾기)"
+                android:elevation="3dp"
                 android:textSize="16sp" />
 
             <TextView
@@ -343,6 +349,8 @@
                 android:layout_marginTop="15dp"
                 android:background="@drawable/box"
                 android:ems="10"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:gravity="center"
                 android:hint="사진에 대해서 알려주세요(80자 내외)"
                 android:inputType="textPersonName"
@@ -367,6 +375,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ems="10"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
                         android:gravity="center"
                         android:hint="자세한 이야기를 알려주세요!"
                         android:inputType="textPersonName"

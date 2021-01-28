@@ -2,6 +2,9 @@
     <!-- Base application theme. -->
     <style name="Theme.Rotory" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Primary brand color. -->
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+
         <item name="colorPrimary">@color/beige</item>
         <item name="colorOnPrimary">@color/black</item>
         <!-- Secondary brand color. -->
@@ -17,5 +20,8 @@
         <item name="android:progressDrawable">@drawable/custom_ratingbar</item>
         <item name="minHeight">25dp</item>
         <item name="maxWidth">40dp</item>
+    </style>
+    <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@drawable/splash_image</item>
     </style>
 </resources>
