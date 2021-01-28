@@ -5,6 +5,73 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        android:visibility="visible">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/topToolBar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/brown"
+            android:elevation="1dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <RelativeLayout
+                    android:id="@+id/withBackBtnContainer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:visibility="visible">
+
+                    <ImageButton
+                        android:id="@+id/backImageButton"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/backbuttonwhite"
+                        app:srcCompat="@drawable/backbuttonwhite" />
+
+                    <TextView
+                        android:id="@+id/pageTitlewithBtnTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_toRightOf="@id/backImageButton"
+                        android:text="이야기 작성"
+                        android:textAppearance="@style/Base.TextAppearance.Widget.AppCompat.Toolbar.Title" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rightIconContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <Button
+                        android:id="@+id/checkmarkBtn"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="20dp"
+                        android:layout_marginRight="20dp"
+                        android:background="@drawable/checkmarkwhite"
+                        android:visibility="visible" />
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+        </androidx.appcompat.widget.Toolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/searchTabs"
         android:layout_width="match_parent"
@@ -23,13 +90,13 @@
             android:id="@+id/searchOnMapTab"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="장소 검색" />
+            android:text="@string/text_label_1" />
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/searchOnMyRoadTab"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="나의 길에서 찾기" />
+            android:text="@string/text_label_2" />
 
     </com.google.android.material.tabs.TabLayout>
 

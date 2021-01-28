@@ -17,21 +17,31 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Adapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.rotory.Interface.LoadMapDtrListener;
+import com.example.rotory.Adapter.WriteStoryImageAdapter;
+import com.example.rotory.Contents.StoryImageAdapter;
+import com.example.rotory.Interface.OnContentsItemClickListener;
+import com.example.rotory.VO.Contents;
 import com.example.rotory.VO.NearPin;
 import com.example.rotory.account.LogInActivity;
+import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapsInitializer;
@@ -50,6 +60,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.pedro.library.AutoPermissions;
@@ -61,7 +72,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 
 
-public class MainPage extends Fragment implements LoadMapDtrListener, AutoPermissionsListener
+public class MainPage extends Fragment implements AutoPermissionsListener
         //implements MapView.MapViewEventListener
 {
     final static String TAG = "MainPage";
@@ -69,7 +80,7 @@ public class MainPage extends Fragment implements LoadMapDtrListener, AutoPermis
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseUser user;
-
+    private FirestoreRecyclerAdapter adapter;
 
 
     GoogleMap map;
@@ -97,6 +108,7 @@ public class MainPage extends Fragment implements LoadMapDtrListener, AutoPermis
     Button mainStoryNextBtn;
     RecyclerView mainStoryList;
     Button mainRoadNextBtn;
+
 
     FrameLayout mainMapLayout;
     Button mainMapExtendBtn;
@@ -184,11 +196,16 @@ public class MainPage extends Fragment implements LoadMapDtrListener, AutoPermis
 
         setContentView(R.layout.main_page);
 
+
         try {
             MapsInitializer.initialize(getContext());
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+
+
+
 
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
                 .findFragmentById(R.id.mainGoogleMap);
@@ -215,12 +232,12 @@ public class MainPage extends Fragment implements LoadMapDtrListener, AutoPermis
                     @Override
                     public void onCameraIdle() {
                         LatLng center = map.getCameraPosition().target;   // 중앙점 https://stackoverflow.com/questions/13904505/how-to-get-center-of-map-for-v2-android-maps
-                        loadDtr(center);
+                        loadDtr(center, rootView);
                         int zoomLevel = (int) map.getCameraPosition().zoom;
                         if (zoomLevel >= 18) {
-                            loadDtrLine(center);
+                            loadDtrLine(center, rootView);
                         } else {
-                            loadDtr(center);
+                            loadDtr(center, rootView);
                         }
 
                     }
@@ -272,6 +289,7 @@ public class MainPage extends Fragment implements LoadMapDtrListener, AutoPermis
         float minDistance = 0;
         //manager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, minTime, minDistance, gpsListener);
         // manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, minTime, minDistance, gpsListener);
+
 
         /*Handler mHandler = new Handler();
         mHandler.postDelayed(new Runnable() {
@@ -364,7 +382,9 @@ public class MainPage extends Fragment implements LoadMapDtrListener, AutoPermis
             }
         });
 
+
     }
+
 
     private void goLogInPage() {
         Intent LoginIntent = new Intent(getActivity(), LogInActivity.class);
@@ -378,7 +398,7 @@ public class MainPage extends Fragment implements LoadMapDtrListener, AutoPermis
 
     private void showCurrentLocation(Double latitude, Double longitude) {
         LatLng curPoint = new LatLng(latitude, longitude); // 현재위치의좌표로LatLng 객체생성하기
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(curPoint, 16));
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(curPoint, 15));
     }
 
 
@@ -407,8 +427,7 @@ public class MainPage extends Fragment implements LoadMapDtrListener, AutoPermis
 
 
     // 첫 도토리만 로딩
-    @Override
-    public void loadDtr(LatLng point) {
+    public void loadDtr(LatLng point, ViewGroup rootView) {
 
         map.clear();
         showMyLocationMarker();
@@ -481,16 +500,150 @@ public class MainPage extends Fragment implements LoadMapDtrListener, AutoPermis
                         Marker1 = map.addMarker(MarkerOps1);
 
                     }
+
+                    loadRoadList(nearPin2, rootView);
                 }
             }
         });
 
     }
 
+    private void loadRoadList(ArrayList<NearPin> nearPin2, ViewGroup rootView) {
+
+        MyAdapter adapter = new MyAdapter();
+        mainRoadList = rootView.findViewById(R.id.mainRoadList);
+        LinearLayoutManager layoutManager=new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        mainRoadList.setLayoutManager(layoutManager);
+
+        for (int k = 0; k < 6; k++) {
+            String documentId = nearPin2.get(k).getDocumentId();
+            int finalK = k;
+            db.collection("contents").document(documentId)
+                    .get().addOnCompleteListener(new OnCompleteListener() {
+
+                @Override
+                public void onComplete(@NonNull Task task) {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = (DocumentSnapshot) task.getResult();
+                        String contentsId = document.getId();
+                        String title = (String) document.get("title");
+                        String tag1 = (String) document.get("tag1");
+                        String hour = (String) document.get("hour");
+                        String min = (String) document.get("min");
+
+                        adapter.addItem(new Contents((finalK + 1) + ". " + title, tag1, hour + "시간 " + min + "분"));
+                              /*  MyAdapter(options, rootView, contentsId);
+                                adapter.startListening();
+                                mainRoadList.setAdapter(adapter); */
+                        mainRoadList.setAdapter(adapter);
+                        adapter.setOnItemClickListener(new OnContentsItemClickListener() {
+                            @Override
+                            public void onItemClick(WriteStoryImageAdapter.writestroyHolder writestroyHolder, View view, int position) {
+                            }
+                            @Override
+                            public void onItemClick(StoryImageAdapter.writestroyHolder writestroyHolder, View view, int position) {
+                            }
+                            @Override
+                            public void onItemClick(MyAdapter.ViewHolder holder, View view, int position) {
+
+                                /*String cDocumentID = documentId;
+                                Intent intent = new Intent(getContext(), LoadRoadItem.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                intent.putExtra("documentId", cDocumentID);
+                                startActivity(intent); */
+
+                                Log.d("아이템 클릭", "아이템 번호: "+documentId);
+                            }
+                        });
+
+                    }
+                }
+            });
+        }
+
+    }
+
+    public static class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implements OnContentsItemClickListener {
+
+        OnContentsItemClickListener listener;
+        ArrayList<Contents> items = new ArrayList<Contents>();
+
+        public void setOnItemClickListener(OnContentsItemClickListener listener)
+        {this.listener = listener;}
+
+        @NonNull
+        @Override
+        public MyAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
+            LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
+            View itemView = inflater.inflate(R.layout.main_road_item, viewGroup, false);
+            return new ViewHolder(itemView, listener);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull MyAdapter.ViewHolder holder, int position) {
+            Contents item = items.get(position);
+            holder.setItem(item);
+        }
+
+        @Override
+        public int getItemCount() {
+            return items.size();
+        }
+        public void addItem(Contents item){items.add(item);}
+        public void setItems(ArrayList<Contents> items){this.items = items;}
+        public Contents getItem(int position){return items.get(position);}
+        public void setItem(int position, Contents item){items.set(position, item);}
+
+        @Override
+        public void onItemClick(WriteStoryImageAdapter.writestroyHolder writestroyHolder, View view, int position) {
+
+        }
+
+        @Override
+        public void onItemClick(StoryImageAdapter.writestroyHolder writestroyHolder, View view, int position) {
+
+        }
+
+        @Override
+        public void onItemClick(ViewHolder holder, View view, int position) {
+            if (listener != null)
+            {listener.onItemClick(holder, view, position);}
+
+        }
+
+        public static class ViewHolder extends RecyclerView.ViewHolder {
+            TextView mainRoadTitle;
+            TextView mainRoadTag;
+            TextView mainRoadPeriod;
+
+            public ViewHolder(View itemView, OnContentsItemClickListener listener) {
+                super(itemView);
+                mainRoadTitle = itemView.findViewById(R.id.mainRoadTitle);
+                mainRoadTag = itemView.findViewById(R.id.mainRoadTag);
+                mainRoadPeriod = itemView.findViewById(R.id.mainRoadPeriod);
+
+                itemView.setOnClickListener(new View.OnClickListener(){
+                    @Override
+                    public void onClick(View view){
+                        int position = getAdapterPosition();
+                        if(listener != null)
+                {listener.onItemClick(ViewHolder.this, view, position);}}});
+            }
+
+        public void setItem(Contents item){
+
+                mainRoadTitle.setText(item.getTitle());
+            mainRoadTag.setText(item.getTag1());
+            mainRoadPeriod.setText(item.getTime());
+
+            }
+        }
+    }
+
 
     // 도토리 경로들 + 선 로딩
-    @Override
-    public void loadDtrLine(LatLng point) {
+
+    public void loadDtrLine(LatLng point, ViewGroup rootView) {
 
         map.clear();
         showMyLocationMarker();
@@ -600,6 +753,59 @@ public class MainPage extends Fragment implements LoadMapDtrListener, AutoPermis
         });
 
     }
+
+/* public class myViewHolder extends RecyclerView.ViewHolder {
+    private View view;
+
+    public myViewHolder(@NonNull View itemView) {
+        super(itemView);
+        view = itemView;
+         /*   itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    TextView myScrapId1 = itemView.findViewById(R.id.myScrabId);
+                    String Id = myScrapId1.getText().toString();
+                    Toast.makeText(getApplicationContext(), Id, Toast.LENGTH_SHORT).show();
+                }
+            });
+
+    }
+
+
+    public void setRoadItems(Contents item, ViewGroup rootView) {
+
+        mainRoadTitle = rootView.findViewById(R.id.mainRoadTitle);
+        mainRoadTag = rootView.findViewById(R.id.mainRoadTag);
+        mainRoadPeriod = rootView.findViewById(R.id.mainRoadPeriod);
+
+        mainRoadTitle.setText(item.getTitle());
+        mainRoadTag.setText(item.getTag1());
+        mainRoadTitle.setText(item.getTitle());
+
+
+    }
+
+
+    public void bind(int contentsType, String cDocumentID) {
+        LinearLayout mainRoadLayout = itemView.findViewById(R.id.mainRoadList);
+        mainRoadLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                    Intent intent = new Intent(getContext(), LoadRoadItem.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.putExtra("documentId", cDocumentID);
+                    startActivity(intent);
+
+                    //Log.d("인텐트", cDocumentID);
+                }
+
+        });
+    }
+
+
+}  */
+
 
 
     @Override

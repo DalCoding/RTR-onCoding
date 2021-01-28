@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.rotory.Contents.StoryImageAdapter;
 import com.example.rotory.Interface.OnContentsItemClickListener;
+import com.example.rotory.MainPage;
 import com.example.rotory.R;
 
 import java.io.FileNotFoundException;
@@ -124,6 +125,11 @@ public class WriteStoryImageAdapter extends RecyclerView.Adapter<WriteStoryImage
 
     @Override
     public void onItemClick(StoryImageAdapter.writestroyHolder writestroyHolder, View view, int position) {
+
+    }
+
+    @Override
+    public void onItemClick(MainPage.MyAdapter.ViewHolder holder, View view, int position) {
 
     }
 

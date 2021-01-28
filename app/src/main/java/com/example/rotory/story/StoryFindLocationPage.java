@@ -1,23 +1,33 @@
 package com.example.rotory.story;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.ImageButton;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.rotory.R;
+import com.example.rotory.VO.Story;
+import com.example.rotory.Write_Story;
+import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.tabs.TabLayout;
 
 public class StoryFindLocationPage extends AppCompatActivity {
     private static final String TAG = "StoryFindLocationPage";
 
-    private ViewPager2 viewPager;
-    private ViewPagerAdapter viewPagerAdapter;
-    private SearchOnMapFragment searchOnMapFragment;
-    private SearchOnMyRoadFragment searchOnMyRoadFragment;
+    ViewPager2 viewPager;
+    TabLayout tabs;
+    SearchOnMapFragment searchOnMapFragment;
+    SearchOnMyRoadFragment searchOnMyRoadFragment;
 
-    private TabLayout tabLayout;
+    ImageButton backBtn;
+
+    public StoryFindLocationPage() { }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -28,6 +38,16 @@ public class StoryFindLocationPage extends AppCompatActivity {
         createViewPager();
         setTabLayout();
 
+
+        backBtn = findViewById(R.id.backImageButton);
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(StoryFindLocationPage.this, Write_Story.class);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 
     public void createFragment() {
@@ -37,7 +57,7 @@ public class StoryFindLocationPage extends AppCompatActivity {
 
     public void createViewPager() {
         viewPager = (ViewPager2) findViewById(R.id.viewpager);
-        viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), getLifecycle());
+        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), getLifecycle());
         viewPagerAdapter.addFragment(searchOnMapFragment);
         viewPagerAdapter.addFragment(searchOnMyRoadFragment);
 
@@ -46,8 +66,8 @@ public class StoryFindLocationPage extends AppCompatActivity {
     }
 
     public void setTabLayout() {
-        tabLayout = (TabLayout) findViewById(R.id.searchTabs);
-        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.searchTabs);
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 int position = tab.getPosition();
@@ -73,4 +93,5 @@ public class StoryFindLocationPage extends AppCompatActivity {
             }
         });
     }
+
 }

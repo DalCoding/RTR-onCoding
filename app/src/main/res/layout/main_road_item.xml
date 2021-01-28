@@ -7,6 +7,7 @@
     android:clickable="true">
 
     <LinearLayout
+        android:id="@+id/mainRoadLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -23,10 +24,12 @@
 
         <TextView
             android:id="@+id/mainRoadTag"
-            android:layout_width="match_parent"
+            android:layout_width="145dp"
             android:layout_height="0dp"
             android:layout_weight="1"
+            android:ellipsize="end"
             android:gravity="center_horizontal|center_vertical"
+            android:maxLines="1"
             android:text="태그"
             android:textColor="#442428"
             android:textSize="18sp" />

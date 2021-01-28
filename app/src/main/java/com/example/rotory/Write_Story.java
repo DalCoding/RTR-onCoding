@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -33,12 +34,20 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.rotory.Adapter.WriteStoryImageAdapter;
 import com.example.rotory.Contents.StoryImageAdapter;
 import com.example.rotory.Interface.OnContentsItemClickListener;
+
+import com.example.rotory.VO.Story;
+import com.example.rotory.story.SearchOnMyRoadFragment;
+import com.example.rotory.story.StoryFindLocationPage;
+import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.internal.InternalTokenProvider;
+
 import com.example.rotory.VO.AppConstant;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -62,6 +71,8 @@ import java.util.Map;
 
 public class Write_Story extends AppCompatActivity  {
     private final String TAG = "Write_Story";
+    private static final int Map_RESULT_CODE = 5200;
+    private static final int Road_RESULT_CODE = 5300;
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -82,7 +93,7 @@ public class Write_Story extends AppCompatActivity  {
     ImageView titleImage;
 
     EditText writeStoryEditText;
-    EditText writeStoryLocationEditText;
+    TextView writeStoryLocation;
     EditText writeStoryImageCommentEditText;
     EditText writeStoryTitle;
 
@@ -93,6 +104,8 @@ public class Write_Story extends AppCompatActivity  {
     private InputMethodManager keyboardManager;
     int CODE_ALBUM_REQUEST = 111;
     OnContentsItemClickListener listener;
+
+    private ArrayAdapter spinnerAdapter;
 
     public int imagePosition;
     //private ArrayAdapter spinnerAdapter;
@@ -125,6 +138,10 @@ public class Write_Story extends AppCompatActivity  {
     AppConstant appConstant = new AppConstant();
 
 
+    StoryFindLocationPage findLocationPage;
+
+
+    public Write_Story() { }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -156,10 +173,9 @@ public class Write_Story extends AppCompatActivity  {
 
         writeStoryImageCommentEditText = findViewById(R.id.writeStoryImageCommentEditText);
         writeStoryEditText = findViewById(R.id.writeStoryEditText);
-        writeStoryLocationEditText = findViewById(R.id.writeStoryLocationEditText);
         writeStoryTitle = findViewById(R.id.writeStoryTitle);
 
-       storyaddress = writeStoryLocationEditText.getText().toString();
+       //storyaddress = writeStoryLocation.getText().toString();
        title = writeStoryTitle.getText().toString();
        article = writeStoryEditText.getText().toString();
 
@@ -232,10 +248,6 @@ public class Write_Story extends AppCompatActivity  {
 
         });
 
-       //말머리 String
-
-
-
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
             @Override
@@ -296,75 +308,101 @@ public class Write_Story extends AppCompatActivity  {
 
             }
         });
-               mainbtn.setOnClickListener(new View.OnClickListener() {
+
+        mainbtn.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("UseCompatLoadingForDrawables")
             @Override
             public void onClick(View v) {
+
                 if (uriList.size() > 0) {
                     mainImageAlertDialog.show();
                 }
 
+
             }
         });
+
+        publicRadioButton=findViewById(R.id.publicRadioButton2);
+        publicRadioButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                isPublic=1;
+
+            }
+        });
+
+        privateRadioButton=findViewById(R.id.privateRadioButton2);
+        privateRadioButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                isPublic=0;
+            }
+        });
+
+
 
         checkmarkBtn = findViewById(R.id.checkmarkBtn);
         checkmarkBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (isValidate()){
+                if (isValidate()) {
                     alertDialog.show();
 
-                }
-                else if (mainImage == null) {
+                } else if (mainImage == null) {
                     Toast.makeText(getApplicationContext(), "V 를 눌러 메인사진을 지정해주세요.", Toast.LENGTH_SHORT).show();
 
-                }
-                else {
+                } else {
                     Toast.makeText(getApplicationContext(), "필수 입력 사항을 입력해주세요.", Toast.LENGTH_SHORT).show();
                 }
-
             }
-        });
+         });
 
-        publicRadioButton = findViewById(R.id.publicRadioButton2);
-        publicRadioButton.setOnClickListener(new View.OnClickListener() {
+        //장소 검색 페이지 띄우기
+        //findLocationPage = new StoryFindLocationPage();
+        writeStoryLocation=findViewById(R.id.writeStoryLocation);
+        writeStoryLocation.setOnClickListener(new View.OnClickListener(){
             @Override
-            public void onClick(View v) {
-                isPublic = 1;
-
+            public void onClick(View view){
+                Intent intent=new Intent(Write_Story.this,StoryFindLocationPage.class);
+                startActivity(intent);
             }
         });
 
-        privateRadioButton = findViewById(R.id.privateRadioButton2);
-        privateRadioButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                isPublic = 0;
-            }
-        });
+        Intent placeTextIntent=getIntent();
+        String placeText=placeTextIntent.getStringExtra("placeText");
 
-    } //end of onCreate]
+        Intent placeNameIntent=getIntent();
+        String placeName=placeNameIntent.getStringExtra("placeName");
 
 
-    private boolean isValidate() {
+        if(placeText==null){
+            writeStoryLocation.setText(placeName);
+        }else{
+            writeStoryLocation.setText(placeText);
+        }
 
-        storyaddress = writeStoryLocationEditText.getText().toString();
-        title = writeStoryTitle.getText().toString();
+        } //end of onCreate]
 
-         if (title.equals("")||title == null){
-            return false;
-        } else if (mainImage == null) {
-            return false;
 
-        } else if (storyaddress.equals("") || storyaddress == null) {
-            return false;
+private boolean isValidate(){
+
+        storyaddress=writeStoryLocation.getText().toString();
+        title=writeStoryTitle.getText().toString();
+
+        if(title.equals("")||title==null){
+        return false;
+        }else if(mainImage==null){
+        return false;
+
+        }else if(storyaddress.equals("")||storyaddress==null){
+        return false;
         }
 
 
         return true;
 
 
-    }
+        }
 
     private void setDB() throws IOException {
         imageList = changeUritoBITmap();
@@ -587,6 +625,10 @@ public class Write_Story extends AppCompatActivity  {
 
             }
 
+             if (requestCode == Map_RESULT_CODE) {
+                 if (resultCode == RESULT_OK) {
+                 }
+             }
 
             //리사이클러뷰에 보여주기
 
@@ -623,6 +665,11 @@ public class Write_Story extends AppCompatActivity  {
             public void onItemClick(StoryImageAdapter.writestroyHolder writestroyHolder, View view, int position) {
 
             }
+            @Override
+            public void onItemClick(MainPage.MyAdapter.ViewHolder holder, View view, int position) {
+
+            }
+
         });
 
 

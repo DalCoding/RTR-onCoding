@@ -32,7 +32,7 @@ public class Contents {
     String prefix;
     ArrayList<String> address;
     String titleImage;
-    Map<String,String> imageComment;
+    Map<String, String> imageComment;
     String article;
     int isPublic;
     String writeDate;
@@ -42,10 +42,18 @@ public class Contents {
     String userLevel;
     String userName;
     String liked;
+    String time;
 
 
     public Contents() {
     }
+
+    public Contents(String title, String tag1, String time) {
+        this.title = title;
+        this.tag1 = tag1;
+        this.time = time;
+    }
+
 
     public Contents(String title, String tag1, String hour, String min, String writeDate) {
         this.title = title;
@@ -323,6 +331,14 @@ public class Contents {
 
     public void setLiked(String liked) {
         this.liked = liked;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 }
 
