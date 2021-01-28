@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -40,14 +41,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.rotory.Adapter.WriteStoryImageAdapter;
 import com.example.rotory.Contents.StoryImageAdapter;
 import com.example.rotory.Interface.OnContentsItemClickListener;
-<<<<<<< HEAD
+
 import com.example.rotory.VO.Story;
 import com.example.rotory.story.SearchOnMyRoadFragment;
 import com.example.rotory.story.StoryFindLocationPage;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.internal.InternalTokenProvider;
 
-=======
 import com.example.rotory.VO.AppConstant;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -61,7 +61,6 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.io.ByteArrayOutputStream;
->>>>>>> f9ec3e5fc6cbee669e5e5e13e89ca1a2a2db6635
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -72,10 +71,8 @@ import java.util.Map;
 
 public class Write_Story extends AppCompatActivity  {
     private final String TAG = "Write_Story";
-<<<<<<< HEAD
     private static final int Map_RESULT_CODE = 5200;
     private static final int Road_RESULT_CODE = 5300;
-=======
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -83,7 +80,6 @@ public class Write_Story extends AppCompatActivity  {
 
     RelativeLayout writeStory;
 
->>>>>>> f9ec3e5fc6cbee669e5e5e13e89ca1a2a2db6635
     Button addbtn;
     Button mainbtn;
     Button checkmarkBtn;
@@ -108,12 +104,10 @@ public class Write_Story extends AppCompatActivity  {
     private InputMethodManager keyboardManager;
     int CODE_ALBUM_REQUEST = 111;
     OnContentsItemClickListener listener;
-<<<<<<< HEAD
     Spinner spinner;
     WriteStoryImageAdapter adapter;
     private ArrayAdapter spinnerAdapter;
     TextView writeStoryLocation;
-=======
 
     public int imagePosition;
     //private ArrayAdapter spinnerAdapter;
@@ -145,7 +139,6 @@ public class Write_Story extends AppCompatActivity  {
 
     AppConstant appConstant = new AppConstant();
 
->>>>>>> f9ec3e5fc6cbee669e5e5e13e89ca1a2a2db6635
 
     StoryFindLocationPage findLocationPage;
 
@@ -261,8 +254,6 @@ public class Write_Story extends AppCompatActivity  {
        //말머리 String
 
 
-
-<<<<<<< HEAD
         /*Spinner spinner =findViewById(R.id.writeStoryPreFixSpinner);
         spinnerAdapter = new ArrayAdapter(this,R.layout.support_simple_spinner_dropdown_item, );
         ArrayList<String> spinnerList = new ArrayList<>();
@@ -289,8 +280,7 @@ public class Write_Story extends AppCompatActivity  {
         //String prefixId = spinner.getSelectedItemPosition().toString();  //말머리 String
 
         String prefixId = spinner.getSelectedItem().toString(); //말머리 String
-=======
->>>>>>> f9ec3e5fc6cbee669e5e5e13e89ca1a2a2db6635
+
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
             @Override
@@ -355,7 +345,7 @@ public class Write_Story extends AppCompatActivity  {
             @SuppressLint("UseCompatLoadingForDrawables")
             @Override
             public void onClick(View v) {
-<<<<<<< HEAD
+
                 Log.d(TAG, "사진 삭제");
                titleImage.setImageResource(0); //-삭제 버튼 자동 생성
                  //adapter.albumImgList.get(position)
@@ -363,99 +353,99 @@ public class Write_Story extends AppCompatActivity  {
 
             }
         });
-=======
+
                 if (uriList.size() > 0) {
                     mainImageAlertDialog.show();
                 }
->>>>>>> f9ec3e5fc6cbee669e5e5e13e89ca1a2a2db6635
+
 
             }
         });
 
         checkmarkBtn = findViewById(R.id.checkmarkBtn);
-        checkmarkBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (isValidate()){
-                    alertDialog.show();
+        checkmarkBtn.setOnClickListener(new View.OnClickListener(){
+@Override
+public void onClick(View view){
+        if(isValidate()){
+        alertDialog.show();
 
-                }
-                else if (mainImage == null) {
-                    Toast.makeText(getApplicationContext(), "V 를 눌러 메인사진을 지정해주세요.", Toast.LENGTH_SHORT).show();
+        }
+        else if(mainImage==null){
+        Toast.makeText(getApplicationContext(),"V 를 눌러 메인사진을 지정해주세요.",Toast.LENGTH_SHORT).show();
 
-                }
-                else {
-                    Toast.makeText(getApplicationContext(), "필수 입력 사항을 입력해주세요.", Toast.LENGTH_SHORT).show();
-                }
+        }
+        else{
+        Toast.makeText(getApplicationContext(),"필수 입력 사항을 입력해주세요.",Toast.LENGTH_SHORT).show();
+        }
 
         //장소 검색 페이지 띄우기
         //findLocationPage = new StoryFindLocationPage();
-        writeStoryLocation = findViewById(R.id.writeStoryLocation);
-        writeStoryLocation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Write_Story.this, StoryFindLocationPage.class);
-                startActivity(intent);
-            }
-        });
-<<<<<<< HEAD
-
-        Intent placeTextIntent = getIntent();
-        String placeText = placeTextIntent.getStringExtra("placeText");
-
-        Intent placeNameIntent = getIntent();
-        String placeName = placeNameIntent.getStringExtra("placeName");
-
-
-        if (placeText == null) {
-            writeStoryLocation.setText(placeName);
-        } else {
-            writeStoryLocation.setText(placeText);
+        writeStoryLocation=findViewById(R.id.writeStoryLocation);
+        writeStoryLocation.setOnClickListener(new View.OnClickListener(){
+@Override
+public void onClick(View view){
+        Intent intent=new Intent(Write_Story.this,StoryFindLocationPage.class);
+        startActivity(intent);
         }
-
-        // changeUritoBITmap();
-=======
->>>>>>> f9ec3e5fc6cbee669e5e5e13e89ca1a2a2db6635
-
-        publicRadioButton = findViewById(R.id.publicRadioButton2);
-        publicRadioButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                isPublic = 1;
-
-            }
         });
 
-        privateRadioButton = findViewById(R.id.privateRadioButton2);
-        privateRadioButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                isPublic = 0;
-            }
+
+        Intent placeTextIntent=getIntent();
+                String placeText=placeTextIntent.getStringExtra("placeText");
+
+                Intent placeNameIntent=getIntent();
+                String placeName=placeNameIntent.getStringExtra("placeName");
+
+
+                if(placeText==null){
+                writeStoryLocation.setText(placeName);
+                }else{
+                writeStoryLocation.setText(placeText);
+                }
+
+                // changeUritoBITmap();
+                =======
+                >>>>>>>f9ec3e5fc6cbee669e5e5e13e89ca1a2a2db6635
+
+                publicRadioButton=findViewById(R.id.publicRadioButton2);
+                publicRadioButton.setOnClickListener(new View.OnClickListener(){
+@Override
+public void onClick(View v){
+        isPublic=1;
+
+        }
         });
 
-    } //end of onCreate]
+        privateRadioButton=findViewById(R.id.privateRadioButton2);
+        privateRadioButton.setOnClickListener(new View.OnClickListener(){
+@Override
+public void onClick(View v){
+        isPublic=0;
+        }
+        });
+
+        } //end of onCreate]
 
 
-    private boolean isValidate() {
+private boolean isValidate(){
 
-        storyaddress = writeStoryLocationEditText.getText().toString();
-        title = writeStoryTitle.getText().toString();
+        storyaddress=writeStoryLocationEditText.getText().toString();
+        title=writeStoryTitle.getText().toString();
 
-         if (title.equals("")||title == null){
-            return false;
-        } else if (mainImage == null) {
-            return false;
+        if(title.equals("")||title==null){
+        return false;
+        }else if(mainImage==null){
+        return false;
 
-        } else if (storyaddress.equals("") || storyaddress == null) {
-            return false;
+        }else if(storyaddress.equals("")||storyaddress==null){
+        return false;
         }
 
 
         return true;
 
 
-    }
+        }
 
     private void setDB() throws IOException {
         imageList = changeUritoBITmap();
@@ -722,6 +712,10 @@ public class Write_Story extends AppCompatActivity  {
             public void onItemClick(MainPage.MyAdapter.ViewHolder holder, View view, int position) {
 
             }
+            @Override
+            public void onItemClick(MainPage.MyAdapter.ViewHolder holder, View view, int position){
+                
+        };
         });
 
 

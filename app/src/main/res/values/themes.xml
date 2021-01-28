@@ -18,4 +18,7 @@
         <item name="minHeight">25dp</item>
         <item name="maxWidth">40dp</item>
     </style>
+    <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@drawable/splash_image</item>
+    </style>
 </resources>
