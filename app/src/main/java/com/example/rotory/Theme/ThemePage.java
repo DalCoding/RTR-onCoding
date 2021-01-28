@@ -88,6 +88,7 @@ public class ThemePage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.theme_page);
 
+
         progressDialogs = new ProgressDialogs(this);
         progressDialogs.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         progressDialogs.show();
@@ -172,11 +173,12 @@ public class ThemePage extends AppCompatActivity {
 
     }
 
-    private void startTagsLoading(int millis) {
+    public void startTagsLoading(int millis) {
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
+
                 progressDialogs.dismiss();
             }
         }, millis);
@@ -221,6 +223,8 @@ public class ThemePage extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.home:
+                        progressDialogs.show();
+                        startTagsLoading(300);
                         Intent intent = new Intent(ThemePage.this, MainActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP|Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
@@ -230,6 +234,8 @@ public class ThemePage extends AppCompatActivity {
                     case R.id.theme:
                         return true;
                     case R.id.user:
+                        progressDialogs.show();
+                        startTagsLoading(300);
                         Intent myPageIntent = new Intent(ThemePage.this, MyPage.class);
                         myPageIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(myPageIntent);
