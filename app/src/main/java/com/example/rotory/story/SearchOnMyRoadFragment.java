@@ -26,6 +26,12 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.model.Document;
+
+import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.Map;
 
 
 public class SearchOnMyRoadFragment extends Fragment {
@@ -38,11 +44,13 @@ public class SearchOnMyRoadFragment extends Fragment {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirestoreRecyclerAdapter adapter;
 
+    String placeText;
+    String placeNameText;
 
     public SearchOnMyRoadFragment() {}
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NotNull Context context) {
         super.onAttach(context);
         this.context = context;
     }
@@ -80,8 +88,18 @@ public class SearchOnMyRoadFragment extends Fragment {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult());
-
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Map<String, Object> dtrName = document.getData();
+                                Map<String, Object> dtrAddress = document.getData();
+                                for (Map.Entry<String, Object> entry : dtrName.entrySet()) {
+                                    for (Map.Entry<String, Object> entry1 : dtrAddress.entrySet()) {
+                                        if (entry.getKey().equals("dtrName") && entry1.getKey().equals("dtrAddress")) {
+                                            Log.d(TAG, entry.getValue().toString());
+                                            Log.d(TAG, entry1.getValue().toString());
+                                        }
+                                    }
+                                }
+                            }
                             Query query = db.collection("contents")
                                     .whereEqualTo("contentsType", 0);
 
@@ -119,7 +137,7 @@ public class SearchOnMyRoadFragment extends Fragment {
 
         TextView dtrName = itemView.findViewById(R.id.myRoadSearchItemDtrTitle);
         TextView title = itemView.findViewById(R.id.myRoadSearchItemRoadTitle);
-        TextView address = itemView.findViewById(R.id.myRoadSearchItemAddress);
+        TextView dtrAddress = itemView.findViewById(R.id.myRoadSearchItemAddress);
 
 
         public MyRoadViewHolder(@NonNull View itemView) {
@@ -129,9 +147,11 @@ public class SearchOnMyRoadFragment extends Fragment {
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(getContext(), dtrName.getText(), Toast.LENGTH_SHORT).show();
+                    placeNameText = dtrName.getText().toString();
+                    placeText = placeNameText;
+                    Log.d(TAG, placeText + " 저장");
                     Intent intent = new Intent(getActivity(), Write_Story.class);
-                    intent.putExtra("dtrName", dtrName.getText());
+                    intent.putExtra("placeText", placeText);
                     startActivity(intent);
                 }
             });
@@ -139,9 +159,9 @@ public class SearchOnMyRoadFragment extends Fragment {
 
         public void setMyRoadItems(MyRoad items) {
 
-            dtrName.setText(items.getDtrName());
+            dtrName.setText(items.getDtrName().get(dtrName.length()));
             title.setText(items.getTitle());
-            address.setText(items.getAddress());
+            dtrAddress.setText(items.getDtrAddress().get(dtrAddress.length()));
         }
     }
 
@@ -158,5 +178,9 @@ public class SearchOnMyRoadFragment extends Fragment {
         if(adapter != null){
             adapter.stopListening();
         }
+    }
+
+    public String getPlaceName() {
+        return placeText;
     }
 }

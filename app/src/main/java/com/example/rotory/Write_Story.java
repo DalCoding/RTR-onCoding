@@ -14,18 +14,26 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.rotory.Adapter.WriteStoryImageAdapter;
 import com.example.rotory.Interface.OnContentsItemClickListener;
+import com.example.rotory.VO.Story;
+import com.example.rotory.story.SearchOnMyRoadFragment;
+import com.example.rotory.story.StoryFindLocationPage;
+import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.internal.InternalTokenProvider;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -38,6 +46,8 @@ import java.util.Queue;
 
 public class Write_Story extends AppCompatActivity  {
     private final String TAG = "Write_Story";
+    private static final int Map_RESULT_CODE = 5200;
+    private static final int Road_RESULT_CODE = 5300;
     Button addbtn;
     ImageButton DeleteBtn;
     RecyclerView recyclerView;
@@ -47,7 +57,12 @@ public class Write_Story extends AppCompatActivity  {
     Spinner spinner;
     WriteStoryImageAdapter adapter;
     private ArrayAdapter spinnerAdapter;
+    TextView writeStoryLocation;
 
+    StoryFindLocationPage findLocationPage;
+
+
+    public Write_Story() { }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,28 +75,28 @@ public class Write_Story extends AppCompatActivity  {
         recyclerView= findViewById(R.id.writeStoryImageListRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 
-//        Spinner spinner =findViewById(R.id.writeStoryPreFixSpinner);
-//        spinnerAdapter = new ArrayAdapter(this,R.layout.support_simple_spinner_dropdown_item, );
-//        ArrayList<String> spinnerList = new ArrayList<>();
-//        spinner.setAdapter(spinnerAdapter);
-//
-//        spinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Toast.makeText( Write_Story.this,"선택 " + spinner.getItemAtPosition(position),Toast.LENGTH_SHORT).show();
-//            }
-//        });
+        /*Spinner spinner =findViewById(R.id.writeStoryPreFixSpinner);
+        spinnerAdapter = new ArrayAdapter(this,R.layout.support_simple_spinner_dropdown_item, );
+        ArrayList<String> spinnerList = new ArrayList<>();
+        spinner.setAdapter(spinnerAdapter);
 
-//        Spinner spinner = findViewById(R.id.writeStoryPreFixSpinner);
-//        try {
-//            Field popup = Spinner.class.getDeclaredField("mPopup");
-//            ListPopupWindow popupWindow = (ListPopupWindow) popup.get(spinner);
-//            popupWindow.setHeight(500);
-//        } catch (IllegalAccessException e) {
-//            e.printStackTrace();
-//        } catch (NoSuchFieldException e) {
-//            e.printStackTrace();
-//        }
+        spinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText( Write_Story.this,"선택 " + spinner.getItemAtPosition(position),Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        Spinner spinner = findViewById(R.id.writeStoryPreFixSpinner);
+        try {
+            Field popup = Spinner.class.getDeclaredField("mPopup");
+            ListPopupWindow popupWindow = (ListPopupWindow) popup.get(spinner);
+            popupWindow.setHeight(500);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (NoSuchFieldException e) {
+             e.printStackTrace();
+        }*/
 
         //String prefixId = spinner.getSelectedItemPosition().toString();  //말머리 String
 
@@ -124,12 +139,37 @@ public class Write_Story extends AppCompatActivity  {
             public void onClick(View v) {
                 Log.d(TAG, "사진 삭제");
                titleImage.setImageResource(0); //-삭제 버튼 자동 생성
-                 //adapter.albumImgList.get(postion)
+                 //adapter.albumImgList.get(position)
 
 
             }
         });
-        
+
+
+        //장소 검색 페이지 띄우기
+        //findLocationPage = new StoryFindLocationPage();
+        writeStoryLocation = findViewById(R.id.writeStoryLocation);
+        writeStoryLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Write_Story.this, StoryFindLocationPage.class);
+                startActivity(intent);
+            }
+        });
+
+        Intent placeTextIntent = getIntent();
+        String placeText = placeTextIntent.getStringExtra("placeText");
+
+        Intent placeNameIntent = getIntent();
+        String placeName = placeNameIntent.getStringExtra("placeName");
+
+
+        if (placeText == null) {
+            writeStoryLocation.setText(placeName);
+        } else {
+            writeStoryLocation.setText(placeText);
+        }
+
         // changeUritoBITmap();
 
     } //end of onCreate()
@@ -186,6 +226,10 @@ public class Write_Story extends AppCompatActivity  {
 
             }
 
+             if (requestCode == Map_RESULT_CODE) {
+                 if (resultCode == RESULT_OK) {
+                 }
+             }
 
             //리사이클러뷰에 보여주기
 
@@ -212,6 +256,6 @@ public class Write_Story extends AppCompatActivity  {
             }
         });
     }
-    }
+}
 
 

@@ -36,6 +36,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -117,6 +118,12 @@ public class RoadContentsPage extends Fragment implements OnMapReadyCallback, Go
 
     EditText comment;
 
+    ArrayList<String> dtrName = new ArrayList<>();
+    ArrayList<LatLng> dtrLatLng = new ArrayList<>();
+    ArrayList<LatLng> PolyPoints = new ArrayList<>();
+    ArrayList<String> dtrAddress = new ArrayList<>();
+
+    public RoadContentsPage() {}
 
 
     @Override
@@ -138,6 +145,8 @@ public class RoadContentsPage extends Fragment implements OnMapReadyCallback, Go
             listener = null;
         }
     }
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -166,11 +175,10 @@ public class RoadContentsPage extends Fragment implements OnMapReadyCallback, Go
             initUI(rootView);
         }
 
-        rCommRView = rootView.findViewById(R.id.rCommRView);
+        //
 
-        mapView = (MapView) rootView.findViewById(R.id.rcontentsMap);
-        mapView.onCreate(savedInstanceState);
-        mapView.getMapAsync(this);
+        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.rcontentsMap);
+        mapFragment.getMapAsync(this);
 
         return rootView;
     }
@@ -195,6 +203,7 @@ public class RoadContentsPage extends Fragment implements OnMapReadyCallback, Go
 
 
     private void initUI(ViewGroup rootView) {
+        rCommRView = rootView.findViewById(R.id.rCommRView);
         rcontentsCommBtn = rootView.findViewById(R.id.rcontentsCommBtn);
         rcontentsLinkImg = rootView.findViewById(R.id.rcontentsLinkImg);
         rcontentsScrapImg = rootView.findViewById(R.id.rcontentsScrapImg);
@@ -210,8 +219,11 @@ public class RoadContentsPage extends Fragment implements OnMapReadyCallback, Go
 
 
         Bundle contentsBundle = this.getArguments();
-        String contentsID = contentsBundle.getString("storyDocumentId");
-        //String contentsID = "kWgSA53rxrk5bMMemdVd";
+        //String contentsID = contentsBundle.getString("storyDocumentId");
+        // String contentsID = "kWgSA53rxrk5bMMemdVd";
+        String contentsID = "1Icyko95eOyx1atvpcbL";
+
+
 
         Log.d(TAG, "initUI 시작, 번들 전송 잘 됐는지, pDocumentId:" + contentsID);
         loadContents(contentsID, user);
@@ -239,7 +251,8 @@ public class RoadContentsPage extends Fragment implements OnMapReadyCallback, Go
         getUserActivityIcon(contentsID, "myStar", rcontentsStarImg,
                 R.drawable.starfilled, R.drawable.star);
 
-        rCommRView.setLayoutManager(new LinearLayoutManager(getContext()));
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+       rCommRView.setLayoutManager(layoutManager);
 
         Query query = db.collection("contents")
                 .document(contentsID).collection("comment")
@@ -255,9 +268,6 @@ public class RoadContentsPage extends Fragment implements OnMapReadyCallback, Go
         makeCommentAdapter(options);
         commentAdapter.startListening();
         rCommRView.setAdapter(commentAdapter);
-
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        rCommRView.setLayoutManager(layoutManager);
 
         String userId = user.getEmail();
 
@@ -292,21 +302,6 @@ public class RoadContentsPage extends Fragment implements OnMapReadyCallback, Go
         MapsInitializer.initialize(this.getActivity());
         map = googleMap;
 
-        /*db.collection("contents")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d(TAG, document.getData().toString());
-
-                            }
-                        } else {
-                            Log.w(TAG, "Error getting documents.", task.getException());
-                        }
-                    }
-                });*/
     }
 
     @Override
@@ -708,7 +703,9 @@ public class RoadContentsPage extends Fragment implements OnMapReadyCallback, Go
     Map<String, Object> imageCommentList = (Map<String, Object>) contentsList.get("imageComment");
     String userLevel = contentsList.get("userLevel").toString();
     rcontentsTitleText.setText(contentsList.get("title").toString());
-    rcontentsMapText.setText(contentsList.get("article").toString());
+    if (contentsList.get("article") != null) {
+        rcontentsMapText.setText(contentsList.get("article").toString());
+    }
     rcontentsTaketimeText.setText(contentsList.get("hour").toString());
     rcontentsTakewhoText.setText(contentsList.get("isPartner").toString());
     rcontentsUsernameText.setText(contentsList.get("userName").toString());
@@ -821,6 +818,8 @@ public class RoadContentsPage extends Fragment implements OnMapReadyCallback, Go
                 return R.drawable.level1;
         }
     }
+
+
 }
 
 
