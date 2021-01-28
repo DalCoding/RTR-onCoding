@@ -290,8 +290,7 @@ public class MainPage extends Fragment implements AutoPermissionsListener
         //manager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, minTime, minDistance, gpsListener);
         // manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, minTime, minDistance, gpsListener);
 
-
-        /*Handler mHandler = new Handler();
+        Handler mHandler = new Handler();
         mHandler.postDelayed(new Runnable() {
             public void run() {
                 // 3초 후에 현재위치를 받아오도록 설정 , 바로 시작 시 에러납니다.
@@ -306,10 +305,10 @@ public class MainPage extends Fragment implements AutoPermissionsListener
                 showCurrentLocation(latitude, longitude); // 카메라움직여지도에띄우기
                 LatLng curPoint = new LatLng(latitude, longitude);
                 showMyLocationMarker(); // 현재위치 보여주기
-                loadDtr(curPoint); // 도토리 보여주기
+                loadDtr(curPoint, rootView); // 도토리 보여주기
             }
-        }, 1000); // 1000 = 1초
-*/
+        }, 1000);                                 // 1000 = 1초
+
 
         ImageButton mainMapExtendBtn = rootView.findViewById(R.id.mainMapExtendBtn);
         mainMapExtendBtn.bringToFront();
