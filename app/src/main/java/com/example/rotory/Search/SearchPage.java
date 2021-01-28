@@ -104,11 +104,11 @@ public class SearchPage extends AppCompatActivity {
         themePage = new ThemePage();
 
 
-        searchTagList = findViewById(R.id.searchTagList);
+        searchTagList = findViewById(R.id.search1List);
         searchTagList.setLayoutManager(new GridLayoutManager(this, 3));
         searchTagList.setAdapter(tagAdapter);
 
-        searchEdit = findViewById(R.id.searchEdit);
+        searchEdit = findViewById(R.id.searchIdEdit);
         searchEdit.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
         searchEdit.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -183,7 +183,7 @@ public class SearchPage extends AppCompatActivity {
                 });
 
 
-        EditText searchEdit = findViewById(R.id.searchEdit);
+        EditText searchEdit = findViewById(R.id.searchIdEdit);
         searchEdit.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {

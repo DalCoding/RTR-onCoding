@@ -71,7 +71,6 @@ public class MainPage extends Fragment implements LoadMapDtrListener, AutoPermis
     FirebaseUser user;
 
 
-
     GoogleMap map;
     LocationManager manager;
     // GPSListener gpsListener;
@@ -110,7 +109,7 @@ public class MainPage extends Fragment implements LoadMapDtrListener, AutoPermis
     ImageButton pop2FloatingBtn;
 
     //MapView mapView;
-   // ViewGroup rootView;
+    // ViewGroup rootView;
 
     @Override
     public void onStop() {
@@ -145,7 +144,7 @@ public class MainPage extends Fragment implements LoadMapDtrListener, AutoPermis
         user = mAuth.getCurrentUser();
 
         if (context instanceof Activity)
-            context = (Activity)context;
+            context = (Activity) context;
     }
 
 
@@ -155,7 +154,7 @@ public class MainPage extends Fragment implements LoadMapDtrListener, AutoPermis
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.main_page, container, false);
         FirebaseUser user = mAuth.getCurrentUser();
 
-           initUI(rootView);
+        initUI(rootView);
 
 
         return rootView;
@@ -163,11 +162,11 @@ public class MainPage extends Fragment implements LoadMapDtrListener, AutoPermis
     }
 
 
-
     private void setContentView(int main_page) {
     }
 
-    public void showWrite(){}
+    public void showWrite() {
+    }
 
 /*    public void onContentsListener (contentsAdapter.ViewHolder holder, View view, int position) {
         if (listener != null) {
@@ -274,11 +273,12 @@ public class MainPage extends Fragment implements LoadMapDtrListener, AutoPermis
         // manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, minTime, minDistance, gpsListener);
 
         Handler mHandler = new Handler();
-                                        mHandler.postDelayed(new Runnable() {
-                                            public void run() {
-                                                // 3초 후에 현재위치를 받아오도록 설정 , 바로 시작 시 에러납니다.
+        mHandler.postDelayed(new Runnable() {
+            public void run() {
+                // 3초 후에 현재위치를 받아오도록 설정 , 바로 시작 시 에러납니다.
 
-                                                @SuppressLint("MissingPermission") Location location = manager.getLastKnownLocation(locationProvider);
+                 @SuppressLint("MissingPermission")
+                Location location = manager.getLastKnownLocation(locationProvider);
 
                                                 Double latitude = location.getLatitude();
                                                 Double longitude = location.getLongitude();
