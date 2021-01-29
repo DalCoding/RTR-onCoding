@@ -18,6 +18,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.rotory.LoadRoadItem;
 import com.example.rotory.MyPage;
 import com.example.rotory.R;
 import com.example.rotory.RoadContentsPage;
@@ -233,7 +234,7 @@ public class MyScrapActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     if (contentsType == 0){
-                        Intent intent = new Intent(MyScrapActivity.this, RoadContentsPage.class);
+                        Intent intent = new Intent(MyScrapActivity.this, LoadRoadItem.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                         intent.putExtra("documentId", cDocumentID);
                         startActivity(intent);
