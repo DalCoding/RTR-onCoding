@@ -139,7 +139,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/findAccountTabLayout"
                 android:orientation="vertical"
-                android:visibility="gone">
+                android:visibility="visible">
 
                 <FrameLayout
                     android:id="@+id/phone_pramelayout"
@@ -192,7 +192,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/findAccountTabLayout"
                 android:orientation="vertical"
-                android:visibility="visible">
+                android:visibility="gone">
 
                 <RadioGroup
                     android:id="@+id/pwFindRadioGroup"
