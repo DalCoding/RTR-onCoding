@@ -1,15 +1,18 @@
 package com.example.rotory.Search;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
-
-
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,14 +20,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-
 import com.example.rotory.MainPage;
 import com.example.rotory.R;
 import com.example.rotory.Theme.Tags;
 import com.example.rotory.Theme.ThemePage;
 import com.example.rotory.account.SignUpActivity;
-
-
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -37,8 +37,8 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.Map;
 
+public class SearchActivity extends AppCompatActivity {
 
-public class SearchPage extends AppCompatActivity {
 
     private static final String TAG = "SearchPage";
     private static final String REQUEST_CODE = "0000";

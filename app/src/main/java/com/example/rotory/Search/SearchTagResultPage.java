@@ -1,5 +1,7 @@
 package com.example.rotory.Search;
 
+import android.app.Fragment;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -8,7 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -68,17 +72,29 @@ public class SearchTagResultPage extends AppCompatActivity implements LoadMoreCo
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirestoreRecyclerAdapter searchTagResultAdapter;
 
+
+    LinearLayout searchBox;
+    LinearLayout list;
+    FrameLayout searchContainer;
+
     Query query;
 
+    SearchPage searchPage;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search_tag_result_page);
 
+
+        searchPage = new SearchPage();
+
         mainPage = new MainPage();
         themePage = new ThemePage();
         bigMapPage = new BigMapPage();
+
+
+
 
 
         FirebaseUser user = mAuth.getCurrentUser();
@@ -97,11 +113,15 @@ public class SearchTagResultPage extends AppCompatActivity implements LoadMoreCo
         bottomNavUnderbarTheme = findViewById(R.id.bottomNavUnderbarTheme);
         bottomNavUnderbarUser = findViewById(R.id.bottomNavUnderbarUser);
 
-        TextView searchResultTextView = findViewById(R.id.searchResultTextView);
-        searchResultTextView.setVisibility(View.GONE);
 
-        EditText searchResultEdit = findViewById(R.id.searchResultEdit);
-        Button expandBtn = findViewById(R.id.searchResultExpandBtn);
+
+
+        Intent intent = getIntent();
+        String tag = intent.getStringExtra("tag");
+
+        EditText searchTagResultEdit = findViewById(R.id.searchTagResultEdit);
+        searchTagResultEdit.setText(tag.substring(1));
+
 
 
         searchTagResultRecyclerView = findViewById(R.id.searchTagResultList);
@@ -117,17 +137,27 @@ public class SearchTagResultPage extends AppCompatActivity implements LoadMoreCo
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult());
 
-                            Query query = db.collection("contents");
-
-                            FirestoreRecyclerOptions<SearchContents> options = new FirestoreRecyclerOptions.Builder<SearchContents>()
-                                    .setQuery(query, SearchContents.class)
-                                    .build();
-                            setSearchTagResultAdapter(options);
-                            searchTagResultAdapter.startListening();
-                            searchTagResultRecyclerView.setAdapter(searchTagResultAdapter);
                         }
                     }
                 });
+
+
+        Query query;
+
+        if (tag != null){
+            query = db.collection("contents")
+                    .whereEqualTo("tag1", tag)
+                    .orderBy("writeDate", Query.Direction.DESCENDING);
+        }else{
+            query = db.collection("contents");
+        }
+
+        FirestoreRecyclerOptions<SearchContents> options = new FirestoreRecyclerOptions.Builder<SearchContents>()
+                .setQuery(query, SearchContents.class)
+                .build();
+        setSearchTagResultAdapter(options);
+        searchTagResultAdapter.startListening();
+        searchTagResultRecyclerView.setAdapter(searchTagResultAdapter);
 
     }
 
