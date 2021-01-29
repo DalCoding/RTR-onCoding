@@ -72,7 +72,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 
 
-public class MainPage extends Fragment implements AutoPermissionsListener
+public class MainPage extends Fragment
         //implements MapView.MapViewEventListener
 {
     final static String TAG = "MainPage";
@@ -122,6 +122,8 @@ public class MainPage extends Fragment implements AutoPermissionsListener
 
     //MapView mapView;
     // ViewGroup rootView;
+
+
 
     @Override
     public void onStop() {
@@ -241,31 +243,8 @@ public class MainPage extends Fragment implements AutoPermissionsListener
 
                     }
                 });
-                //AutoPermissions.Companion.loadAllPermissions(getActivity(), 101);
 
-          /*      map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-                    @Override
-                    public boolean onMarkerClick(Marker marker) {
-                        showDtrInfo(marker);
-                        return true;
-                    }
-                });
-                map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-                    @Override
-                    public void onMapClick(LatLng latLng) {
-                        tranlateUpAnim = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.translate_up);
-                        tranlateDownAnim = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.translate_down);
 
-                        BigMapPage.SlidingPageAnimationListener animListener = new BigMapPage.SlidingPageAnimationListener();
-                        tranlateUpAnim.setAnimationListener(animListener);
-                        tranlateDownAnim.setAnimationListener(animListener);
-
-                        container = findViewById(R.id.container);
-                        container.startAnimation(tranlateDownAnim);
-                    }
-                });
-            }
-        }); */
             }
         });
         LocationManager manager = (LocationManager)
@@ -809,76 +788,8 @@ public class MainPage extends Fragment implements AutoPermissionsListener
 
 
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        AutoPermissions.Companion.parsePermissions(getActivity(), requestCode, permissions, this);
-    }
-
-    @Override
-    public void onDenied(int requestCode, String[] permissions) {
-        Log.d(TAG, "permissions denied : " + permissions.length);
-    }
-
-    @Override
-    public void onGranted(int requestCode, String[] permissions) {
-        Log.d(TAG, "permissions granted : " + permissions.length);
-    }
 }
-           /* private void initUI (ViewGroup rootView, FirebaseUser user){
 
-            db.collection("contents")
-                    .whereEqualTo("uid", user.getEmail())
-                    .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                    if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            String contentsId = document.getId();
-
-                            Query query = db.collection("contents")
-                                    .document(contentsId).collection("title")
-                                    .orderBy("");
-
-                            FirestoreRecyclerOptions<Contents> options = new FirestoreRecyclerOptions.Builder<Contents>()
-                                    .setQuery(query, Contents.class)
-                                    .build();
-                            makeAdapter(options);
-                        }
-
-                    }
-                }
-            });
-
-            //mainRoadList.setAdapter(adapter);
-        }*/
-
-
-       /* private void makeAdapter(FirestoreRecyclerOptions<Contents> options) {
-       adapter = new FirestoreRecyclerOptions<SearchContents>(options) {
-
-               @Override
-                public void onDataChanged() {
-                    super.onDataChanged();
-                    Log.d(TAG, "어댑터 작동");
-                }
-                @Override
-                protected void onBindViewHolder(@NonNull contentsViewHolder holder, int position,
-                                                    @NonNull SearchContents model) {
-                        holder.setUserItems(model);
-                    }
-                }
-        }*/
-
-   /* public class contentsViewHolder extends RecyclerView.ViewHolder {
-        private View view;
-
-            public contentsViewHolder(NonNull View itemView) {
-                super(itemView);
-                view = itemView;
-
-            }
-        }*/
 
 
 

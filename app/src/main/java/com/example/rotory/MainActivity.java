@@ -50,6 +50,8 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.pedro.library.AutoPermissions;
 import com.pedro.library.AutoPermissionsListener;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -107,6 +109,8 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
         mainPage = new MainPage();
         themePage = new ThemePage();
         bigMapPage = new BigMapPage();
+
+
 
         user = mAuth.getCurrentUser();
 
@@ -166,7 +170,6 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
         storyContentsPage = new StoryContentsPage();
 
 
-      //  getSupportFragmentManager().beginTransaction().replace(R.id.container, mainPage).commit();
 
 
         bottomNavigation = findViewById(R.id.bottom_appBar);
@@ -273,16 +276,6 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
     AlertDialog dialog = aBuilder.create();
     dialog.show();
 
-
-    @Override
-    public void OnTabSelected(int position) {
-        if (position == 0) {
-            bottomNavigation.setSelectedItemId(R.id.home);
-        } else if (position == 1) {
-            bottomNavigation.setSelectedItemId(R.id.theme);
-        } else if (position == 2) {
-            bottomNavigation.setSelectedItemId(R.id.user);
-        }
     }*/
 
 
@@ -478,12 +471,7 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
                     }
                 });
     }
-/*
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        AutoPermissions.Companion.parsePermissions(this, requestCode, permissions, this);
-    }*/
+
 
     @Override
     public void OnLinkClicked() {
@@ -502,15 +490,8 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
 
     }
 
-  /*  @Override
-    public void onDenied(int requestCode, String[] permissions) {
-        Log.d(TAG, "permissions denied : " + permissions.length);
-    }
 
-    @Override
-    public void onGranted(int requestCode, String[] permissions) {
-        Log.d(TAG, "permissions granted : " + permissions.length);
-    }*/
+
 
 }
 
