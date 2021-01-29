@@ -29,6 +29,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.rotory.Interface.OnTabItemSelectedListener;
 import com.example.rotory.MainActivity;
 import com.example.rotory.MyPage;
 import com.example.rotory.ProgressDialogs;
@@ -56,7 +57,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class ThemePage extends AppCompatActivity {
+public class ThemePage extends AppCompatActivity implements OnTabItemSelectedListener {
     final static String TAG = "ThemePage";
 
     AppConstant appConstant = new AppConstant();
@@ -255,15 +256,27 @@ public class ThemePage extends AppCompatActivity {
             bottomNavUnderbarUser.setVisibility(View.GONE);
         } else if (position == 1) {
             bottomNavigation.setVisibility(View.VISIBLE);
-            bottomNavUnderbarHome.setVisibility(View.GONE);
+            bottomNavUnderbarHome.setVisibility(View.INVISIBLE);
             bottomNavUnderbarTheme.setVisibility(View.VISIBLE);
-            bottomNavUnderbarUser.setVisibility(View.GONE);
+            bottomNavUnderbarUser.setVisibility(View.INVISIBLE);
         } else if (position == 2) {
             bottomNavigation.setVisibility(View.VISIBLE);
             bottomNavUnderbarHome.setVisibility(View.GONE);
             bottomNavUnderbarTheme.setVisibility(View.GONE);
             bottomNavUnderbarUser.setVisibility(View.VISIBLE);
         }
+    }
+
+    @Override
+    public void OnTabSelected(int position) {
+        if(position == 0){
+            bottomNavigation.setSelectedItemId(R.id.home);
+        }else if(position == 1){
+            bottomNavigation.setSelectedItemId(R.id.theme);
+        }else if(position ==2){
+            bottomNavigation.setSelectedItemId(R.id.user);
+        }
+
     }
 }
 

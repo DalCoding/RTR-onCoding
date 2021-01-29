@@ -53,6 +53,7 @@ public class MyFavoriteActivity  extends AppCompatActivity  {
     BigMapPage bigMapPage;
     SignUpActivity signUpActivity;
 
+    TextView userActivityTextView;
 
     RelativeLayout bottomNavUnderbarHome;
     RelativeLayout bottomNavUnderbarTheme;
@@ -84,6 +85,16 @@ public class MyFavoriteActivity  extends AppCompatActivity  {
             Log.d(TAG, "로그인 실패");
             isSignIn = false;
         }
+
+        userActivityTextView = findViewById(R.id.userActivityTextView);
+        userActivityTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), UserActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
 
         appBarLayout = findViewById(R.id.appBarLayout);
         bottomNavUnderbarHome = findViewById(R.id.bottomNavUnderbarHome);
