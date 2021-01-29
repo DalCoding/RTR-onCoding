@@ -526,7 +526,7 @@ public class SignUpActivity extends AppCompatActivity {
 
         signin_pin_button.setEnabled(true); //인증확인 버튼
 
-        firebaseAuthSettings.setAutoRetrievedSmsCodeForPhoneNumber(phoneNum,"123456");
+        //firebaseAuthSettings.setAutoRetrievedSmsCodeForPhoneNumber(phoneNum,"123456");
 
         Log.d(TAG, "입력한 핸드폰 번호 " + phoneNum);
 
