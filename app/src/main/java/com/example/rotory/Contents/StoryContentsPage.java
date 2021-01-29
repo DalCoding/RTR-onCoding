@@ -180,9 +180,9 @@ public class StoryContentsPage extends Fragment {
                 .setQuery(query, Contents.class)
                 .build();
 
-        if (user != null) {
+
             initUI(rootView);
-        }
+        
         return rootView;
     }
 
