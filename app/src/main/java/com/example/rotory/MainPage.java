@@ -526,11 +526,11 @@ public class MainPage extends Fragment
                             @Override
                             public void onItemClick(MyAdapter.ViewHolder holder, View view, int position) {
 
-                                /*String cDocumentID = documentId;
+                                String cDocumentID = documentId;
                                 Intent intent = new Intent(getContext(), LoadRoadItem.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                                 intent.putExtra("documentId", cDocumentID);
-                                startActivity(intent); */
+                                startActivity(intent);
 
                                 Log.d("아이템 클릭", "아이템 번호: "+documentId);
                             }
