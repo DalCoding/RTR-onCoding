@@ -1,6 +1,8 @@
 package com.example.rotory;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -28,6 +30,7 @@ import com.example.rotory.Interface.OnTabItemSelectedListener;
 
 
 import com.example.rotory.Interface.OnUserActItemClickListener;
+import com.example.rotory.Search.SearchPage;
 import com.example.rotory.Theme.ThemePage;
 import com.example.rotory.VO.AppConstant;
 
@@ -50,15 +53,20 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.pedro.library.AutoPermissions;
 import com.pedro.library.AutoPermissionsListener;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class MainActivity extends AppCompatActivity implements OnTabItemSelectedListener, OnUserActItemClickListener
         /*, AutoPermissionsListener */{
 
     public static final String TAG = "MainActivity";
-    AppConstant appConstant;
+
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -67,18 +75,14 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
     MainPage mainPage;
     ThemePage themePage;
     StoryContentsPage storyContentsPage;
-    RoadContentsPage roadContentsPage=new RoadContentsPage();
 
     BigMapPage bigMapPage;
-    SignUpActivity signUpActivity;
-
-    ImageButton mainMapExtendBtn;
+    SearchPage searchPage = new SearchPage();
 
     RelativeLayout bottomNavUnderbarHome;
     RelativeLayout bottomNavUnderbarTheme;
     RelativeLayout bottomNavUnderbarUser;
 
-    RelativeLayout userAppbarContainer;
 
     AppBarLayout appBarLayout;
     BottomNavigationView bottomNavigation;
@@ -146,8 +150,6 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
         pageTitleTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), LoadStoryItem.class);
-                startActivity(intent);
 
             }
         });
@@ -240,6 +242,7 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
         startActivity(LoginIntent);
 
     }
+
 
 
 /*    TextView commReportText = (commReportText)findViewById(R.id.commReportText);

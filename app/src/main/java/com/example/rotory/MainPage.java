@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
@@ -17,12 +18,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Adapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,18 +28,17 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.rotory.Adapter.WriteStoryImageAdapter;
 import com.example.rotory.Contents.StoryImageAdapter;
 import com.example.rotory.Interface.OnContentsItemClickListener;
+import com.example.rotory.Search.SearchPage;
 import com.example.rotory.VO.Contents;
 import com.example.rotory.VO.NearPin;
 import com.example.rotory.account.LogInActivity;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
-import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapsInitializer;
@@ -60,7 +57,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.pedro.library.AutoPermissions;
@@ -77,6 +73,9 @@ public class MainPage extends Fragment implements AutoPermissionsListener
 {
     final static String TAG = "MainPage";
 
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
+
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseUser user;
@@ -87,7 +86,6 @@ public class MainPage extends Fragment implements AutoPermissionsListener
     // GPSListener gpsListener;
 
     SupportMapFragment mapFragment;
-
 
     Marker myMarker;
     MarkerOptions myLocationMarker;
@@ -101,7 +99,7 @@ public class MainPage extends Fragment implements AutoPermissionsListener
 
 
     Button mainSearchBtn;
-    EditText mainSearchEdit;
+    TextView mainSearchEdit;
 
     RecyclerView mainRoadList;
     Button mainStoryNextBtn;
@@ -129,7 +127,6 @@ public class MainPage extends Fragment implements AutoPermissionsListener
         getActivity().finish();
 
     }
-
 
     @Override
     public void onDetach() {
@@ -202,6 +199,15 @@ public class MainPage extends Fragment implements AutoPermissionsListener
             e.printStackTrace();
         }
 
+        mainSearchEdit = rootView.findViewById(R.id.mainSearchEdit);
+        mainSearchEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), SearchPage.class);
+                startActivity(intent);
+            }
+        });
+
 
 
 
@@ -241,7 +247,6 @@ public class MainPage extends Fragment implements AutoPermissionsListener
 
                     }
                 });
-                //AutoPermissions.Companion.loadAllPermissions(getActivity(), 101);
 
           /*      map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                     @Override

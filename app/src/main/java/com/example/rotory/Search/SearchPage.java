@@ -1,50 +1,36 @@
 package com.example.rotory.Search;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
-import android.widget.Button;
 
 
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
-//import com.example.rotory.Interface.OnTagItemClickListener;
 import com.example.rotory.MainPage;
 import com.example.rotory.R;
+import com.example.rotory.Theme.Tags;
 import com.example.rotory.Theme.ThemePage;
-import com.example.rotory.VO.Tag;
 import com.example.rotory.account.SignUpActivity;
 
-import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 
-
-import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -52,7 +38,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 
-public class SearchPage extends Fragment {
+public class SearchPage extends AppCompatActivity {
 
     private static final String TAG = "SearchPage";
     private static final String REQUEST_CODE = "0000";
@@ -75,17 +61,21 @@ public class SearchPage extends Fragment {
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
-    CollectionReference collectionReference;
 
-    FirestoreRecyclerAdapter tagAdapter;
-    //TagRecyclerAdapter adapter;
+    SearchTagAdapter adapter;
 
-    public SearchPage() {}
+    ImageButton backBtn;
+    ImageButton removeBtn;
 
-    @Nullable
+
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.search_page, container, false);
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.search_page);
+
+        Bundle bundle = new Bundle();
+        ArrayList<String> tagList = bundle.getStringArrayList("tagList");
+        Log.d(TAG, "tagList 확인" + tagList);
 
         db = FirebaseFirestore.getInstance();
 
@@ -100,59 +90,84 @@ public class SearchPage extends Fragment {
             isSignIn = false;
         }
 
-        bottomNavUnderbarHome = rootView.findViewById(R.id.bottomNavUnderbarHome);
-        bottomNavUnderbarTheme = rootView.findViewById(R.id.bottomNavUnderbarTheme);
-        bottomNavUnderbarUser = rootView.findViewById(R.id.bottomNavUnderbarUser);
+        tagSet();
+
+        bottomNavUnderbarHome = findViewById(R.id.bottomNavUnderbarHome);
+        bottomNavUnderbarTheme = findViewById(R.id.bottomNavUnderbarTheme);
+        bottomNavUnderbarUser = findViewById(R.id.bottomNavUnderbarUser);
 
         mainPage = new MainPage();
         themePage = new ThemePage();
 
+        searchTagList = findViewById(R.id.search1List);
+        searchTagList.setLayoutManager(new GridLayoutManager(this, 3));
+        backBtn = findViewById(R.id.searchBackBtn);
+        removeBtn = findViewById(R.id.searchRemoveBtn);
 
-        searchEdit = rootView.findViewById(R.id.searchIdEdit);
-        searchEdit.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
-        searchEdit.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
-                if (i == EditorInfo.IME_ACTION_SEARCH) {
-                    String searchText = searchEdit.getText().toString();
-
-                    goToSearch(searchText);
-
-                    return true;
-                }
-
-                return false;
+            public void onClick(View view) {
+                // 메인 화면으로 돌아가기
             }
         });
 
-        initUI(rootView);
+        removeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                searchEdit.setText(null);
+            }
+        });
 
-        return rootView;
+        searchEdit = findViewById(R.id.searchIdEdit);
+
     }
 
-    private void initUI(ViewGroup rootView) {
-        searchTagList = rootView.findViewById(R.id.search1List);
-        searchTagList.setLayoutManager(new GridLayoutManager(getActivity(), 3));
-        searchTagList.setAdapter(tagAdapter);
 
-    }
+    public void tagSet(){
+        db.collection("tag").get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()){
+                            ArrayList<String> keyValue = new ArrayList<>();
+                            for (QueryDocumentSnapshot documentSnapshot : task.getResult()){
+                                Map<String, Object> document =documentSnapshot.getData();
+                                Log.d(TAG, document.toString());
+                                for (String key : document.keySet()) {
+                                    String value = String.valueOf(document.get(key));
+                                    keyValue.add(value);
+                                }
+                            }
+                            Log.d(TAG,"태그 받아왔는지 확인" + keyValue);
+                            ArrayList<Tags> tagList = new ArrayList<>();
+                            for (int i = 0 ; i < keyValue.size(); i++){
+                                tagList.add(new Tags(keyValue.get(i)));
+                            }
+                            Log.d(TAG, "ArrayList<Tags>확인" + tagList);
 
-    private void goToSearch(String searchText) {
-        Intent intent = new Intent(getActivity(), SearchResultPage.class);
-        intent.putExtra("searchText", searchText);
-        startActivity(intent);
-    }
+                            adapter = new SearchTagAdapter(tagList, getApplicationContext());
+                            searchTagList = findViewById(R.id.search1List);
+                            searchTagList.setLayoutManager(new GridLayoutManager(getApplicationContext(), 3));
+                            searchTagList.setAdapter(adapter);
 
-    @Override
-    public void onStart() {
-        super.onStart();
-    }
+                            searchEdit.addTextChangedListener(new TextWatcher() {
+                                @Override
+                                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-    @Override
-    public void onStop() {
-        super.onStop();
-        if (tagAdapter != null) {
-            tagAdapter.stopListening();
-        }
+                                }
+
+                                @Override
+                                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                                    adapter.getFilter().filter(charSequence);
+                                }
+
+                                @Override
+                                public void afterTextChanged(Editable editable) {
+                                    searchTagList.setVisibility(View.VISIBLE);
+                                }
+                            });
+                        }
+                    }
+                });
     }
 }
