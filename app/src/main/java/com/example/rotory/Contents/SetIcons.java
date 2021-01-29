@@ -154,7 +154,7 @@ public class SetIcons {
                                                             Toast.makeText(context, "이 도토리를 버립니다.", Toast.LENGTH_SHORT).show();
                                                             return;
                                                         }
-                                                            listener.OnLikeClicked(contentsID, contentsList, user.getEmail());
+                                                            listener.OnFlagClicked(contentsID, contentsList, user.getEmail());
                                                             Log.d(TAG, "사용자 활동리스트 정보 리스트에 넣기");
                                                             Toast.makeText(context, "이 도토리를 좋아합니다.", Toast.LENGTH_SHORT).show();
                                                             imageView.setImageResource(R.drawable.scrabtagfilled);

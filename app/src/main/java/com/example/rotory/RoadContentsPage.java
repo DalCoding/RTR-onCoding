@@ -168,6 +168,7 @@ public class RoadContentsPage extends Fragment implements OnMapReadyCallback, Go
 
         Bundle contentsBundle = this.getArguments();
         contentsID = contentsBundle.getString("storyDocumentId");
+        Log.d(TAG,"contentsID 확인" + contentsID);
 
         if (user != null) {
             String checkLogIN = user.getEmail();
@@ -632,8 +633,8 @@ public class RoadContentsPage extends Fragment implements OnMapReadyCallback, Go
                             Toast.makeText(getContext(), user.getDisplayName() + " 님의 도토리! 자신의 도토리는 담을 수 없습니다.", Toast.LENGTH_SHORT).show();
                         } else {
                             Log.d(TAG, "하트 아이콘 클릭");
-                            setIcons.isInList(contentsID, contentsList, "myScrap", user,
-                                    rcontentsScrapImg, listener, context);
+                            isInList(contentsID, contentsList, "myLike", user,
+                                    rcontentsHeartImg, listener, context);
                         }
                     }
                 });
@@ -654,7 +655,7 @@ public class RoadContentsPage extends Fragment implements OnMapReadyCallback, Go
                         if (writerUid.equals(user.getUid())) {
                             Toast.makeText(getContext(), user.getDisplayName() + "님의 도토리! 자신의 도토리는 담을 수 없습니다.", Toast.LENGTH_SHORT).show();
                         } else {
-                            setIcons.isInList(contentsID, contentsList, "myScrap", user,
+                            isInList(contentsID, contentsList, "myScrap", user,
                                     rcontentsScrapImg, listener, context);
                         Log.d(TAG, "태그 아이콘 클릭");
                         }
@@ -761,7 +762,7 @@ public class RoadContentsPage extends Fragment implements OnMapReadyCallback, Go
                             if(savedUserId.equals(userId)) {
                                 Toast.makeText(getContext(), "자신을 관심 목록에 넣을 수 없습니다." , Toast.LENGTH_SHORT).show();
                             } else {
-                                setIcons.isInList(savedDocumentId, contentsList, "myStar", user, rcontentsStarImg
+                                isInList(savedDocumentId, contentsList, "myStar", user, rcontentsStarImg
                                         ,listener, context);
                             }
                         }
@@ -785,6 +786,111 @@ public class RoadContentsPage extends Fragment implements OnMapReadyCallback, Go
     rcontentsTakewhoText.setText(contentsList.get("isPartner").toString());
     rcontentsUsernameText.setText(contentsList.get("userName").toString());
     rcontentsLevelImg.setImageResource(appConstant.getUserLevelImage(userLevel));
+    }
+    public void isInList(String contentsID, Map<String, Object> contentsList, String userCollection, FirebaseUser user,
+                         ImageView imageView, OnUserActItemClickListener listeners, Context context) {
+
+        OnUserActItemClickListener listener = (OnUserActItemClickListener) listeners;
+        Log.d(TAG, "인리스트 메서드 작동 : 이미지 뷰 = " + imageView.toString());
+        String writerUid = contentsList.get("uid").toString();
+        db.collection("person").whereEqualTo("userId", user.getEmail()).get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot pDocument : task.getResult()) {
+                                String pDocumentId = pDocument.getId();
+                                Log.d(TAG, "isInList : 해당 유저 고유 번호 받아옴" + pDocumentId);
+                                CollectionReference userCollectionRef = db.collection("person").
+                                        document(pDocumentId).collection(userCollection);
+                                if (userCollection.equals("myStar")) {
+                                    userCollectionRef
+                                            .whereEqualTo("personId", contentsID)
+                                            .get()
+                                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                    if (task.isSuccessful()) {
+
+                                                        imageView.setImageResource(R.drawable.starfilled);
+                                                        for (QueryDocumentSnapshot thisLikeDocument : task.getResult()) {
+                                                            String userActDocId = thisLikeDocument.getId();
+                                                            Log.d(TAG, "해당 다큐먼츠 찾기 => id" + userActDocId);
+                                                            userCollectionRef.document(userActDocId).delete();
+                                                            imageView.setImageResource(R.drawable.star);
+                                                            Toast.makeText(context, "관심 있는 이웃 취소", Toast.LENGTH_SHORT).show();
+                                                            return;
+                                                        }
+                                                        Log.d(TAG, "사용자 활동리스트 정보 리스트에 넣기");
+                                                        imageView.setImageResource(R.drawable.star);
+                                                        listener.OnStarClicked(contentsID, user.getEmail());
+                                                        Toast.makeText(context, "관심있는 이웃 다람쥐로 등록", Toast.LENGTH_SHORT).show();
+                                                        imageView.setImageResource(R.drawable.starfilled);
+                                                        return;
+                                                    }
+                                                }
+                                            });
+                                } else if (userCollection.equals("myScrap")) {
+                                    Log.d(TAG, "isInList " + userCollection + " 호출 성공");
+                                    userCollectionRef
+                                            .whereEqualTo("contentsId", contentsID)
+                                            .get()
+                                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                    if (task.isSuccessful()) {
+                                                        Log.d(TAG, "엔트리셋?" + contentsID);
+                                                        for (QueryDocumentSnapshot thisLikeDocument : task.getResult()) {
+                                                            Log.d(TAG, "사용자 활동리스트 정보 리스트에서 빼기");
+                                                            String userActDocId = thisLikeDocument.getId();
+                                                            Log.d(TAG, "해당 다큐먼츠 찾기 => id" + userActDocId);
+                                                            userCollectionRef.document(userActDocId).delete();
+                                                            imageView.setImageResource(R.drawable.scrabtag);
+                                                            Toast.makeText(context, "이 도토리를 버립니다.", Toast.LENGTH_SHORT).show();
+                                                            return;
+                                                        }
+                                                        listener.OnFlagClicked(contentsID, contentsList, user.getEmail());
+                                                        Log.d(TAG, "사용자 활동리스트 정보 리스트에 넣기");
+                                                        Toast.makeText(context, "이 도토리를 좋아합니다.", Toast.LENGTH_SHORT).show();
+                                                        imageView.setImageResource(R.drawable.scrabtagfilled);
+                                                        return;
+                                                    }
+                                                }
+                                            });
+                                } else if (userCollection.equals("myLike")) {
+                                    Log.d(TAG, "isInList " + userCollection + " 호출 성공");
+                                    userCollectionRef
+                                            .whereEqualTo("contentsId", contentsID)
+                                            .get()
+                                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                    if (task.isSuccessful()) {
+                                                        Log.d(TAG, "엔트리셋?" + contentsID);
+                                                        for (QueryDocumentSnapshot thisLikeDocument : task.getResult()) {
+                                                            Log.d(TAG, "사용자 활동리스트 정보 리스트에서 빼기");
+                                                            String userActDocId = thisLikeDocument.getId();
+                                                            Log.d(TAG, "해당 다큐먼츠 찾기 => id" + userActDocId);
+                                                            userCollectionRef.document(userActDocId).delete();
+                                                            imageView.setImageResource(R.drawable.heart);
+                                                            Toast.makeText(context, "이 도토리를 버립니다.", Toast.LENGTH_SHORT).show();
+                                                            return;
+                                                        }
+                                                        listener.OnLikeClicked(contentsID, contentsList, user.getEmail());
+                                                        Log.d(TAG, "사용자 활동리스트 정보 리스트에 넣기");
+                                                        Toast.makeText(context, "이 도토리를 좋아합니다.", Toast.LENGTH_SHORT).show();
+                                                        imageView.setImageResource(R.drawable.heartfilled);
+                                                        return;
+
+                                                    }
+                                                }
+                                            });
+
+                                }
+                            }
+                        }
+                    }
+                });
     }
 
 

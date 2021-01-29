@@ -121,8 +121,12 @@ public class LoadRoadItem extends AppCompatActivity implements OnUserActItemClic
         myScrap.put("contentsType", contentsList.get("contentsType"));
         myScrap.put("title", contentsList.get("title").toString());
         myScrap.put("tag1", contentsList.get("tag1").toString());
-        myScrap.put("article", contentsList.get("article").toString());
-        myScrap.put("contentsAddress", contentsList.get("address").toString());
+        if (contentsList.get("article") != null) {
+            myScrap.put("article", contentsList.get("article").toString());
+        }
+        if (contentsList.get("dtrName") != null) {
+            myScrap.put("dtrName", contentsList.get("dtrName").toString());
+        }
         myScrap.put("savedDate", new Date().toString());
         myScrap.put("uid", contentsList.get("uid").toString());//이후 리스트에 포함되어있는지 여부를 찾기 위해 해당 항목 사용
         String userCollection = "myScrap";

@@ -126,7 +126,9 @@ public class LoadStoryItem extends AppCompatActivity implements OnUserActItemCli
         myScrap.put("contentsType", contentsList.get("contentsType"));
         myScrap.put("title", contentsList.get("title").toString());
         myScrap.put("titleImage", contentsList.get("titleImage").toString());
-        myScrap.put("article", contentsList.get("article").toString());
+        if (contentsList.get("article") != null) {
+            myScrap.put("article", contentsList.get("article").toString());
+        }
         myScrap.put("contentsAddress", contentsList.get("address").toString());
         myScrap.put("savedDate", new Date().toString());
         myScrap.put("uid", contentsList.get("uid").toString());//이후 리스트에 포함되어있는지 여부를 찾기 위해 해당 항목 사용
