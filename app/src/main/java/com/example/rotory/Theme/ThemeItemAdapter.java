@@ -86,6 +86,7 @@ public class ThemeItemAdapter  extends RecyclerView.Adapter<ThemeItemAdapter.the
             tcardThemeText = itemView.findViewById(R.id.tcardThemeText);
             themeCardView = itemView.findViewById(R.id.themeCardView);
         }
+
         public void setThemeCard(Tags item){
 
             Point point = new Point();

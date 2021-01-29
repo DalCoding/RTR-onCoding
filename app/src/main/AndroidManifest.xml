@@ -27,16 +27,15 @@
         <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyAf5Zp2t2IQyKHlMtWpkaKvsRsOEBDnVIs"/>
         <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />
         <!--<meta-data android:name="com.kakao.sdk.AppKey" android:value="74327a949b44e3526226fb17f890121f"/>-->
+
         <activity android:name=".MyPage"/>
-        <activity android:name=".SplashActivity"
-            android:theme="@style/SplashTheme">
+        <activity android:name=".MainActivity"
+            android:theme="@style/SplashTheme" android:windowSoftInputMode="adjustPan">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity android:name=".MainActivity"
-            android:windowSoftInputMode="adjustPan">
         </activity>
     <activity android:name=".account.SetNewPassword"
         android:windowSoftInputMode="adjustPan">
@@ -103,6 +102,9 @@
                 <data android:path="/setPassword"/>
             </intent-filter>
         </activity>-->
+
+        <activity android:name=".Search.SearchTagResultPage"/>
+        <activity android:name=".Search.SearchPage"/>
 
 
 

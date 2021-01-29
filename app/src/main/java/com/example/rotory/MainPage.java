@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
@@ -30,6 +31,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -37,6 +39,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.rotory.Adapter.WriteStoryImageAdapter;
 import com.example.rotory.Contents.StoryImageAdapter;
 import com.example.rotory.Interface.OnContentsItemClickListener;
+import com.example.rotory.Search.SearchActivity;
+import com.example.rotory.Search.SearchPage;
+import com.example.rotory.Search.SearchTagResultPage;
 import com.example.rotory.VO.Contents;
 import com.example.rotory.VO.NearPin;
 import com.example.rotory.account.LogInActivity;
@@ -77,6 +82,9 @@ public class MainPage extends Fragment
 {
     final static String TAG = "MainPage";
 
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
+
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseUser user;
@@ -87,7 +95,6 @@ public class MainPage extends Fragment
     // GPSListener gpsListener;
 
     SupportMapFragment mapFragment;
-
 
     Marker myMarker;
     MarkerOptions myLocationMarker;
@@ -101,7 +108,7 @@ public class MainPage extends Fragment
 
 
     Button mainSearchBtn;
-    EditText mainSearchEdit;
+    TextView mainSearchEdit;
 
     RecyclerView mainRoadList;
     Button mainStoryNextBtn;
@@ -130,7 +137,6 @@ public class MainPage extends Fragment
         //getActivity().finish();
 
     }
-
 
     @Override
     public void onDetach() {
@@ -203,46 +209,73 @@ public class MainPage extends Fragment
             e.printStackTrace();
         }
 
+        mainSearchEdit = rootView.findViewById(R.id.mainSearchEdit);
+        mainSearchEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), SearchPage.class);
+                startActivity(intent);
+            }
+        });
+
 
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
                 .findFragmentById(R.id.mainGoogleMap);
         mapFragment.getMapAsync(new OnMapReadyCallback() {
-            @Override
-            public void onMapReady(GoogleMap googleMap) {
-                Log.d("Map", "지도준비됨.");
-                map = googleMap;
-                if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                    // TODO: Consider calling
-                    //    ActivityCompat#requestPermissions
-                    // here to request the missing permissions, and then overriding
-                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                    //                                          int[] grantResults)
-                    // to handle the case where the user grants the permission. See the documentation
-                    // for ActivityCompat#requestPermissions for more details.
-                    return;
-                }
-                //  map.setMyLocationEnabled(true);
-                LatLng SeoulPoint = new LatLng(37.55626036672879, 126.97217466067063);
-                map.moveCamera(CameraUpdateFactory.newLatLngZoom(SeoulPoint, 13));
-                map.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
+                                    @Override
+                                    public void onMapReady(GoogleMap googleMap) {
+                                        Log.d("Map", "지도준비됨.");
+                                        map = googleMap;
+                                        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                                            // TODO: Consider calling
+                                            //    ActivityCompat#requestPermissions
+                                            // here to request the missing permissions, and then overriding
+                                            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                                            //                                          int[] grantResults)
+                                            // to handle the case where the user grants the permission. See the documentation
+                                            // for ActivityCompat#requestPermissions for more details.
+                                            return;
+                                        }
+                                        //  map.setMyLocationEnabled(true);
+                                        LatLng SeoulPoint = new LatLng(37.55626036672879, 126.97217466067063);
+                                        map.moveCamera(CameraUpdateFactory.newLatLngZoom(SeoulPoint, 13));
+                                        map.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
 
+                                            @Override
+                                            public void onCameraIdle() {
+                                                LatLng center = map.getCameraPosition().target;   // 중앙점 https://stackoverflow.com/questions/13904505/how-to-get-center-of-map-for-v2-android-maps
+                                                loadDtr(center, rootView);
+                                                int zoomLevel = (int) map.getCameraPosition().zoom;
+                                                if (zoomLevel >= 18) {
+                                                    loadDtrLine(center, rootView);
+                                                } else {
+                                                    loadDtr(center, rootView);
+                                                }
+
+                                            }
+                                        });
+                                    }
+                                });
+
+
+
+          /*      map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                     @Override
-                    public void onCameraIdle() {
-                        LatLng center = map.getCameraPosition().target;   // 중앙점 https://stackoverflow.com/questions/13904505/how-to-get-center-of-map-for-v2-android-maps
-                        loadDtr(center, rootView);
-                        int zoomLevel = (int) map.getCameraPosition().zoom;
-                        if (zoomLevel >= 18) {
-                            loadDtrLine(center, rootView);
-                        } else {
-                            loadDtr(center, rootView);
-                        }
-
+                    public boolean onMarkerClick(Marker marker) {
+                        showDtrInfo(marker);
+                        return true;
                     }
                 });
+                map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+                    @Override
+                    public void onMapClick(LatLng latLng) {
+                        tranlateUpAnim = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.translate_up);
+                        tranlateDownAnim = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.translate_down);
 
 
             }
-        });
+        });*/
+
         LocationManager manager = (LocationManager)
                 getContext().getSystemService(Context.LOCATION_SERVICE);// LocationManager 객체 참조하기
         // 이전에 확인햿던 위치 정보 가져오기
@@ -284,17 +317,6 @@ public class MainPage extends Fragment
                     loadDtr(curPoint, rootView); // 도토리 보여주기
                    // return;
 
-               /* Location location = manager.getLastKnownLocation(locationProvider);
-
-                Double latitude = location.getLatitude();
-                Double longitude = location.getLongitude();
-                String message = "내위치-> Latitude : "+ latitude + "\nLongitude:"+ longitude;
-                Log.d("Map", message);
-
-                showCurrentLocation(latitude, longitude); // 카메라움직여지도에띄우기
-                LatLng curPoint = new LatLng(latitude, longitude);
-                showMyLocationMarker(); // 현재위치 보여주기
-                loadDtr(curPoint, rootView); // 도토리 보여주기*/
             }
         }, 1000);                                 // 1000 = 1초
 
