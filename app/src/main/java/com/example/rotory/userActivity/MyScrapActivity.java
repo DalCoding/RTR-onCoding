@@ -52,6 +52,7 @@ public class MyScrapActivity extends AppCompatActivity {
     TextView myScrapSave;
     ImageView myScrapPreImg;
     ImageView myScrapLevelImg;
+    TextView userActivityTextView;
 
 
     CardView myScrapItem;
@@ -74,6 +75,16 @@ public class MyScrapActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.my_scrap_page);
         db = FirebaseFirestore.getInstance();
+
+        userActivityTextView = findViewById(R.id.userActivityTextView);
+        userActivityTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), UserActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
 
 
         profileTextView = findViewById(R.id.profileTextView);

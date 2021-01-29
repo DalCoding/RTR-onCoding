@@ -60,6 +60,7 @@ public class MyLikeActivity extends AppCompatActivity {
     RelativeLayout bottomNavUnderbarUser;
 
     TextView profileTextView;
+   TextView userActivityTextView;
 
     RelativeLayout userAppbarContainer;
 
@@ -85,6 +86,16 @@ public class MyLikeActivity extends AppCompatActivity {
         user = mAuth.getCurrentUser();
 
         profileTextView = findViewById(R.id.profileTextView);
+
+        userActivityTextView = findViewById(R.id.userActivityTextView);
+        userActivityTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), UserActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
 
         appBarLayout =findViewById(R.id.appBarLayout);
         bottomNavUnderbarHome = findViewById(R.id.bottomNavUnderbarHome);
@@ -125,14 +136,14 @@ public class MyLikeActivity extends AppCompatActivity {
                     }
                 });
 
-        profileTextView.setOnClickListener(new View.OnClickListener() {
+     /*   profileTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MyLikeActivity.this, MyPage.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
             }
-        });
+        }); */
 
 
     }

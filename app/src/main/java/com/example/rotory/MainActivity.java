@@ -347,6 +347,8 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
         });
     }
 
+
+
     public void setTabUnderBar(int position) {
         if (position == 0) {
             bottomNavigation.setVisibility(View.VISIBLE);
@@ -355,9 +357,9 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
             bottomNavUnderbarUser.setVisibility(View.GONE);
         } else if (position == 1) {
             bottomNavigation.setVisibility(View.VISIBLE);
-            bottomNavUnderbarHome.setVisibility(View.GONE);
+            bottomNavUnderbarHome.setVisibility(View.INVISIBLE);
             bottomNavUnderbarTheme.setVisibility(View.VISIBLE);
-            bottomNavUnderbarUser.setVisibility(View.GONE);
+            bottomNavUnderbarUser.setVisibility(View.INVISIBLE);
         } else if (position == 2) {
             bottomNavigation.setVisibility(View.VISIBLE);
             bottomNavUnderbarHome.setVisibility(View.GONE);
@@ -490,6 +492,13 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
 
     @Override
     public void OnTabSelected(int position) {
+        if(position == 0){
+            bottomNavigation.setSelectedItemId(R.id.home);
+        }else if(position == 1){
+            bottomNavigation.setSelectedItemId(R.id.theme);
+        }else if(position ==2){
+            bottomNavigation.setSelectedItemId(R.id.user);
+        }
 
     }
 

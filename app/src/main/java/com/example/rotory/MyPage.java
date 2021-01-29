@@ -483,9 +483,9 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
             bottomNavUnderbarUser.setVisibility(View.GONE);
         }else if(position == 1){
             bottomNavigation.setVisibility(View.VISIBLE);
-            bottomNavUnderbarHome.setVisibility(View.GONE);
+            bottomNavUnderbarHome.setVisibility(View.INVISIBLE);
             bottomNavUnderbarTheme.setVisibility(View.VISIBLE);
-            bottomNavUnderbarUser.setVisibility(View.GONE);
+            bottomNavUnderbarUser.setVisibility(View.INVISIBLE);
         }else if(position ==2){
             bottomNavigation.setVisibility(View.VISIBLE);
             bottomNavUnderbarHome.setVisibility(View.GONE);
