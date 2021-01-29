@@ -98,6 +98,8 @@ public class RoadContentsPage extends Fragment implements OnMapReadyCallback, Go
     TextView rcontentsMapText;
     TextView rcontentsTaketimeText;
     TextView rcontentsTakewhoText;
+    TextView rcontentsHeartNum;
+    TextView rcontentsScrapNum;
 
     ArrayList<Comment> commentArrayList;
 
@@ -228,6 +230,8 @@ public class RoadContentsPage extends Fragment implements OnMapReadyCallback, Go
         rcontentsMapText = rootView.findViewById(R.id.rcontentsMapText);
         rcontentsTaketimeText = rootView.findViewById(R.id.rcontentsTaketimeText);
         rcontentsTakewhoText = rootView.findViewById(R.id.rcontentsTakewhoText);
+        rcontentsHeartNum = rootView.findViewById(R.id.rcontentsHeartNum);
+        rcontentsScrapNum = rootView.findViewById(R.id.rcontentsScrapNum);
 
         Log.d(TAG, "initUI 시작, 번들 전송 잘 됐는지, pDocumentId:" + contentsID);
         loadContents(contentsID, user);
@@ -633,7 +637,7 @@ public class RoadContentsPage extends Fragment implements OnMapReadyCallback, Go
                             Toast.makeText(getContext(), user.getDisplayName() + " 님의 도토리! 자신의 도토리는 담을 수 없습니다.", Toast.LENGTH_SHORT).show();
                         } else {
                             Log.d(TAG, "하트 아이콘 클릭");
-                            isInList(contentsID, contentsList, "myLike", user,
+                            setIcons.isInList(contentsID, contentsList, "myLike", user,
                                     rcontentsHeartImg, listener, context);
                         }
                     }
@@ -655,7 +659,7 @@ public class RoadContentsPage extends Fragment implements OnMapReadyCallback, Go
                         if (writerUid.equals(user.getUid())) {
                             Toast.makeText(getContext(), user.getDisplayName() + "님의 도토리! 자신의 도토리는 담을 수 없습니다.", Toast.LENGTH_SHORT).show();
                         } else {
-                            isInList(contentsID, contentsList, "myScrap", user,
+                            setIcons.isInList(contentsID, contentsList, "myScrap", user,
                                     rcontentsScrapImg, listener, context);
                         Log.d(TAG, "태그 아이콘 클릭");
                         }
@@ -762,7 +766,7 @@ public class RoadContentsPage extends Fragment implements OnMapReadyCallback, Go
                             if(savedUserId.equals(userId)) {
                                 Toast.makeText(getContext(), "자신을 관심 목록에 넣을 수 없습니다." , Toast.LENGTH_SHORT).show();
                             } else {
-                                isInList(savedDocumentId, contentsList, "myStar", user, rcontentsStarImg
+                                setIcons.isInList(savedDocumentId, contentsList, "myStar", user, rcontentsStarImg
                                         ,listener, context);
                             }
                         }
@@ -781,6 +785,16 @@ public class RoadContentsPage extends Fragment implements OnMapReadyCallback, Go
     rcontentsTitleText.setText(contentsList.get("title").toString());
     if (contentsList.get("dtrName") != null) {
         rcontentsMapText.setText(contentsList.get("dtrName").toString());
+    }
+    if (contentsList.get("liked") != null){
+        rcontentsHeartNum.setText(contentsList.get("liked").toString());
+    }else{
+        rcontentsHeartNum.setText("0");
+    }
+    if (contentsList.get("scrapped") != null){
+        rcontentsScrapNum.setText(contentsList.get("scrapped").toString());
+    }else {
+        rcontentsScrapNum.setText("0");
     }
     rcontentsTaketimeText.setText(contentsList.get("hour").toString());
     rcontentsTakewhoText.setText(contentsList.get("isPartner").toString());

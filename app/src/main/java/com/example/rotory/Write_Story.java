@@ -178,6 +178,7 @@ public class Write_Story extends AppCompatActivity  {
         //storyaddress = writeStoryLocation.getText().toString();
         title = writeStoryTitle.getText().toString();
         article = writeStoryEditText.getText().toString();
+        Log.d(TAG, "article 확인" + article);
 
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
@@ -418,10 +419,11 @@ public class Write_Story extends AppCompatActivity  {
     private void setDB() throws IOException {
         imageList = changeUritoBITmap();
 
-
+        article = writeStoryEditText.getText().toString();
+        Log.d(TAG,"article 다시할당" + article);
         ArrayList<String> address = new ArrayList<>();
         address.add(storyaddress);
-
+        DBStoryContents.put("article", article);
         DBStoryContents.put("contentsType", 1);
         DBStoryContents.put("smallImage", imageList);
         DBStoryContents.put("titleImage", mainImage);
@@ -429,7 +431,6 @@ public class Write_Story extends AppCompatActivity  {
         DBStoryContents.put("prefixId", prefixId);
         DBStoryContents.put("address", address);
         DBStoryContents.put("title", title);
-        DBStoryContents.put("article", article);
         DBStoryContents.put("isPublic", isPublic);
         DBStoryContents.put("writeDate",appConstant.dateFormat.format(new Date()));
 
@@ -467,7 +468,7 @@ public class Write_Story extends AppCompatActivity  {
         db.collection("contents").add(dbStoryContents).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
             @Override
             public void onComplete(@NonNull Task<DocumentReference> task) {
-                Log.d(TAG, "정보제대로 들어갔는지 확인 : " +dbStoryContents);
+                Log.d(TAG, "정보제대로 들어갔는지 확인 : " + dbStoryContents);
 
                 Intent mainIntent = new Intent(Write_Story.this, MainActivity.class);
                 mainIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP|Intent.FLAG_ACTIVITY_NEW_TASK); //SINGLE_TOP는 쌓아주는것(돌고돌게)을 전것을 제거 해주고, NEW_TASK는 다시 시작해줌.
