@@ -182,7 +182,7 @@ public class StoryContentsPage extends Fragment {
 
 
             initUI(rootView);
-        
+
         return rootView;
     }
 
@@ -326,8 +326,9 @@ public class StoryContentsPage extends Fragment {
                     commLevelImg.setImageResource(appConstant.getUserLevelImage(userLevel));
                     String commentedUser = task.getResult().get("userId").toString();
                     Log.d(TAG, "댓글단사람" + commentedUser);
-                    Log.d(TAG, "현재 사용자 확인" + user.getEmail());
+
                     if (user != null) {
+                        Log.d(TAG, "현재 사용자 확인" + user.getEmail());
                         if (user.getEmail().equals(commentedUser)) {
                             commReportText.setVisibility(View.INVISIBLE);
                             commReportText.setOnClickListener(new View.OnClickListener() {
@@ -471,7 +472,9 @@ public class StoryContentsPage extends Fragment {
                             @Override
                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                 for (QueryDocumentSnapshot snapshot : task.getResult()){
-                                    setIcons.getUserActivityIcon(snapshot.getId(), "myStar", scontentsStarImg, R.drawable.starfilled, R.drawable.star);
+                                    if (user!=null) {
+                                        setIcons.getUserActivityIcon(snapshot.getId(), "myStar", scontentsStarImg, R.drawable.starfilled, R.drawable.star);
+                                    }
                                 }
                             }
                         });
@@ -677,7 +680,7 @@ public class StoryContentsPage extends Fragment {
     }
 
     private void setComments(Map<String, Object> contentsList) {
-        Map<String, String> smallImageMap = (Map<String, String>) contentsList.get("imageList");
+        Map<String, String> smallImageMap = (Map<String, String>) contentsList.get("smallImage");
         Log.d(TAG, "이미지 리스트 뽑기 확인" + smallImageMap);
         int count = 0;
         for (String key : smallImageMap.keySet()){
@@ -687,7 +690,6 @@ public class StoryContentsPage extends Fragment {
                 String defaultImageComment = defautlImageComments.get(String.valueOf(count));
                 scontentsMentText.setText(defaultImageComment);
                 count++;
-                return;
             }
         }
 
