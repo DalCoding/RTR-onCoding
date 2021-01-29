@@ -107,7 +107,6 @@
                             android:layout_height="24dp"
                             android:layout_gravity="right|bottom"
                             android:background="@drawable/ripple_custom_button"
-                            android:visibility="invisible"
                             app:srcCompat="@drawable/right_button" />
 
                     </FrameLayout>
@@ -173,12 +172,21 @@
                         android:layout_marginBottom="30dp"
                         android:background="@drawable/fragment_lines">
 
+                        <HorizontalScrollView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/mainStoryList"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
-
+                        </LinearLayout>
+                        </HorizontalScrollView>
                     </FrameLayout>
 
                 </LinearLayout>
@@ -216,7 +224,7 @@
         android:adjustViewBounds="false"
         android:background="@drawable/brownlinebox"
         android:baselineAlignBottom="false"
-        android:clickable="true"
+        android:clickable="false"
         android:src="@drawable/storyicon"
         android:visibility="invisible" />
 
@@ -231,7 +239,7 @@
         android:adjustViewBounds="false"
         android:background="@drawable/brownlinebox"
         android:baselineAlignBottom="false"
-        android:clickable="true"
+        android:clickable="false"
         android:src="@drawable/roadicon_small"
         android:visibility="invisible" />
 
