@@ -13,9 +13,9 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="40sp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:background="#E2D7C6"
+            android:background="@color/beige"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
@@ -25,8 +25,10 @@
                 android:layout_height="20dp"
                 android:layout_marginStart="10dp"
                 android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginEnd="30dp"
                 android:layout_marginRight="30dp"
+                android:layout_marginBottom="10dp"
                 android:layout_weight="1"
                 android:text="도토리 길"
                 android:textColor="#442C2E"
