@@ -9,9 +9,11 @@ import androidx.annotation.NonNull;
 
 import com.example.rotory.Interface.OnContentsItemClickListener;
 import com.example.rotory.Interface.OnUserActItemClickListener;
+import com.example.rotory.LoadRoadItem;
 import com.example.rotory.R;
 import com.example.rotory.RoadContentsPage;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -19,8 +21,10 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -95,6 +99,7 @@ public class SetIcons {
     public void isInList(String contentsID, Map<String, Object> contentsList, String userCollection, FirebaseUser user,
                          ImageView imageView, OnUserActItemClickListener listeners, Context context) {
 
+        Log.d(TAG, contentsList.get("writeDate").toString());
         OnUserActItemClickListener listener = (OnUserActItemClickListener) listeners;
         Log.d(TAG, "인리스트 메서드 작동 : 이미지 뷰 = " + imageView.toString());
         String writerUid = contentsList.get("uid").toString();
@@ -150,6 +155,7 @@ public class SetIcons {
                                                             String userActDocId = thisLikeDocument.getId();
                                                             Log.d(TAG, "해당 다큐먼츠 찾기 => id" + userActDocId);
                                                             userCollectionRef.document(userActDocId).delete();
+                                                            setLikeCount(contentsList, false, "scrapped");
                                                             imageView.setImageResource(R.drawable.scrabtag);
                                                             Toast.makeText(context, "이 도토리를 버립니다.", Toast.LENGTH_SHORT).show();
                                                             return;
@@ -157,6 +163,7 @@ public class SetIcons {
                                                             listener.OnFlagClicked(contentsID, contentsList, user.getEmail());
                                                             Log.d(TAG, "사용자 활동리스트 정보 리스트에 넣기");
                                                             Toast.makeText(context, "이 도토리를 좋아합니다.", Toast.LENGTH_SHORT).show();
+                                                            setLikeCount(contentsList, true, "scrapped");
                                                             imageView.setImageResource(R.drawable.scrabtagfilled);
                                                         return;
                                                     }
@@ -177,6 +184,7 @@ public class SetIcons {
                                                             String userActDocId = thisLikeDocument.getId();
                                                             Log.d(TAG, "해당 다큐먼츠 찾기 => id" + userActDocId);
                                                             userCollectionRef.document(userActDocId).delete();
+                                                           setLikeCount(contentsList, false, "liked");
                                                             imageView.setImageResource(R.drawable.heart);
                                                             Toast.makeText(context, "이 도토리를 버립니다.", Toast.LENGTH_SHORT).show();
                                                             return;
@@ -185,6 +193,7 @@ public class SetIcons {
                                                         Log.d(TAG, "사용자 활동리스트 정보 리스트에 넣기");
                                                         Toast.makeText(context, "이 도토리를 좋아합니다.", Toast.LENGTH_SHORT).show();
                                                         imageView.setImageResource(R.drawable.heartfilled);
+                                                        setLikeCount(contentsList, true, "liked");
                                                         return;
 
                                                     }
@@ -197,4 +206,60 @@ public class SetIcons {
                     }
                 });
     }
+
+    private void setLikeCount(Map<String, Object> contentsList, Boolean addList, String collection) {
+        Log.d(TAG,"set" + collection+ "Count 들어옴");
+        db.collection("contents")
+                .whereEqualTo("uid", contentsList.get("uid"))
+                .whereEqualTo("writeDate", contentsList.get("writeDate"))
+                .whereEqualTo("title", contentsList.get("title"))
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()){
+                    Log.d(TAG,"컨텐츠에서 해당정보 찾음");
+                    for(QueryDocumentSnapshot documentSnapshot : task.getResult()){
+                        Log.d(TAG,"다큐먼트 크기" + documentSnapshot.getData());
+                        String documentId = documentSnapshot.getId();
+                        int count = 0;
+                        Map<String, String> countList = new HashMap<>();
+
+                        if (addList) {
+                            if (documentSnapshot.get(collection)!= null) {
+                                count = Integer.valueOf(documentSnapshot.get(collection).toString()) + 1;
+                                countList.put(collection, String.valueOf(count));
+
+                            } else {
+                                count = 1;
+                                countList.put(collection, String.valueOf(count));
+                            }
+                        }else {
+                            if (documentSnapshot.get(collection) != null) {
+                                count = Integer.valueOf(documentSnapshot.get(collection).toString()) - 1;
+                                countList.put(collection, String.valueOf(count));
+                            }
+                        }
+                        Log.d(TAG, collection + countList);
+                        Log.d(TAG, collection+ "in : " + documentId);
+                        db.collection("contents").
+                                document(documentId).set(countList, SetOptions.merge())
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        Log.d(TAG,"좋아요 수 넣기 성공");
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.d(TAG,"실패 : " + e.toString());
+                            }
+                        });
+
+                    }
+                }
+            }
+        });
+    }
+
+
 }

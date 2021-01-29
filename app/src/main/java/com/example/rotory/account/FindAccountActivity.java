@@ -55,9 +55,6 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 
-/*
-
-* */
 public class FindAccountActivity extends AppCompatActivity implements View.OnClickListener {
     private final static String TAG = "FindIdActivity";
     Context mContext;

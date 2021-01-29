@@ -5,6 +5,8 @@ import com.google.firebase.firestore.DocumentReference;
 public class Tags {
     String tag;
 
+    public Tags() {}
+
 
     public Tags(String tag) {
         this.tag = tag;

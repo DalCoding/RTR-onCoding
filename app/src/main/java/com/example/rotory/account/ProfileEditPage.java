@@ -1,6 +1,7 @@
 package com.example.rotory.account;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,6 +28,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
+import com.google.firebase.ktx.Firebase;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -36,6 +38,7 @@ public class ProfileEditPage extends Fragment {
     private static final String TAG = "ProfileEditPage";
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    FirebaseUser user;
 
     AppConstant appConstant;
 
@@ -133,7 +136,7 @@ public class ProfileEditPage extends Fragment {
     }
 
     private void modifiedUserData(String pDocumentId) {
-        FirebaseUser user = mAuth.getCurrentUser();
+        user = mAuth.getCurrentUser();
         Map<String, Object> modifiedData = new HashMap<>();
         modifiedData.put("userName", profileNick.getText().toString());
         modifiedData.put("password",profilePwd.getText().toString());
@@ -147,6 +150,23 @@ public class ProfileEditPage extends Fragment {
                                 + "/n 해당 다큐먼트 아이디 : " + pDocumentId);
 
                         Toast.makeText(getContext(),"사용자 정보 변경 완료", Toast.LENGTH_SHORT).show();
+                        Log.d(TAG,"비밀번호 확인" + modifiedData.get("password"));
+                        String newPassword = String.valueOf(modifiedData.get("password"));
+
+                        user.updatePassword(newPassword).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()){
+                                    Log.d(TAG,"비밀번호 업데이트 끝" + modifiedData.get("password"));
+
+                                }
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.d(TAG,"비밀번호 갱신 실패" + e.toString());
+                            }
+                        });
                         ((MyPage)getActivity()).closeProfileEditor();
 
 
@@ -166,6 +186,7 @@ public class ProfileEditPage extends Fragment {
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()){
                     Log.d(TAG,"adduserList Success" + profileNick.getText().toString());
+
                 }else {
                     Log.d(TAG,"adduserList Failed");
                 }

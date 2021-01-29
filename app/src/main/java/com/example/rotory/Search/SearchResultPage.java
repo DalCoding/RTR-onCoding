@@ -109,11 +109,25 @@ public class SearchResultPage extends AppCompatActivity implements View.OnClickL
         searchResultEdit.setText(searchText);
 
 
+        Button expandBtn = findViewById(R.id.searchResultExpandBtn);
+        expandBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Query query = db.collection("contents");
+
+                FirestoreRecyclerOptions<SearchContents> options = new FirestoreRecyclerOptions.Builder<SearchContents>()
+                        .setQuery(query, SearchContents.class)
+                        .build();
+                setSearchResultAdapter(options);
+                searchResultAdapter.startListening();
+                searchResultRecyclerView.setAdapter(searchResultAdapter);
+            }
+        });
 
         Button accuracyBtn = findViewById(R.id.searchAccuracySortingBtn);
         Button popularityBtn = findViewById(R.id.searchPopularitySortingBtn);
         Button latestBtn = findViewById(R.id.searchLatestSortingBtn);
-        Button expandBtn = findViewById(R.id.searchResultExpandBtn);
+
 
         popularityBtn.setOnClickListener(this);
         latestBtn.setOnClickListener(this);
@@ -235,6 +249,29 @@ public class SearchResultPage extends AppCompatActivity implements View.OnClickL
 
             case R.id.searchAccuracySortingBtn:
                 Toast.makeText(this, "정확도순 버튼 눌러짐.", Toast.LENGTH_LONG).show();
+
+                db.collection("contents")
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    for (QueryDocumentSnapshot document : task.getResult());
+
+                                    Query query = db.collection("contents")
+                                            .whereEqualTo("contentType", 0)
+                                            .orderBy("dtrLatLng", Query.Direction.ASCENDING);
+
+                                    FirestoreRecyclerOptions<SearchContents> options = new FirestoreRecyclerOptions.Builder<SearchContents>()
+                                            .setQuery(query, SearchContents.class)
+                                            .build();
+
+                                    setSearchResultAdapter(options);
+                                    searchResultAdapter.startListening();
+                                    searchResultRecyclerView.setAdapter(searchResultAdapter);
+                                }
+                            }
+                        });
                 break;
 
         }
