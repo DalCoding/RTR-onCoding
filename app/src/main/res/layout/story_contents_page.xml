@@ -26,7 +26,7 @@
             <TextView
                 android:id="@+id/scontentsGroupText"
                 android:layout_width="80dp"
-                android:layout_height="25dp"
+                android:layout_height="40dp"
                 android:background="@drawable/box"
                 android:gravity="center"
                 android:text="말머리"
@@ -191,6 +191,7 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="#F3F3F3"
             android:minHeight="200dp">
 
             <LinearLayout
@@ -205,6 +206,7 @@
                     android:layout_gravity="center"
                     android:background="#F3F3F3"
                     android:gravity="left"
+                    android:inputType="textMultiLine"
                     android:text="TextView" />
             </LinearLayout>
         </ScrollView>

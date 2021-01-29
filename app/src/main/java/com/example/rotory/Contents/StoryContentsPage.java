@@ -30,9 +30,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import com.example.rotory.Adapter.WriteStoryImageAdapter;
 import com.example.rotory.Comment;
 import com.example.rotory.Interface.OnContentsItemClickListener;
 import com.example.rotory.Interface.OnUserActItemClickListener;
+import com.example.rotory.MainPage;
 import com.example.rotory.R;
 import com.example.rotory.VO.AppConstant;
 import com.example.rotory.VO.Contents;
@@ -116,6 +118,8 @@ public class StoryContentsPage extends Fragment {
     static ImageView commLevelImg;
 
     Boolean isSignIn = false;
+    int imagePosition;
+
 
     private FirestoreRecyclerAdapter commentAdapter;
 
@@ -661,8 +665,56 @@ public class StoryContentsPage extends Fragment {
         scontentsLocText.setText(contentsList.get("address").toString());
         scontentsUsernameText.setText(contentsList.get("userName").toString());
         scontentsLevelImg.setImageResource(appConstant.getUserLevelImage(userLevel));
+        scontentsBigImg.setImageBitmap(appConstant.StringToBitmap(contentsList.get("titleImage").toString()));
+
+       /* Map<String, String> imageComments = (Map<String, String>) contentsList.get("imageComment");
+        String imageComment = imageComments.get(String.valueOf(count));
+        scontentsMentText.setText(imageComment);*/
 
         setImageRecyclerView(contentsList);
+        setComments(contentsList);
+
+    }
+
+    private void setComments(Map<String, Object> contentsList) {
+        Map<String, String> smallImageMap = (Map<String, String>) contentsList.get("imageList");
+        Log.d(TAG, "이미지 리스트 뽑기 확인" + smallImageMap);
+        int count = 0;
+        for (String key : smallImageMap.keySet()){
+            if (smallImageMap.get(key).equals(contentsList.get("titleImage"))){
+                Log.d(TAG, "메인이미지 확인" + smallImageMap.get(key));
+                Map<String, String> defautlImageComments = (Map<String, String>) contentsList.get("imageComment");
+                String defaultImageComment = defautlImageComments.get(String.valueOf(count));
+                scontentsMentText.setText(defaultImageComment);
+                count++;
+                return;
+            }
+        }
+
+        imageAdapter.setOnItemClickListener(new OnContentsItemClickListener() {
+            @Override
+            public void onItemClick(WriteStoryImageAdapter.writestroyHolder writestroyHolder, View view, int position) {
+
+            }
+
+            @Override
+            public void onItemClick(StoryImageAdapter.writestroyHolder writestroyHolder, View view, int position) {
+                Bitmap bitmap = imageAdapter.getItem(position);
+                Log.d(TAG, "사진 Bitmap확인"+ bitmap.toString());
+                scontentsBigImg.setImageBitmap(bitmap);
+
+                Map<String, String> imageComments = (Map<String, String>) contentsList.get("imageComment");
+                String imageComment = imageComments.get(String.valueOf(position));
+                scontentsMentText.setText(imageComment);
+                Log.d(TAG,imageComment);
+
+            }
+
+            @Override
+            public void onItemClick(MainPage.MyAdapter.ViewHolder holder, View view, int position) {
+
+            }
+        });
 
     }
 
@@ -688,7 +740,7 @@ public class StoryContentsPage extends Fragment {
     // 해당 글쓴이의 uid와 리스트에 저장된 uid를 비교해 찾음(사용자 행동 리스트에 넣을때 uid 항목 포함)
     // 저장여부에따라 아이콘 띄우고 이후행동,
     //클릭시 이 메서드 호출
-    private void isInList(String contentsId, Map<String, Object> contentsList, String userCollection, FirebaseUser user,
+    /*private void isInList(String contentsId, Map<String, Object> contentsList, String userCollection, FirebaseUser user,
                           ImageView imageView, int listIn, int listOut) {
         Log.d(TAG, "인리스트 메서드 작동 : 이미지 뷰 = " + imageView.toString());
         String writerUid = contentsList.get("uid").toString();
@@ -772,7 +824,7 @@ public class StoryContentsPage extends Fragment {
                         }
                     }
                 });
-    }
+    }*/
 }
 
 

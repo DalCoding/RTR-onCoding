@@ -64,14 +64,14 @@ public class StoryImageAdapter extends RecyclerView.Adapter<StoryImageAdapter.wr
 
     @Override
     public void onItemClick(WriteStoryImageAdapter.writestroyHolder writestroyHolder, View view, int position) {
-        if (listener != null) {
-            listener.onItemClick(writestroyHolder, view, position);
-        }
+
     }
 
     @Override
     public void onItemClick(writestroyHolder writestroyHolder, View view, int position) {
-
+        if (listener != null) {
+            listener.onItemClick(writestroyHolder, view, position);
+        }
     }
     @Override
     public void onItemClick(MainPage.MyAdapter.ViewHolder holder, View view, int position) {

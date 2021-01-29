@@ -503,7 +503,9 @@ public class FindAccountActivity extends AppCompatActivity implements View.OnCli
             accountUnderBar.setVisibility(View.INVISIBLE);
             pwUnderBar.setVisibility(View.VISIBLE);
         }
-        mobileCounter.stopCounter(findIdMobileCounter);
+        if (findpw_pin_button.isEnabled()) {
+            mobileCounter.stopCounter(findIdMobileCounter);
+        }
     }
 
 
