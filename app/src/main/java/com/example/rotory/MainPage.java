@@ -128,7 +128,7 @@ public class MainPage extends Fragment
     @Override
     public void onStop() {
         super.onStop();
-        getActivity().finish();
+        //getActivity().finish();
 
     }
 
@@ -136,19 +136,19 @@ public class MainPage extends Fragment
     @Override
     public void onDetach() {
         super.onDetach();
-        getActivity().finish();
+       // getActivity().finish();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        getActivity().finish();
+        //getActivity().finish();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        getActivity().finish();
+        //getActivity().finish();
     }
 
     @Override
@@ -511,30 +511,11 @@ public class MainPage extends Fragment
                         String hour = (String) document.get("hour");
                         String min = (String) document.get("min");
 
-                        adapter.addItem(new Contents((finalK + 1) + ". " + title, tag1, hour + "시간 " + min + "분"));
+                        adapter.addItem(new Contents((finalK + 1) + ". " + title, tag1, hour + "시간 " + min + "분", contentsId));
                               /*  MyAdapter(options, rootView, contentsId);
                                 adapter.startListening();
                                 mainRoadList.setAdapter(adapter); */
                         mainRoadList.setAdapter(adapter);
-                        adapter.setOnItemClickListener(new OnContentsItemClickListener() {
-                            @Override
-                            public void onItemClick(WriteStoryImageAdapter.writestroyHolder writestroyHolder, View view, int position) {
-                            }
-                            @Override
-                            public void onItemClick(StoryImageAdapter.writestroyHolder writestroyHolder, View view, int position) {
-                            }
-                            @Override
-                            public void onItemClick(MyAdapter.ViewHolder holder, View view, int position) {
-
-                                String cDocumentID = documentId;
-                                Intent intent = new Intent(getContext(), LoadRoadItem.class);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                intent.putExtra("documentId", cDocumentID);
-                                startActivity(intent);
-
-                                Log.d("아이템 클릭", "아이템 번호: "+documentId);
-                            }
-                        });
 
                     }
                 }
@@ -543,7 +524,7 @@ public class MainPage extends Fragment
 
     }
 
-    public static class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implements OnContentsItemClickListener {
+    public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implements OnContentsItemClickListener {
 
         OnContentsItemClickListener listener;
         ArrayList<Contents> items = new ArrayList<Contents>();
@@ -591,23 +572,31 @@ public class MainPage extends Fragment
 
         }
 
-        public static class ViewHolder extends RecyclerView.ViewHolder {
+        public class ViewHolder extends RecyclerView.ViewHolder {
             TextView mainRoadTitle;
             TextView mainRoadTag;
             TextView mainRoadPeriod;
+            TextView mainRoadId;
 
             public ViewHolder(View itemView, OnContentsItemClickListener listener) {
                 super(itemView);
                 mainRoadTitle = itemView.findViewById(R.id.mainRoadTitle);
                 mainRoadTag = itemView.findViewById(R.id.mainRoadTag);
                 mainRoadPeriod = itemView.findViewById(R.id.mainRoadPeriod);
+                mainRoadId = itemView.findViewById(R.id.mainRoadId);
 
                 itemView.setOnClickListener(new View.OnClickListener(){
                     @Override
-                    public void onClick(View view){
-                        int position = getAdapterPosition();
-                        if(listener != null)
-                {listener.onItemClick(ViewHolder.this, view, position);}}});
+                    public void onClick(View view) {
+                        String cDocumentID = mainRoadId.getText().toString();
+                        Intent intent = new Intent(getContext(), LoadRoadItem.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent.putExtra("documentId", cDocumentID);
+                        startActivity(intent);
+
+                        Log.d("아이템 클릭", "아이템 번호: "+ cDocumentID);
+                    }
+                    });
             }
 
         public void setItem(Contents item){
@@ -615,6 +604,7 @@ public class MainPage extends Fragment
                 mainRoadTitle.setText(item.getTitle());
             mainRoadTag.setText(item.getTag1());
             mainRoadPeriod.setText(item.getTime());
+            mainRoadId.setText(item.getDocumentId());
 
             }
         }

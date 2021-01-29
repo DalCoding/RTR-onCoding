@@ -43,15 +43,18 @@ public class Contents {
     String userName;
     String liked;
     String time;
+    String documentId;
+
 
 
     public Contents() {
     }
 
-    public Contents(String title, String tag1, String time) {
+    public Contents(String title, String tag1, String time, String documentId) {
         this.title = title;
         this.tag1 = tag1;
         this.time = time;
+        this.documentId = documentId;
     }
 
 
@@ -339,6 +342,14 @@ public class Contents {
 
     public void setTime(String time) {
         this.time = time;
+    }
+
+    public String getDocumentId() {
+        return documentId;
+    }
+
+    public void setDocumentId(String documentId) {
+        this.documentId = documentId;
     }
 }
 

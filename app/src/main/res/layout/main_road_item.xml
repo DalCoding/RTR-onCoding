@@ -40,5 +40,12 @@
             android:text="소요시간"
             android:textColor="#442428"
             android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/mainRoadId"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            android:visibility="gone" />
     </LinearLayout>
 </LinearLayout>
