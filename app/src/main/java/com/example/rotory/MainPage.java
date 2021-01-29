@@ -124,7 +124,6 @@ public class MainPage extends Fragment
     // ViewGroup rootView;
 
 
-
     @Override
     public void onStop() {
         super.onStop();
@@ -205,9 +204,6 @@ public class MainPage extends Fragment
         }
 
 
-
-
-
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
                 .findFragmentById(R.id.mainGoogleMap);
         mapFragment.getMapAsync(new OnMapReadyCallback() {
@@ -275,8 +271,20 @@ public class MainPage extends Fragment
             public void run() {
                 // 3초 후에 현재위치를 받아오도록 설정 , 바로 시작 시 에러납니다.
 
+                    @SuppressLint("MissingPermission") Location location = manager.getLastKnownLocation(locationProvider);
 
-                @SuppressLint("MissingPermission") Location location = manager.getLastKnownLocation(locationProvider);
+                    Double latitude = location.getLatitude();
+                    Double longitude = location.getLongitude();
+                    String message = "내위치-> Latitude : "+ latitude + "\nLongitude:"+ longitude;
+                    Log.d("Map", message);
+
+                    showCurrentLocation(latitude, longitude); // 카메라움직여지도에띄우기
+                    LatLng curPoint = new LatLng(latitude, longitude);
+                    showMyLocationMarker(); // 현재위치 보여주기
+                    loadDtr(curPoint, rootView); // 도토리 보여주기
+                   // return;
+
+               /* Location location = manager.getLastKnownLocation(locationProvider);
 
                 Double latitude = location.getLatitude();
                 Double longitude = location.getLongitude();
@@ -286,7 +294,7 @@ public class MainPage extends Fragment
                 showCurrentLocation(latitude, longitude); // 카메라움직여지도에띄우기
                 LatLng curPoint = new LatLng(latitude, longitude);
                 showMyLocationMarker(); // 현재위치 보여주기
-                loadDtr(curPoint, rootView); // 도토리 보여주기
+                loadDtr(curPoint, rootView); // 도토리 보여주기*/
             }
         }, 1000);                                 // 1000 = 1초
 

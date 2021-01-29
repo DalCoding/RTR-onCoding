@@ -350,11 +350,6 @@ public class SignUpActivity extends AppCompatActivity {
             return false;
         } else if (!signin_pin_button.isEnabled()){
             return false;
-
-            /*else if (signin_userName_check.getVisibility() == View.VISIBLE) {
-                Log.d(TAG, "중복된 이름" + userName);
-                return false;
-        }*/
         }
 
         return true;
@@ -524,8 +519,6 @@ public class SignUpActivity extends AppCompatActivity {
         PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
         mobileCounter.countDownTimer(mobileTimeCountText); // 카운트다운 될 택스트 선택
 
-        signin_pin_button.setEnabled(true); //인증확인 버튼
-
         //firebaseAuthSettings.setAutoRetrievedSmsCodeForPhoneNumber(phoneNum,"123456");
 
         Log.d(TAG, "입력한 핸드폰 번호 " + phoneNum);
@@ -537,6 +530,7 @@ public class SignUpActivity extends AppCompatActivity {
                 showToast("인증번호가 발송되었습니다. 60초 이내에 입력해주세요");
                 credential = phoneAuthCredential;
                 authNum = phoneAuthCredential.getSmsCode();
+                signin_pin_button.setEnabled(true);
                 Log.d(TAG,"onVerificationCode에서 나오는  phoneAuthCredential" + authNum);
 
             }

@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.rotory.VO.AppConstant;
 import com.example.rotory.VO.Contents;
+import com.example.rotory.userActivity.MyFavoriteActivity;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -68,8 +69,8 @@ public class SearchPage1 extends AppCompatActivity {
         FirebaseUser user = mAuth.getCurrentUser();  //로그인하고있는유저
 
         Intent favoriteIntent = getIntent();
-       // uid = favoriteIntent.getStringExtra("uid");
-        uid = "vMafjaj28WQiCFczxLVeLmJFKDd2";
+       uid = favoriteIntent.getStringExtra("uid");
+        //uid = "vMafjaj28WQiCFczxLVeLmJFKDd2";
 
         if (user != null) {
             String checkLogIN = user.getEmail();
@@ -126,6 +127,14 @@ public class SearchPage1 extends AppCompatActivity {
         if (searchPage1Adapter != null){
             searchPage1Adapter.stopListening();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(SearchPage1.this, MyFavoriteActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 
     private void makeSearchPage1Adapter(FirestoreRecyclerOptions<Contents> options) {

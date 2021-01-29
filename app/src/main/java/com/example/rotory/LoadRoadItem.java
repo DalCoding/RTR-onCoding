@@ -105,7 +105,7 @@ public class LoadRoadItem extends AppCompatActivity implements OnUserActItemClic
         myLike.put("contentsId",contentsId);
         myLike.put("contentsType", contentsList.get("contentsType"));
         myLike.put("title",contentsList.get("title").toString());
-        myLike.put("titleImage",contentsList.get("titleImage").toString());
+        myLike.put("tag1",contentsList.get("tag1").toString());
         myLike.put("savedDate", new Date().toString());
         myLike.put("uid",contentsList.get("uid").toString());//이후 리스트에 포함되어있는지 여부를 찾기 위해 해당 항목 사용
         String userCollection = "myLike";
@@ -120,7 +120,7 @@ public class LoadRoadItem extends AppCompatActivity implements OnUserActItemClic
         myScrap.put("contentsId",contentsId);
         myScrap.put("contentsType", contentsList.get("contentsType"));
         myScrap.put("title", contentsList.get("title").toString());
-        myScrap.put("titleImage", contentsList.get("titleImage").toString());
+        myScrap.put("tag1", contentsList.get("tag1").toString());
         myScrap.put("article", contentsList.get("article").toString());
         myScrap.put("contentsAddress", contentsList.get("address").toString());
         myScrap.put("savedDate", new Date().toString());

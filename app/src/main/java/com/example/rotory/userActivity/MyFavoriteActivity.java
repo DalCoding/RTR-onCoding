@@ -15,6 +15,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -23,6 +24,7 @@ import com.example.rotory.MainActivity;
 import com.example.rotory.MainPage;
 import com.example.rotory.MyPage;
 import com.example.rotory.R;
+import com.example.rotory.SearchPage1;
 import com.example.rotory.Theme.ThemePage;
 import com.example.rotory.VO.AppConstant;
 import com.example.rotory.VO.Person;
@@ -138,8 +140,6 @@ public class MyFavoriteActivity  extends AppCompatActivity  {
             }
         });
 
-
-
     }
 
     private void makeAdapter(FirestoreRecyclerOptions<Person> options) {
@@ -156,6 +156,7 @@ public class MyFavoriteActivity  extends AppCompatActivity  {
             protected void onBindViewHolder(@NonNull favoriteViewHolder holder, int position,
                                             @NonNull Person model) {
                 holder.setUserItems(model);
+                holder.onEachItemClick(model);
             }
 
             @NonNull
@@ -186,6 +187,7 @@ public class MyFavoriteActivity  extends AppCompatActivity  {
 
     public class favoriteViewHolder extends RecyclerView.ViewHolder {
         private View view;
+        CardView favorietCard;
 
         public favoriteViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -200,6 +202,7 @@ public class MyFavoriteActivity  extends AppCompatActivity  {
             myFavoriteLevelImg = itemView.findViewById(R.id.myFavoriteLevelImg);
             myFavoriteNickTextView = itemView.findViewById(R.id.myFavoriteNickTextView);
             myFavoriteLevelTextView = itemView.findViewById(R.id.myFavoriteLevelTextView);
+            favorietCard = itemView.findViewById(R.id.favorietCard);
 
 
             int levelImg = appConstant.getUserLevelImage(user.getUserLevel());
@@ -207,6 +210,16 @@ public class MyFavoriteActivity  extends AppCompatActivity  {
             myFavoriteNickTextView.setText(user.getUserName());
             myFavoriteLevelTextView.setText(user.getUserLevel());
 
+        }
+        public void onEachItemClick(Person user){
+            favorietCard.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent userIntent = new Intent(MyFavoriteActivity.this, SearchPage1.class);
+                    userIntent.putExtra("uid", user.getUid());
+                    startActivity(userIntent);
+                }
+            });
         }
 
     }

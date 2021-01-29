@@ -6,6 +6,7 @@
     android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/favorietCard"
         android:layout_width="match_parent"
         android:layout_height="65dp">
 
@@ -86,15 +87,15 @@
 
                 <ImageView
                     android:id="@+id/myFavoriteSearchImg"
-                    android:layout_height="25dp"
                     android:layout_width="25dp"
+                    android:layout_height="25dp"
                     android:layout_weight="1"
                     app:srcCompat="@drawable/searchcontentsbrown" />
 
                 <ImageView
                     android:id="@+id/myFavoriteDeleteImg"
-                    android:layout_height="25dp"
                     android:layout_width="25dp"
+                    android:layout_height="25dp"
                     android:layout_weight="1"
                     app:srcCompat="@drawable/deletestarredbrown" />
             </LinearLayout>
