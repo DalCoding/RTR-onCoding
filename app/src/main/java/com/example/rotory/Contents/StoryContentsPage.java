@@ -78,6 +78,7 @@ public class StoryContentsPage extends Fragment {
     SetIcons setIcons = new SetIcons();
     OnContentsItemClickListener imageListener;
 
+    TextView scontentsGroupText;
     ImageView scontentsLinkImg;
     ImageView scontentsScrapImg;
     ImageView scontentsHeartImg;
@@ -198,6 +199,7 @@ public class StoryContentsPage extends Fragment {
 
 
     private void initUI(ViewGroup rootView) {
+        scontentsGroupText = rootView.findViewById(R.id.scontentsGroupText);
         scontentsCommBtn = rootView.findViewById(R.id.scontentsCommBtn);
         scontentsLinkImg = rootView.findViewById(R.id.scontentsLinkImg);
         scontentsScrapImg = rootView.findViewById(R.id.scontentsScrapImg);
@@ -662,7 +664,7 @@ public class StoryContentsPage extends Fragment {
     private void setContents(Map<String, Object> contentsList) {
         Log.d(TAG, "title확인" + contentsList.get("title"));
         String userLevel = contentsList.get("userLevel").toString();
-
+        scontentsGroupText.setText(contentsList.get("prefixId").toString());
         scontentsTitleText.setText(contentsList.get("title").toString());
         scontentsTextText.setText(contentsList.get("article").toString());
         scontentsLocText.setText(contentsList.get("address").toString());
