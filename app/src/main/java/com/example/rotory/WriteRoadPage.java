@@ -311,6 +311,9 @@ public class WriteRoadPage extends AppCompatActivity implements OnMapReadyCallba
             public void onClick(View v) {
                 if (isValidate()){
                     setUserInfo();
+                    Intent intent = new Intent(WriteRoadPage.this, MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
 
                 }else {
                     Toast.makeText(getApplicationContext(),"필수 사항을 입력해 주세요", Toast.LENGTH_SHORT).show();

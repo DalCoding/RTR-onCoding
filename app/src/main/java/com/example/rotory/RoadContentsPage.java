@@ -78,7 +78,7 @@ public class RoadContentsPage extends Fragment implements OnMapReadyCallback, Go
     SetIcons setIcons = new SetIcons();
 
     String contentsID;
-    Bundle contentsBundle = this.getArguments();
+    //Bundle contentsBundle = this.getArguments();
     //String contentsID = contentsBundle.getString("storyDocumentId");
 
     GoogleMap map;
@@ -167,7 +167,7 @@ public class RoadContentsPage extends Fragment implements OnMapReadyCallback, Go
         FirebaseUser user = mAuth.getCurrentUser();
 
         Bundle contentsBundle = this.getArguments();
-        String contentsID = contentsBundle.getString("storyDocumentId");
+        contentsID = contentsBundle.getString("storyDocumentId");
 
         if (user != null) {
             String checkLogIN = user.getEmail();

@@ -1,5 +1,6 @@
 package com.example.rotory.userActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,20 +12,27 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.rotory.Interface.LoadMapDtrListener;
+import com.example.rotory.LoadRoadItem;
+import com.example.rotory.LoadStoryItem;
 import com.example.rotory.R;
 import com.example.rotory.VO.AppConstant;
 import com.example.rotory.VO.Contents;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 public class MyRoadPage extends Fragment {
     final String TAG = "MyRoadPage";
@@ -94,6 +102,7 @@ public class MyRoadPage extends Fragment {
             @Override
             protected void onBindViewHolder(@NonNull MyRoadViewHolder holder, int position, @NonNull Contents model) {
                 holder.setItem(model);
+                holder.onEachItemClick(model);
             }
 
             @NonNull
@@ -106,11 +115,12 @@ public class MyRoadPage extends Fragment {
         };
     }
 
-    private class MyRoadViewHolder extends RecyclerView.ViewHolder{
+    private class MyRoadViewHolder extends RecyclerView.ViewHolder {
         TextView myRoadTitle;
         TextView myRoadTime;
         TextView myRoadWriteDate;
         ImageView mainRoadImage;
+        CardView road_cardview;
         String roadTime;
         int hour;
         int min;
@@ -118,33 +128,61 @@ public class MyRoadPage extends Fragment {
 
         public MyRoadViewHolder(@NonNull View itemView) {
             super(itemView);
-            myRoadTitle =itemView.findViewById(R.id.roadtitle);
+            myRoadTitle = itemView.findViewById(R.id.roadtitle);
             myRoadTime = itemView.findViewById(R.id.roadtime);
             myRoadWriteDate = itemView.findViewById(R.id.road_writetime);
             mainRoadImage = itemView.findViewById(R.id.road_thumbnail);
+            road_cardview = itemView.findViewById(R.id.road_cardview);
 
         }
-        public void setItem(Contents contents){
+
+        public void setItem(Contents contents) {
             hour = Integer.valueOf(contents.getHour());
-            min =Integer.valueOf(contents.getMin());
+            min = Integer.valueOf(contents.getMin());
             myRoadTitle.setText(contents.getTitle());
 
-            if (hour >0 && min >0){
-                roadTime = hour + "시간 " + min +"분";
-            }else if (hour == 0){
-                roadTime = min +"분";
-            }else if (min == 0){
-                roadTime = hour +"시간";
+            if (hour > 0 && min > 0) {
+                roadTime = hour + "시간 " + min + "분";
+            } else if (hour == 0) {
+                roadTime = min + "분";
+            } else if (min == 0) {
+                roadTime = hour + "시간";
             }
 
             myRoadTime.setText(String.valueOf(roadTime));
             myRoadWriteDate.setText(contents.getWriteDate());
-            Log.d(TAG,"이미지 이름" + contents.getTag1());
+            Log.d(TAG, "이미지 이름" + contents.getTag1());
             if (contents.getTag1() != null) {
                 appConstant.getThemeImage(contents.getTag1(), mainRoadImage, getContext());
             }
 
 
+        }
+
+        public void onEachItemClick(Contents contents) {
+            road_cardview.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    db.collection("contents")
+                            .whereEqualTo("writeDate", contents.getWriteDate())
+                            .whereEqualTo("uid", contents.getUid())
+                            .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
+                                    String doucumentId = documentSnapshot.getId();
+                                    Intent documentIntent = new Intent(getContext(), LoadRoadItem.class);
+                                    documentIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    documentIntent.putExtra("documentId", doucumentId);
+                                    startActivity(documentIntent);
+
+                                }
+                            }
+                        }
+                    });
+                }
+            });
         }
     }
 }
