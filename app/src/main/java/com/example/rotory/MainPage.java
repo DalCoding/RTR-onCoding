@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationManager;
@@ -17,12 +18,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.Button;
 
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
 
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,11 +39,13 @@ import com.example.rotory.Interface.OnContentsItemClickListener;
 
 import com.example.rotory.Search.SearchPage;
 
+import com.example.rotory.VO.AppConstant;
 import com.example.rotory.VO.Contents;
 import com.example.rotory.VO.NearPin;
 import com.example.rotory.account.LogInActivity;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapsInitializer;
@@ -64,6 +65,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -84,7 +86,7 @@ public class MainPage extends Fragment
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseUser user;
-    private FirestoreRecyclerAdapter adapter;
+    private FirestoreRecyclerAdapter storyAdapter;
 
     GoogleMap map;
     LocationManager manager;
@@ -100,6 +102,7 @@ public class MainPage extends Fragment
     TextView mainSearchEdit;
 
     RecyclerView mainRoadList;
+    RecyclerView mainStoryRecyclerView;
     FloatingActionButton mainFloatingBtn;
 
     private Animation fab_open, fab_close;
@@ -112,6 +115,9 @@ public class MainPage extends Fragment
     @Override
     public void onStop() {
         super.onStop();
+        if (storyAdapter!=null){
+            storyAdapter.stopListening();
+        }
 
 
     }
@@ -153,25 +159,16 @@ public class MainPage extends Fragment
 
         initUI(rootView);
 
-
         return rootView;
 
     }
 
-
     private void setContentView(int main_page) {
     }
 
-    public void showWrite() {
-    }
-
-
 
     private void initUI(ViewGroup rootView) {
-        ;
-
         setContentView(R.layout.main_page);
-
 
         try {
             MapsInitializer.initialize(getContext());
@@ -315,7 +312,69 @@ public class MainPage extends Fragment
             }
         });
 
+        mainStoryRecyclerView = rootView.findViewById(R.id.mainStoryList);
+        LinearLayoutManager storyLayout = new LinearLayoutManager(getContext(),RecyclerView.HORIZONTAL,false);
+        mainStoryRecyclerView.setLayoutManager(storyLayout);
+        Query storyQuery = db.collection("contents").whereEqualTo("contentsType", 1)
+                .orderBy("liked", Query.Direction.DESCENDING);
+        Log.d(TAG,"query확인" + storyQuery);
 
+        FirestoreRecyclerOptions<Contents> options = new FirestoreRecyclerOptions.Builder<Contents>()
+                .setQuery(storyQuery,Contents.class)
+                .build();
+        makeStoryAdapter(options);
+        storyAdapter.startListening();
+        mainStoryRecyclerView.setAdapter(storyAdapter);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (storyAdapter != null){
+            storyAdapter.startListening();
+        }
+    }
+
+
+    private void makeStoryAdapter(FirestoreRecyclerOptions<Contents> options) {
+        storyAdapter = new FirestoreRecyclerAdapter<Contents, StoryViewHolder>(options) {
+            @Override
+            public void onDataChanged() {
+                super.onDataChanged();
+                Log.d(TAG, " 어댑터 작동");
+            }
+
+            @Override
+            protected void onBindViewHolder(@NonNull StoryViewHolder holder, int position, @NonNull Contents model) {
+                holder.setItem(model);
+            }
+
+            @NonNull
+            @Override
+            public StoryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.main_story_item, parent, false);
+                return new StoryViewHolder(view);
+            }
+
+        };
+    }
+    class StoryViewHolder extends RecyclerView.ViewHolder {
+        ImageView mainStoryImg;
+        TextView mainStoryTitle;
+        AppConstant appConstant = new AppConstant();
+        public StoryViewHolder(@NonNull View itemView) {
+            super(itemView);
+            mainStoryImg = itemView.findViewById(R.id.mainStoryImg);
+            mainStoryTitle = itemView.findViewById(R.id.mainStoryTitle);
+        }
+
+        public void setItem(Contents model) {
+            Bitmap storyImageBitmap = appConstant.StringToBitmap(model.getTitleImage());
+            //Log.d(TAG, storyImageBitmap.toString());
+            mainStoryImg.setImageBitmap(storyImageBitmap);
+            mainStoryTitle.setText(model.getTitle());
+
+        }
     }
 
 

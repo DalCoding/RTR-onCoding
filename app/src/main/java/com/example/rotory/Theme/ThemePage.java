@@ -229,7 +229,6 @@ public class ThemePage extends AppCompatActivity implements OnTabItemSelectedLis
                         Intent intent = new Intent(ThemePage.this, MainActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
-                        setTabUnderBar(0);
                         bottomNavigation.setVisibility(View.VISIBLE);
                         return true;
                     case R.id.theme:
@@ -240,7 +239,6 @@ public class ThemePage extends AppCompatActivity implements OnTabItemSelectedLis
                         Intent myPageIntent = new Intent(ThemePage.this, MyPage.class);
                         myPageIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(myPageIntent);
-                        setTabUnderBar(2);
                         return true;
                 }
                 return false;

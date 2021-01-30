@@ -206,6 +206,12 @@ public class SearchPage1 extends AppCompatActivity {
                     searchResultListImg.setImageBitmap(bitmap);
                 }
 
+                if (searchPage1.getLiked() != null){
+                    searchResultFavoriteNumber.setText(searchPage1.getLiked());
+                }else {
+                    searchResultFavoriteNumber.setText("");
+                }
+
                 }
 
     }

@@ -34,6 +34,8 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
+
 public class MyScrapActivity extends AppCompatActivity {
     // 좋아요가 이미 되어있는 경우 작동 안되도록 설정!
     private static final String TAG = "MyScrapActivity";
@@ -68,6 +70,14 @@ public class MyScrapActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (scrapAdapter != null){
+            scrapAdapter.startListening();
+        }
     }
 
     @Override
@@ -179,6 +189,7 @@ public class MyScrapActivity extends AppCompatActivity {
             myScrapSave = view.findViewById(R.id.myScrabSaveTextView);
             myScrapPreImg = view.findViewById(R.id.myScrapPreImg);
             myScrapLevelImg = view.findViewById(R.id.myScrabLevelImg);
+            myScrapContents = view.findViewById(R.id.myScrabContentsTextView);
 
             String contentsType;
             if (scrap.getContentsType() == 1) {
@@ -195,16 +206,36 @@ public class MyScrapActivity extends AppCompatActivity {
                     myScrapPreImg.setMinimumHeight(100);
                     myScrapPreImg.setImageBitmap(titleImageBitmap);
                 }
+                if (scrap.getArticle() != null) {
+                    myScrapContents.setText(scrap.getArticle());
+                }else{
+                    myScrapContents.setText("");
+                }
+
 
             } else {
                 contentsType = "도토리 길";
                 if (scrap.getTag1() != null) {
                     appConstant.getThemeImage(scrap.getTag1(), myScrapPreImg, getApplicationContext());
                 }
+                if (scrap.getDtrName() != null) {
+                    String dtrName =scrap.getDtrName();
+                   // ArrayList<String> dtrName = (ArrayList<String>) scrap.getDtrName();
+                    Log.d(TAG,"도토리 이름 확인" + dtrName);
+                    String dtrNameText = "";
+                   /* for (int i = 0; i < dtrName.size(); i ++){
+                        if (i == dtrName.size()-1){
+                            dtrNameText = dtrNameText + dtrName.get(i);
+                        }else {
+                            dtrNameText =  dtrNameText + (dtrName.get(i) + " → ");
+                        }
+                        Log.d(TAG, "확인 : " + dtrNameText);
+                    }*/
+                    Log.d(TAG, "풀버전 확인 : " + dtrNameText);
+                    myScrapContents.setText(dtrName);
+                }
             }
 
-
-          //  Log.d(TAG, scrap.getTitle());
             db.collection("person")
                     .whereEqualTo("userId",user.getEmail())
                     .get()
@@ -222,9 +253,7 @@ public class MyScrapActivity extends AppCompatActivity {
             myScrapTitle.setText(scrap.getTitle());
             myScrapKind.setText(contentsType);
             myScrapSave.setText(scrap.getSavedDate());
-            //myScrapPreImg.setImageResource();
-            //myScr
-            // apLevel.setText(scrap.get);
+
 
         }
         public void bind(int contentsType, String cDocumentID){

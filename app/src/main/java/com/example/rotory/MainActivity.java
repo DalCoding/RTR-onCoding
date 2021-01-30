@@ -293,7 +293,6 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
                             startTagsLoading(300);
                             Intent myPageIntent = new Intent(MainActivity.this, ThemePage.class);
                             startActivity(myPageIntent);
-                            setTabUnderBar(1);
                         } else {
                             Intent LogInIntent = new Intent(getApplicationContext(), LogInActivity.class);
                             startActivity(LogInIntent);
@@ -305,7 +304,6 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
                             Intent myPageIntent = new Intent(MainActivity.this, MyPage.class);
                             myPageIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(myPageIntent);
-                            setTabUnderBar(2);
                         } else {
                             Intent LogInIntent = new Intent(getApplicationContext(), LogInActivity.class);
                             LogInIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);

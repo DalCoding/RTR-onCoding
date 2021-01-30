@@ -50,6 +50,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -164,7 +165,45 @@ public class FindAccountActivity extends AppCompatActivity implements View.OnCli
         checkMobileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                db.collection("person").document("mobileList")
+                String checkMobiletext = String.valueOf(mobile.getText());
+                db.collection("person").whereEqualTo("mobile", checkMobiletext)
+                        .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            Map<Integer, Object> userIdList = new HashMap<>();
+                            int count = 0;
+                            for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
+                               int key = count;
+                                userIdList.put(key, documentSnapshot.get("userId"));
+                                Log.d(TAG, "mobile 변수 체크" + checkMobiletext + " => " + userIdList);
+                                count ++;
+                            }
+                            if (checkMobiletext.equals("") || checkMobiletext == null) {
+                                Toast.makeText(getApplicationContext(), "번호를 입력해 주세요", Toast.LENGTH_SHORT).show();
+                            } else {
+                                if (userIdList.size() > 0) {
+                                    Log.d(TAG, "회원가입된 번호 존재" + checkMobiletext);
+                                    String id = "";
+                                    for (int i = 0; i < userIdList.size(); i++) {
+                                        if (i > 0){
+                                            id = id +"\n" + userIdList.get(i).toString();
+                                        }else {
+                                            id = userIdList.get(0).toString();
+                                        }
+                                    }
+                                    Log.d(TAG, "회원가입된 번호 존재" + userIdList);
+                                    getIdDialog("계정 찾기 성공!", id).show();
+                                } else {
+                                    Toast.makeText(getApplicationContext(), "회원정보가 없습니다.", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        }
+                    }
+                });
+
+
+              /*  db.collection("person").document("mobileList")
                         .get()
                         .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                             @Override
@@ -187,7 +226,7 @@ public class FindAccountActivity extends AppCompatActivity implements View.OnCli
                                     }
                                 }
                             }
-                        });
+                        });*/
             }
         });
 

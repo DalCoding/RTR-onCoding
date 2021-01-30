@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/myFavoriteHiddenLayout"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/myfavoritebackimg"
+        android:gravity="center"
+        android:padding="10dp">
+
+        <ImageView
+            android:id="@+id/myFavoriteSearchImg"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/searchcontentsbrown" />
+
+
+        <ImageView
+            android:id="@+id/myFavoriteDeleteImg"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/deletestarredbrown" />
+    </LinearLayout>
+
+</FrameLayout>

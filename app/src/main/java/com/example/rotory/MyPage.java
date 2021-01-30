@@ -80,14 +80,13 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseUser user;
-    Person persons = new Person();
+
     final static String TAG = "MyPage";
     private StorageReference storageReference = FirebaseStorage.getInstance().getReference();
 
     public static final int REQUEST_CODE_GALLERY = 101;
     public static final int MainCode = 1000;
     public static final int ThemeCode = 2000;
-    // public static final int LoginCode = 3000;
 
     RelativeLayout relativeLayout1;
     RelativeLayout relativeLayout2;
@@ -119,12 +118,6 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
     ThemePage themePage;
     ProfileEditPage profileEditPage = new ProfileEditPage();
 
-    // 개인정보 설정
-    /* TextView myNickTextView;
-    TextView myLevelTextView;
-    TextView myExpTextView; // 이걸 프로그레스로 적용할땐 나눈값을 반올림하던가 해야할듯
-    TextView myFavoriteTextView;
-    TextView myLikeTextView; */
     private FirestoreRecyclerAdapter adapter;
 
     // 하단탭
@@ -260,7 +253,7 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), MyLikeActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
             }
         });
@@ -270,7 +263,7 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), MyScrapActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK |Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent);
             }
         });
@@ -313,7 +306,6 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
                         startActivity(MainIntent);
                         finish();
                         bottomNavigation.setVisibility(View.VISIBLE);
-                        setTabUnderBar(0);
                         return  true;
 
                     case R.id.theme:
@@ -325,26 +317,11 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
                             Intent ThemeIntent= new Intent(getApplicationContext(), ThemePage.class);
                             startActivityForResult(ThemeIntent, ThemeCode);
                             bottomNavigation.setVisibility(View.VISIBLE);
-                             setTabUnderBar(1);
-                            //여기선 필요없을듯
-                       /* } else  {
-                            Intent LogInIntent= new Intent(getApplicationContext(), SignUpActivity.class);
-                            startActivityForResult(LogInIntent, LoginCode);
-                            bottomNavigation.setVisibility(View.GONE);
 
-                        }*/
                         return true;
 
                     case R.id.user:
-                     /*if(isSignIn) {
-                            Intent intent = getIntent();
-                            finish();
-                            startActivity(intent);
-                        } else {
-                            Intent LogInIntent= new Intent(getApplicationContext(), SignUpActivity.class);
-                            startActivityForResult(LogInIntent, LoginCode);
-                            bottomNavigation.setVisibility(View.GONE);
-                        }*/
+
                         return true;
                 }
                 return false;
@@ -558,7 +535,6 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
 
         }
 
-
         public void setScrapItems(Scrap item) {
             TextView myScrapTitle;
             TextView myScrapPlace;
@@ -575,7 +551,9 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
             // myScrapImg.setImageURI(Uri.parse(uri));
             myScrapTitle.setText(item.getTitle());
             //  myScrapSave.setText(item.getSavedDate());
-            myScrapPlace.setText(item.getContentsAddress());
+            if (item.address != null) {
+                myScrapPlace.setText(item.getAddress().get(0));
+            }
             myScrapId.setText(item.getContentsId());
             myScrapImg.setAlpha(70);
 
@@ -832,17 +810,5 @@ public class MyPage extends AppCompatActivity implements OnTabItemSelectedListen
                 }
             }
         });
-
-
     }
-
-
-
 }
-
-
-//showPWDialog O  (https://dhparkdh.tistory.com/103)
-// :  기타 이동 버튼(활동내역 ,즐겨찾기, 좋아요, 스크랩리스트, 문의하기) O
-// 상단탭 넣기  / 하단탭 코드 O
-
-//남은것 : DB작업 => 1.불러와서 개인정보 담기(좋아요 수, EXP 포함), 2.스크랩리스트부르기

@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.rotory.Contents.StoryContentsPage;
 import com.example.rotory.Interface.OnUserActItemClickListener;
+import com.example.rotory.VO.AppConstant;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -26,6 +27,7 @@ import java.util.Map;
 
 public class LoadStoryItem extends AppCompatActivity implements OnUserActItemClickListener {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
+    AppConstant appConstant = new AppConstant();
 
     final static String TAG = "LoadStoryItem";
     ImageButton backImageButton;
@@ -77,7 +79,7 @@ public class LoadStoryItem extends AppCompatActivity implements OnUserActItemCli
     @Override
     public void OnStarClicked(String savedUserId, String myUserId) {
         Log.d(TAG, "onStarClicked : " + savedUserId);
-
+        String savedDate = appConstant.dateFormat.format(new Date());
         db.collection("person")
                 .document(savedUserId)
                 .get()
@@ -90,7 +92,7 @@ public class LoadStoryItem extends AppCompatActivity implements OnUserActItemCli
                             persons = task.getResult().getData();
                             Map<String, Object> myStar = new HashMap<>();
                             myStar.put("personId", savedUserId);
-                            myStar.put("savedDate", new Date().toString());
+                            myStar.put("savedDate", savedDate);
                             myStar.put("userName", persons.get("userName"));
                             myStar.put("userLevel", persons.get("userLevel"));
                             myStar.put("userImage", persons.get("userImage"));
@@ -106,12 +108,13 @@ public class LoadStoryItem extends AppCompatActivity implements OnUserActItemCli
     @Override
     public void OnLikeClicked(String contentsId, Map<String, Object> contentsList, String userId) {
         Log.d(TAG, "onClicked: user에서 아이디 잘 받아옴?" + userId);
+        String savedDate = appConstant.dateFormat.format(new Date());
         Map<String, Object> myLike = new HashMap<>();
         myLike.put("contentsId",contentsId);
         myLike.put("contentsType", contentsList.get("contentsType"));
         myLike.put("title",contentsList.get("title").toString());
         myLike.put("titleImage",contentsList.get("titleImage").toString());
-        myLike.put("savedDate", new Date().toString());
+        myLike.put("savedDate", savedDate);
         myLike.put("uid",contentsList.get("uid").toString());//이후 리스트에 포함되어있는지 여부를 찾기 위해 해당 항목 사용
         String userCollection = "myLike";
         saveUserAct(userId, myLike, userCollection);
@@ -120,6 +123,7 @@ public class LoadStoryItem extends AppCompatActivity implements OnUserActItemCli
     }
     @Override
     public void OnFlagClicked(String contentsId, Map<String, Object> contentsList, String userId) {
+        String savedDate = appConstant.dateFormat.format(new Date());
 
         Map<String, Object> myScrap = new HashMap<>();
         myScrap.put("contentsId",contentsId);
@@ -130,7 +134,7 @@ public class LoadStoryItem extends AppCompatActivity implements OnUserActItemCli
             myScrap.put("article", contentsList.get("article").toString());
         }
         myScrap.put("contentsAddress", contentsList.get("address").toString());
-        myScrap.put("savedDate", new Date().toString());
+        myScrap.put("savedDate", savedDate);
         myScrap.put("uid", contentsList.get("uid").toString());//이후 리스트에 포함되어있는지 여부를 찾기 위해 해당 항목 사용
         String userCollection = "myScrap";
         saveUserAct(userId, myScrap, userCollection);

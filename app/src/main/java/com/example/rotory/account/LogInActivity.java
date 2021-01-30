@@ -33,6 +33,8 @@ public class LogInActivity extends AppCompatActivity  {
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener firebaseAuthListener;
 
+    FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    FirebaseUser curUser;
     private EditText login_id_edittext;
     private EditText login_pw_edittext;
     private Button login_button;
@@ -48,6 +50,11 @@ public class LogInActivity extends AppCompatActivity  {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_main);
+
+        curUser = mAuth.getCurrentUser();
+        if (curUser != null){
+            movePage(MainActivity.class);
+        }
 
         login_id_edittext = findViewById(R.id.login_id_edittext);
         login_pw_edittext = findViewById(R.id.login_pw_edittext);
@@ -90,9 +97,7 @@ public class LogInActivity extends AppCompatActivity  {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null){
                     finish();
-                    Intent intent = new Intent(LogInActivity.this, MainActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
+                  movePage(MainActivity.class);
                 }else {
                     Log.d(TAG,"AuthStateChangeListener, 유저 불러오기 실패");
                 }
@@ -129,7 +134,7 @@ public class LogInActivity extends AppCompatActivity  {
 
     private  void movePage(Class className){
         Intent intent = new Intent(LogInActivity.this, className);
-        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     }
 

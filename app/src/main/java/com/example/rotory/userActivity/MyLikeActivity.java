@@ -16,10 +16,12 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.rotory.BigMapPage;
+import com.example.rotory.LoadRoadItem;
 import com.example.rotory.LoadStoryItem;
 import com.example.rotory.MainActivity;
 import com.example.rotory.MainPage;
@@ -160,12 +162,13 @@ public class MyLikeActivity extends AppCompatActivity {
             protected void onBindViewHolder(@NonNull likeViewHolder holder, int position, @NonNull Liked model) {
                 holder.setLikedItems(model);
                 holder.clickIcon();
+                holder.clickItem(model);
                 profileTextView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         holder.setIcon(model);
                         Intent intent = new Intent(MyLikeActivity.this, MyPage.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK );
                         startActivity(intent);
                         finish();
                     }
@@ -182,12 +185,18 @@ public class MyLikeActivity extends AppCompatActivity {
 
     }
 
-
     @Override
     protected void onStart() {
         super.onStart();
 
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (likedAdapter != null){
+            likedAdapter.startListening();
+        }
     }
 
     @Override
@@ -198,15 +207,37 @@ public class MyLikeActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+
     public class likeViewHolder extends RecyclerView.ViewHolder {
         private View view;
         ImageView myLikeIcon;
+        CardView likeCardView;
 
 
         public likeViewHolder(@NonNull View itemView) {
             super(itemView);
             view = itemView;
             myLikeIcon = view.findViewById(R.id.myLikeEditImg1);
+            likeCardView = view.findViewById(R.id.likeCardView);
+        }
+        public void clickItem(Liked model){
+            likeCardView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(model.contentsType == 0){
+                        Intent roadIntent = new Intent(MyLikeActivity.this, LoadRoadItem.class);
+                        roadIntent.putExtra("documentId", model.getContentsId());
+                        roadIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                        startActivity(roadIntent);
+
+                    }
+                }
+            });
+
         }
 
         public void clickIcon(){
