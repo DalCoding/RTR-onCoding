@@ -87,22 +87,6 @@
         <activity android:name=".WriteContents.TagSelectDialog" android:theme="@android:style/Theme.Dialog"/>
         <activity android:name=".SearchPage1"/>
 
-
-        <!--        <activity android:name=".MainActivity"/>-->
-       <!-- <activity android:name=".account.FindAccountActivity"/>-->
-        <!--<activity android:name=".account.SetNewPassword">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
-
-                <data android:scheme="https"
-                    android:host="rotory2021.web.app" />
-
-                <data android:path="/setPassword"/>
-            </intent-filter>
-        </activity>-->
-
         <activity android:name=".Search.SearchTagResultPage"/>
         <activity android:name=".Search.SearchPage"/>
 

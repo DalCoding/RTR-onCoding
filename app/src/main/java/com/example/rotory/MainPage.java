@@ -18,12 +18,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Adapter;
 import android.widget.Button;
-import android.widget.EditText;
+
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
+
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,22 +30,21 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.recyclerview.widget.GridLayoutManager;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.rotory.Adapter.WriteStoryImageAdapter;
 import com.example.rotory.Contents.StoryImageAdapter;
 import com.example.rotory.Interface.OnContentsItemClickListener;
-import com.example.rotory.Search.SearchActivity;
+
 import com.example.rotory.Search.SearchPage;
-import com.example.rotory.Search.SearchTagResultPage;
+
 import com.example.rotory.VO.Contents;
 import com.example.rotory.VO.NearPin;
 import com.example.rotory.account.LogInActivity;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
-import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapsInitializer;
@@ -65,11 +63,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
+
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.pedro.library.AutoPermissions;
-import com.pedro.library.AutoPermissionsListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -78,7 +74,7 @@ import java.util.HashMap;
 
 
 public class MainPage extends Fragment
-        //implements MapView.MapViewEventListener
+
 {
     final static String TAG = "MainPage";
 
@@ -94,31 +90,16 @@ public class MainPage extends Fragment
     LocationManager manager;
     // GPSListener gpsListener;
 
-    SupportMapFragment mapFragment;
 
-    Marker myMarker;
+
+
     MarkerOptions myLocationMarker;
-    MarkerOptions myLocationMarker1;
     Marker Marker1;
-    Marker Marker2;
-    Marker MarkerSelected;
     MarkerOptions MarkerOps1;
-    MarkerOptions MarkerOps2;
-    MarkerOptions MarkerSelectedOps;
 
-
-    Button mainSearchBtn;
     TextView mainSearchEdit;
 
     RecyclerView mainRoadList;
-    Button mainStoryNextBtn;
-    RecyclerView mainStoryList;
-    Button mainRoadNextBtn;
-
-
-    FrameLayout mainMapLayout;
-    Button mainMapExtendBtn;
-
     FloatingActionButton mainFloatingBtn;
 
     private Animation fab_open, fab_close;
@@ -127,33 +108,30 @@ public class MainPage extends Fragment
     ImageButton popFloatingBtn;
     ImageButton pop2FloatingBtn;
 
-    //MapView mapView;
-    // ViewGroup rootView;
-
 
     @Override
     public void onStop() {
         super.onStop();
-        //getActivity().finish();
+
 
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-       // getActivity().finish();
+
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        //getActivity().finish();
+
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        //getActivity().finish();
+
     }
 
     @Override
@@ -187,18 +165,10 @@ public class MainPage extends Fragment
     public void showWrite() {
     }
 
-/*    public void onContentsListener (contentsAdapter.ViewHolder holder, View view, int position) {
-        if (listener != null) {
-            listener.onContentsListener(holder, view, position);
-        }
-    }*/
 
 
     private void initUI(ViewGroup rootView) {
-
-        //mapView = new MapView(getActivity());
-        ViewGroup mapViewContainer = (ViewGroup) rootView.findViewById(R.id.mainMapLayout);
-        //mapViewContainer.addView(mapView);
+        ;
 
         setContentView(R.layout.main_page);
 
@@ -208,6 +178,16 @@ public class MainPage extends Fragment
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        mainSearchEdit = rootView.findViewById(R.id.mainSearchEdit);
+        mainSearchEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), SearchPage.class);
+                startActivity(intent);
+            }
+        });
+
 
         mainSearchEdit = rootView.findViewById(R.id.mainSearchEdit);
         mainSearchEdit.setOnClickListener(new View.OnClickListener() {

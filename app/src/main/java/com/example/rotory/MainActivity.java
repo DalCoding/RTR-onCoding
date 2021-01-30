@@ -11,9 +11,11 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.example.rotory.Search.SearchPage;
+
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.inputmethod.InputMethodManager;
+
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
@@ -30,11 +32,8 @@ import com.example.rotory.Interface.OnTabItemSelectedListener;
 
 
 import com.example.rotory.Interface.OnUserActItemClickListener;
-import com.example.rotory.Search.SearchPage;
-import com.example.rotory.Theme.ThemePage;
-import com.example.rotory.VO.AppConstant;
 
-import com.example.rotory.account.SignUpActivity;
+import com.example.rotory.Theme.ThemePage;
 import com.example.rotory.account.LogInActivity;
 
 
@@ -50,23 +49,17 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.pedro.library.AutoPermissions;
-import com.pedro.library.AutoPermissionsListener;
 
 
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
+
 
 public class MainActivity extends AppCompatActivity implements OnTabItemSelectedListener, OnUserActItemClickListener
-        /*, AutoPermissionsListener */{
+   {
 
     public static final String TAG = "MainActivity";
-
-    SharedPreferences sharedPreferences;
-    SharedPreferences.Editor editor;
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -77,7 +70,6 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
     StoryContentsPage storyContentsPage;
 
     BigMapPage bigMapPage;
-    SearchPage searchPage = new SearchPage();
 
     RelativeLayout bottomNavUnderbarHome;
     RelativeLayout bottomNavUnderbarTheme;
@@ -101,7 +93,6 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
     @Override
     protected void onStart() {
         super.onStart();
-        //setContentView(R.layout.activity_main);
     }
 
     @Override

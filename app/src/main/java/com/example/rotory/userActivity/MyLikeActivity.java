@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.rotory.BigMapPage;
+import com.example.rotory.LoadStoryItem;
 import com.example.rotory.MainActivity;
 import com.example.rotory.MainPage;
 import com.example.rotory.MyPage;
@@ -60,14 +61,14 @@ public class MyLikeActivity extends AppCompatActivity {
     RelativeLayout bottomNavUnderbarUser;
 
     TextView profileTextView;
-   TextView userActivityTextView;
 
     RelativeLayout userAppbarContainer;
+
+    Boolean removeItem =false;
 
     AppBarLayout appBarLayout;
     BottomNavigationView bottomNavigation;
 
-    Boolean isSignIn = false;
     private FirestoreRecyclerAdapter likedAdapter;
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseFirestore db;
@@ -86,16 +87,6 @@ public class MyLikeActivity extends AppCompatActivity {
         user = mAuth.getCurrentUser();
 
         profileTextView = findViewById(R.id.profileTextView);
-
-        userActivityTextView = findViewById(R.id.userActivityTextView);
-        userActivityTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), UserActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });
 
         appBarLayout =findViewById(R.id.appBarLayout);
         bottomNavUnderbarHome = findViewById(R.id.bottomNavUnderbarHome);
@@ -136,14 +127,14 @@ public class MyLikeActivity extends AppCompatActivity {
                     }
                 });
 
-     /*   profileTextView.setOnClickListener(new View.OnClickListener() {
+        profileTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MyLikeActivity.this, MyPage.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
             }
-        }); */
+        });
 
 
     }
@@ -172,10 +163,11 @@ public class MyLikeActivity extends AppCompatActivity {
                 profileTextView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                       holder.setIcon(model);
-                       Intent intent = new Intent(MyLikeActivity.this, MyPage.class);
-                       intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                       startActivity(intent);
+                        holder.setIcon(model);
+                        Intent intent = new Intent(MyLikeActivity.this, MyPage.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                        finish();
                     }
                 });
             }
@@ -191,7 +183,7 @@ public class MyLikeActivity extends AppCompatActivity {
     }
 
 
-  @Override
+    @Override
     protected void onStart() {
         super.onStart();
 
@@ -209,7 +201,7 @@ public class MyLikeActivity extends AppCompatActivity {
     public class likeViewHolder extends RecyclerView.ViewHolder {
         private View view;
         ImageView myLikeIcon;
-        Boolean removeItem = false;
+
 
         public likeViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -218,18 +210,20 @@ public class MyLikeActivity extends AppCompatActivity {
         }
 
         public void clickIcon(){
-                myLikeIcon.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (!removeItem) {
-                            myLikeIcon.setImageResource(R.drawable.heart);
-                            removeItem = true;
-                        }else {
-                            myLikeIcon.setImageResource(R.drawable.heartfilled);
-                            removeItem = false;
-                        }
+            myLikeIcon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (!removeItem) {
+                        Log.d(TAG, "아이콘 눌림" + removeItem.toString());
+                        myLikeIcon.setImageResource(R.drawable.heart);
+                        removeItem = true;
+                    }else {
+                        Log.d(TAG, "아이콘 눌림" + removeItem.toString());
+                        myLikeIcon.setImageResource(R.drawable.heartfilled);
+                        removeItem = false;
                     }
-                });
+                }
+            });
         }
 
         public void setLikedItems(Liked items) {
@@ -261,6 +255,7 @@ public class MyLikeActivity extends AppCompatActivity {
 
         }
         public void setIcon(Liked item){
+            Log.d(TAG, "삭제 진행?" + removeItem.toString());
             if (removeItem) {
                 db.collection("person").whereEqualTo("userId", user.getEmail())
                         .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -279,7 +274,6 @@ public class MyLikeActivity extends AppCompatActivity {
                                             for (QueryDocumentSnapshot thisLikeDocument : task.getResult()) {
                                                 String userActDocId = thisLikeDocument.getId();
                                                 userCollectionRef.document(userActDocId).delete();
-                                                return;
                                             }
 
                                         }
