@@ -402,7 +402,7 @@ public class BigMapPage extends AppCompatActivity implements OnTabItemSelectedLi
                                                                  @Override
                                                                  public void onClick(View v) {
 
-                                                                      Intent intent = new Intent(getApplicationContext(), RoadContentsPage.class);
+                                                                      Intent intent = new Intent(getApplicationContext(), LoadRoadItem.class);
                                                                       intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                                                                       intent.putExtra("documentId", cDocumentID);
                                                                       startActivity(intent);

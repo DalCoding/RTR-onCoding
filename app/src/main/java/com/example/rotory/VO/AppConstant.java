@@ -109,7 +109,20 @@ public class AppConstant {
                                     }).addOnFailureListener(new OnFailureListener() {
                                         @Override
                                         public void onFailure(@NonNull Exception e) {
-                                            Log.d(TAG,"storage에서 이미지 가져오기 실패" +e.toString() );
+                                            String path = "tags/question.png";
+                                            storageReference.child(path).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                                @Override
+                                                public void onSuccess(Uri uri) {
+                                                    Glide.with(context)
+                                                            .load(uri)
+                                                            .into(imageView);
+                                                }
+                                            }).addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                    Log.d(TAG,"storage에서 이미지 가져오기 실패" +e.toString() );
+                                                }
+                                            });
                                         }
                                     });
                                 }

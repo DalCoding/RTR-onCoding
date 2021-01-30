@@ -7,11 +7,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
-import com.example.rotory.Interface.OnContentsItemClickListener;
 import com.example.rotory.Interface.OnUserActItemClickListener;
-import com.example.rotory.LoadRoadItem;
 import com.example.rotory.R;
-import com.example.rotory.RoadContentsPage;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;

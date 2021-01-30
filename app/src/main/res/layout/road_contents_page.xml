@@ -142,62 +142,15 @@
             android:textSize="18sp" />
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
-            <Button
-                android:id="@+id/rcontentsTagBtn1"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_gravity="center"
-                android:layout_marginStart="5dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginEnd="5dp"
-                android:layout_marginRight="5dp"
-                android:text="#태그1"
-                android:textSize="10sp"
-                app:backgroundTint="#DAD7D7" />
-
-            <Button
-                android:id="@+id/rcontentsTagBtn2"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_gravity="center"
-                android:layout_marginStart="5dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginEnd="5dp"
-                android:layout_marginRight="5dp"
-                android:text="#태그2"
-                android:textSize="10sp"
-                app:backgroundTint="#DAD7D7" />
-
-            <Button
-                android:id="@+id/rcontentsTagBtn3"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_gravity="center"
-                android:layout_marginStart="5dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginEnd="5dp"
-                android:layout_marginRight="5dp"
-                android:text="#태그3"
-                android:textSize="10sp"
-                app:backgroundTint="#DAD7D7" />
-
-            <Button
-                android:id="@+id/rcontentsTagBtn4"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_gravity="center"
-                android:layout_marginStart="5dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginEnd="5dp"
-                android:layout_marginRight="5dp"
-                android:text="#태그4"
-                android:textSize="10sp"
-                app:backgroundTint="#DAD7D7" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/roadTagRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="50dp" />
 
         </LinearLayout>
 

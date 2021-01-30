@@ -2,19 +2,15 @@ package com.example.rotory.story;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.rotory.R;
-import com.example.rotory.VO.Story;
-import com.example.rotory.Write_Story;
-import com.google.android.material.appbar.AppBarLayout;
+import com.example.rotory.WriteContents.Write_Story;
 import com.google.android.material.tabs.TabLayout;
 
 public class StoryFindLocationPage extends AppCompatActivity {

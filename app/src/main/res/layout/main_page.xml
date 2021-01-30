@@ -98,16 +98,9 @@
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/mainMapLayout"
                             android:text="도토리 길"
+                            android:textColor="@color/brown"
                             android:textSize="20sp"
                             android:textStyle="bold" />
-
-                        <ImageButton
-                            android:id="@+id/mainRoadNextBtn"
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:layout_gravity="right|bottom"
-                            android:background="@drawable/ripple_custom_button"
-                            app:srcCompat="@drawable/right_button" />
 
                     </FrameLayout>
 
@@ -149,6 +142,7 @@
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/mainMapLayout"
                             android:text="다람쥐 이야기"
+                            android:textColor="@color/brown"
                             android:textSize="20sp"
                             android:textStyle="bold" />
 
@@ -194,53 +188,5 @@
 
         </RelativeLayout>
     </RelativeLayout>
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/mainFloatingBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginRight="20dp"
-        android:layout_marginBottom="30dp"
-        android:adjustViewBounds="false"
-        android:background="@drawable/ripple_custom"
-        android:baselineAlignBottom="true"
-        android:clickable="true"
-        android:visibility="invisible"
-        app:backgroundTint="#EFEBDA"
-        app:borderWidth="1dp"
-        app:srcCompat="@drawable/add_icon" />
-
-    <ImageButton
-        android:id="@+id/pop2FloatingBtn"
-        android:layout_width="80dp"
-        android:layout_height="60dp"
-        android:layout_alignParentRight="false"
-        android:layout_alignParentBottom="true"
-        android:layout_marginRight="5dp"
-        android:layout_marginBottom="100dp"
-        android:layout_toLeftOf="@id/popFloatingBtn"
-        android:adjustViewBounds="false"
-        android:background="@drawable/brownlinebox"
-        android:baselineAlignBottom="false"
-        android:clickable="false"
-        android:src="@drawable/storyicon"
-        android:visibility="invisible" />
-
-    <ImageButton
-        android:id="@+id/popFloatingBtn"
-        android:layout_width="80dp"
-        android:layout_height="60dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginRight="20dp"
-        android:layout_marginBottom="100dp"
-        android:adjustViewBounds="false"
-        android:background="@drawable/brownlinebox"
-        android:baselineAlignBottom="false"
-        android:clickable="false"
-        android:src="@drawable/roadicon_small"
-        android:visibility="invisible" />
 
 </RelativeLayout>

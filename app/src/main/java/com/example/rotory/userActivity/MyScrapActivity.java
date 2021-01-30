@@ -21,7 +21,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.rotory.LoadRoadItem;
 import com.example.rotory.MyPage;
 import com.example.rotory.R;
-import com.example.rotory.RoadContentsPage;
 import com.example.rotory.VO.AppConstant;
 import com.example.rotory.LoadStoryItem;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;

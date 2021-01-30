@@ -1,4 +1,4 @@
-package com.example.rotory;
+package com.example.rotory.WriteContents;
 
 
 import android.annotation.SuppressLint;
@@ -34,7 +34,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -42,11 +41,10 @@ import com.example.rotory.Adapter.WriteStoryImageAdapter;
 import com.example.rotory.Contents.StoryImageAdapter;
 import com.example.rotory.Interface.OnContentsItemClickListener;
 
-import com.example.rotory.VO.Story;
-import com.example.rotory.story.SearchOnMyRoadFragment;
+import com.example.rotory.MainActivity;
+import com.example.rotory.MainPage;
+import com.example.rotory.R;
 import com.example.rotory.story.StoryFindLocationPage;
-import com.google.android.material.tabs.TabLayout;
-import com.google.firebase.internal.InternalTokenProvider;
 
 import com.example.rotory.VO.AppConstant;
 import com.google.android.gms.tasks.OnCompleteListener;

@@ -1,8 +1,6 @@
 package com.example.rotory;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -11,13 +9,10 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.example.rotory.Search.SearchPage;
-
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -34,6 +29,8 @@ import com.example.rotory.Interface.OnTabItemSelectedListener;
 import com.example.rotory.Interface.OnUserActItemClickListener;
 
 import com.example.rotory.Theme.ThemePage;
+import com.example.rotory.WriteContents.WriteRoadPage;
+import com.example.rotory.WriteContents.Write_Story;
 import com.example.rotory.account.LogInActivity;
 
 
@@ -85,8 +82,8 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
     private Animation fab_open, fab_close;
     private boolean isFabOpen = true;
 
-    ImageButton popFloatingBtn;
-    ImageButton pop2FloatingBtn;
+    Button popFloatingBtn;
+   Button pop2FloatingBtn;
     ProgressDialogs progressDialogs;
 
 
@@ -170,6 +167,8 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
         fab_open = AnimationUtils.loadAnimation(this, R.anim.fab_open);
         fab_close = AnimationUtils.loadAnimation(this, R.anim.fab_close);
 
+
+
         pop2FloatingBtn = findViewById(R.id.pop2FloatingBtn2);
         pop2FloatingBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -207,17 +206,18 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
         mainFloatingBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d(TAG,"isFabOpen?" + isFabOpen);
                 if (isFabOpen) {
                     popFloatingBtn.startAnimation(fab_open);
-                    pop2FloatingBtn.setClickable(true);
+                    popFloatingBtn.setEnabled(true);
                     pop2FloatingBtn.startAnimation(fab_open);
-                    pop2FloatingBtn.setClickable(true);
+                    pop2FloatingBtn.setEnabled(true);
                     isFabOpen = false;
                 } else {
                     popFloatingBtn.startAnimation(fab_close);
-                    pop2FloatingBtn.setClickable(false);
+                    popFloatingBtn.setEnabled(false);
                     pop2FloatingBtn.startAnimation(fab_close);
-                    pop2FloatingBtn.setClickable(false);
+                   pop2FloatingBtn.setEnabled(false);
                     isFabOpen = true;
                 }
 

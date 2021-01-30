@@ -1,13 +1,10 @@
-package com.example.rotory;
+package com.example.rotory.WriteContents;
 
 import android.app.AlertDialog;
 import android.app.TimePickerDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.location.Address;
-import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -22,7 +19,6 @@ import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -36,46 +32,39 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.rotory.Interface.OnContentsItemClickListener;
 import com.example.rotory.Interface.OnTagItemClickListener;
+import com.example.rotory.MainActivity;
+import com.example.rotory.R;
 import com.example.rotory.Theme.TagItemAdapter;
 import com.example.rotory.Theme.Tags;
 import com.example.rotory.VO.AppConstant;
-import com.example.rotory.WriteContents.TagSelectDialog;
-import com.example.rotory.WriteContents.WriteRoadTagAdapter;
-import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.libraries.places.api.Places;
-import com.google.android.libraries.places.api.model.Place;
-import com.google.android.libraries.places.api.net.FetchPlaceRequest;
-import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
+import com.google.gson.internal.bind.ObjectTypeAdapter;
 
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 public class WriteRoadPage extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMapClickListener {
@@ -101,6 +90,7 @@ public class WriteRoadPage extends AppCompatActivity implements OnMapReadyCallba
     String ratingResult;
     float ratingNum;
     String companionText;
+    String addedCustomTag;
 
     Button chooseTagBtn;
     Button tagInputBtn;
@@ -167,7 +157,6 @@ public class WriteRoadPage extends AppCompatActivity implements OnMapReadyCallba
                 if (isMap) {
                     Toast.makeText(getBaseContext(), "경로가 저장 되었습니다.", Toast.LENGTH_SHORT).show();
                     getSupportFragmentManager().beginTransaction().remove(fragment).commit();
-                    isMap = false;
                     dtrName = fragment.getDtrName();
                     Log.d(TAG, dtrName.toString());
                     dtrLatLng = fragment.getDtrLatLng();
@@ -176,10 +165,12 @@ public class WriteRoadPage extends AppCompatActivity implements OnMapReadyCallba
                     Log.d(TAG, dtrAddress.toString());
                     Log.d(TAG, "마커 들고옴 : " + dtrLatLng.toString());
                     setLoadMarkers();
+                    isMap = false;
 
                 } else {
+                    deleteCustomTag();
                     Toast.makeText(getApplicationContext(), "작성을 취소하였습니다.", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(WriteRoadPage.this, MainPage.class);
+                    Intent intent = new Intent(WriteRoadPage.this, MainActivity.class);
                     startActivity(intent);
                     finish();
                 }
@@ -231,6 +222,7 @@ public class WriteRoadPage extends AppCompatActivity implements OnMapReadyCallba
                             }
                         }
                         Log.d(TAG,"들어갔는지 확인" + tagItems);
+
                     }
                 };
 
@@ -246,7 +238,7 @@ public class WriteRoadPage extends AppCompatActivity implements OnMapReadyCallba
             @Override
             public void onClick(View v) {
                 writeRoadTag = findViewById(R.id.writeRoadTagEditText);
-                String addedCustomTag = writeRoadTag.getText().toString();
+                addedCustomTag = writeRoadTag.getText().toString();
                 if (addedCustomTag.length() < 1) {
 
                 } else {
@@ -259,7 +251,9 @@ public class WriteRoadPage extends AppCompatActivity implements OnMapReadyCallba
                     roadTagAdapter.addItem(new Tags(addedCustomTag));
                     roadTagAdapter.notifyDataSetChanged();
                     writeRoadTag.setText("");
+
                     Log.d(TAG, "들어갔는지 확인" + tagItems);
+                    saveCustomTag();
 
                 }
             }
@@ -323,6 +317,50 @@ public class WriteRoadPage extends AppCompatActivity implements OnMapReadyCallba
 
     }
 
+    private void deleteCustomTag() {
+        db.collection("tag").document("customTag").get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        Map<String, Object> customTagList = task.getResult().getData();
+                        if (tagItems != null) {
+                            for (int i = 0; i < tagItems.size(); i++){
+                                if (customTagList.containsKey(tagItems.get(i))){
+                                    DocumentReference docRef = db.collection("tag").document("customTag");
+                                    Map<String, Object> updates = new HashMap<>();
+                                    updates.put(tagItems.get(i), FieldValue.delete());
+                                    docRef.update(updates).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            Log.d(TAG,"삭제 정보 확인" + docRef);
+                                        }
+                                    });
+                                }
+                            }
+                        }
+                    }
+                });
+    }
+
+    private void saveCustomTag() {
+        Map<String, String> customTag = new HashMap<>();
+        addedCustomTag = "#"+addedCustomTag;
+        customTag.put(addedCustomTag, addedCustomTag);
+        db.collection("tag").whereEqualTo(addedCustomTag, addedCustomTag)
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                db.collection("tag").document("customTag").set(customTag, SetOptions.merge())
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+
+                            }
+                        });
+
+            }
+        });
+    }
 
 
     @Override
@@ -435,6 +473,7 @@ public class WriteRoadPage extends AppCompatActivity implements OnMapReadyCallba
             String tagKey = "tag" + (i + 1);
             roadContents.put(tagKey, tagItems.get(i));
         }
+        roadContents.put("tagList",tagItems);
         roadContents.put("hour", writeRoadHour.getText().toString());
         roadContents.put("min", writeRoadMin.getText().toString());
         roadContents.put("isPartner", companySpinner.getSelectedItem().toString());

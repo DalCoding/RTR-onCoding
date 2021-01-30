@@ -91,6 +91,8 @@ public class StoryContentsPage extends Fragment {
     TextView scontentsMentText;
     TextView reportTextView;
     TextView scontentsTextText;
+    TextView scontentsScrapNum;
+    TextView scontentsHeartNum;
 
     RecyclerView scontentsThumbnailRView;
 
@@ -215,6 +217,8 @@ public class StoryContentsPage extends Fragment {
         scontentsThumbnailRView = rootView.findViewById(R.id.scontentsThumbnailRView);
         scontentsTextText = rootView.findViewById(R.id.scontentsTextText);
         scontentsLocText = rootView.findViewById(R.id.scontentsLocText);
+        scontentsScrapNum = rootView.findViewById(R.id.scontentsScrapNum);
+        scontentsHeartNum = rootView.findViewById(R.id.scontentsHeartNum);
 
         Bundle contentsBundle = this.getArguments();
         contentsID = contentsBundle.getString("storyDocumentId");
@@ -671,10 +675,17 @@ public class StoryContentsPage extends Fragment {
         scontentsUsernameText.setText(contentsList.get("userName").toString());
         scontentsLevelImg.setImageResource(appConstant.getUserLevelImage(userLevel));
         scontentsBigImg.setImageBitmap(appConstant.StringToBitmap(contentsList.get("titleImage").toString()));
+        if (contentsList.get("liked") != null) {
+            scontentsHeartNum.setText(contentsList.get("liked").toString());
+        }else {
+            scontentsHeartNum.setText("0");
+        }
+        if (contentsList.get("scrapped") != null){
+            scontentsScrapNum.setText(contentsList.get("scrapped").toString());
+        }else {
+            scontentsScrapNum.setText("0");
+        }
 
-       /* Map<String, String> imageComments = (Map<String, String>) contentsList.get("imageComment");
-        String imageComment = imageComments.get(String.valueOf(count));
-        scontentsMentText.setText(imageComment);*/
 
         setImageRecyclerView(contentsList);
         setComments(contentsList);

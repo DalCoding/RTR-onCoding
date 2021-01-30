@@ -80,9 +80,9 @@
         <activity android:name=".LoadRoadItem"/>
         <activity android:name=".userActivity.UserActivity"/>
         <activity android:name=".Theme.ThemePage"/>
-        <activity android:name=".WriteRoadPage"
+        <activity android:name=".WriteContents.WriteRoadPage"
             android:windowSoftInputMode="adjustPan"/>
-        <activity android:name=".Write_Story"
+        <activity android:name=".WriteContents.Write_Story"
             android:windowSoftInputMode="adjustPan"/>
         <activity android:name=".WriteContents.TagSelectDialog" android:theme="@android:style/Theme.Dialog"/>
         <activity android:name=".SearchPage1"/>

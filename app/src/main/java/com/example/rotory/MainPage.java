@@ -315,63 +315,6 @@ public class MainPage extends Fragment
             }
         });
 
-        fab_open = AnimationUtils.loadAnimation(getContext(), R.anim.fab_open);
-        fab_close = AnimationUtils.loadAnimation(getContext(), R.anim.fab_close);
-
-        pop2FloatingBtn = rootView.findViewById(R.id.pop2FloatingBtn);
-        pop2FloatingBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (user != null) {
-                    Intent writeStoryIntent = new Intent(getActivity(), Write_Story.class);
-                    //writeStoryIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                    startActivity(writeStoryIntent);
-                } else {
-                    goLogInPage();
-
-                }
-            }
-        });
-        popFloatingBtn = rootView.findViewById(R.id.popFloatingBtn);
-        popFloatingBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (user != null) {
-                    Intent writeRoadIntent = new Intent(getActivity(), WriteRoadPage.class);
-                    //writeRoadIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                    startActivity(writeRoadIntent);
-                } else {
-                    goLogInPage();
-
-                }
-
-            }
-        });
-
-        popFloatingBtn.startAnimation(fab_close);
-        pop2FloatingBtn.startAnimation(fab_close);
-
-        mainFloatingBtn = rootView.findViewById(R.id.mainFloatingBtn);
-        mainFloatingBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isFabOpen) {
-                    popFloatingBtn.startAnimation(fab_open);
-                    pop2FloatingBtn.setClickable(true);
-                    pop2FloatingBtn.startAnimation(fab_open);
-                    pop2FloatingBtn.setClickable(true);
-                    isFabOpen = false;
-                } else {
-                    popFloatingBtn.startAnimation(fab_close);
-                    //pop2FloatingBtn.setClickable(false);
-                    pop2FloatingBtn.startAnimation(fab_close);
-                    //pop2FloatingBtn.setClickable(false);
-                    isFabOpen = true;
-                }
-
-            }
-        });
-
 
     }
 

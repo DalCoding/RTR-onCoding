@@ -6,14 +6,17 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Adapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -47,6 +50,7 @@ import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.type.TimeOfDay;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -204,9 +208,21 @@ public class ThemePickPage extends Activity {
             }
         });
     }
-    void getTagList(String tagList, RecyclerView recyclerView) {
 
-        GridLayoutManager tagLayoutManager = new GridLayoutManager(ThemePickPage.this, 4);
+
+    void getTagList(String tagList, RecyclerView recyclerView) {
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getRealSize(size);
+        int width = size.x;
+        GridLayoutManager tagLayoutManager;
+        Log.d(TAG,"화면 사이즈 확인" + width);
+        if (width <= 770){
+            tagLayoutManager = new GridLayoutManager(ThemePickPage.this, 3);
+        }else {
+            tagLayoutManager = new GridLayoutManager(ThemePickPage.this, 4);
+        }
+
         recyclerView.setLayoutManager(tagLayoutManager);
 
         db.collection("tag").document(tagList)

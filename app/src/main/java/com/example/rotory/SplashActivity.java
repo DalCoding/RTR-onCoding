@@ -22,7 +22,7 @@ public class SplashActivity extends AppCompatActivity implements AutoPermissions
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
                 finish();}
-                }, 1000);}
+                }, 2000);}
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {

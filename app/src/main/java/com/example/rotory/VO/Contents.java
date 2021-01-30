@@ -12,6 +12,7 @@ public class Contents {
     int contentsType;
     String uid;
     String title;
+    ArrayList<String> tagList;
     String tag1;
     String tag2;
     String tag3;
@@ -74,6 +75,18 @@ public class Contents {
         this.userLevel = userLevel;
         this.userName = userName;
         this.liked = liked;
+    }
+
+    public ArrayList<String> getTagList() {
+        return tagList;
+    }
+
+    public void setTagList(ArrayList<String> tagList) {
+        this.tagList = tagList;
+    }
+
+    public Map<String, String> getImageComment() {
+        return imageComment;
     }
 
     public int getContentsType() {

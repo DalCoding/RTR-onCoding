@@ -1,4 +1,4 @@
-package com.example.rotory;
+package com.example.rotory.WriteContents;
 
 
 import android.app.AlertDialog;
@@ -21,6 +21,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.rotory.R;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;

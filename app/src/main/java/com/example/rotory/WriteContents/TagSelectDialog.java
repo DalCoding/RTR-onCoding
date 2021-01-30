@@ -127,8 +127,9 @@ public class TagSelectDialog extends Activity {
 
             Button tagItem = new Button(mContext);
             tagItem.setText(tags[position]);
+            tagItem.setTextSize(12);
             tagItem.setLayoutParams(params);
-            tagItem.setPadding(2,2,2,2);
+            //tagItem.setPadding(2,2,2,2);
             tagItem.setBackgroundColor(Color.argb(100,239,235, 218));
             tagItem.setHeight(parent.getHeight()/8);
             tagItem.setTag(tags[position]);

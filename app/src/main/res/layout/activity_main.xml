@@ -193,32 +193,38 @@
         app:borderWidth="1dp"
         app:srcCompat="@drawable/add_icon" />
 
-    <ImageButton
+    <Button
         android:id="@+id/popFloatingBtn2"
-        android:layout_width="80dp"
-        android:layout_height="60dp"
+        android:layout_width="100dp"
+        android:layout_height="80dp"
         android:layout_gravity="bottom|right"
-        android:layout_marginRight="100dp"
+        android:layout_marginRight="120dp"
         android:layout_marginBottom="145dp"
-        android:adjustViewBounds="false"
         android:background="@drawable/brownlinebox"
-        android:baselineAlignBottom="false"
-        android:src="@drawable/roadicon_small"
+        android:clickable="false"
+        android:drawableTop="@drawable/roadicon_small"
+        android:enabled="false"
+        android:gravity="center"
+        android:paddingTop="15dp"
+        android:text="도토리길"
+        android:textColor="@color/brown"
+        android:textSize="14sp"
         android:visibility="visible" />
 
-    <ImageButton
+    <Button
         android:id="@+id/pop2FloatingBtn2"
-        android:layout_width="80dp"
-        android:layout_height="60dp"
+        android:layout_width="100dp"
+        android:layout_height="80dp"
         android:layout_gravity="bottom|right"
         android:layout_marginRight="20dp"
         android:layout_marginBottom="145dp"
-        android:layout_toLeftOf="@id/popFloatingBtn"
-        android:adjustViewBounds="false"
         android:background="@drawable/brownlinebox"
-        android:baselineAlignBottom="false"
-        android:clickable="true"
-        android:src="@drawable/storyicon"
+        android:clickable="false"
+        android:drawableTop="@drawable/storyicon"
+        android:enabled="false"
+        android:paddingTop="15dp"
+        android:text="다람쥐이야기"
+        android:textColor="@color/brown"
         android:visibility="visible" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
