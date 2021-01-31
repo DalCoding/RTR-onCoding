@@ -43,6 +43,7 @@ public class TagItemAdapter extends RecyclerView.Adapter<TagItemAdapter.tagItemV
     public ArrayList<Tags> tagItemList;
     OnTagItemClickListener listener;
     TextView  tagListSize;
+    int phoneWidth;
     View view;
 
     public TagItemAdapter(Context context, ArrayList<Tags> tagItemList,
@@ -50,6 +51,7 @@ public class TagItemAdapter extends RecyclerView.Adapter<TagItemAdapter.tagItemV
         this.context = context;
         this.tagItemList = tagItemList;
         this.tagListSize = tagListSize;
+
 
     }
 

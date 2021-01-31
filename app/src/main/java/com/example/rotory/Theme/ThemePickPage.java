@@ -217,13 +217,14 @@ public class ThemePickPage extends Activity {
         int width = size.x;
         GridLayoutManager tagLayoutManager;
         Log.d(TAG,"화면 사이즈 확인" + width);
-        if (width <= 770){
+        if (width < 1080){
             tagLayoutManager = new GridLayoutManager(ThemePickPage.this, 3);
         }else {
             tagLayoutManager = new GridLayoutManager(ThemePickPage.this, 4);
         }
 
         recyclerView.setLayoutManager(tagLayoutManager);
+
 
         db.collection("tag").document(tagList)
                 .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -238,6 +239,7 @@ public class ThemePickPage extends Activity {
                     for (int i = 0 ; i < tagItemList.size(); i++){
                         tagsItemList.add(new Tags(tagItemList.get(i).toString()));
                     }
+
 
                     Log.d(TAG,"태그 아이템 리스트 뽑은거 확인" + tagsItemList);
                     tagItemAdapter = new TagItemAdapter(ThemePickPage.this,tagsItemList, listener, tagListSize);
