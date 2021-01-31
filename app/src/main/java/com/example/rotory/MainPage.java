@@ -300,7 +300,7 @@ public class MainPage extends Fragment
 
                     @SuppressLint("MissingPermission") Location location = manager.getLastKnownLocation(locationProvider);
 
-                    Double latitude = location.getLatitude();
+                 /*   Double latitude = location.getLatitude();
                     Double longitude = location.getLongitude();
                     String message = "내위치-> Latitude : "+ latitude + "\nLongitude:"+ longitude;
                     Log.d("Map", message);
@@ -308,7 +308,7 @@ public class MainPage extends Fragment
                     showCurrentLocation(latitude, longitude); // 카메라움직여지도에띄우기
                     LatLng curPoint = new LatLng(latitude, longitude);
                     showMyLocationMarker(); // 현재위치 보여주기
-                    loadDtr(curPoint, rootView); // 도토리 보여주기
+                    loadDtr(curPoint, rootView); // 도토리 보여주기*/
                    // return;
 
             }
@@ -364,6 +364,7 @@ public class MainPage extends Fragment
             @Override
             protected void onBindViewHolder(@NonNull StoryViewHolder holder, int position, @NonNull Contents model) {
                 holder.setItem(model);
+                holder.setClickItem(model);
             }
 
             @NonNull
@@ -376,11 +377,13 @@ public class MainPage extends Fragment
         };
     }
     class StoryViewHolder extends RecyclerView.ViewHolder {
+        View view;
         ImageView mainStoryImg;
         TextView mainStoryTitle;
         AppConstant appConstant = new AppConstant();
         public StoryViewHolder(@NonNull View itemView) {
             super(itemView);
+            view = itemView;
             mainStoryImg = itemView.findViewById(R.id.mainStoryImg);
             mainStoryTitle = itemView.findViewById(R.id.mainStoryTitle);
         }
@@ -392,6 +395,35 @@ public class MainPage extends Fragment
             mainStoryTitle.setText(model.getTitle());
 
         }
+        public void setClickItem(Contents model){
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    db.collection("contents")
+                            .whereEqualTo("uid", model.getUid())
+                            .whereEqualTo("writeDate", model.getWriteDate())
+                            .whereEqualTo("title", model.getTitle())
+                            .get()
+                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    if (task.isSuccessful()){
+                                        for (QueryDocumentSnapshot document : task.getResult()){
+                                            Log.d(TAG,"스토리 아이템 다큐먼트 아이디 확인" + document.getId());
+                                            String documentId = document.getId();
+                                            Intent intent = new Intent(getContext(), LoadStoryItem.class);
+                                            intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                            intent.putExtra("documentId", documentId);
+                                            startActivity(intent);
+                                        }
+                                    };
+                                }
+                            });
+                }
+            });
+
+        }
+
     }
 
 
@@ -416,7 +448,7 @@ public class MainPage extends Fragment
                 getContext().getSystemService(Context.LOCATION_SERVICE);// LocationManager 객체 참조하기
         // 이전에 확인햿던 위치 정보 가져오기
         String locationProvider = LocationManager.NETWORK_PROVIDER;
-        @SuppressLint("MissingPermission") Location location = manager.getLastKnownLocation(locationProvider);
+      /*  @SuppressLint("MissingPermission") Location location = manager.getLastKnownLocation(locationProvider);
         double latitude = location.getLatitude();
         double longitude = location.getLongitude();
         //  String message = "최근 위치-> Latitude : " + latitude + "\nLongitude:" + longitude;
@@ -430,7 +462,7 @@ public class MainPage extends Fragment
         //    myLocationMarker.title("●내위치\n");
         //    myLocationMarker.snippet("●GPS로확인한위치");
         myLocationMarker.icon(BitmapDescriptorFactory.fromResource(R.drawable.squirrel3));
-        map.addMarker(myLocationMarker);
+        map.addMarker(myLocationMarker);*/
 
     }
 
