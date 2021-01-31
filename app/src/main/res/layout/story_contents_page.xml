@@ -101,14 +101,14 @@
             <TextView
                 android:id="@+id/scontentsTitleText"
                 android:layout_width="180dp"
-                android:layout_height="30dp"
+                android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
                 android:background="#F3F3F3"
                 android:gravity="center"
-                android:textSize="14sp"
-                android:text="제목" />
+                android:text="제목"
+                android:textSize="14sp" />
 
             <ImageView
                 android:id="@+id/scontentsLevelImg"
@@ -121,11 +121,11 @@
                 android:id="@+id/scontentsUsernameText"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
-                android:gravity="center"
                 android:layout_marginStart="5dp"
-                android:layout_marginEnd="5dp"
                 android:layout_marginLeft="5dp"
+                android:layout_marginEnd="5dp"
                 android:layout_marginRight="5dp"
+                android:gravity="center"
                 android:text="user name"
                 android:textSize="13sp" />
 
@@ -207,6 +207,7 @@
                     android:background="#F3F3F3"
                     android:gravity="left"
                     android:inputType="textMultiLine"
+                    android:padding="10dp"
                     android:text="TextView" />
             </LinearLayout>
         </ScrollView>
