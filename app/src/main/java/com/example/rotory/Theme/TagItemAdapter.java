@@ -124,8 +124,10 @@ public class TagItemAdapter extends RecyclerView.Adapter<TagItemAdapter.tagItemV
                                             myTagList = task.getResult().getData();
                                             if (myTagList!=null) {
                                                 if (myTagList.containsKey(tag)) {
+                                                    int fontSize = (int) 1080 / 70;
                                                     tagBtn.setTextColor(Color.RED);
-                                                    tagBtn.setTextSize(16);
+                                                    tagBtn.setTextSize(fontSize);
+                                                    //textView.setTextSize((float) (standardSize_Y / 5));
                                                 } else {
                                                     tagBtn.setTextColor(Color.BLACK);
                                                 }
@@ -161,7 +163,8 @@ public class TagItemAdapter extends RecyclerView.Adapter<TagItemAdapter.tagItemV
                         }
                         else if (tagBtn.getCurrentTextColor() == Color.BLACK) {
                             tagBtn.setTextColor(Color.RED);
-                            tagBtn.setTextSize(16);
+                            int fontSize = (int) 1080 / 70;
+                            tagBtn.setTextSize(fontSize);
                             Log.d(TAG, tagBtn.getText().toString() + " 선택됨");
                             Toast.makeText(context, "태그 선택 : " + tagBtn.getText().toString(), Toast.LENGTH_SHORT).show();
                             setTagDb(tagText, true);
@@ -180,7 +183,8 @@ public class TagItemAdapter extends RecyclerView.Adapter<TagItemAdapter.tagItemV
         private void removeFromList() {
             String tagText = tagBtn.getText().toString();
             tagBtn.setTextColor(Color.BLACK);
-            tagBtn.setTextSize(14);
+            int fontSize = (int) 1080 / 80;
+            tagBtn.setTextSize(fontSize);
             Log.d(TAG, tagText + " 선택 취소됨" + tagList.size() + "/5");
             Log.d(TAG, "선택 개수 확인" + isSelected);
             int tagSize = Integer.parseInt(tagListSize.getText().toString());
