@@ -9,10 +9,13 @@ public class SearchContents {
     String userName;
     String liked;
     String article;
+    String contentsId;
+    String writeDate;
+    String uid;
 
     public SearchContents() { }
 
-    public SearchContents(int contentsType, String title, String titleImage, int isPublic, String userLevel, String userName, String liked, String article) {
+    public SearchContents(int contentsType, String title, String titleImage, int isPublic, String userLevel, String userName, String liked, String article, String contentsId) {
         this.contentsType = contentsType;
         this.title = title;
         this.titleImage = titleImage;
@@ -21,6 +24,23 @@ public class SearchContents {
         this.userName = userName;
         this.liked = liked;
         this.article = article;
+        this.contentsId = contentsId;
+    }
+
+    public String getWriteDate() {
+        return writeDate;
+    }
+
+    public void setWriteDate(String writeDate) {
+        this.writeDate = writeDate;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
     public String getArticle() {
@@ -85,5 +105,13 @@ public class SearchContents {
 
     public void setLiked(String liked) {
         this.liked = liked;
+    }
+
+    public String getContentsId() {
+        return contentsId;
+    }
+
+    public void setContentsId(String contentsId) {
+        this.contentsId = contentsId;
     }
 }

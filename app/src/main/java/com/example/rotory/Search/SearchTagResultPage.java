@@ -1,15 +1,17 @@
 package com.example.rotory.Search;
 
-import android.app.Fragment;
 import android.content.Intent;
-import android.net.Uri;
+
+import android.graphics.Bitmap;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+
 import android.widget.EditText;
+
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -19,11 +21,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.rotory.BigMapPage;
-import com.example.rotory.Interface.LoadMoreContentsListener;
+import com.example.rotory.LoadRoadItem;
+import com.example.rotory.LoadStoryItem;
 import com.example.rotory.MainPage;
 import com.example.rotory.R;
 import com.example.rotory.Theme.ThemePage;
@@ -43,7 +47,7 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-public class SearchTagResultPage extends AppCompatActivity implements LoadMoreContentsListener {
+public class SearchTagResultPage extends AppCompatActivity {
     AppConstant appConstant;
 
     private static final String uri = "android.resource://com.example.rotory/drawable/bridge";
@@ -71,15 +75,21 @@ public class SearchTagResultPage extends AppCompatActivity implements LoadMoreCo
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirestoreRecyclerAdapter searchTagResultAdapter;
+    FirebaseUser user;
 
 
     LinearLayout searchBox;
     LinearLayout list;
     FrameLayout searchContainer;
 
+
     Query query;
 
     SearchPage searchPage;
+
+    CardView searchResultView;
+
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -119,8 +129,19 @@ public class SearchTagResultPage extends AppCompatActivity implements LoadMoreCo
         Intent intent = getIntent();
         String tag = intent.getStringExtra("tag");
 
-        EditText searchTagResultEdit = findViewById(R.id.searchTagResultEdit);
+
+        TextView searchTagResultEdit = findViewById(R.id.searchTagResultEdit);
         searchTagResultEdit.setText(tag.substring(1));
+
+        searchTagResultEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent2 = new Intent(SearchTagResultPage.this, SearchPage.class);
+                intent2.putExtra("tag", tag.substring(1));
+                startActivity(intent2);
+            }
+        });
+
 
 
 
@@ -187,13 +208,9 @@ public class SearchTagResultPage extends AppCompatActivity implements LoadMoreCo
             @Override
             protected void onBindViewHolder(@NonNull SearchTagResultViewHolder holder, int position, @NonNull SearchContents model) {
                 holder.setContentsItems(model);
+
             }
         };
-    }
-
-    @Override
-    public void loadMoreContents() {
-
     }
 
 
@@ -207,9 +224,42 @@ public class SearchTagResultPage extends AppCompatActivity implements LoadMoreCo
 
 
         public void setContentsItems(SearchContents items) {
+
+            db.collection("contents")
+                    .whereEqualTo("title", items.getTitle())
+                    .whereEqualTo("uid", items.getUid())
+                    .whereEqualTo("writeDate", items.getWriteDate())
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    Log.d("TAG", document.getId());
+                                    String documentId = document.getId();
+                                    view.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+                                            if (items.contentsType == 0) {
+                                                roadIntent(documentId);
+                                                Log.d(TAG, documentId);
+                                            } else if (items.contentsType == 1) {
+                                                storyIntent(documentId);
+                                                Log.d(TAG, documentId);
+                                            }
+                                        }
+                                    });
+                                }
+                            } else {
+                                Log.d("TAG", "Error getting documents: ", task.getException());
+                            }
+                        }
+                    });
+
+
             ImageView userLevel = itemView.findViewById(R.id.searchResultUserLevel);
             ImageView likedIcon = itemView.findViewById(R.id.searchResultFavoriteIcon);
-            ImageView titleImage = itemView.findViewById(R.id.searchResultListImg);
+            ImageView titleImg = itemView.findViewById(R.id.searchResultListImg);
             TextView userName = itemView.findViewById(R.id.searchResultUserName);
             TextView listType = itemView.findViewById(R.id.searchResultListType);
             TextView title = itemView.findViewById(R.id.searchResultListTitle);
@@ -229,15 +279,40 @@ public class SearchTagResultPage extends AppCompatActivity implements LoadMoreCo
 
             switch (contentsType) {
                 case "길":
-                    titleImage.setVisibility(View.GONE);
+                    titleImg.setVisibility(View.GONE);
                     break;
                 case "이야기":
-                    titleImage.setVisibility(View.VISIBLE);
-                    titleImage.setImageURI(Uri.parse(uri));
+                    /*titleImg.setVisibility(View.VISIBLE);
+                    titleImg.setImageURI(Uri.parse(uri));*/
+
+                    String titleImage = items.getTitleImage();
+                    Log.d(TAG, titleImage);
+                    if (titleImage.equals("2131230836")) {
+                        Bitmap titleImageBitmap = appConstant.StringToBitmap(titleImage);
+                        Log.d(TAG, titleImageBitmap.toString());
+                        titleImg.setImageBitmap(titleImageBitmap);
+                    }
                     break;
             }
         }
     }
+
+    private void storyIntent(String documentId) {
+        Intent intent = new Intent(SearchTagResultPage.this, LoadStoryItem.class);
+        intent.putExtra("documentId", documentId);
+        startActivity(intent);
+        finish();
+    }
+
+    private void roadIntent(String documentId) {
+        Intent intent = new Intent(SearchTagResultPage.this, LoadRoadItem.class);
+        intent.putExtra("documentId", documentId);
+        startActivity(intent);
+        finish();
+    }
+
+
+
 
     private String getContentsType(int contentsType) {
         String listName;

@@ -19,9 +19,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 
+
 import android.widget.ImageButton;
 
 import android.widget.ImageView;
+
+import android.view.animation.AnimationUtils;
+import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.ImageButton;
+
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,15 +44,20 @@ import com.example.rotory.Adapter.WriteStoryImageAdapter;
 import com.example.rotory.Contents.StoryImageAdapter;
 import com.example.rotory.Interface.OnContentsItemClickListener;
 
+
 import com.example.rotory.Search.SearchPage;
 
 import com.example.rotory.VO.AppConstant;
+
+import com.example.rotory.Search.SearchPage;
+
 import com.example.rotory.VO.Contents;
 import com.example.rotory.VO.NearPin;
 import com.example.rotory.account.LogInActivity;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapsInitializer;
@@ -65,7 +77,9 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+
 import com.google.firebase.firestore.Query;
+
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -93,11 +107,14 @@ public class MainPage extends Fragment
     // GPSListener gpsListener;
 
 
-
+    Marker myMarker;
 
     MarkerOptions myLocationMarker;
     Marker Marker1;
     MarkerOptions MarkerOps1;
+
+
+    Button mainSearchBtn;
 
     TextView mainSearchEdit;
 
@@ -118,7 +135,6 @@ public class MainPage extends Fragment
         if (storyAdapter!=null){
             storyAdapter.stopListening();
         }
-
 
     }
 
@@ -184,6 +200,7 @@ public class MainPage extends Fragment
                 startActivity(intent);
             }
         });
+
 
 
         mainSearchEdit = rootView.findViewById(R.id.mainSearchEdit);

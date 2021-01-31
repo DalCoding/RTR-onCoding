@@ -25,6 +25,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.rotory.Comment;
+
 import com.example.rotory.Interface.OnUserActItemClickListener;
 import com.example.rotory.R;
 import com.example.rotory.Theme.Tags;
@@ -55,8 +56,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -126,8 +125,6 @@ public class RoadContentsPage extends Fragment implements OnMapReadyCallback, Go
     ArrayList<LatLng> PolyPoints = new ArrayList<>();
     ArrayList<String> dtrAddress = new ArrayList<>();
 
-    ArrayList<String> dtrName2 = new ArrayList<>();
-
     public RoadContentsPage() {}
 
 
@@ -159,9 +156,12 @@ public class RoadContentsPage extends Fragment implements OnMapReadyCallback, Go
         db = FirebaseFirestore.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
 
+
         Bundle contentsBundle = this.getArguments();
         contentsID = contentsBundle.getString("storyDocumentId");
         Log.d(TAG,"contentsID 확인" + contentsID);
+
+
 
         if (user != null) {
             String checkLogIN = user.getEmail();
