@@ -1,6 +1,8 @@
 package com.example.rotory;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -29,6 +31,9 @@ import com.example.rotory.Interface.OnTabItemSelectedListener;
 import com.example.rotory.Interface.OnUserActItemClickListener;
 
 import com.example.rotory.Theme.ThemePage;
+
+
+import com.example.rotory.Theme.ThemePage;
 import com.example.rotory.WriteContents.WriteRoadPage;
 import com.example.rotory.WriteContents.Write_Story;
 import com.example.rotory.account.LogInActivity;
@@ -48,15 +53,19 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 
 public class MainActivity extends AppCompatActivity implements OnTabItemSelectedListener, OnUserActItemClickListener
    {
 
     public static final String TAG = "MainActivity";
+
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseAuth mAuth = FirebaseAuth.getInstance();

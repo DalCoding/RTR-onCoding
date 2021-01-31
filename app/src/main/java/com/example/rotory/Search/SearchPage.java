@@ -1,12 +1,11 @@
 package com.example.rotory.Search;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
-
-
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
@@ -17,14 +16,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-
 import com.example.rotory.MainPage;
 import com.example.rotory.R;
 import com.example.rotory.Theme.Tags;
 import com.example.rotory.Theme.ThemePage;
 import com.example.rotory.account.SignUpActivity;
-
-
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -64,8 +60,12 @@ public class SearchPage extends AppCompatActivity {
 
     SearchTagAdapter adapter;
 
+
     ImageButton backBtn;
     ImageButton removeBtn;
+
+    String tagText;
+
 
 
     @Override
@@ -108,6 +108,7 @@ public class SearchPage extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // 메인 화면으로 돌아가기
+
             }
         });
 
@@ -118,8 +119,16 @@ public class SearchPage extends AppCompatActivity {
             }
         });
 
-        searchEdit = findViewById(R.id.searchIdEdit);
 
+        searchEdit = findViewById(R.id.searchIdEdit);
+        Intent intent = getIntent();
+        tagText = intent.getStringExtra("tag");
+
+        if (intent == null) {
+            searchEdit.setText(null);
+        } else if (intent != null) {
+            searchEdit.setText(tagText);
+        }
     }
 
 

@@ -119,8 +119,10 @@ public class LoadRoadItem extends AppCompatActivity implements OnUserActItemClic
 
     }
     @Override
+
     public void OnFlagClicked(String contentsId, Map<String, Object> contentsList, String userId) {
         String savedDate = appConstant.dateFormat.format(new Date());
+
         Map<String, Object> myScrap = new HashMap<>();
         myScrap.put("contentsId",contentsId);
         myScrap.put("contentsType", contentsList.get("contentsType"));

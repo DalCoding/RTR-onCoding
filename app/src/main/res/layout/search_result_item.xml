@@ -6,6 +6,7 @@
     android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/searchResultCardView"
         android:layout_width="match_parent"
         android:layout_height="130dp"
         app:cardCornerRadius="5dp"
@@ -116,6 +117,14 @@
                     android:textSize="18sp" />
 
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/contentsId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/searchResultListContents"
+                android:text="TextView"
+                android:visibility="invisible" />
 
         </RelativeLayout>
 
