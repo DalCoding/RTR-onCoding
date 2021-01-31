@@ -57,6 +57,8 @@ import com.google.firebase.storage.StorageReference;
 
 import java.util.Map;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class MyFavoriteActivity  extends FragmentActivity {
     AppConstant appConstant = new AppConstant();
     final static String TAG = "MyFavoriteActivity";
@@ -217,7 +219,7 @@ public class MyFavoriteActivity  extends FragmentActivity {
             @NonNull
             @Override
             public favoriteViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.my_favorite_item, parent,false);
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.my_favorite_item2, parent,false);
                 return new favoriteViewHolder(view);
             }
 
@@ -252,25 +254,25 @@ public class MyFavoriteActivity  extends FragmentActivity {
         private View view;
         CardView favorietCard;
         ImageView starred;
-        ImageView myFavoriteImg;
         TextView myFavoriteNickTextView;
         TextView myFavoriteLevelTextView;
         ImageView myFavoriteLevelImg;
+        CircleImageView profileImage;
 
         public favoriteViewHolder(@NonNull View itemView) {
             super(itemView);
 
             view = itemView;
-            myFavoriteLevelImg = itemView.findViewById(R.id.myFavoriteLevelImg);
+            profileImage = itemView.findViewById(R.id.imageView3);
             myFavoriteNickTextView = itemView.findViewById(R.id.myFavoriteNickTextView);
             myFavoriteLevelTextView = itemView.findViewById(R.id.myFavoriteLevelTextView);
             starred = itemView.findViewById(R.id.myFavoriteEditImg);
             favorietCard = itemView.findViewById(R.id.favorietCard);
+            myFavoriteLevelImg =itemView.findViewById(R.id.myFavoriteLevelImg);
         }
         public void setUserItems(Person user) {
 
             starred.setImageResource(R.drawable.starfilled);
-            //myFavoriteImg.setImageResource(R.drawable.squirrel);
 
             db.collection("person").whereEqualTo("uid", user.getUid())
                     .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -354,16 +356,18 @@ public class MyFavoriteActivity  extends FragmentActivity {
         }
 
         public void getProfileImg(String Email) {
-            myFavoriteImg = itemView.findViewById(R.id.myFavoriteImg);
+
             Log.d(TAG,"아이디 확인" + Email);
             String path = "profiles/"+ Email +".jpg";
             storageReference.child(path).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                 @Override
                 public void onSuccess(Uri uri) {
                     Log.d(TAG,"storage에서 이미지 가져오기 성공" +uri);
-                    Glide.with(getApplicationContext())
-                            .load(uri)
-                            .into(myFavoriteImg);
+                   profileImage = view.findViewById(R.id.imageView3);
+                   Glide.with(getApplicationContext())
+                           .load(uri)
+                           .into(profileImage);
+
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override

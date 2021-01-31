@@ -8,7 +8,8 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/favorietCard"
         android:layout_width="match_parent"
-        android:layout_height="65dp">
+        android:layout_height="70dp"
+        android:layout_marginTop="5dp">
 
         <LinearLayout
             android:id="@+id/myFavoriteInfoLayout"
@@ -16,11 +17,12 @@
             android:layout_height="match_parent"
             android:padding="5dp">
 
-            <ImageView
-                android:id="@+id/myFavroiteImg"
-                android:layout_width="80dp"
-                android:layout_height="56dp"
-                app:srcCompat="@drawable/squirrel" />
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/imageView3"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginRight="10dp"
+                android:src="@drawable/squirrel" />
 
             <LinearLayout
                 android:layout_width="200dp"
@@ -86,31 +88,6 @@
                 android:layout_marginLeft="13dp"
                 android:layout_marginRight="15dp"
                 app:srcCompat="@drawable/starfilled" />
-
-            <LinearLayout
-                android:id="@+id/myFavoriteHiddenLayout"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:background="@drawable/myfavoritebackimg"
-                android:gravity="center"
-                android:padding="10dp"
-                android:visibility="gone">
-
-                <ImageView
-                    android:id="@+id/myFavoriteSearchImg"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_weight="1"
-                    app:srcCompat="@drawable/searchcontentsbrown" />
-
-
-                <ImageView
-                    android:id="@+id/myFavoriteDeleteImg"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_weight="1"
-                    app:srcCompat="@drawable/deletestarredbrown" />
-            </LinearLayout>
 
         </LinearLayout>
 
