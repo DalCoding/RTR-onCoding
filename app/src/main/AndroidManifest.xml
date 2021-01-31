@@ -68,7 +68,6 @@
             android:windowSoftInputMode="adjustPan"/>
         <activity android:name=".userActivity.MyFavoriteActivity"/>
         <activity android:name=".userActivity.MyLikeActivity" />
-        <activity android:name=".Search.SearchResultPage"/>
         <activity android:name=".story.StoryFindLocationPage"/>
        <activity android:name=".userActivity.MyScrapActivity"/>
         <activity android:name=".LoadStoryItem"/>
@@ -87,7 +86,8 @@
         <activity android:name=".SearchPage1"/>
 
         <activity android:name=".Search.SearchTagResultPage"/>
-        <activity android:name=".Search.SearchPage"/>
+        <activity android:name=".Search.SearchPage"
+            android:windowSoftInputMode="stateVisible"/>
 
 
 

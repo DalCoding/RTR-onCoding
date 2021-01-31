@@ -378,6 +378,7 @@ public class RoadContentsPage extends Fragment implements OnMapReadyCallback, Go
                                     dtrInfoMoveBtn.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View view) {
+
                                             Toast.makeText(getActivity().getApplicationContext(), "아쉽게도 이야기가 없네요.", Toast.LENGTH_SHORT).show();
 
                                             /*Intent intent = new Intent(getActivity(), LoadStoryItem.class);

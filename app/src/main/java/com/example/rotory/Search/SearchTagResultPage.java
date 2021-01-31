@@ -28,6 +28,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.rotory.BigMapPage;
 import com.example.rotory.LoadRoadItem;
 import com.example.rotory.LoadStoryItem;
+import com.example.rotory.MainActivity;
 import com.example.rotory.MainPage;
 import com.example.rotory.R;
 import com.example.rotory.Theme.ThemePage;
@@ -53,42 +54,11 @@ public class SearchTagResultPage extends AppCompatActivity {
     private static final String uri = "android.resource://com.example.rotory/drawable/bridge";
     private static final String TAG = "SearchTagResultPage";
 
-    MainPage mainPage;
-    ThemePage themePage;
-    BigMapPage bigMapPage;
-
-    RelativeLayout bottomNavUnderbarHome;
-    RelativeLayout bottomNavUnderbarTheme;
-    RelativeLayout bottomNavUnderbarUser;
-
-    SignUpActivity signUpActivity;
-
-    RelativeLayout userAppbarContainer;
-
-    AppBarLayout appBarLayout;
-    BottomNavigationView bottomNavigation;
-
-    Boolean isSignIn = false;
-
-
     RecyclerView searchTagResultRecyclerView;
-    FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirestoreRecyclerAdapter searchTagResultAdapter;
-    FirebaseUser user;
-
-
-    LinearLayout searchBox;
-    LinearLayout list;
-    FrameLayout searchContainer;
-
-
-    Query query;
 
     SearchPage searchPage;
-
-    CardView searchResultView;
-
 
 
     @Override
@@ -96,78 +66,33 @@ public class SearchTagResultPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search_tag_result_page);
 
-
         searchPage = new SearchPage();
-
-        mainPage = new MainPage();
-        themePage = new ThemePage();
-        bigMapPage = new BigMapPage();
-
-
-
-
-
-        FirebaseUser user = mAuth.getCurrentUser();
-
-        if (user != null) {
-            String checkLogIN = user.getEmail();
-            Log.d(TAG, "로그인 정보 유저네임 : " + checkLogIN);
-            isSignIn = true;
-        } else {
-            Log.d(TAG, "로그인 실패");
-            isSignIn = false;
-        }
-
-        appBarLayout = findViewById(R.id.appBarLayout);
-        bottomNavUnderbarHome = findViewById(R.id.bottomNavUnderbarHome);
-        bottomNavUnderbarTheme = findViewById(R.id.bottomNavUnderbarTheme);
-        bottomNavUnderbarUser = findViewById(R.id.bottomNavUnderbarUser);
-
-
-
 
         Intent intent = getIntent();
         String tag = intent.getStringExtra("tag");
 
-
         TextView searchTagResultEdit = findViewById(R.id.searchTagResultEdit);
         searchTagResultEdit.setText(tag.substring(1));
-
         searchTagResultEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent2 = new Intent(SearchTagResultPage.this, SearchPage.class);
                 intent2.putExtra("tag", tag.substring(1));
+                intent2.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent2);
             }
         });
-
-
 
 
         searchTagResultRecyclerView = findViewById(R.id.searchTagResultList);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         searchTagResultRecyclerView.setLayoutManager(layoutManager);
 
-
-        db.collection("contents")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult());
-
-                        }
-                    }
-                });
-
-
         Query query;
 
         if (tag != null){
             query = db.collection("contents")
-                    .whereEqualTo("tag1", tag)
+                    .whereArrayContains("tagList", tag)
                     .orderBy("writeDate", Query.Direction.DESCENDING);
         }else{
             query = db.collection("contents");
@@ -178,6 +103,7 @@ public class SearchTagResultPage extends AppCompatActivity {
                 .build();
         setSearchTagResultAdapter(options);
         searchTagResultAdapter.startListening();
+
         searchTagResultRecyclerView.setAdapter(searchTagResultAdapter);
 
     }
@@ -211,6 +137,7 @@ public class SearchTagResultPage extends AppCompatActivity {
 
             }
         };
+
     }
 
 
@@ -301,17 +228,13 @@ public class SearchTagResultPage extends AppCompatActivity {
         Intent intent = new Intent(SearchTagResultPage.this, LoadStoryItem.class);
         intent.putExtra("documentId", documentId);
         startActivity(intent);
-        finish();
     }
 
     private void roadIntent(String documentId) {
         Intent intent = new Intent(SearchTagResultPage.this, LoadRoadItem.class);
         intent.putExtra("documentId", documentId);
         startActivity(intent);
-        finish();
     }
-
-
 
 
     private String getContentsType(int contentsType) {
@@ -345,7 +268,6 @@ public class SearchTagResultPage extends AppCompatActivity {
     public void onStart() {
         Log.d(TAG, "어댑터 작동 시작");
         super.onStart();
-        //searchTagResultAdapter.startListening();
     }
 
     @Override
@@ -354,6 +276,13 @@ public class SearchTagResultPage extends AppCompatActivity {
         if(searchTagResultAdapter != null){
             searchTagResultAdapter.stopListening();
         }
-        //searchTagResultAdapter.stopListening();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(SearchTagResultPage.this, MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 }
