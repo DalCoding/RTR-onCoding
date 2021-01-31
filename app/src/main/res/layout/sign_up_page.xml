@@ -415,7 +415,7 @@
                     android:layout_marginStart="44dp"
                     android:layout_marginLeft="44dp"
                     android:layout_marginTop="5dp"
-                    android:text="'비밀번호가 다릅니다.'"
+                    android:text="'인증번호를 확인해주세요.'"
                     android:textColor="#FF0000"
                     android:textSize="14sp"
                     android:visibility="invisible" />

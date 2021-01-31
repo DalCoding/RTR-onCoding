@@ -101,6 +101,7 @@ public class SignUpActivity extends AppCompatActivity {
 
     Person persons = new Person();
     boolean checkUserName = true;
+    boolean checkPhoneAuth = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -142,6 +143,7 @@ public class SignUpActivity extends AppCompatActivity {
         signin_pin_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                signup_pw_check.setVisibility(View.INVISIBLE);
                 if (mobileTimeCountText.getText() == "00:00"){
                     Toast.makeText(getApplicationContext(), "인증 시간이 초과되었습니다.",Toast.LENGTH_SHORT).show();
                 } else {
@@ -152,9 +154,11 @@ public class SignUpActivity extends AppCompatActivity {
                     if (!userCode.equals(authNum)){
                         Log.d(TAG,"인증번호 불일치"+ userCode + ":" + authNum);
                         //showToast("인증번호가 틀렸습니다");
+                        checkPhoneAuth = false;
                         signup_pw_check.setVisibility(View.VISIBLE);
                     }else {
                         showToast("인증 성공");
+                        checkPhoneAuth = true;
                         //LogInWithPhoneAuthCredential(mAuth,mContext,credential);
                     }
                 }
@@ -349,6 +353,8 @@ public class SignUpActivity extends AppCompatActivity {
         } else if (!mobilePattern) {
             return false;
         } else if (!signin_pin_button.isEnabled()){
+            return false;
+        }else if (!checkPhoneAuth){
             return false;
         }
 
