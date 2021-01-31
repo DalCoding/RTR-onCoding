@@ -114,7 +114,7 @@ public class LoadRoadItem extends AppCompatActivity implements OnUserActItemClic
 
     }
     @Override
-    public void OnFlagClicked(String contentsId, Map<String, Object> contentsList, String userId) {
+    public void OnFlagClicked(String contentsId, Map<String, Object> contentsList,   String userId) {
 
         Map<String, Object> myScrap = new HashMap<>();
         myScrap.put("contentsId",contentsId);

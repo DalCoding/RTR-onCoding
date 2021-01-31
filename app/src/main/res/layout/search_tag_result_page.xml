@@ -1,28 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <LinearLayout
+        android:id="@+id/searchBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:background="@drawable/fragment_lines">
+        android:background="@drawable/fragment_lines"
+        android:orientation="horizontal">
 
 
-        <EditText
+        <TextView
             android:id="@+id/searchTagResultEdit"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:layout_marginTop="10dp"
             android:layout_marginLeft="20dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
             android:layout_marginRight="5dp"
+            android:layout_marginBottom="10dp"
+            android:gravity="center_vertical"
             android:layout_weight="1"
             android:background="@drawable/fragment_lines"
-            android:inputType="textPersonName"
+            android:textSize="18sp"
             android:paddingLeft="5dp" />
 
         <ImageButton
@@ -35,21 +38,10 @@
             app:srcCompat="@drawable/search_icon" />
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/searchResultTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:paddingLeft="5dp"
-        android:text="username 님이 작성하신 글입니다."
-        android:textSize="18sp"
-        android:textStyle="bold"
-        tools:visibility="gone" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="10"
+        android:layout_below="@id/searchBox"
         android:orientation="vertical">
 
 
@@ -57,33 +49,11 @@
             android:id="@+id/searchTagResultList"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="5dp"
             android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
             android:layout_marginRight="10dp">
 
         </androidx.recyclerview.widget.RecyclerView>
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <android.widget.Button
-            android:id="@+id/searchTagResultExpandBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="20dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/button_drawable"
-            android:drawableLeft="@drawable/expand_more"
-            android:drawablePadding="10dp"
-            android:gravity="center_vertical"
-            android:paddingLeft="10dp"
-            android:paddingRight="20dp"
-            android:text="결과 더보기"
-            android:textColor="#442428"
-            android:textSize="18sp" />
-    </LinearLayout>
-</LinearLayout>
+</RelativeLayout>

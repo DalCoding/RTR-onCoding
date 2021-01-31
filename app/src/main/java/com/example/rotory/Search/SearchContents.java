@@ -9,10 +9,11 @@ public class SearchContents {
     String userName;
     String liked;
     String article;
+    String contentsId;
 
     public SearchContents() { }
 
-    public SearchContents(int contentsType, String title, String titleImage, int isPublic, String userLevel, String userName, String liked, String article) {
+    public SearchContents(int contentsType, String title, String titleImage, int isPublic, String userLevel, String userName, String liked, String article, String contentsId) {
         this.contentsType = contentsType;
         this.title = title;
         this.titleImage = titleImage;
@@ -21,6 +22,7 @@ public class SearchContents {
         this.userName = userName;
         this.liked = liked;
         this.article = article;
+        this.contentsId = contentsId;
     }
 
     public String getArticle() {
@@ -85,5 +87,13 @@ public class SearchContents {
 
     public void setLiked(String liked) {
         this.liked = liked;
+    }
+
+    public String getContentsId() {
+        return contentsId;
+    }
+
+    public void setContentsId(String contentsId) {
+        this.contentsId = contentsId;
     }
 }

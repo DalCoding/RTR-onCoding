@@ -1,14 +1,18 @@
 package com.example.rotory.Search;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -33,8 +37,8 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.Map;
 
+public class SearchActivity extends AppCompatActivity {
 
-public class SearchPage extends AppCompatActivity {
 
     private static final String TAG = "SearchPage";
     private static final String REQUEST_CODE = "0000";
@@ -63,7 +67,6 @@ public class SearchPage extends AppCompatActivity {
     ImageButton backBtn;
     ImageButton removeBtn;
 
-    String tagText;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -104,7 +107,7 @@ public class SearchPage extends AppCompatActivity {
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                
+                // 메인 화면으로 돌아가기
             }
         });
 
@@ -116,14 +119,7 @@ public class SearchPage extends AppCompatActivity {
         });
 
         searchEdit = findViewById(R.id.searchIdEdit);
-        Intent intent = getIntent();
-        tagText = intent.getStringExtra("tag");
 
-        if (intent == null) {
-            searchEdit.setText(null);
-        } else if (intent != null) {
-            searchEdit.setText(tagText);
-        }
     }
 
 

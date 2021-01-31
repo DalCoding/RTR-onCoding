@@ -10,7 +10,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,14 +20,12 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.PluralsRes;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.rotory.Contents.SetIcons;
-import com.example.rotory.Contents.StoryContentsPage;
 import com.example.rotory.Interface.OnUserActItemClickListener;
 import com.example.rotory.VO.AppConstant;
 import com.example.rotory.VO.Contents;
@@ -37,7 +34,6 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -53,7 +49,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -61,14 +56,9 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-
-import org.w3c.dom.Document;
-
-import java.io.IOError;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 
@@ -133,8 +123,6 @@ public class RoadContentsPage extends Fragment implements OnMapReadyCallback, Go
     ArrayList<LatLng> PolyPoints = new ArrayList<>();
     ArrayList<String> dtrAddress = new ArrayList<>();
 
-    ArrayList<String> dtrName2 = new ArrayList<>();
-
     public RoadContentsPage() {}
 
 
@@ -166,8 +154,11 @@ public class RoadContentsPage extends Fragment implements OnMapReadyCallback, Go
         db = FirebaseFirestore.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
 
+
         Bundle contentsBundle = this.getArguments();
         String contentsID = contentsBundle.getString("storyDocumentId");
+
+
 
         if (user != null) {
             String checkLogIN = user.getEmail();
