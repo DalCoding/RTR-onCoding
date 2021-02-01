@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -221,7 +222,7 @@ public class WriteMapPage extends Fragment implements OnMapReadyCallback, Google
 
     public void showDtrDialog(GoogleMap map, LatLng latLng) {
 
-        AlertDialog.Builder DtrDialog = new AlertDialog.Builder(getContext());
+        AlertDialog.Builder DtrDialog = new AlertDialog.Builder(getContext(), R.style.DtrDialog);
         DtrDialog.setTitle("장소 이름을 입력하세요");
         final EditText DtrNameEditText = new EditText(getContext());
         DtrDialog.setView(DtrNameEditText);
