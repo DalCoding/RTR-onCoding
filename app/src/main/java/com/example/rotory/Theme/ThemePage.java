@@ -232,7 +232,7 @@ public class ThemePage extends AppCompatActivity implements OnTabItemSelectedLis
                     int random = (int) ((randomValue*tagItemList.size())-1);
                     tagsArrayList.set(0, new Tags(tagItemList.get(random)));
                     Log.d(TAG,"어댑터로 넘어갈 리스트" + tagsArrayList);
-                    adapter = new ThemeItemAdapter(tagsArrayList, ThemePage.this, display);
+                    adapter = new ThemeItemAdapter(tagsArrayList, ThemePage.this, display, randomTagCount);
                     themeRView.setAdapter(adapter);
                 }
             }

@@ -344,7 +344,7 @@ public class WriteRoadPage extends AppCompatActivity implements OnMapReadyCallba
 
     private void saveCustomTag() {
         Map<String, String> customTag = new HashMap<>();
-        addedCustomTag = "#"+addedCustomTag;
+        addedCustomTag =addedCustomTag;
         customTag.put(addedCustomTag, addedCustomTag);
         db.collection("tag").whereEqualTo(addedCustomTag, addedCustomTag)
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {

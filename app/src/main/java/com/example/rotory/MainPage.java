@@ -539,7 +539,7 @@ public class MainPage extends Fragment
                                 int[] dtrImageName = {R.drawable.acorn_number1, R.drawable.acorn_number2, R.drawable.acorn_number3, R.drawable.acorn_number4, R.drawable.acorn_number5, R.drawable.acorn_number6};
                                 MarkerOps1.icon(BitmapDescriptorFactory.fromResource(dtrImageName[k]));
                                 Marker1 = map.addMarker(MarkerOps1);
-
+              // 핀 표시 -> 표시할 개수 선정
                             }
 
                         }else {
