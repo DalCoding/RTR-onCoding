@@ -100,13 +100,18 @@
 
             <TextView
                 android:id="@+id/scontentsTitleText"
-                android:layout_width="180dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
                 android:background="#F3F3F3"
-                android:gravity="center"
+                android:gravity="center|left"
+                android:paddingLeft="10dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:scrollbars="vertical"
+                android:scrollHorizontally="false"
                 android:text="제목"
                 android:textSize="14sp" />
 
@@ -180,12 +185,6 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1" />
 
-            <ImageView
-                android:id="@+id/scontentsNextImg"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_gravity="center"
-                app:srcCompat="@drawable/nextgray" />
         </LinearLayout>
 
         <ScrollView
