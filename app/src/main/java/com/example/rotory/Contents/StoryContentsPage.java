@@ -720,8 +720,10 @@ public class StoryContentsPage extends Fragment {
 
                 Map<String, String> imageComments = (Map<String, String>) contentsList.get("imageComment");
                 String imageComment = imageComments.get(String.valueOf(position));
-                scontentsMentText.setText(imageComment);
-                Log.d(TAG,imageComment);
+                if (imageComment != null) {
+                    scontentsMentText.setText(imageComment);
+                }
+               // Log.d(TAG,imageComment);
 
             }
 
