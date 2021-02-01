@@ -352,11 +352,11 @@ public class SignUpActivity extends AppCompatActivity {
             return false;
         } else if (!mobilePattern) {
             return false;
-        } else if (!signin_pin_button.isEnabled()){
+        }/* else if (!signin_pin_button.isEnabled()){
             return false;
         }else if (!checkPhoneAuth){
             return false;
-        }
+        }*/
 
         return true;
     }

@@ -115,6 +115,7 @@ public class MainPage extends Fragment
 
 
     Button mainSearchBtn;
+    ImageButton mainStoryNextBtn;
 
     TextView mainSearchEdit;
 
@@ -201,16 +202,16 @@ public class MainPage extends Fragment
             }
         });
 
-
-
-        mainSearchEdit = rootView.findViewById(R.id.mainSearchEdit);
-        mainSearchEdit.setOnClickListener(new View.OnClickListener() {
+        mainStoryNextBtn = rootView.findViewById(R.id.mainStoryNextBtn);
+        mainStoryNextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), SearchPage.class);
+                Intent intent = new Intent(getActivity(), MainStoryActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent);
             }
         });
+
 
 
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
@@ -290,7 +291,6 @@ public class MainPage extends Fragment
         float minDistance = 0;
         //manager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, minTime, minDistance, gpsListener);
         // manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, minTime, minDistance, gpsListener);
-
 
         Handler mHandler = new Handler();
 

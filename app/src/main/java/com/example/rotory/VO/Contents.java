@@ -58,7 +58,6 @@ public class Contents {
         this.documentId = documentId;
     }
 
-
     public Contents(String title, String tag1, String hour, String min, String writeDate) {
         this.title = title;
         this.tag1 = tag1;

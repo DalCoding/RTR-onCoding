@@ -89,6 +89,7 @@
         <activity android:name=".Search.SearchTagResultPage"/>
         <activity android:name=".Search.SearchPage"
             android:windowSoftInputMode="stateVisible"/>
+        <activity android:name=".MainStoryActivity"/>
 
 
 

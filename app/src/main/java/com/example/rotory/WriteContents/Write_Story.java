@@ -58,6 +58,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import org.w3c.dom.Text;
+
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -423,6 +425,7 @@ public class Write_Story extends AppCompatActivity  {
         Log.d(TAG,"article 다시할당" + article);
         ArrayList<String> address = new ArrayList<>();
         address.add(storyaddress);
+
         DBStoryContents.put("article", article);
         DBStoryContents.put("contentsType", 1);
         DBStoryContents.put("smallImage", imageList);
