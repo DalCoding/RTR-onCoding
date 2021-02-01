@@ -118,7 +118,7 @@
                 android:layout_marginStart="35dp"
                 android:layout_marginLeft="35dp"
                 android:background="@color/white"
-                android:visibility="visible">
+                android:visibility="gone">
 
             </RelativeLayout>
 
@@ -131,7 +131,7 @@
                 android:layout_marginStart="35dp"
                 android:layout_marginLeft="35dp"
                 android:background="@color/white"
-                android:visibility="gone">
+                android:visibility="visible">
 
             </RelativeLayout>
 
