@@ -1,6 +1,7 @@
 package com.example.rotory.Theme;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Point;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -15,8 +16,11 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.rotory.LoadRoadItem;
 import com.example.rotory.R;
+import com.example.rotory.Search.SearchTagResultPage;
 import com.example.rotory.VO.AppConstant;
+import com.example.rotory.userActivity.MyLikeActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -61,7 +65,8 @@ public class ThemeItemAdapter  extends RecyclerView.Adapter<ThemeItemAdapter.the
 
     @Override
     public void onBindViewHolder(@NonNull themeViewHolder holder, int position) {
-        holder.setThemeCard(themeList.get(position));
+        holder.setThemeCard(themeList.get(position), position);
+        holder.eachItemClick(themeList.get(position));
 
     }
 
@@ -87,15 +92,31 @@ public class ThemeItemAdapter  extends RecyclerView.Adapter<ThemeItemAdapter.the
             themeCardView = itemView.findViewById(R.id.themeCardView);
         }
 
-        public void setThemeCard(Tags item){
+        public void setThemeCard(Tags item, int position){
 
             Point point = new Point();
             mDisplay.getSize(point);
             themeCardView.setMinimumWidth(point.x/2);
 
-            tcardThemeText.setText(item.getTag());
-            appConstant.getThemeImage(item.getTag(), tcardThemeImg, mContext);
+            if (position > 0) {
+                tcardThemeText.setText(item.getTag());
+                appConstant.getThemeImage(item.getTag(), tcardThemeImg, mContext);
+            }else {
+                tcardThemeText.setText("다람쥐 탐험");
+                tcardThemeImg.setImageResource(R.drawable.daramwithcity4);
+            }
 
+        }
+        public void eachItemClick(Tags item){
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent tagIntent = new Intent(mContext, SearchTagResultPage.class);
+                    tagIntent.putExtra("tag", item.getTag());
+                    tagIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    mContext.startActivity(tagIntent);
+                }
+            });
         }
 
     }
