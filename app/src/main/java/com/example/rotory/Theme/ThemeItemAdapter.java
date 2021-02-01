@@ -109,12 +109,12 @@ public class ThemeItemAdapter  extends RecyclerView.Adapter<ThemeItemAdapter.the
                     myTagBtn.setVisibility(View.VISIBLE);
                     tcardThemeText.setText(item.getTag());
                     appConstant.getThemeImage(item.getTag(), tcardThemeImg, mContext);
-                } else if (position > (8 - randomSize)) {
+                } else if (position > (7 - randomSize)) {
                     Log.d(TAG, String.valueOf(9 - randomSize));
                     myTagBtn.setVisibility(View.INVISIBLE);
                     tcardThemeText.setText(item.getTag());
                     appConstant.getThemeImage(item.getTag(), tcardThemeImg, mContext);
-                } else {
+                } else if (position == 0){
                     tcardThemeText.setText("다람쥐 탐험");
                     tcardThemeImg.setImageResource(R.drawable.daramwithcity4);
                 }
