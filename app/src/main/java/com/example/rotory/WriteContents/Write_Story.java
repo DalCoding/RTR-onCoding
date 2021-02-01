@@ -432,6 +432,7 @@ public class Write_Story extends AppCompatActivity  {
         DBStoryContents.put("address", address);
         DBStoryContents.put("title", title);
         DBStoryContents.put("isPublic", isPublic);
+        DBStoryContents.put("liked", "0");
         DBStoryContents.put("writeDate",appConstant.dateFormat.format(new Date()));
 
         setUserDB();
