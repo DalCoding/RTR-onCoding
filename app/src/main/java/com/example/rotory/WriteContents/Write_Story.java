@@ -67,6 +67,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import kotlin.Unit;
+
 public class Write_Story extends AppCompatActivity  {
     private final String TAG = "Write_Story";
     private static final int Map_RESULT_CODE = 5200;
@@ -714,6 +716,5 @@ public class Write_Story extends AppCompatActivity  {
             }
 
         }
-
     }
 }
