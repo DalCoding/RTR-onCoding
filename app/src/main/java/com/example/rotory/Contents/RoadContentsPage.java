@@ -372,6 +372,8 @@ public class RoadContentsPage extends Fragment implements OnMapReadyCallback, Go
                                     dtrInfoAdText.clearComposingText();
 
                                     dtrInfo.setVisibility(View.VISIBLE);
+                                    dtrInfo.setFocusableInTouchMode(true);
+                                    dtrInfo.requestFocus();
 
                                     dtrInfoSignText.setText(infoList.get(0));
                                     dtrInfoAdText.setText(infoList.get(1));
@@ -387,7 +389,7 @@ public class RoadContentsPage extends Fragment implements OnMapReadyCallback, Go
                                         }
                                     });
 
-                                    return false;
+                                    return true;
                                 }
                             });
                     }
