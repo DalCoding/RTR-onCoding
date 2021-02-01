@@ -155,10 +155,9 @@ public class SearchOnMyRoadFragment extends Fragment {
         }
 
         public void setMyRoadItems(MyRoad items) {
-
-            dtrName.setText(items.getDtrName().get(dtrName.length()));
+            dtrName.setText(items.getDtrName().get(0));
             title.setText(items.getTitle());
-            dtrAddress.setText(items.getDtrAddress().get(dtrAddress.length()));
+            dtrAddress.setText(items.getDtrAddress().get(0));
         }
     }
 

@@ -273,7 +273,7 @@ public class SearchTagResultPage extends AppCompatActivity {
     @Override
     public void onStop() {
         super.onStop();
-        if(searchTagResultAdapter != null){
+        if(searchTagResultAdapter == null){
             searchTagResultAdapter.stopListening();
         }
     }
@@ -284,5 +284,10 @@ public class SearchTagResultPage extends AppCompatActivity {
         Intent intent = new Intent(SearchTagResultPage.this, MainActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 }
