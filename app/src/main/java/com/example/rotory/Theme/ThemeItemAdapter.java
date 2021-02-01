@@ -104,19 +104,29 @@ public class ThemeItemAdapter  extends RecyclerView.Adapter<ThemeItemAdapter.the
             mDisplay.getSize(point);
             themeCardView.setMinimumWidth(point.x/2);
 
-            if (position > 0) {
-                if (position <= (8-randomSize)){
-                    myTagBtn.setVisibility(View.INVISIBLE);
-                }else {
-                    Log.d(TAG, String.valueOf(8-randomSize));
+            if (randomSize < 8) {
+                if (position > 0 && position < (8 - randomSize)) {
                     myTagBtn.setVisibility(View.VISIBLE);
                     tcardThemeText.setText(item.getTag());
                     appConstant.getThemeImage(item.getTag(), tcardThemeImg, mContext);
+                } else if (position > (8 - randomSize)) {
+                    Log.d(TAG, String.valueOf(9 - randomSize));
+                    myTagBtn.setVisibility(View.INVISIBLE);
+                    tcardThemeText.setText(item.getTag());
+                    appConstant.getThemeImage(item.getTag(), tcardThemeImg, mContext);
+                } else {
+                    tcardThemeText.setText("다람쥐 탐험");
+                    tcardThemeImg.setImageResource(R.drawable.daramwithcity4);
                 }
-
             }else {
-                tcardThemeText.setText("다람쥐 탐험");
-                tcardThemeImg.setImageResource(R.drawable.daramwithcity4);
+                if (position>0){
+                    myTagBtn.setVisibility(View.INVISIBLE);
+                    tcardThemeText.setText(item.getTag());
+                    appConstant.getThemeImage(item.getTag(), tcardThemeImg, mContext);
+                } else {
+                    tcardThemeText.setText("다람쥐 탐험");
+                    tcardThemeImg.setImageResource(R.drawable.daramwithcity4);
+                }
             }
 
         }
