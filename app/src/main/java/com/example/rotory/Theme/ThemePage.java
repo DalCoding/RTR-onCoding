@@ -169,6 +169,8 @@ public class ThemePage extends AppCompatActivity implements OnTabItemSelectedLis
                                                   int randomTagCount = 7 - tagList.size();
                                                   Log.d(TAG, "태그갯수? =>" + tagList.size() + ":" + randomTagCount);
                                                   setRandomTheme(randomTagCount, tagsArrayList);
+                                              }else if (tagList.size() == 0) {
+                                                  setRandomTheme(8, tagsArrayList);
                                               }
                                           }else{
                                               setRandomTheme(8, tagsArrayList);
