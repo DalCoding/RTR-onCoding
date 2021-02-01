@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.rotory.VO.AppConstant;
 import com.example.rotory.VO.Contents;
 import com.example.rotory.userActivity.MyFavoriteActivity;
+import com.example.rotory.userActivity.MyLikeActivity;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -70,7 +71,7 @@ public class SearchPage1 extends AppCompatActivity {
 
         Intent favoriteIntent = getIntent();
        uid = favoriteIntent.getStringExtra("uid");
-        //uid = "vMafjaj28WQiCFczxLVeLmJFKDd2";
+
 
         if (user != null) {
             String checkLogIN = user.getEmail();
@@ -81,7 +82,6 @@ public class SearchPage1 extends AppCompatActivity {
             isSignIn = false;
         }
 
-        //getUserWrite();
 
         searchIdText = findViewById(R.id.searchIdText);
         db.collection("person")
@@ -122,6 +122,14 @@ public class SearchPage1 extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        if (searchPage1Adapter != null){
+            searchPage1Adapter.startListening();
+        }
+    }
+
+    @Override
     protected void onStop() {
         super.onStop();
         if (searchPage1Adapter != null){
@@ -151,6 +159,7 @@ public class SearchPage1 extends AppCompatActivity {
                 protected void onBindViewHolder(@NonNull SearchPage1ViewHolder holder, int position, @NonNull Contents model) {
                     Log.d(TAG, "onBindViewHolder 작동" + holder.itemView.toString());
                     holder.setSearchPage1Items(model);
+                    holder.eachItemClick(model);
                 }
 
                 @Override
@@ -212,6 +221,38 @@ public class SearchPage1 extends AppCompatActivity {
                     searchResultFavoriteNumber.setText("");
                 }
 
+                }
+
+                public void eachItemClick(Contents model){
+                view.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        db.collection("contents").whereEqualTo("uid", model.getUid())
+                                .whereEqualTo("title",model.getTitle()).whereEqualTo("writeDate", model.getWriteDate())
+                                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()){
+                                    for (QueryDocumentSnapshot documentSnapshot : task.getResult()){
+                                        String documentId = documentSnapshot.getId();
+                                        if(model.getContentsType() == 0){
+                                            Intent roadIntent = new Intent(getApplicationContext(), LoadRoadItem.class);
+                                            roadIntent.putExtra("documentId", documentId);
+                                            roadIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                                            startActivity(roadIntent);
+
+                                        }else {
+                                            Intent storyIntent = new Intent(getApplicationContext(), LoadStoryItem.class);
+                                            storyIntent.putExtra("documentId", documentId);
+                                            storyIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                                            startActivity(storyIntent);
+                                        }
+                                    }
+                                }
+                            }
+                        });
+                    }
+                });
                 }
 
     }

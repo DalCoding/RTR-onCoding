@@ -484,6 +484,7 @@ public class WriteRoadPage extends AppCompatActivity implements OnMapReadyCallba
         roadContents.put("dtrName", dtrName);
         roadContents.put("dtrLatLng", dtrLatLng);
         roadContents.put("dtrAddress", dtrAddress);
+        roadContents.put("liked", "0");
         Log.d(TAG, "입력될 내용 확인" + roadContents);
 
     }

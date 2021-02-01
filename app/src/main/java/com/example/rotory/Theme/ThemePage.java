@@ -73,6 +73,7 @@ public class ThemePage extends AppCompatActivity implements OnTabItemSelectedLis
 
 
     Button tagSelectBtn;
+    Button themeRefreshBtn;
     RecyclerView themeRView;
     ThemePickPage themePickPage;
 
@@ -97,6 +98,18 @@ public class ThemePage extends AppCompatActivity implements OnTabItemSelectedLis
 
 
         user = mAuth.getCurrentUser();
+
+        themeRefreshBtn = findViewById(R.id.themeRefreshBtn);
+        themeRefreshBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+                Intent intent = new Intent(ThemePage.this, ThemePage.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            }
+        });
+
 
         setUserTheme();
         WindowManager windowManager = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
@@ -146,15 +159,21 @@ public class ThemePage extends AppCompatActivity implements OnTabItemSelectedLis
                                               Set<String> tagKeySet = tagList.keySet();
                                               ArrayList<String> tagKeyArrayList = new ArrayList<>(tagKeySet);
                                               if (tagList.size() > 0) {
-                                                  for (int i = 0; i < tagList.size(); i++) {
-                                                      tagsArrayList.add(new Tags(tagKeyArrayList.get(i)));
+                                                  for (int i = 0; i < tagList.size()+1; i++) {
+                                                      if (i > 0) {
+                                                          tagsArrayList.add(new Tags(tagKeyArrayList.get(i-1)));
+                                                      } else {
+                                                          tagsArrayList.add(new Tags(tagKeyArrayList.get(i)));
+                                                      }
                                                   }
                                                   int randomTagCount = 7 - tagList.size();
                                                   Log.d(TAG, "태그갯수? =>" + tagList.size() + ":" + randomTagCount);
                                                   setRandomTheme(randomTagCount, tagsArrayList);
+                                              }else if (tagList.size() == 0) {
+                                                  setRandomTheme(8, tagsArrayList);
                                               }
                                           }else{
-                                              setRandomTheme(7, tagsArrayList);
+                                              setRandomTheme(8, tagsArrayList);
                                           }
 
                                                /* adapter = new ThemeItemAdapter(tagsArrayList, ThemePage.this, display);
@@ -209,6 +228,9 @@ public class ThemePage extends AppCompatActivity implements OnTabItemSelectedLis
                     for (int i = 0; i < randomTagCount; i++){
                         tagsArrayList.add(new Tags(randomTagList.get(i)));
                     }
+                    double randomValue = Math.random();
+                    int random = (int) ((randomValue*tagItemList.size())-1);
+                    tagsArrayList.set(0, new Tags(tagItemList.get(random)));
                     Log.d(TAG,"어댑터로 넘어갈 리스트" + tagsArrayList);
                     adapter = new ThemeItemAdapter(tagsArrayList, ThemePage.this, display);
                     themeRView.setAdapter(adapter);
@@ -226,7 +248,7 @@ public class ThemePage extends AppCompatActivity implements OnTabItemSelectedLis
                     case R.id.home:
                         progressDialogs.show();
                         startTagsLoading(300);
-                        Intent intent = new Intent(ThemePage.this, MainActivity.class);
+                        Intent intent = new Intent(ThemePage.this, ThemePage.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
                         bottomNavigation.setVisibility(View.VISIBLE);

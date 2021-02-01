@@ -234,6 +234,11 @@ public class MyLikeActivity extends AppCompatActivity {
                         roadIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_SINGLE_TOP);
                         startActivity(roadIntent);
 
+                    }else {
+                        Intent storyIntent = new Intent(MyLikeActivity.this, LoadStoryItem.class);
+                        storyIntent.putExtra("documentId", model.getContentsId());
+                        storyIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                        startActivity(storyIntent);
                     }
                 }
             });

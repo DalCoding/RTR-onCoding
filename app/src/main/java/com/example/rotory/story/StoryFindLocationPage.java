@@ -89,5 +89,4 @@ public class StoryFindLocationPage extends AppCompatActivity {
             }
         });
     }
-
 }

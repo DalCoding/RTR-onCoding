@@ -300,7 +300,7 @@ public class MainPage extends Fragment
 
                     @SuppressLint("MissingPermission") Location location = manager.getLastKnownLocation(locationProvider);
 
-                 /*   Double latitude = location.getLatitude();
+                   Double latitude = location.getLatitude();
                     Double longitude = location.getLongitude();
                     String message = "내위치-> Latitude : "+ latitude + "\nLongitude:"+ longitude;
                     Log.d("Map", message);
@@ -308,7 +308,7 @@ public class MainPage extends Fragment
                     showCurrentLocation(latitude, longitude); // 카메라움직여지도에띄우기
                     LatLng curPoint = new LatLng(latitude, longitude);
                     showMyLocationMarker(); // 현재위치 보여주기
-                    loadDtr(curPoint, rootView); // 도토리 보여주기*/
+                    loadDtr(curPoint, rootView); // 도토리 보여주기
                    // return;
 
             }
@@ -448,7 +448,7 @@ public class MainPage extends Fragment
                 getContext().getSystemService(Context.LOCATION_SERVICE);// LocationManager 객체 참조하기
         // 이전에 확인햿던 위치 정보 가져오기
         String locationProvider = LocationManager.NETWORK_PROVIDER;
-      /*  @SuppressLint("MissingPermission") Location location = manager.getLastKnownLocation(locationProvider);
+      @SuppressLint("MissingPermission") Location location = manager.getLastKnownLocation(locationProvider);
         double latitude = location.getLatitude();
         double longitude = location.getLongitude();
         //  String message = "최근 위치-> Latitude : " + latitude + "\nLongitude:" + longitude;
@@ -462,7 +462,7 @@ public class MainPage extends Fragment
         //    myLocationMarker.title("●내위치\n");
         //    myLocationMarker.snippet("●GPS로확인한위치");
         myLocationMarker.icon(BitmapDescriptorFactory.fromResource(R.drawable.squirrel3));
-        map.addMarker(myLocationMarker);*/
+        map.addMarker(myLocationMarker);
 
     }
 
@@ -480,69 +480,70 @@ public class MainPage extends Fragment
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()){
                     ArrayList<NearPin> nearPin2 = new ArrayList<>();   // 거리차이, 위경도점(첫번째), 문서아이디
-                    for (QueryDocumentSnapshot document : task.getResult()){
-                        String contentsId = document.getId();
-                        ArrayList<HashMap> dtrLatLng = (ArrayList<HashMap>) document.get("dtrLatLng");
-                        // 도토리 배열 : [{latitude=37.422083928086955, longitude=-122.08573322743177}, {latitu... + null
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        if (document != null) {
+                            String contentsId = document.getId();
+                            ArrayList<HashMap> dtrLatLng = (ArrayList<HashMap>) document.get("dtrLatLng");
+                            // 도토리 배열 : [{latitude=37.422083928086955, longitude=-122.08573322743177}, {latitu... + null
 
+                            HashMap latLng = dtrLatLng.get(0);
 
-                        HashMap latLng = dtrLatLng.get(0);
+                            double latlat = (double) latLng.get("latitude");
+                            double longlong = (double) latLng.get("longitude");
+                            LatLng latLng2 = new LatLng(latlat, longlong);
 
-                        double latlat = (double) latLng.get("latitude");
-                        double longlong = (double) latLng.get("longitude");
-                        LatLng latLng2 = new LatLng(latlat, longlong);
+                            //기준값
+                            LatLng latLng1 = point;
+                            double latlat1 = latLng1.latitude;
+                            double longlong1 = latLng1.longitude;
 
-                        //기준값
-                        LatLng latLng1 = point;
-                        double latlat1 = latLng1.latitude;
-                        double longlong1 = latLng1.longitude;
+                            double earthRadius = 6371000; //meters
+                            double dLat = Math.toRadians(latlat - latlat1);
+                            double dLng = Math.toRadians(longlong - longlong1);
+                            double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                                    Math.cos(Math.toRadians(latlat1)) * Math.cos(Math.toRadians(latlat)) *
+                                            Math.sin(dLng / 2) * Math.sin(dLng / 2);
+                            double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+                            double dist = (double) (earthRadius * c);
+                            // String dist1 = Double.toString(dist);
+                            //  Log.d ("배열", dist1);  // 여기까진 확인 OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+                            // double + MapPoint형 배열
 
-                        double earthRadius = 6371000; //meters
-                        double dLat = Math.toRadians(latlat - latlat1);
-                        double dLng = Math.toRadians(longlong - longlong1);
-                        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                                Math.cos(Math.toRadians(latlat1)) * Math.cos(Math.toRadians(latlat)) *
-                                        Math.sin(dLng / 2) * Math.sin(dLng / 2);
-                        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-                        double dist = (double) (earthRadius * c);
-                        // String dist1 = Double.toString(dist);
-                        //  Log.d ("배열", dist1);  // 여기까진 확인 OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
-                        // double + MapPoint형 배열
+                            nearPin2.add(new NearPin(dist, latLng2, contentsId));
+                            //   dtrLatLng.get(0);
+                            Log.d("지도 DB", "문서 id : " + contentsId + "/ 거리: " + dist);
+                        }
 
-                        nearPin2.add(new NearPin(dist, latLng2, contentsId));
-                        //   dtrLatLng.get(0);
-                        Log.d("지도 DB", "문서 id : " + contentsId + "/ 거리: " +dist);
-                    }
+                        Collections.sort(nearPin2, new Comparator<NearPin>() {
+                            @Override
+                            public int compare(NearPin o1, NearPin o2) {
+                                if (o1.getDistance() == o2.getDistance()) {
+                                    return 0;
+                                } else if (o1.getDistance() < o2.getDistance()) {
+                                    return -1;
+                                } else {
+                                    return 1;
+                                }
 
-                    Collections.sort(nearPin2, new Comparator<NearPin>() {
-                        @Override
-                        public int compare(NearPin o1, NearPin o2) {
-                            if (o1.getDistance() == o2.getDistance()) {
-                                return 0;
-                            } else if (o1.getDistance() < o2.getDistance()) {
-                                return -1;
-                            } else {
-                                return 1;
                             }
+                        });
+
+                        // 핀 표시 -> 표시할 개수 선정
+                        for (int k = 0; k < 6; k++) {
+                            // DB에서 핀들의 정보 (이름, 하단팝업정보 등) 가져와야함)
+                            LatLng point1 = nearPin2.get(k).getPoint();
+                            MarkerOps1 = new MarkerOptions();
+                            MarkerOps1.position(point1);
+                            //    myLocationMarker.title("●내위치\n");
+                            //    myLocationMarker.snippet("●GPS로확인한위치");
+                            int[] dtrImageName = {R.drawable.acorn_number1, R.drawable.acorn_number2, R.drawable.acorn_number3, R.drawable.acorn_number4, R.drawable.acorn_number5, R.drawable.acorn_number6};
+                            MarkerOps1.icon(BitmapDescriptorFactory.fromResource(dtrImageName[k]));
+                            Marker1 = map.addMarker(MarkerOps1);
 
                         }
-                    });
 
-                    // 핀 표시 -> 표시할 개수 선정
-                    for (int k=0; k<6; k++) {
-                        // DB에서 핀들의 정보 (이름, 하단팝업정보 등) 가져와야함)
-                        LatLng point1 = nearPin2.get(k).getPoint();
-                        MarkerOps1 = new MarkerOptions();
-                        MarkerOps1.position(point1);
-                        //    myLocationMarker.title("●내위치\n");
-                        //    myLocationMarker.snippet("●GPS로확인한위치");
-                        int[] dtrImageName= {R.drawable.acorn_number1, R.drawable.acorn_number2, R.drawable.acorn_number3, R.drawable.acorn_number4, R.drawable.acorn_number5, R.drawable.acorn_number6};
-                        MarkerOps1.icon(BitmapDescriptorFactory.fromResource(dtrImageName[k]));
-                        Marker1 = map.addMarker(MarkerOps1);
-
+                        loadRoadList(nearPin2, rootView);
                     }
-
-                    loadRoadList(nearPin2, rootView);
                 }
             }
         });

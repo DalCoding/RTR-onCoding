@@ -4,6 +4,351 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:id="@+id/writeStory"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/WriteStoryHeadLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="70dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginRight="20dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/writeStoryRequired1"
+                        android:layout_width="match_parent"
+                        android:layout_height="18dp"
+                        android:text="*"
+                        android:textColor="#acacac"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/writeStoryPreFixTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginBottom="3dp"
+                        android:text="말머리"
+                        android:textColor="#000000"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <Spinner
+                    android:id="@+id/writeStoryPreFixSpinner"
+                    android:layout_width="105dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="bottom"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:background="@drawable/spinnerbox"
+                    android:entries="@array/storyTitleList" />
+
+                <TextView
+                    android:id="@+id/storyRequiredmention"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top"
+                    android:layout_marginTop="5dp"
+                    android:layout_weight="1"
+                    android:gravity="right"
+                    android:text="*은 필수 입력 항목입니다."
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/WriteStoryBodyLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/WriteStoryHeadLayout"
+                android:layout_marginStart="15dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginRight="20dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/writeStoryRequired"
+                    android:layout_width="match_parent"
+                    android:layout_height="18dp"
+                    android:text="*"
+                    android:textColor="#acacac"
+                    android:textSize="18sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/writeStoryPreFixTitle2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginBottom="3dp"
+                        android:text="제목"
+                        android:textColor="#000000"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/writeStoryTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:background="#E0E0E0"
+                        android:ems="10"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:gravity="center"
+                        android:hint="이야기 제목"
+                        android:inputType="textPersonName"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/writeStoryRequired2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="18dp"
+                    android:text="*"
+                    android:textColor="#acacac"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/writeStoryLocation"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:background="#E0E0E0"
+                    android:elevation="3dp"
+                    android:ems="10"
+                    android:gravity="center_vertical"
+                    android:hint="어느 장소에 대한 이야기인가요? (장소 찾기)"
+                    android:paddingLeft="10dp"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/writeStoryRequired3"
+                    android:layout_width="match_parent"
+                    android:layout_height="18dp"
+                    android:text="*"
+                    android:textColor="#acacac"
+                    android:textSize="18sp" />
+
+                <RelativeLayout
+                    android:id="@+id/writeStoryImageContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:id="@+id/writeStoryMainImageView"
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginLeft="5dp"
+                        app:srcCompat="@drawable/box" />
+
+                    <ImageButton
+                        android:id="@+id/writeStorySetDeleteImageBtn"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginRight="10dp"
+                        android:background="@drawable/delete_button"
+
+                        android:backgroundTint="#8C8B8B"
+                        app:backgroundTint="@empty" />
+
+                    <Button
+                        android:id="@+id/writeStorySetMainImageBtn"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_alignBottom="@id/writeStoryMainImageView"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentBottom="false"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:background="@drawable/mainimageset"
+                        app:backgroundTint="@empty"
+                        app:rippleColor="#FFFFFF" />
+
+                    <TextView
+                        android:id="@+id/mainImagetext"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/beigebox"
+                        android:gravity="center"
+                        android:padding="10dp"
+                        android:text="대 표"
+                        android:visibility="invisible" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp">
+
+                    <ImageView
+                        android:id="@+id/ImageAddbtnContainer"
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:layout_gravity="left"
+                        android:layout_marginStart="3dp"
+                        android:layout_marginLeft="3dp"
+                        android:layout_marginEnd="3dp"
+                        android:layout_marginRight="3dp"
+                        app:srcCompat="@drawable/box" />
+
+                    <Button
+                        android:id="@+id/writeStoryImageAddBtn"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginEnd="3dp"
+                        android:layout_marginRight="3dp"
+                        android:background="@drawable/plusgray"
+                        app:backgroundTint="@empty" />
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        android:layout_centerVertical="true"
+                        android:layout_toLeftOf="@id/writeStoryNextImageBtn"
+                        android:layout_toRightOf="@id/ImageAddbtnContainer">
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/writeStoryImageListRecyclerView"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp" />
+                    </FrameLayout>
+
+                    <Button
+                        android:id="@+id/writeStoryNextImageBtn"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="3dp"
+                        android:layout_marginLeft="3dp"
+                        android:layout_marginEnd="3dp"
+                        android:layout_marginRight="3dp"
+                        android:background="@drawable/nextgray"
+                        android:text="Button"
+                        app:backgroundTint="@empty" />
+
+                </RelativeLayout>
+
+                <EditText
+                    android:id="@+id/writeStoryImageCommentEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="15dp"
+                    android:background="@drawable/box"
+                    android:ems="10"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:gravity="center"
+                    android:hint="사진에 대해서 알려주세요(80자 내외)"
+                    android:inputType="textPersonName"
+                    android:textSize="16sp" />
+
+                <ScrollView
+                    android:id="@+id/wirteStoryEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="15dp"
+                    android:background="@drawable/box">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <EditText
+                            android:id="@+id/writeStoryEditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ems="10"
+                            android:focusable="true"
+                            android:focusableInTouchMode="true"
+                            android:gravity="center"
+                            android:hint="자세한 이야기를 알려주세요!"
+                            android:inputType="textMultiLine|textPersonName"
+                            android:scrollHorizontally="false"
+                            android:textSize="16sp" />
+                    </LinearLayout>
+                </ScrollView>
+
+                <RadioGroup
+                    android:id="@+id/writeStoryOpenRadioGroup"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:gravity="right"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/publicRadioButton2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="20sp"
+                        android:layout_marginRight="20sp"
+                        android:text="  사람들과 보기" />
+
+                    <RadioButton
+                        android:id="@+id/privateRadioButton2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginRight="10dp"
+                        android:text="  나 혼자만 보기" />
+                </RadioGroup>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+    </ScrollView>
+
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
@@ -71,346 +416,5 @@
         </androidx.appcompat.widget.Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
-
-    <RelativeLayout
-        android:id="@+id/writeStory"
-
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="60dp">
-
-        <LinearLayout
-            android:id="@+id/WriteStoryHeadLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginRight="20dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/writeStoryRequired1"
-                    android:layout_width="match_parent"
-                    android:layout_height="18dp"
-                    android:text="*"
-                    android:textColor="#acacac"
-                    android:textSize="18sp" />
-
-                <TextView
-                    android:id="@+id/writeStoryPreFixTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginEnd="5dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_marginBottom="3dp"
-                    android:text="말머리"
-                    android:textColor="#000000"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-            <Spinner
-                android:id="@+id/writeStoryPreFixSpinner"
-                android:layout_width="105dp"
-                android:layout_height="30dp"
-                android:layout_gravity="bottom"
-                android:layout_marginStart="5dp"
-                android:layout_marginLeft="5dp"
-                android:background="@drawable/spinnerbox"
-                android:entries="@array/storyTitleList" />
-
-            <TextView
-                android:id="@+id/storyRequiredmention"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="top"
-                android:layout_marginTop="5dp"
-                android:layout_weight="1"
-                android:gravity="right"
-                android:text="*은 필수 입력 항목입니다."
-                android:textSize="12sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/WriteStoryBodyLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/WriteStoryHeadLayout"
-            android:layout_marginStart="15dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginRight="20dp"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/writeStoryRequired"
-                android:layout_width="match_parent"
-                android:layout_height="18dp"
-                android:text="*"
-                android:textColor="#acacac"
-                android:textSize="18sp" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/writeStoryPreFixTitle2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginEnd="5dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_marginBottom="3dp"
-                    android:text="제목"
-                    android:textColor="#000000"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
-
-                <EditText
-                    android:id="@+id/writeStoryTitle"
-                    android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginLeft="5dp"
-                    android:background="#E0E0E0"
-                    android:ems="10"
-                    android:focusable="true"
-                    android:focusableInTouchMode="true"
-                    android:gravity="center"
-                    android:hint="이야기 제목"
-                    android:inputType="textPersonName"
-                    android:textSize="16sp" />
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/writeStoryRequired2"
-                android:layout_width="wrap_content"
-                android:layout_height="18dp"
-                android:text="*"
-                android:textColor="#acacac"
-                android:textSize="18sp" />
-
-            <TextView
-                android:id="@+id/writeStoryLocation"
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:layout_marginStart="5dp"
-                android:layout_marginLeft="5dp"
-                android:background="#E0E0E0"
-                android:ems="10"
-                android:paddingLeft="10dp"
-                android:gravity="center_vertical"
-                android:hint="어느 장소에 대한 이야기인가요? (장소 찾기)"
-                android:elevation="3dp"
-                android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/writeStoryRequired3"
-                android:layout_width="match_parent"
-                android:layout_height="18dp"
-                android:text="*"
-                android:textColor="#acacac"
-                android:textSize="18sp" />
-
-            <RelativeLayout
-                android:id="@+id/writeStoryImageContainer"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <ImageView
-                    android:id="@+id/writeStoryMainImageView"
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginLeft="5dp"
-                    app:srcCompat="@drawable/box" />
-
-                <ImageButton
-                    android:id="@+id/writeStorySetDeleteImageBtn"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginRight="10dp"
-                    android:background="@drawable/delete_button"
-
-                    android:backgroundTint="#8C8B8B"
-                    app:backgroundTint="@empty" />
-
-                <Button
-                    android:id="@+id/writeStorySetMainImageBtn"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:layout_alignBottom="@id/writeStoryMainImageView"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentBottom="false"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:background="@drawable/mainimageset"
-                    app:backgroundTint="@empty"
-                    app:rippleColor="#FFFFFF" />
-
-                <TextView
-                    android:id="@+id/mainImagetext"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentTop="true"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/beigebox"
-                    android:gravity="center"
-                    android:padding="10dp"
-                    android:text="대 표"
-                    android:visibility="invisible" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp">
-
-                <ImageView
-                    android:id="@+id/ImageAddbtnContainer"
-                    android:layout_width="45dp"
-                    android:layout_height="45dp"
-                    android:layout_gravity="left"
-                    android:layout_marginStart="3dp"
-                    android:layout_marginLeft="3dp"
-                    android:layout_marginEnd="3dp"
-                    android:layout_marginRight="3dp"
-                    app:srcCompat="@drawable/box" />
-
-                <Button
-                    android:id="@+id/writeStoryImageAddBtn"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginEnd="3dp"
-                    android:layout_marginRight="3dp"
-                    android:background="@drawable/plusgray"
-                    app:backgroundTint="@empty" />
-
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="45dp"
-                    android:layout_centerVertical="true"
-                    android:layout_toLeftOf="@id/writeStoryNextImageBtn"
-                    android:layout_toRightOf="@id/ImageAddbtnContainer">
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/writeStoryImageListRecyclerView"
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp" />
-                </FrameLayout>
-
-                <Button
-                    android:id="@+id/writeStoryNextImageBtn"
-                    android:layout_width="15dp"
-                    android:layout_height="15dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="3dp"
-                    android:layout_marginLeft="3dp"
-                    android:layout_marginEnd="3dp"
-                    android:layout_marginRight="3dp"
-                    android:background="@drawable/nextgray"
-                    android:text="Button"
-                    app:backgroundTint="@empty" />
-
-            </RelativeLayout>
-
-            <EditText
-                android:id="@+id/writeStoryImageCommentEditText"
-                android:layout_width="match_parent"
-                android:layout_height="35dp"
-                android:layout_marginStart="5dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="15dp"
-                android:background="@drawable/box"
-                android:ems="10"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:gravity="center"
-                android:hint="사진에 대해서 알려주세요(80자 내외)"
-                android:inputType="textPersonName"
-                android:textSize="16sp" />
-
-            <ScrollView
-                android:id="@+id/wirteStoryEditText"
-                android:layout_width="match_parent"
-                android:layout_height="250dp"
-                android:layout_marginStart="5dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="15dp"
-                android:background="@drawable/box">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <EditText
-                        android:id="@+id/writeStoryEditText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:ems="10"
-                        android:focusable="true"
-                        android:focusableInTouchMode="true"
-                        android:gravity="center"
-                        android:hint="자세한 이야기를 알려주세요!"
-                        android:inputType="textMultiLine|textPersonName"
-                        android:scrollHorizontally="false"
-                        android:textSize="16sp" />
-                </LinearLayout>
-            </ScrollView>
-
-            <RadioGroup
-                android:id="@+id/writeStoryOpenRadioGroup"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
-                android:gravity="right"
-                android:orientation="horizontal">
-
-                <RadioButton
-                    android:id="@+id/publicRadioButton2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="20sp"
-                    android:layout_marginRight="20sp"
-                    android:text="  사람들과 보기" />
-
-                <RadioButton
-                    android:id="@+id/privateRadioButton2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginRight="10dp"
-                    android:text="  나 혼자만 보기" />
-            </RadioGroup>
-
-        </LinearLayout>
-
-    </RelativeLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

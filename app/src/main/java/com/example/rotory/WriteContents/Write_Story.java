@@ -67,6 +67,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import kotlin.Unit;
+
 public class Write_Story extends AppCompatActivity  {
     private final String TAG = "Write_Story";
     private static final int Map_RESULT_CODE = 5200;
@@ -430,6 +432,7 @@ public class Write_Story extends AppCompatActivity  {
         DBStoryContents.put("address", address);
         DBStoryContents.put("title", title);
         DBStoryContents.put("isPublic", isPublic);
+        DBStoryContents.put("liked", "0");
         DBStoryContents.put("writeDate",appConstant.dateFormat.format(new Date()));
 
         setUserDB();
@@ -714,6 +717,5 @@ public class Write_Story extends AppCompatActivity  {
             }
 
         }
-
     }
 }
