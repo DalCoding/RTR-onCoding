@@ -2,12 +2,15 @@ package com.example.rotory.Theme;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Point;
+import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -46,13 +49,15 @@ public class ThemeItemAdapter  extends RecyclerView.Adapter<ThemeItemAdapter.the
     ImageView tcardThemeImg;
     TextView tcardThemeText;
     Display mDisplay;
+    int randomSize;
 
     ArrayList<Tags> themeList;
-    public ThemeItemAdapter(ArrayList<Tags> getThemeList,Context context, Display display) {
+    public ThemeItemAdapter(ArrayList<Tags> getThemeList,Context context, Display display, int size) {
         user = mAuth.getCurrentUser();
        themeList = getThemeList;
        mContext = context;
        mDisplay = display;
+       randomSize = size;
 
     }
 
@@ -82,7 +87,7 @@ public class ThemeItemAdapter  extends RecyclerView.Adapter<ThemeItemAdapter.the
 
     public class themeViewHolder extends RecyclerView.ViewHolder{
         private View view;
-
+        Button myTagBtn;
 
         public themeViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -90,6 +95,7 @@ public class ThemeItemAdapter  extends RecyclerView.Adapter<ThemeItemAdapter.the
             tcardThemeImg =itemView.findViewById(R.id.tcardThemeImg);
             tcardThemeText = itemView.findViewById(R.id.tcardThemeText);
             themeCardView = itemView.findViewById(R.id.themeCardView);
+            myTagBtn = itemView.findViewById(R.id.myTagBtn);
         }
 
         public void setThemeCard(Tags item, int position){
@@ -99,8 +105,15 @@ public class ThemeItemAdapter  extends RecyclerView.Adapter<ThemeItemAdapter.the
             themeCardView.setMinimumWidth(point.x/2);
 
             if (position > 0) {
-                tcardThemeText.setText(item.getTag());
-                appConstant.getThemeImage(item.getTag(), tcardThemeImg, mContext);
+                if (position <= (8-randomSize)){
+                    myTagBtn.setVisibility(View.INVISIBLE);
+                }else {
+                    Log.d(TAG, String.valueOf(8-randomSize));
+                    myTagBtn.setVisibility(View.VISIBLE);
+                    tcardThemeText.setText(item.getTag());
+                    appConstant.getThemeImage(item.getTag(), tcardThemeImg, mContext);
+                }
+
             }else {
                 tcardThemeText.setText("다람쥐 탐험");
                 tcardThemeImg.setImageResource(R.drawable.daramwithcity4);

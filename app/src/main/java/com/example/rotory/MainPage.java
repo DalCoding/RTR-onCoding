@@ -529,7 +529,7 @@ public class MainPage extends Fragment
                         });
 
                         // 핀 표시 -> 표시할 개수 선정
-                        for (int k = 0; k < 6; k++) {
+                       /* for (int k = 0; k < 6; k++) {
                             // DB에서 핀들의 정보 (이름, 하단팝업정보 등) 가져와야함)
                             LatLng point1 = nearPin2.get(k).getPoint();
                             MarkerOps1 = new MarkerOptions();
@@ -542,7 +542,7 @@ public class MainPage extends Fragment
 
                         }
 
-                        loadRoadList(nearPin2, rootView);
+                        loadRoadList(nearPin2, rootView);*/
                     }
                 }
             }
