@@ -268,7 +268,6 @@
                         android:layout_marginEnd="3dp"
                         android:layout_marginRight="3dp"
                         android:background="@drawable/nextgray"
-                        android:text="Button"
                         app:backgroundTint="@empty" />
 
                 </RelativeLayout>

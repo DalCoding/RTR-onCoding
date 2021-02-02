@@ -576,7 +576,7 @@ public class MainPage extends Fragment
         if(nearPin2.size() < 6){
             for (int k = 0; k < nearPin2.size(); k++) {
                 String documentId = nearPin2.get(k).getDocumentId();
-                int finalK = k;
+                //int finalK = k;
                 db.collection("contents").document(documentId)
                         .get().addOnCompleteListener(new OnCompleteListener() {
 
@@ -590,7 +590,7 @@ public class MainPage extends Fragment
                             String hour = (String) document.get("hour");
                             String min = (String) document.get("min");
 
-                            adapter.addItem(new Contents((finalK + 1) + ". " + title, tag1, hour + "시간 " + min + "분", contentsId));
+                            adapter.addItem(new Contents( title, tag1, hour + "시간 " + min + "분", contentsId));
                               /*  MyAdapter(options, rootView, contentsId);
                                 adapter.startListening();
                                 mainRoadList.setAdapter(adapter); */
@@ -603,7 +603,7 @@ public class MainPage extends Fragment
         }else {
             for (int k = 0; k < 6; k++) {
                 String documentId = nearPin2.get(k).getDocumentId();
-                int finalK = k;
+               // int finalK = k;
                 db.collection("contents").document(documentId)
                         .get().addOnCompleteListener(new OnCompleteListener() {
 
@@ -617,7 +617,7 @@ public class MainPage extends Fragment
                             String hour = (String) document.get("hour");
                             String min = (String) document.get("min");
 
-                            adapter.addItem(new Contents((finalK + 1) + ". " + title, tag1, hour + "시간 " + min + "분", contentsId));
+                            adapter.addItem(new Contents( title, tag1, hour + "시간 " + min + "분", contentsId));
                               /*  MyAdapter(options, rootView, contentsId);
                                 adapter.startListening();
                                 mainRoadList.setAdapter(adapter); */
