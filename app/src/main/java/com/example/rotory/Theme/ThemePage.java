@@ -248,7 +248,7 @@ public class ThemePage extends AppCompatActivity implements OnTabItemSelectedLis
                     case R.id.home:
                         progressDialogs.show();
                         startTagsLoading(300);
-                        Intent intent = new Intent(ThemePage.this, ThemePage.class);
+                        Intent intent = new Intent(ThemePage.this, MainActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
                         bottomNavigation.setVisibility(View.VISIBLE);
