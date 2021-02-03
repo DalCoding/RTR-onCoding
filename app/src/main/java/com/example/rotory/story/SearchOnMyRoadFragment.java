@@ -21,6 +21,8 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -40,6 +42,8 @@ public class SearchOnMyRoadFragment extends Fragment {
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirestoreRecyclerAdapter adapter;
+    FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    FirebaseUser user;
 
     String placeText;
     String placeNameText;
@@ -73,10 +77,14 @@ public class SearchOnMyRoadFragment extends Fragment {
 
     private void initUI(ViewGroup rootView) {
 
+        user = mAuth.getCurrentUser();
+
         textView = rootView.findViewById(R.id.textView3);
         recyclerView = rootView.findViewById(R.id.writeStoryMyRoadsSearchRecyclerView);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
+
+        String userUid = user.getUid();
 
         db.collection("contents")
                 .orderBy("writeDate", Query.Direction.DESCENDING)
@@ -98,7 +106,8 @@ public class SearchOnMyRoadFragment extends Fragment {
                                 }
                             }
                             Query query = db.collection("contents")
-                                    .whereEqualTo("contentsType", 0);
+                                    .whereEqualTo("contentsType", 0)
+                                    .whereEqualTo("uid", userUid);
 
                             FirestoreRecyclerOptions<MyRoad> options = new FirestoreRecyclerOptions.Builder<MyRoad>()
                                     .setQuery(query, MyRoad.class)
