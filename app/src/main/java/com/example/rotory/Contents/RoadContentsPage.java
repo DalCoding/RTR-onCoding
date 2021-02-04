@@ -178,9 +178,7 @@ public class RoadContentsPage extends Fragment implements OnMapReadyCallback, Go
                 .setQuery(query, Contents.class)
                 .build();
 
-        if (user != null) {
-            initUI(rootView);
-        }
+        initUI(rootView);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.rcontentsMap);
         mapFragment.getMapAsync(this);
@@ -263,7 +261,7 @@ public class RoadContentsPage extends Fragment implements OnMapReadyCallback, Go
         commentAdapter.startListening();
         rCommRView.setAdapter(commentAdapter);
 
-        String userId = user.getEmail();
+        //String userId = user.getEmail();
 
     }
 
@@ -460,7 +458,7 @@ public class RoadContentsPage extends Fragment implements OnMapReadyCallback, Go
                     commLevelImg.setImageResource(appConstant.getUserLevelImage(userLevel));
                     String commentedUser = task.getResult().get("userId").toString();
                     Log.d(TAG, "댓글단사람" + commentedUser);
-                    Log.d(TAG, "현재 사용자 확인" + user.getEmail());
+                    
                     if (user != null) {
                         if (user.getEmail().equals(commentedUser)) {
                             commReportText.setVisibility(View.INVISIBLE);
@@ -597,7 +595,10 @@ public class RoadContentsPage extends Fragment implements OnMapReadyCallback, Go
                             @Override
                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                 for (QueryDocumentSnapshot snapshot : task.getResult()){
-                                    setIcons.getUserActivityIcon(snapshot.getId(), "myStar", rcontentsStarImg, R.drawable.starfilled, R.drawable.star);
+                                    if (user != null){
+                                        setIcons.getUserActivityIcon(snapshot.getId(), "myStar", rcontentsStarImg, R.drawable.starfilled, R.drawable.star);
+
+                                    }
                                 }
                             }
                         });

@@ -229,7 +229,8 @@ public class MainActivity extends AppCompatActivity implements OnTabItemSelected
                    pop2FloatingBtn.setEnabled(false);
                     isFabOpen = true;
                 }
-
+                popFloatingBtn.bringToFront();
+                pop2FloatingBtn.bringToFront();
             }
         });
 
