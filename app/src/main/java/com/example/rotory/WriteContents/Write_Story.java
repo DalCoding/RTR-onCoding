@@ -602,7 +602,7 @@ public class Write_Story extends AppCompatActivity  {
         super.onActivityResult(requestCode, resultCode, data);
         //갤러리 이미지 가져오기
 
-        if (requestCode == CODE_ALBUM_REQUEST && resultCode == RESULT_OK && data != null) {
+        if (requestCode == CODE_ALBUM_REQUEST && resultCode == RESULT_OK && data.getClipData() != null) {
             if (data.getClipData() != null) {
                 ClipData clipData = data.getClipData();
                 if (clipData.getItemCount() > 10) { // 10개 초과하여 이미지를 선택한 경우
@@ -610,15 +610,15 @@ public class Write_Story extends AppCompatActivity  {
                     return;
                 } else if (clipData.getItemCount() == 1) { //멀티선택에서 하나만 선택한 경우
                     Uri filePath = clipData.getItemAt(0).getUri();
-                    uriList.add(0, filePath);
+                    uriList.add(filePath);
+
                 } else if (clipData.getItemCount() > 1 && clipData.getItemCount() <= 10) { //1개초과  10개 이하의 이미지선택한 경우
                     for (int i = 0; i < clipData.getItemCount(); i++) {
-
-                        uriList.add(0, clipData.getItemAt(i).getUri());
+                        uriList.add(clipData.getItemAt(i).getUri());
 
                     }
                 }
-
+                adapter.notifyDataSetChanged();
             }
 
             if (requestCode == CODE_ALBUM_REQUEST) {
