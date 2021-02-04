@@ -66,13 +66,13 @@
 
                     <Button
                         android:id="@+id/mainAlarmBtn"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
+                        android:layout_width="23dp"
+                        android:layout_height="25dp"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:layout_marginEnd="20dp"
-                        android:layout_marginRight="20dp"
-                        android:background="@drawable/notificationwhite"
+                        android:layout_marginRight="25dp"
+                        android:background="@drawable/sign_out"
                         android:visibility="visible"
                         app:backgroundTint="@empty" />
 

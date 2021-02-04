@@ -83,7 +83,7 @@ public class Write_Story extends AppCompatActivity  {
     RelativeLayout writeStory;
 
     Button addbtn;
-    Button mainbtn;
+    ImageButton mainbtn;
     Button checkmarkBtn;
 
     RadioButton publicRadioButton;

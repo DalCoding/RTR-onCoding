@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -115,7 +116,7 @@ public class RoadContentsPage extends Fragment implements OnMapReadyCallback, Go
     TextView commTimeText;
     ImageView commLevelImg;
 
-    CardView dtrInfo;
+    FrameLayout dtrInfo;
 
     RecyclerView tagRecyclerView;
     RoadTagAdapter roadTagAdapter;
@@ -326,7 +327,7 @@ public class RoadContentsPage extends Fragment implements OnMapReadyCallback, Go
                             markerOptions.position(latLng);
                             markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.acorn2));
                             map.addMarker(markerOptions);
-                            map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 14));
+                            map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16));
 
                             ArrayList<String> infoList = new ArrayList<>();
                             infoList.add(dtrName.get(i));

@@ -107,7 +107,7 @@
             <RelativeLayout
                 android:id="@+id/bottomNavUnderbarHome"
                 android:layout_width="70dp"
-                android:layout_height="7dp"
+                android:layout_height="3dp"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentBottom="true"
                 android:layout_marginStart="35dp"
@@ -120,7 +120,7 @@
             <RelativeLayout
                 android:id="@+id/bottomNavUnderbarTheme"
                 android:layout_width="70dp"
-                android:layout_height="7dp"
+                android:layout_height="3dp"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
                 android:layout_marginStart="35dp"
@@ -133,7 +133,7 @@
             <RelativeLayout
                 android:id="@+id/bottomNavUnderbarUser"
                 android:layout_width="70dp"
-                android:layout_height="7dp"
+                android:layout_height="3dp"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentBottom="true"
                 android:layout_marginStart="35dp"
