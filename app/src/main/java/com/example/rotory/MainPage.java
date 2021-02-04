@@ -528,7 +528,7 @@ public class MainPage extends Fragment
                             }
                         });
 
-                        if(nearPin2.size() < 6){
+                        if(nearPin2.size() < 10){
                             for (int k = 0; k <nearPin2.size(); k++) {
                                 // DB에서 핀들의 정보 (이름, 하단팝업정보 등) 가져와야함)
                                 LatLng point1 = nearPin2.get(k).getPoint();
@@ -536,7 +536,7 @@ public class MainPage extends Fragment
                                 MarkerOps1.position(point1);
                                 //    myLocationMarker.title("●내위치\n");
                                 //    myLocationMarker.snippet("●GPS로확인한위치");
-                                int[] dtrImageName = {R.drawable.acorn_number1, R.drawable.acorn_number2, R.drawable.acorn_number3, R.drawable.acorn_number4, R.drawable.acorn_number5, R.drawable.acorn_number6};
+                                int[] dtrImageName = {R.drawable.acorn_number1, R.drawable.acorn_number2, R.drawable.acorn_number3, R.drawable.acorn_number4, R.drawable.acorn_number5, R.drawable.acorn_number6, R.drawable.acorn_number7, R.drawable.acorn_number8, R.drawable.acorn_number9, R.drawable.acorn_number10};
                                 MarkerOps1.icon(BitmapDescriptorFactory.fromResource(dtrImageName[k]));
                                 Marker1 = map.addMarker(MarkerOps1);
               // 핀 표시 -> 표시할 개수 선정
@@ -544,14 +544,14 @@ public class MainPage extends Fragment
 
                         }else {
                             // 핀 표시 -> 표시할 개수 선정
-                            for (int k = 0; k < 6; k++) {
+                            for (int k = 0; k < 10; k++) {
                                 // DB에서 핀들의 정보 (이름, 하단팝업정보 등) 가져와야함)
                                 LatLng point1 = nearPin2.get(k).getPoint();
                                 MarkerOps1 = new MarkerOptions();
                                 MarkerOps1.position(point1);
                                 //    myLocationMarker.title("●내위치\n");
                                 //    myLocationMarker.snippet("●GPS로확인한위치");
-                                int[] dtrImageName = {R.drawable.acorn_number1, R.drawable.acorn_number2, R.drawable.acorn_number3, R.drawable.acorn_number4, R.drawable.acorn_number5, R.drawable.acorn_number6};
+                                int[] dtrImageName = {R.drawable.acorn_number1, R.drawable.acorn_number2, R.drawable.acorn_number3, R.drawable.acorn_number4, R.drawable.acorn_number5, R.drawable.acorn_number6, R.drawable.acorn_number7, R.drawable.acorn_number8, R.drawable.acorn_number9, R.drawable.acorn_number10};
                                 MarkerOps1.icon(BitmapDescriptorFactory.fromResource(dtrImageName[k]));
                                 Marker1 = map.addMarker(MarkerOps1);
 
@@ -573,7 +573,7 @@ public class MainPage extends Fragment
         LinearLayoutManager layoutManager=new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         mainRoadList.setLayoutManager(layoutManager);
 
-        if(nearPin2.size() < 6){
+        if(nearPin2.size() < 10){
             for (int k = 0; k < nearPin2.size(); k++) {
                 String documentId = nearPin2.get(k).getDocumentId();
                 //int finalK = k;
@@ -601,7 +601,7 @@ public class MainPage extends Fragment
                 });
             }
         }else {
-            for (int k = 0; k < 6; k++) {
+            for (int k = 0; k < 10; k++) {
                 String documentId = nearPin2.get(k).getDocumentId();
                // int finalK = k;
                 db.collection("contents").document(documentId)
@@ -780,7 +780,7 @@ public class MainPage extends Fragment
                     });
 
                     // 핀 표시 + 선연결 -> 표시할 개수 선정
-                    for (int k=0; k<6; k++) {
+                    for (int k=0; k<10; k++) {
 
                         String documentId = nearPin2.get(k).getDocumentId();
                         db.collection("contents").document(documentId)
