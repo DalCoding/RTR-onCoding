@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +29,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.rotory.Comment;
 
 import com.example.rotory.Interface.OnUserActItemClickListener;
+import com.example.rotory.MainActivity;
 import com.example.rotory.R;
 import com.example.rotory.Theme.Tags;
 import com.example.rotory.VO.AppConstant;
@@ -63,12 +65,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static androidx.recyclerview.widget.RecyclerView.HORIZONTAL;
+import static com.firebase.ui.auth.AuthUI.getApplicationContext;
 
 
 public class RoadContentsPage extends Fragment implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
     final static String TAG = "RoadContentsPage";
     AppConstant appConstant = new AppConstant();
     SetIcons setIcons = new SetIcons();
+    Handler handler = new Handler();
 
     String contentsID;
     //Bundle contentsBundle = this.getArguments();
@@ -633,7 +637,24 @@ public class RoadContentsPage extends Fragment implements OnMapReadyCallback, Go
                             Log.d(TAG, "하트 아이콘 클릭");
                             setIcons.isInList(contentsID, contentsList, "myLike", user,
                                     rcontentsHeartImg, listener, context);
-                        }
+                            handler.postDelayed(new Runnable() {
+                                public void run() {
+                                    db.collection("contents").document(contentsID)
+                                            .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                            String scarpNum  = (String) task.getResult().get("liked");
+                                            if (scarpNum != null){
+                                                rcontentsHeartNum.setText(scarpNum);
+                                            }else{
+                                                rcontentsHeartNum.setText("0");
+                                            }
+                                        }
+                                    });
+                                }
+                            }, 500);}
+
+
                     }
                 });
                 rcontentsStarImg.setOnClickListener(new View.OnClickListener() {
@@ -656,8 +677,27 @@ public class RoadContentsPage extends Fragment implements OnMapReadyCallback, Go
                             setIcons.isInList(contentsID, contentsList, "myScrap", user,
                                     rcontentsScrapImg, listener, context);
                         Log.d(TAG, "태그 아이콘 클릭");
+
+
+                            handler.postDelayed(new Runnable() {
+                                public void run() {
+                                    db.collection("contents").document(contentsID)
+                                            .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                            String scarpNum  = (String) task.getResult().get("scrapped");
+                                            if (scarpNum != null){
+                                                rcontentsScrapNum.setText(scarpNum);
+                                                Log.d(TAG, "태그 아이콘 클릭" + scarpNum);
+                                            }else {
+                                                rcontentsScrapNum.setText("0");
+                                            }
+                                        }
+                                    });
+                                  }
+                            }, 500);}
                         }
-                    }
+
                 });
             } else {
                 rcontentsHeartImg.setOnClickListener(new View.OnClickListener() {

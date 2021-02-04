@@ -10,6 +10,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -123,6 +124,7 @@ public class StoryContentsPage extends Fragment {
     Boolean isSignIn = false;
     int imagePosition;
 
+    Handler handler = new Handler();
 
     private FirestoreRecyclerAdapter commentAdapter;
 
@@ -514,7 +516,23 @@ public class StoryContentsPage extends Fragment {
                         Log.d(TAG, "하트아이콘 클릭");
                         setIcons.isInList(contentsId, contentsList, "myLike", user,
                                 scontentsHeartImg,listener, context);
-                    }
+                        handler.postDelayed(new Runnable() {
+                            public void run() {
+                                db.collection("contents").document(contentsID)
+                                        .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                        String scarpNum  = (String) task.getResult().get("liked");
+                                        if (scarpNum != null){
+                                            scontentsHeartNum.setText(scarpNum);
+                                        }else{
+                                            scontentsHeartNum.setText("0");
+                                        }
+                                    }
+                                });
+                            }
+                        }, 500);}
+
                 }
             });
             scontentsStarImg.setOnClickListener(new View.OnClickListener() {
@@ -539,7 +557,24 @@ public class StoryContentsPage extends Fragment {
                         Log.d(TAG, "태그아이콘 클릭");
                     }
 
-                }
+                    handler.postDelayed(new Runnable() {
+                        public void run() {
+                            db.collection("contents").document(contentsID)
+                                    .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                    String scarpNum  = (String) task.getResult().get("scrapped");
+                                    if (scarpNum != null){
+                                        scontentsScrapNum.setText(scarpNum);
+                                        Log.d(TAG, "태그 아이콘 클릭" + scarpNum);
+                                    }else {
+                                        scontentsScrapNum.setText("0");
+                                    }
+                                }
+                            });
+                        }
+                    }, 500);}
+
             });
         } else {
             scontentsHeartImg.setOnClickListener(new View.OnClickListener() {
