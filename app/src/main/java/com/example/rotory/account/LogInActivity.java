@@ -134,7 +134,7 @@ public class LogInActivity extends AppCompatActivity  {
 
     private  void movePage(Class className){
         Intent intent = new Intent(LogInActivity.this, className);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
 

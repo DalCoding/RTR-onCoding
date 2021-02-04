@@ -215,8 +215,8 @@ public class WriteRoadPage extends AppCompatActivity implements OnMapReadyCallba
                         if (tagItems.contains(tagText)){
                             tagItems.remove(tagText);
                         }else {
-                            if (tagItems.size()==8){
-                                Toast.makeText(getApplicationContext(),"태그는 8개 까지 선택가능합니다.",Toast.LENGTH_SHORT).show();
+                            if (tagItems.size()==10){
+                                Toast.makeText(getApplicationContext(),"태그는 10개 까지 선택가능합니다.",Toast.LENGTH_SHORT).show();
                             }{
                                 tagItems.add(tagText);
                             }
@@ -344,7 +344,7 @@ public class WriteRoadPage extends AppCompatActivity implements OnMapReadyCallba
 
     private void saveCustomTag() {
         Map<String, String> customTag = new HashMap<>();
-        addedCustomTag =addedCustomTag;
+        addedCustomTag ="#"+addedCustomTag;
         customTag.put(addedCustomTag, addedCustomTag);
         db.collection("tag").whereEqualTo(addedCustomTag, addedCustomTag)
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
