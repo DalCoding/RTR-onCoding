@@ -66,13 +66,13 @@
 
                     <Button
                         android:id="@+id/mainAlarmBtn"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
+                        android:layout_width="23dp"
+                        android:layout_height="25dp"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:layout_marginEnd="20dp"
-                        android:layout_marginRight="20dp"
-                        android:background="@drawable/notificationwhite"
+                        android:layout_marginRight="25dp"
+                        android:background="@drawable/sign_out"
                         android:visibility="visible"
                         app:backgroundTint="@empty" />
 
@@ -195,17 +195,17 @@
 
     <Button
         android:id="@+id/popFloatingBtn2"
-        android:layout_width="100dp"
-        android:layout_height="80dp"
+        android:layout_width="120dp"
+        android:layout_height="100dp"
         android:layout_gravity="bottom|right"
         android:layout_marginRight="120dp"
         android:layout_marginBottom="145dp"
-        android:background="@drawable/brownlinebox"
+        android:background="@drawable/beigebox"
         android:clickable="false"
         android:drawableTop="@drawable/roadicon_small"
         android:enabled="false"
         android:gravity="center"
-        android:paddingTop="15dp"
+        android:paddingTop="20dp"
         android:text="도토리길"
         android:textColor="@color/brown"
         android:textSize="14sp"
@@ -213,16 +213,16 @@
 
     <Button
         android:id="@+id/pop2FloatingBtn2"
-        android:layout_width="100dp"
-        android:layout_height="80dp"
+        android:layout_width="120dp"
+        android:layout_height="100dp"
         android:layout_gravity="bottom|right"
         android:layout_marginRight="20dp"
         android:layout_marginBottom="145dp"
-        android:background="@drawable/brownlinebox"
+        android:background="@drawable/beigebox"
         android:clickable="false"
         android:drawableTop="@drawable/storyicon"
         android:enabled="false"
-        android:paddingTop="15dp"
+        android:paddingTop="20dp"
         android:text="다람쥐이야기"
         android:textColor="@color/brown"
         android:visibility="visible" />
@@ -249,7 +249,7 @@
             <RelativeLayout
                 android:id="@+id/bottomNavUnderbarHome"
                 android:layout_width="70dp"
-                android:layout_height="7dp"
+                android:layout_height="3dp"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentBottom="true"
                 android:layout_marginStart="35dp"
@@ -262,7 +262,7 @@
             <RelativeLayout
                 android:id="@+id/bottomNavUnderbarTheme"
                 android:layout_width="70dp"
-                android:layout_height="7dp"
+                android:layout_height="3dp"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
                 android:layout_marginStart="35dp"
@@ -275,7 +275,7 @@
             <RelativeLayout
                 android:id="@+id/bottomNavUnderbarUser"
                 android:layout_width="70dp"
-                android:layout_height="7dp"
+                android:layout_height="3dp"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentBottom="true"
                 android:layout_marginLeft="35dp"

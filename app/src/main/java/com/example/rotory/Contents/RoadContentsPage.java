@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -27,6 +29,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.rotory.Comment;
 
 import com.example.rotory.Interface.OnUserActItemClickListener;
+import com.example.rotory.MainActivity;
 import com.example.rotory.R;
 import com.example.rotory.Theme.Tags;
 import com.example.rotory.VO.AppConstant;
@@ -62,12 +65,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static androidx.recyclerview.widget.RecyclerView.HORIZONTAL;
+import static com.firebase.ui.auth.AuthUI.getApplicationContext;
 
 
 public class RoadContentsPage extends Fragment implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
     final static String TAG = "RoadContentsPage";
     AppConstant appConstant = new AppConstant();
     SetIcons setIcons = new SetIcons();
+    Handler handler = new Handler();
 
     String contentsID;
     //Bundle contentsBundle = this.getArguments();
@@ -115,7 +120,7 @@ public class RoadContentsPage extends Fragment implements OnMapReadyCallback, Go
     TextView commTimeText;
     ImageView commLevelImg;
 
-    CardView dtrInfo;
+    FrameLayout dtrInfo;
 
     RecyclerView tagRecyclerView;
     RoadTagAdapter roadTagAdapter;
@@ -178,9 +183,7 @@ public class RoadContentsPage extends Fragment implements OnMapReadyCallback, Go
                 .setQuery(query, Contents.class)
                 .build();
 
-        if (user != null) {
-            initUI(rootView);
-        }
+        initUI(rootView);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.rcontentsMap);
         mapFragment.getMapAsync(this);
@@ -263,7 +266,7 @@ public class RoadContentsPage extends Fragment implements OnMapReadyCallback, Go
         commentAdapter.startListening();
         rCommRView.setAdapter(commentAdapter);
 
-        String userId = user.getEmail();
+        //String userId = user.getEmail();
 
     }
 
@@ -328,7 +331,7 @@ public class RoadContentsPage extends Fragment implements OnMapReadyCallback, Go
                             markerOptions.position(latLng);
                             markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.acorn2));
                             map.addMarker(markerOptions);
-                            map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 14));
+                            map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16));
 
                             ArrayList<String> infoList = new ArrayList<>();
                             infoList.add(dtrName.get(i));
@@ -460,7 +463,7 @@ public class RoadContentsPage extends Fragment implements OnMapReadyCallback, Go
                     commLevelImg.setImageResource(appConstant.getUserLevelImage(userLevel));
                     String commentedUser = task.getResult().get("userId").toString();
                     Log.d(TAG, "댓글단사람" + commentedUser);
-                    Log.d(TAG, "현재 사용자 확인" + user.getEmail());
+                    
                     if (user != null) {
                         if (user.getEmail().equals(commentedUser)) {
                             commReportText.setVisibility(View.INVISIBLE);
@@ -597,7 +600,10 @@ public class RoadContentsPage extends Fragment implements OnMapReadyCallback, Go
                             @Override
                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                 for (QueryDocumentSnapshot snapshot : task.getResult()){
-                                    setIcons.getUserActivityIcon(snapshot.getId(), "myStar", rcontentsStarImg, R.drawable.starfilled, R.drawable.star);
+                                    if (user != null){
+                                        setIcons.getUserActivityIcon(snapshot.getId(), "myStar", rcontentsStarImg, R.drawable.starfilled, R.drawable.star);
+
+                                    }
                                 }
                             }
                         });
@@ -631,7 +637,24 @@ public class RoadContentsPage extends Fragment implements OnMapReadyCallback, Go
                             Log.d(TAG, "하트 아이콘 클릭");
                             setIcons.isInList(contentsID, contentsList, "myLike", user,
                                     rcontentsHeartImg, listener, context);
-                        }
+                            handler.postDelayed(new Runnable() {
+                                public void run() {
+                                    db.collection("contents").document(contentsID)
+                                            .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                            String scarpNum  = (String) task.getResult().get("liked");
+                                            if (scarpNum != null){
+                                                rcontentsHeartNum.setText(scarpNum);
+                                            }else{
+                                                rcontentsHeartNum.setText("0");
+                                            }
+                                        }
+                                    });
+                                }
+                            }, 500);}
+
+
                     }
                 });
                 rcontentsStarImg.setOnClickListener(new View.OnClickListener() {
@@ -654,8 +677,27 @@ public class RoadContentsPage extends Fragment implements OnMapReadyCallback, Go
                             setIcons.isInList(contentsID, contentsList, "myScrap", user,
                                     rcontentsScrapImg, listener, context);
                         Log.d(TAG, "태그 아이콘 클릭");
+
+
+                            handler.postDelayed(new Runnable() {
+                                public void run() {
+                                    db.collection("contents").document(contentsID)
+                                            .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                            String scarpNum  = (String) task.getResult().get("scrapped");
+                                            if (scarpNum != null){
+                                                rcontentsScrapNum.setText(scarpNum);
+                                                Log.d(TAG, "태그 아이콘 클릭" + scarpNum);
+                                            }else {
+                                                rcontentsScrapNum.setText("0");
+                                            }
+                                        }
+                                    });
+                                  }
+                            }, 500);}
                         }
-                    }
+
                 });
             } else {
                 rcontentsHeartImg.setOnClickListener(new View.OnClickListener() {

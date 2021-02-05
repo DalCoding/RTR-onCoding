@@ -3,7 +3,7 @@
     android:layout_width="150dp"
     android:layout_height="120dp"
     android:layout_margin="10dp"
-    android:background="@drawable/ripple_custom_list"
+    android:background="@drawable/brownlinebox"
     android:clickable="true">
 
     <LinearLayout
