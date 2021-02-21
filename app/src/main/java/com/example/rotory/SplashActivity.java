@@ -17,12 +17,7 @@ public class SplashActivity extends AppCompatActivity implements AutoPermissions
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         AutoPermissions.Companion.loadAllPermissions(this, 101);
-        handler.postDelayed(new Runnable() {
-            public void run() {
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(intent);
-                finish();}
-                }, 4000);}
+        }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
@@ -37,6 +32,12 @@ public class SplashActivity extends AppCompatActivity implements AutoPermissions
 
     @Override
     public void onGranted(int requestCode, String[] permissions) {
+        handler.postDelayed(new Runnable() {
+            public void run() {
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
+                finish();}
+        }, 4000);
         Log.d("퍼미션", "permissions granted : " + permissions.length);
     }
 }

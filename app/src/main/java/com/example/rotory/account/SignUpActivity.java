@@ -214,18 +214,6 @@ public class SignUpActivity extends AppCompatActivity {
                     Log.e(TAG, "firebaseauth 연결 안됨");
                 }
 
-             /*   String data = sharedPref.getString("#0", "");
-                Log.d(TAG, "모든 데이터 삭제전 -> " + data);
-                editor.clear();
-                editor.commit();
-
-                Log.d(TAG, "모든 데이터 삭제? -> " + data);*/
-
-                /*if (userId.equals("") || userId.length() == 0) {
-                    signin_id_check.setText("아이디를 입력해 주세요");
-                    signin_id_check.setVisibility(View.VISIBLE);
-                    return;
-                } else*/
                 if (checkValidation2()) {
                     setNewAccount(persons);
                     //checkUser(userName);
@@ -249,34 +237,6 @@ public class SignUpActivity extends AppCompatActivity {
         });
     }
 
-    private String checkExistData(SharedPreferences sharedPref, SharedPreferences.Editor editor) {
-
-        userName = signin_nicname_edittext.getText().toString();
-        db.collection("person")
-                .whereEqualTo("userName", userName)
-                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    int i = 0;
-                    for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
-
-                        editor.putString("#" + i, documentSnapshot.getId());
-                        Log.d(TAG, i + ":" + documentSnapshot.getId());
-                        i++;
-                        //Log.d(TAG, documentSnapshot.getId());
-                    }
-                    editor.commit();
-
-                } else {
-                    Log.d("TAG", "Error getting documents: " + task.getException().toString(), task.getException());
-                }
-            }
-        });
-        String checkResultList = sharedPref.getString("#0", "");
-        return checkResultList;
-
-    }
 
     private final void signUp(final String userId, final String password,
                               Person persons, FirebaseUser user) {
@@ -352,7 +312,9 @@ public class SignUpActivity extends AppCompatActivity {
             return false;
         } else if (!mobilePattern) {
             return false;
-        }/* else if (!signin_pin_button.isEnabled()){
+        }
+        //컴퓨터 SHA-1, SHA-256 키 입력안되면 작동 에러 발생, 회원가입을 위해 막아둠
+        /* else if (!signin_pin_button.isEnabled()){
             return false;
         }else if (!checkPhoneAuth){
             return false;
